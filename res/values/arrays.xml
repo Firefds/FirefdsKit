@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="nfc_behavior_entries">
+        <item name="unlocked">@string/unlocked</item>
+        <item name="screen_on">@string/screen_on</item>
+        <item name="screen_off">@string/screen_off</item>
+    </string-array>
+    <string-array name="nfc_behavior_values">
+        <item name="unlocked">0</item>
+        <item name="screen_on">1</item>
+        <item name="screen_off">2</item>
+    </string-array>
+    <string-array name="reboot_options">
+        <item name="reboot">@string/reboot</item>
+        <item name="recovery">@string/reboot_recovery</item>
+        <item name="hotboot">@string/reboot_hotboot</item>
+        <item name="download">@string/reboot_download</item>
+    </string-array>
+    <string-array name="config_pen_window_applist">
+        <item>com.diotek.diodict4.EDictionary</item>
+        <item>com.diotek.diodict3.hc.samsung.p5</item>
+        <item>com.sec.android.app.popupcalculator</item>
+        <item>com.google.android.youtube</item>
+        <item>com.android.contacts</item>
+        <item>com.android.mms</item>
+        <item>com.sec.chaton</item>
+        <item>com.google.android.talk</item>
+        <item>com.kakao.talk</item>
+        <item>com.facebook.katana</item>
+        <item>com.sec.android.app.sbrowser</item>
+        <item>com.sec.android.gallery3d</item>
+    </string-array>
+    <string-array name="config_multiWindowSupportAppList">
+        <item>com.android.email</item>
+        <item>com.android.mms</item>
+        <item>com.sec.android.mms.kor</item>
+        <item>com.sec.chaton</item>
+        <item>com.google.android.apps.maps</item>
+        <item>com.google.android.maps</item>
+        <item>com.google.android.gm</item>
+        <item>com.google.android.talk</item>
+        <item>com.google.android.youtube</item>
+        <item>com.google.android.gsf.login</item>
+        <item>com.google.android.music</item>
+        <item>com.google.android.apps.books</item>
+        <item>com.google.android.videos</item>
+        <item>com.android.vending</item>
+        <item>com.facebook.katana</item>
+        <item>com.kakao.talk</item>
+        <item>com.infraware.polarisviewer4</item>
+        <item>com.infraware.polarisoffice4</item>
+        <item>com.infraware.polarisviewer5</item>
+        <item>com.infraware.polarisoffice5</item>
+        <item>com.android.providers.applications</item>
+        <item>com.tencent.mobileqq</item>
+        <item>com.instagram.android</item>
+        <item>com.facebook.appmanager</item>
+        <item>kik.android</item>
+        <item>com.bbm</item>
+        <item>com.facebook.orca</item>
+        <item>com.twitter.android</item>
+        <item>com.viber.voip</item>
+        <item>com.kakao.story</item>
+        <item>com.baidu.browser.inter</item>
+        <item>com.joeware.android.gpulumera</item>
+        <item>com.taobao.taobao</item>
+        <item>com.qvod.player</item>
+        <item>com.dragon.android.pandaspace</item>
+        <item>com.tencent.news</item>
+        <item>jp.co.nttdocomo.carriermail</item>
+        <item>com.android.dialer</item>
+        <item>com.kddi.android.email</item>
+        <item>jp.ne.kddi.ks.android</item>
+        <item>com.free.mt2</item>
+        <item>jp.co.yahoo.android.yjtop</item>
+        <item>com.kddi.android.cmail</item>
+        <item>jp.r246.twicca</item>
+        <item>com.jb.gosms</item>
+        <item>com.pandora.android</item>
+        <item>com.spotify.music</item>
+        <item>com.yahoo.mobile.client.android.mail</item>
+        <item>com.tumblr</item>
+        <item>com.ebay.mobile</item>
+        <item>com.skype.raider</item>
+        <item>com.sgiggle.production</item>
+        <item>com.joelapenna.foursquared</item>
+        <item>com.venticake.retrica</item>
+        <item>com.news24.ui.core</item>
+        <item>com.opera.mini.android</item>
+        <item>com.vkontakte.android</item>
+        <item>ru.yandex.yandexmaps</item>
+        <item>com.mxtech.videoplayer.ad</item>
+        <item>com.bsb.hike</item>
+        <item>com.pinterest</item>
+        <item>bb.iplayer.android</item>
+        <item>bbc.iplayer.android</item>
+        <item>air.ITVMobilePlayer</item>
+        <item>com.channel4.ondemand</item>
+        <item>co.vine.android</item>
+        <item>com.HBO</item>
+        <item>com.amazon.avod</item>
+        <item>fm.last.android</item>
+        <item>com.amazon.mShop.android</item>
+        <item>com.amazon.mShop.android.shopping</item>
+        <item>com.groupon</item>
+        <item>com.ithcity.android.groupon</item>
+        <item>com.imdb.mobile</item>
+        <item>com.melodis.midomiMusicIdentifier.freemium</item>
+        <item>com.soundcloud.android</item>
+        <item>com.shazam.android</item>
+        <item>com.linkedin.android</item>
+        <item>com.dropbox.android</item>
+        <item>com.slovoed.dictionaries</item>
+        <item>bs.app</item>
+        <item>ru.yandex.searchplugin</item>
+        <item>com.crossforward.audiobooks</item>
+        <item>Yandex.Music</item>
+        <item>ru.yandex.weatherplugin</item>
+        <item>com.skt.skaf.l001mtm091</item>
+        <item>kt.navi</item>
+        <item>com.mnsoft.lgunavi</item>
+    </string-array>
+    <string-array name="clock_position_entries">
+        <item name="right">@string/right</item>
+        <item name="center">@string/center</item>
+        <item name="left">@string/left</item>
+        <item name="hide">@string/hide</item>
+    </string-array>
+    <string-array name="clock_position_values">
+        <item name="right">Right</item>
+        <item name="center">Center</item>
+        <item name="center">Left</item>
+        <item name="hide">Hide</item>
+    </string-array>
+    <string-array name="clock_size_entries">
+        <item name="small">@string/small</item>
+        <item name="medium">@string/medium</item>
+        <item name="large">@string/large</item>
+    </string-array>
+    <string-array name="clock_size_values">
+        <item name="small">Small</item>
+        <item name="medium">Medium</item>
+        <item name="large">Large</item>
+    </string-array>
+    <string-array name="categories_list">
+        <item>Always</item>
+        <item>Briefing</item>
+        <item>BT</item>
+        <item>Calculator</item>
+        <item>Calendar</item>
+        <item>CallDialerLogSettings</item>
+        <item>Camera</item>
+        <item>Clock</item>
+        <item>Cloud</item>
+        <item>Common</item>
+        <item>Contact</item>
+        <item>Contacts</item>
+        <item>ContextService</item>
+        <item>Dictionary</item>
+        <item>Email</item>
+        <item>Empty</item>
+        <item>FeliCa</item>
+        <item>Finder</item>
+        <item>FmRadio</item>
+        <item>Framework</item>
+        <item>GalaxyFinder</item>
+        <item>Gallery</item>
+        <item>GMS</item>
+        <item>IMS</item>
+        <item>JobManager</item>
+        <item>Kies</item>
+        <item>Launcher</item>
+        <item>LiveWallpaper</item>
+        <item>LockScreen</item>
+        <item>Logs</item>
+        <item>MCommerce</item>
+        <item>MediaProvider</item>
+        <item>MediaScanner</item>
+        <item>Memo</item>
+        <item>Message</item>
+        <item>MiniDiary</item>
+        <item>Mms</item>
+        <item>MobileTV</item>
+        <item>Music</item>
+        <item>MyFiles</item>
+        <item>NFC</item>
+        <item>Organizer</item>
+        <item>Phone</item>
+        <item>PopupuiReceiver</item>
+        <item>RIL</item>
+        <item>Security</item>
+        <item>Settig</item>
+        <item>Setting</item>
+        <item>Settings</item>
+        <item>SetupWizard</item>
+        <item>SFinder</item>
+        <item>Sip</item>
+        <item>SmartcardService</item>
+        <item>SmartcardSvc</item>
+        <item>SMemo</item>
+        <item>SNote</item>
+        <item>SPenGesturePad</item>
+        <item>StoryAlbum</item>
+        <item>Streaming</item>
+        <item>SyncML</item>
+        <item>Video</item>
+        <item>VoiceCall</item>
+        <item>VoiceRecorder</item>
+        <item>Voicetalk</item>
+        <item>VT</item>
+        <item>Wallpaper</item>
+        <item>Web</item>
+        <item>WFC</item>
+        <item>Wifi</item>
+        <item>WritingBuddy</item>
+    </string-array>
+
+</resources>

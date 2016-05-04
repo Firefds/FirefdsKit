@@ -1,0 +1,15 @@
+#!/system/bin/sh
+export PATH=/system/bin:$PATH
+
+mount -o rw,remount /system
+mount -t rootfs -o remount,rw rootfs
+
+cp -f /system/media/audio/ui/PowerOn.ogg /system/media/audio/ui/PowerOn.ogg.bak
+cp -f /system/media/audio/ui/PowerOff.ogg /system/media/audio/ui/PowerOff.ogg.bak
+cp -f /system/etc/PowerOn.ogg /system/etc/PowerOn.ogg.bak
+cp -f /system/etc/PowerOff.ogg /system/etc/PowerOff.ogg.bak
+
+rm -r /system/media/audio/ui/PowerOn.ogg
+rm -r /system/media/audio/ui/PowerOff.ogg
+rm -r /system/etc/PowerOn.ogg
+rm -r /system/etc/PowerOff.ogg
