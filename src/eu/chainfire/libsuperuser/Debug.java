@@ -16,9 +16,9 @@
 
 package eu.chainfire.libsuperuser;
 
-import sb.firefds.xtouchwizS5.BuildConfig;
 import android.os.Looper;
 import android.util.Log;
+import sb.firefds.firefdskit.BuildConfig;
 
 /**
  * Utility class for logging and debug features that (by default) does nothing when not in debug mode

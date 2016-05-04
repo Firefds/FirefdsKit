@@ -16,7 +16,6 @@
 
 package de.robv.android.xposed.library.ui;
 
-import sb.firefds.xtouchwizS5.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -29,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import sb.firefds.firefdskit.R;
 import android.widget.TextView;
 
 public class ValueSeekBarPreference extends Preference implements OnSeekBarChangeListener {

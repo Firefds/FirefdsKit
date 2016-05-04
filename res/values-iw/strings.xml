@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">XTouchWiz S5</string>
+    <string name="app_name">Firefds Kit</string>
     <string name="signal_icons">אייקוני קליטה</string>
     <string name="samsung_rom_warning">יש צורך ברום של סמסונג</string>
     <string name="samsung_rom_warning_msg">הרום שלך לא נראה כרום של סמסונג. האפליקציה הזו לא תומכת ברומים מסוג AOSP ו CM</string>

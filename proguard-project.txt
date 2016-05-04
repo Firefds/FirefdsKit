@@ -19,7 +19,7 @@
 #   public *;
 #}
 
--keep class sb.firefds.xtouchwizS5.X* {*;}
+-keep class sb.firefds.firefdskit.X* {*;}
 
 -keep class de.robv.** {*;}
 -dontwarn de.robv.**

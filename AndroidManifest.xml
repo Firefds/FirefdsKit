@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="sb.firefds.xtouchwizS5"
+    package="sb.firefds.firefdskit"
     android:versionCode="101"
     android:versionName="1.0.1" >
 
@@ -13,14 +13,14 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name="sb.firefds.xtouchwizS5.MainApplication"
+        android:name="sb.firefds.firefdskit.MainApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.Material" >
         <activity
-            android:name="sb.firefds.xtouchwizS5.XTouchWizActivity"
+            android:name="sb.firefds.firefdskit.XTouchWizActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:label="@string/app_name" >
             <intent-filter>
@@ -41,7 +41,7 @@
             android:value="Made for Samsung S5 TouchWiz Android 6.0+ Roms by Wanam. Moded by Firefds" />
 
         <receiver
-            android:name="sb.firefds.xtouchwizS5.receivers.WanamRebootReceiver"
+            android:name="sb.firefds.firefdskit.receivers.WanamRebootReceiver"
             android:exported="false" >
             <intent-filter android:priority="1000" >
                 <action android:name="ma.wanam.xposed.action.REBOOT_DEVICE" />
@@ -50,14 +50,14 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="sb.firefds.xtouchwizS5.receivers.WanamToastReceiver"
+            android:name="sb.firefds.firefdskit.receivers.WanamToastReceiver"
             android:exported="false" >
             <intent-filter>
                 <action android:name="ma.wanam.xposed.action.SHOW_TOAST" />
             </intent-filter>
         </receiver>
         <receiver
-            android:name="sb.firefds.xtouchwizS5.receivers.WanamRebootReceiver"
+            android:name="sb.firefds.firefdskit.receivers.WanamRebootReceiver"
             android:exported="false" >
             <intent-filter android:priority="1000" >
                 <action android:name="ma.wanam.xposed.action.REBOOT_DEVICE" />
@@ -67,17 +67,17 @@
         </receiver>
 
         <activity
-            android:name="sb.firefds.xtouchwizS5.activities.WanamRebootActivity"
+            android:name="sb.firefds.firefdskit.activities.WanamRebootActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:label="@string/rebooting_"
             android:theme="@android:style/Theme.DeviceDefault.Dialog" >
         </activity>
         
                 <service
-  			android:name="sb.firefds.xtouchwizS5.services.ScreenRecordingServices.ScreenRecordingService"
+  			android:name="sb.firefds.firefdskit.services.ScreenRecordingServices.ScreenRecordingService"
             android:exported="false" >
             <intent-filter>
-                <action android:name="xtouchwizS5.intent.action.RECORDING_START" />
+                <action android:name="firefdskit.intent.action.RECORDING_START" />
             </intent-filter>
         </service>
     </application>
