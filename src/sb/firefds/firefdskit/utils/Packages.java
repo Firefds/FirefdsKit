@@ -16,7 +16,7 @@ package sb.firefds.firefdskit.utils;
 
 public class Packages {
 
-	public static final String XTOUCHWIZ = "sb.firefds.xtouchwizS5";
+	public static final String XTOUCHWIZ = "sb.firefds.firefdskit";
 	public static final String ANDROID = "android";
 	public static final String SYSTEM_UI = "com.android.systemui";
 	public static final String PHONE = "com.android.phone";
