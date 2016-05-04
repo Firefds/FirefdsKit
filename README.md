@@ -1,4 +1,4 @@
-XTouchWiz
+Firefds Kit
 =============
 
 Xposed module for Samsung devices running old TouchWiz Marshmallow frameworks.
