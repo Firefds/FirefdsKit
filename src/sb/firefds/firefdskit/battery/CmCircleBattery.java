@@ -346,6 +346,10 @@ public class CmCircleBattery extends ImageView implements IconManagerListener, B
 			textSize = 14;
 		} else if (tsPrefVal.equals("Large")) {
 			textSize = 15;
+		} else if (tsPrefVal.equals("Larger")) {
+			textSize = 16;
+		} else if (tsPrefVal.equals("Largest")) {
+			textSize = 17;
 		}
 
 		mCircleSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, textSize, res.getDisplayMetrics());

@@ -209,12 +209,22 @@ public class XSysUIFeaturePackage {
 
 					}
 				}
+				
+				if (prefs.getBoolean("disableAirplaneModeOffDialog", false)) {
+					try {
+						hideFlightModeOffPopup(classLoader);
+					} catch (Throwable e) {
+						XposedBridge.log(e);
+
+					}
+				}
 			}
 
 		} catch (Throwable e1) {
 			XposedBridge.log(e1.getMessage());
 		}
 	}
+
 
 	private static void hideStorageNotification(ClassLoader classLoader) {
 		try {
@@ -269,7 +279,26 @@ public class XSysUIFeaturePackage {
 		} catch (Throwable e) {
 			XposedBridge.log(e);
 		}
-	}	
+	}
+	
+	private static void hideFlightModeOffPopup(final ClassLoader classLoader) {
+		try {
+			XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".qs.tiles.AirplaneModeTile", classLoader,
+					"showConfirmPopup", boolean.class, new XC_MethodHook() {
+
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					if (param.args[0].equals(false)) {
+						XposedHelpers.callMethod(param.thisObject, "setEnabled", param.args[0]);
+						param.setResult(null);
+					}
+				}
+			});
+		} catch (Throwable e) {
+			XposedBridge.log(e);
+		}
+	}
+
 
 	private static void setMWApps(final XSharedPreferences prefs, final ClassLoader classLoader) {
 		try {

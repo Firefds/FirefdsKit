@@ -49,6 +49,10 @@ public class XBatteryStyle {
 			padingSize = 7;
 		} else if (tsPrefVal.equals("Large")) {
 			padingSize = 8;
+		} else if (tsPrefVal.equals("Larger")) {
+			padingSize = 9;
+		} else if (tsPrefVal.equals("Largest")) {
+			padingSize = 10;
 		}
 
 		setBatteryIcon1(prefs, resparam, "super_status_bar", padingSize);

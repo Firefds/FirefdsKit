@@ -48,6 +48,22 @@ public class XSysUIPackage {
 			XposedBridge.log(e.toString());
 
 		}
+		
+		try {
+			XSysUINotificationPanelPackage.doHook(prefs, classLoader);
+		} catch (Throwable e) {
+			XposedBridge.log(e.toString());
+
+		}
+
+		
+		try {
+			XSysUIStatusBarCarrierPackage.doHook(prefs, classLoader);
+		} catch (Throwable e) {
+			XposedBridge.log(e.toString());
+
+		}
+
 
 	}
 

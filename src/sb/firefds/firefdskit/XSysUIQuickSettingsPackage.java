@@ -51,9 +51,8 @@ public class XSysUIQuickSettingsPackage {
 
 	private static void enableCollapseOnToggle() {
 		try {
-			Class<?> state = XposedHelpers.findClass(Packages.SYSTEM_UI + ".qs.QSTile$State", classLoader);
-			XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".qs.QSTileView", classLoader, "onStateChanged",
-					state, new XC_MethodHook() {
+			XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".qs.QSTile", classLoader, "handleStateChanged",
+					new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 					Context mContext = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");

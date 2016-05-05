@@ -38,7 +38,7 @@
     <string name="reboot_required_title">נדרשת הפעלה מחדש</string>
     <string name="reboot_required_message">XTouchWiz דורש הפעלה מחדש</string>
     <string name="rebooting">מפעיל מחדש…</string>
-    <string name="credit_details">"\nתודה ל Rovo89 על יצירת מסגרת ה Xposed.\n\nתודה ל C3C076, Romracer, Tungstwenty… על התרומה שלהם ליצירת Xposed ומודלים.\n\nמפתח: <a href="http://forum.xda-developers.com/member.php?u=3562083">Wanam @Xda-Developers</a>\n\nטוויטר: <a href="https://twitter.com/wanamxda">Mohamed Karami</a>\n\nהותאם לגלקסי S5 על ידי: <a href="http://forum.xda-developers.com/member.php?u=3844620">Firefds firefds@Xda-Developers</a>\nגרסת התאמה: 1.0.1\n"</string>
+    <string name="credit_details">"\nתודה ל Rovo89 על יצירת מסגרת ה Xposed.\n\nתודה ל C3C076, Romracer, Tungstwenty… על התרומה שלהם ליצירת Xposed ומודלים.\n\nמפתח: <a href="http://forum.xda-developers.com/member.php?u=3562083">Wanam @Xda-Developers</a>\n\nטוויטר: <a href="https://twitter.com/wanamxda">Mohamed Karami</a>\n\nהותאם לגלקסי S5 על ידי: <a href="http://forum.xda-developers.com/member.php?u=3844620">Firefds firefds@Xda-Developers</a>\nגרסת התאמה: 1.0.2\n"</string>
     <string name="restore">שיחזור גיבוי</string>
     <string name="save">שמירת גיבוי</string>
     <string name="restoring_backup">משחזר גיבוי</string>
@@ -112,6 +112,9 @@
     <string name="quick_settings_disable_airplane_mode_dialog">ביטול קפיצת חלון בהפעלת מצב טיסה</string>
     <string name="quick_settings_disable_airplane_mode_dialog_off">דיאלוג מצב טיסה פועל</string>
     <string name="quick_settings_disable_airplane_mode_dialog_on">דיאלוג מצב טיסה מבוטל</string>
+    <string name="quick_settings_disable_airplane_mode_off_dialog">ביטול קפיצת חלון בכיבוי מצב טיסה</string>
+    <string name="quick_settings_disable_airplane_mode_off_dialog_off">דיאלוג מצב טיסה פועל</string>
+    <string name="quick_settings_disable_airplane_mode_off_dialog_on">דיאלוג מצב טיסה מבוטל</string>
     <string name="default_contacts_joining_limit">הגבלת איחוד אנשי קשר מוגדר ל-5 כברירת מחדל</string>
     <string name="unlimited_contacts_accounts_joining">הגדרת איחוד אנשי קשר מוגדר ל-999, דבר זה עלול להסתיר את סמלי החשבונות</string>
     <string name="enable_unlimited_contacts_joining">הפעלת איחוד אינסופי של אנשי קשר</string>
@@ -244,6 +247,8 @@
     <string name="small">קטן</string>
     <string name="medium">בינוני</string>
     <string name="large">גדול</string>
+    <string name="larger">גדול יותר</string>
+    <string name="largest">הכי גדול</string>
     <string name="cover_warning">התראות כיסוי</string>
     <string name="hide_battery_cover_warning">הסתרת התראת כיסוי סוללה</string>
     <string name="hide_battery_cover_warning_on_boot_for_galaxy_s5">הסתרת התראת כיסוי סוללה (למכשירי Galaxy S5 ואחרים עם עמידות במים)</string>
@@ -269,4 +274,12 @@
     <string name="enable_marshmallow_systemui">הפעלת שורת מצב בסגנון מרשמלו</string>
     <string name="hide_storage_notification_summary">הסתרת התראת כרטיס SD כאשר הוא מוטען</string>
     <string name="hide_storage_notification">הסתרת התראת כרטיס SD</string>
+    <string name="carrier_notification">מפעיל</string>
+    <string name="hide_carrier_label">הסתרת טקסט מפעיל סלולרי</string>
+    <string name="hide_carrier_label_shown">טקסט מפעיל סלולרי מוצג</string>
+    <string name="hide_carrier_label_hidden">טקסט מפעיל סלולרי מוסתר</string>
+    <string name="use_custom_carrier_label_shown">טקסט מפעיל סלולרי מותאם אישית</string>
+    <string name="default_carrier_label">יש להשאיר ריק בשביל טקסט ברירת המחדל</string>
+    <string name="carrier_size_summary">הגדרת גודל טקסט מפעיל סלולרי</string>
+    <string name="carrier_size">גודל טקסט מפעיל סלולרי</string>
 </resources>

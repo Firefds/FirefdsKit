@@ -39,7 +39,7 @@
     <string name="reboot_required_title">Reboot requested</string>
     <string name="reboot_required_message">XTouchWiz requires a reboot to apply changes</string>
     <string name="rebooting">Rebooting now…</string>
-    <string name="credit_details">"\nThanks to Rovo89 for creating Xposed framework.\n\nThanks to C3C076, Romracer, Tungstwenty… for their contribution on Xposed framework and modules.\n\nDeveloper: <a href="http://forum.xda-developers.com/member.php?u=3562083">Wanam @Xda-Developers</a>\n\nTwitter: <a href="https://twitter.com/wanamxda">Mohamed Karami</a>\n\nModed for Galaxy S5 framework by: <a href="http://forum.xda-developers.com/member.php?u=3844620">Firefds firefds@Xda-Developers</a>\nModed version: 1.0.1\n"</string>
+    <string name="credit_details">"\nThanks to Rovo89 for creating Xposed framework.\n\nThanks to C3C076, Romracer, Tungstwenty… for their contribution on Xposed framework and modules.\n\nDeveloper: <a href="http://forum.xda-developers.com/member.php?u=3562083">Wanam @Xda-Developers</a>\n\nTwitter: <a href="https://twitter.com/wanamxda">Mohamed Karami</a>\n\nModed for Galaxy S5 framework by: <a href="http://forum.xda-developers.com/member.php?u=3844620">Firefds firefds@Xda-Developers</a>\nModed version: 1.0.2\n"</string>
     <string name="restore">Restore a backup</string>
     <string name="save">Save a backup</string>
     <string name="restoring_backup">Restoring backup</string>
@@ -110,9 +110,12 @@
     <string name="disable_tether_provisioning_on">Tether provisioning is disabled</string>
     <string name="quick_settings_disable_bluetooth_scan_dialog">Disable bluetooth toggle popup</string>
     <string name="quick_settings_disable_bluetooth_scan_dialog_sum">Disable the scan dialog after enabling bluetooth</string>
-    <string name="quick_settings_disable_airplane_mode_dialog">Disable airplane toggle popup</string>
-    <string name="quick_settings_disable_airplane_mode_dialog_off">Airplane mode dialog enabled</string>
-    <string name="quick_settings_disable_airplane_mode_dialog_on">Airplane mode dialog disabled</string>
+    <string name="quick_settings_disable_airplane_mode_dialog">Disable airplane toggle on popup</string>
+    <string name="quick_settings_disable_airplane_mode_dialog_off">Airplane mode dialog on enabled</string>
+    <string name="quick_settings_disable_airplane_mode_dialog_on">Airplane mode dialog on disabled</string>
+    <string name="quick_settings_disable_airplane_mode_off_dialog">Disable airplane toggle off popup</string>
+    <string name="quick_settings_disable_airplane_mode_off_dialog_off">Airplane mode off dialog enabled</string>
+    <string name="quick_settings_disable_airplane_mode_off_dialog_on">Airplane mode off dialog disabled</string>
     <string name="default_contacts_joining_limit">Default contacts joining limit set to 5</string>
     <string name="unlimited_contacts_accounts_joining">Unlimited contacts accounts joining: set to 999, this may hide accounts icons</string>
     <string name="enable_unlimited_contacts_joining">Enable unlimited contacts joining</string>
@@ -245,6 +248,8 @@
     <string name="small">Small</string>
     <string name="medium">Medium</string>
     <string name="large">Large</string>
+    <string name="larger">Larger</string>
+    <string name="largest">Largest</string>
     <string name="cover_warning">Cover warning</string>
     <string name="hide_battery_cover_warning">Hide Battery cover warning</string>
     <string name="hide_battery_cover_warning_on_boot_for_galaxy_s5">Hide Battery cover warning on boot (for Galaxy S5 and water resistant devices)</string>
@@ -270,4 +275,12 @@
     <string name="enable_marshmallow_systemui">Turn on Samsung Marshmallow SystemUI</string>
     <string name="hide_storage_notification_summary">Hide SD card notification when SD card is mounted</string>
     <string name="hide_storage_notification">Hide SD card notification</string>
+    <string name="carrier_notification">Carrier</string>
+    <string name="hide_carrier_label">Hide carrier label</string>
+    <string name="hide_carrier_label_shown">Carrier label shown</string>
+    <string name="hide_carrier_label_hidden">Carrier label hidden</string>
+    <string name="use_custom_carrier_label_shown">Custom carrier label</string>
+    <string name="default_carrier_label">Leave empty for default carrier label</string>
+    <string name="carrier_size_summary">Set the status bar carrier text size</string>
+    <string name="carrier_size">Carrier label size</string>
 </resources>

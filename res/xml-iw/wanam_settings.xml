@@ -164,6 +164,12 @@
                 android:title="@string/quick_settings_disable_airplane_mode_dialog" />
             <CheckBoxPreference
                 android:defaultValue="false"
+                android:key="disableAirplaneModeOffDialog"
+                android:summaryOff="@string/quick_settings_disable_airplane_mode_off_dialog_off"
+                android:summaryOn="@string/quick_settings_disable_airplane_mode_off_dialog_on"
+                android:title="@string/quick_settings_disable_airplane_mode_off_dialog" />
+            <CheckBoxPreference
+                android:defaultValue="false"
                 android:key="disableBluetoothScanDialog"
                 android:summary="@string/quick_settings_disable_bluetooth_scan_dialog_sum"
                 android:title="@string/quick_settings_disable_bluetooth_scan_dialog" />
@@ -172,6 +178,29 @@
                 android:key="showDataPopUp"
                 android:summary="@string/show_a_warning_popup_when"
                 android:title="@string/show_data_off_popup" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="@string/carrier_notification" >
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:disableDependentsState="true"
+                android:key="hideCarrierLabel"
+                android:summaryOff="@string/hide_carrier_label_shown"
+                android:summaryOn="@string/hide_carrier_label_hidden"
+                android:title="@string/hide_carrier_label" />
+            <EditTextPreference
+                android:defaultValue=""
+                android:dependency="hideCarrierLabel"
+                android:key="customCarrierLabel"
+                android:summary="@string/default_carrier_label"
+                android:title="@string/use_custom_carrier_label_shown" />
+            <de.robv.android.xposed.library.ui.ListPreferenceFixedSummary
+                android:defaultValue="Medium"
+                android:dependency="hideCarrierLabel"
+                android:entries="@array/clock_size_entries"
+                android:entryValues="@array/clock_size_values"
+                android:key="carrierSize"
+                android:summary="@string/carrier_size_summary"
+                android:title="@string/carrier_size" />
         </PreferenceCategory>
     </PreferenceScreen>
     <PreferenceScreen
