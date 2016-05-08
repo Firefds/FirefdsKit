@@ -31,6 +31,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.SystemProperties;
+import android.util.Log;
 import sb.firefds.firefdskit.bean.FeatureDTO;
 import sb.firefds.firefdskit.utils.Constants;
 import sb.firefds.firefdskit.utils.Utils;
@@ -267,6 +268,7 @@ public class XCscFeaturesManager {
 
 		@Override
 		protected void onPostExecute(Void result) {
+			Log.d("sb.firefds.firefdskit", featureXML.toString());
 			if (featureXML.isFile()) {
 				try {
 					Utils.applyCSCFeatues(MainApplication.getAppContext());

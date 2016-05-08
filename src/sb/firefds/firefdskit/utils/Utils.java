@@ -226,6 +226,7 @@ public class Utils {
 		new SuTask().execute(new String[] { "cd " + context.getCacheDir(), "./" + scriptFile.getName(),
 				"rm " + scriptFile.getName() });
 
+
 	}
 
 	public static class SuTask extends AsyncTask<String, Void, Void> {
@@ -260,13 +261,13 @@ public class Utils {
 			}
 			in.close();
 			out.close();
-
 			return file;
 		} catch (Throwable e) {
 			e.printStackTrace();
 			if (file != null)
+			{
 				file.delete();
-
+			}
 			return null;
 		}
 	}

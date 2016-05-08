@@ -194,7 +194,7 @@
                 android:title="@string/use_custom_carrier_label_shown" />
 
             <de.robv.android.xposed.library.ui.ListPreferenceFixedSummary
-                android:defaultValue="Medium"
+                android:defaultValue="Small"
                 android:dependency="hideCarrierLabel"
                 android:entries="@array/clock_size_entries"
                 android:entryValues="@array/clock_size_values"
