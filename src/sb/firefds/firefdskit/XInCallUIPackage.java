@@ -64,7 +64,6 @@ public class XInCallUIPackage {
 
 			}
 		}
-
 	}
 
 	private static void enableAutoCallRecording() {
@@ -74,40 +73,60 @@ public class XInCallUIPackage {
 			XposedHelpers.findAndHookMethod(Packages.INCALLUI + ".InCallPresenter", classLoader,
 					"processOnCallListChange", mCallList, new XC_MethodHook() {
 
-						@Override
-						protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-							Object mCall = XposedHelpers.callMethod(param.args[0], "getFirstCall");
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					Object mCall = XposedHelpers.callMethod(param.args[0], "getFirstCall");
 
-							Object mRecorderMgr = XposedHelpers.getObjectField(param.thisObject, "mRecorderMgr");
+					Object mRecorderMgr = XposedHelpers.getObjectField(param.thisObject, "mRecorderMgr");
 
-							if (mRecorderMgr != null) {
+					if (mRecorderMgr != null) {
 
-								Boolean mIsRecording = (Boolean) XposedHelpers.callMethod(mRecorderMgr, "isRecording");
-								if (mCall != null) {
-									int mState = (Integer) XposedHelpers.callMethod(mCall, "getState");
+						Boolean mIsRecording = (Boolean) XposedHelpers.callMethod(mRecorderMgr, "isRecording");
+						if (mCall != null) {
+							int mState = (Integer) XposedHelpers.callMethod(mCall, "getState");
 
-									if (mIsRecording && mState != 3) {// Recording
-																		// on
-																		// an
-																		// Inactive
-																		// Call
-										XposedHelpers.callMethod(mRecorderMgr, "toggleRecord");
-									} else if (!mIsRecording && mState == 3) { // Not
-																				// recording
-																				// on
-																				// an
-																				// Active
-																				// Call
-										XposedHelpers.callMethod(mRecorderMgr, "toggleRecord");
-									}
-								}
-
+							if (mIsRecording && mState != 3) {// Recording on an Inactive Call
+								XposedHelpers.callMethod(mRecorderMgr, "toggleRecord");
+							} else if (!mIsRecording && mState == 3) { // Not recording on an Active Call
+								XposedHelpers.callMethod(mRecorderMgr, "toggleRecord");
 							}
 						}
-					});
-		} catch (Throwable e) {
-			XposedBridge.log(e);
 
+					}
+				}
+			});
+		} catch (Throwable e) {
+			try {
+				Class<?> mCallList = XposedHelpers.findClass(Packages.INCALLUI + ".CallList", classLoader);
+				final Class<?> mInCallState = XposedHelpers.findClass(Packages.INCALLUI
+						+ ".InCallPresenter$InCallState", classLoader);
+				XposedHelpers.findAndHookMethod(Packages.INCALLUI + ".InCallPresenter", classLoader, "onStateChange",
+						mInCallState, mCallList, new XC_MethodHook() {
+
+					@Override
+					protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+						Object mCall = XposedHelpers.callMethod(param.args[1], "getFirstCall");
+						if (param.thisObject != null) {
+							Object mRecorderMgr = XposedHelpers
+									.getObjectField(param.thisObject, "mRecorderMgr");
+							if (mRecorderMgr != null) {
+								Boolean mIsRecording = (Boolean) XposedHelpers.callMethod(mRecorderMgr,
+										"isRecording");
+								if (mCall != null) {
+									int mState = (Integer) XposedHelpers.callMethod(mCall, "getState");
+									if (mIsRecording && mState != 2) {// Recording on an Inactive Cal
+										XposedHelpers.callMethod(param.thisObject, "toggleRecord");
+									} else if (!mIsRecording && mState == 2) { // Not recording on an Active Call
+										XposedHelpers.callMethod(param.thisObject, "toggleRecord");
+									}
+								}
+							}
+						}
+					}
+				});
+			} catch (Throwable e1) {
+				XposedBridge.log(e1);
+			}
 		}
 	}
 

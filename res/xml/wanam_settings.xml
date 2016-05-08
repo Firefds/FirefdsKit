@@ -98,7 +98,6 @@
                 android:key="NoCMMBatteryText"
                 android:summary="@string/remove_battery_text_from_the_circle_indicator"
                 android:title="@string/hide_cm_battery_text" />
-
             <de.robv.android.xposed.library.ui.ListPreferenceFixedSummary
                 android:defaultValue="Medium"
                 android:entries="@array/clock_size_entries"
@@ -149,7 +148,6 @@
                 android:key="quickSettingsColumns"
                 android:summary="@string/quick_setting_columns_summary"
                 android:title="@string/quick_setting_columns" />
-
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="quickSettingsCollapseOnToggle"
@@ -187,12 +185,14 @@
                 android:summaryOff="@string/hide_carrier_label_shown"
                 android:summaryOn="@string/hide_carrier_label_hidden"
                 android:title="@string/hide_carrier_label" />
+
             <EditTextPreference
                 android:defaultValue=""
                 android:dependency="hideCarrierLabel"
                 android:key="customCarrierLabel"
                 android:summary="@string/default_carrier_label"
                 android:title="@string/use_custom_carrier_label_shown" />
+
             <de.robv.android.xposed.library.ui.ListPreferenceFixedSummary
                 android:defaultValue="Medium"
                 android:dependency="hideCarrierLabel"
@@ -364,6 +364,13 @@
                 android:key="nfcBehavior"
                 android:summary="@string/nfc_behavior_summary"
                 android:title="@string/nfc_behavior" />
+
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="hideMTPNotification"
+                android:summaryOff="@string/hide_mtp_notification_off"
+                android:summaryOn="@string/hide_mtp_notification_on"
+                android:title="@string/hide_mtp_notification" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/browser" >
             <CheckBoxPreference
@@ -579,4 +586,5 @@
                 android:title="@string/enable_marshmallow_systemui" />
         </PreferenceCategory>
     </PreferenceScreen>
+
 </PreferenceScreen>

@@ -104,12 +104,12 @@ public class MultiWindowAppsDialog extends DialogFragment {
 						}
 
 						MainApplication
-								.getSharedPreferences()
-								.edit()
-								.putString(
-										"selectedMwApps",
-										((stringBuilder.length() > 1) ? stringBuilder.toString().substring(0,
-												stringBuilder.length() - 1) : "")).commit();
+						.getSharedPreferences()
+						.edit()
+						.putString(
+								"selectedMwApps",
+								((stringBuilder.length() > 1) ? stringBuilder.toString().substring(0,
+										stringBuilder.length() - 1) : "")).commit();
 
 					}
 				}).setNegativeButton(android.R.string.cancel, new OnClickListener() {
@@ -122,5 +122,4 @@ public class MultiWindowAppsDialog extends DialogFragment {
 
 		return dialog;
 	}
-
 }

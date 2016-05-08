@@ -44,6 +44,7 @@ public class Packages {
 	public static final String SMART_STAY = "com.samsung.android.smartface";
 	public static final String NOTI_PAGE_BUDDY = "com.android.pagebuddynotisvc";
 	public static final String NOTI_PAGE_BUDDY_SEC = "com.sec.android.pagebuddynotisvc";
+	public static final String MTP_APPLICATION = "com.samsung.android.MtpApplication";
 
 	public static final String[] LONGBACK_KILL_WHITELIST = new String[] { GOOGLE_LAUNCHER, GOOGLE_SEARCH, LAUNCHER,
 			NOVA_LAUNCHER, ADW_LAUNCHER, BUZZ_LAUNCHER, GO_LAUNCHER, ACTION_LAUNCHER, APEX_LAUNCHER, HOLO_LAUNCHER,
