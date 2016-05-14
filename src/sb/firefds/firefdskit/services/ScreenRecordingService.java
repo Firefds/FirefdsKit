@@ -71,9 +71,9 @@ public class ScreenRecordingService extends Service implements MediaScannerConne
 	private static final int MSG_TASK_ENDED = 1;
 	private static final int MSG_TASK_ERROR = 2;
 
-	public static final String ACTION_SCREEN_RECORDING_START = "xtouchwizS5.intent.action.SCREEN_RECORDING_START";
-	public static final String ACTION_SCREEN_RECORDING_STOP = "xtouchwizS5.intent.action.SCREEN_RECORDING_STOP";
-	public static final String ACTION_SCREEN_RECORDING_STATUS_CHANGED = "xtouchwizS5.intent.action.SCREEN_RECORDING_STATUS_CHANGED";
+	public static final String ACTION_SCREEN_RECORDING_START = "firefdskit.intent.action.SCREEN_RECORDING_START";
+	public static final String ACTION_SCREEN_RECORDING_STOP = "firefdskit.intent.action.SCREEN_RECORDING_STOP";
+	public static final String ACTION_SCREEN_RECORDING_STATUS_CHANGED = "firefdskit.intent.action.SCREEN_RECORDING_STATUS_CHANGED";
 	public static final String EXTRA_RECORDING_STATUS = "recordingStatus";
 	public static final String EXTRA_STATUS_MESSAGE = "statusMessage";
 
