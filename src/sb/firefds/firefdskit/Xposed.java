@@ -210,6 +210,15 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookInitPackageReso
 
 		}
 
+		if (lpparam.packageName.equals(Packages.TOUCHWIZ)) {
+
+			try {
+				XTouchwizLauncher.doHook(prefs, lpparam.classLoader);
+			} catch (Exception e1) {
+				XposedBridge.log(e1);
+			}
+
+		}
 		
 		if (lpparam.packageName.equals(Packages.NOTI_PAGE_BUDDY)
 				|| lpparam.packageName.equals(Packages.NOTI_PAGE_BUDDY_SEC)) {

@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="transition_effect_entries">
+        <item name="NONE">@string/NONE</item>
+        <item name="CASCADE">@string/CASCADE</item>
+        <item name="OUTERCUBE">@string/OUTERCUBE</item>
+        <item name="INNERCUBE">@string/INNERCUBE</item>
+        <item name="CAROUSAL">@string/CAROUSAL</item>
+        <item name="PLAIN">@string/PLAIN</item>
+        <item name="CONVEYOR">@string/CONVEYOR</item>
+        <item name="CARD">@string/CARD</item>
+        <item name="SPIRAL">@string/SPIRAL</item>                                                
+    </string-array>
+    <string-array name="transition_effect_values">
+        <item name="NONE">0</item>
+        <item name="CASCADE">1</item>
+        <item name="OUTERCUBE">2</item>
+        <item name="INNERCUBE">3</item>
+        <item name="CAROUSAL">4</item>
+        <item name="PLAIN">5</item>
+        <item name="CONVEYOR">6</item>
+        <item name="CARD">7</item>
+        <item name="SPIRAL">8</item>                                                
+    </string-array>
     <string-array name="nfc_behavior_entries">
         <item name="unlocked">@string/unlocked</item>
         <item name="screen_on">@string/screen_on</item>
@@ -136,15 +158,15 @@
         <item name="small">@string/small</item>
         <item name="medium">@string/medium</item>
         <item name="large">@string/large</item>
-        <item name="large">@string/larger</item>
-        <item name="large">@string/largest</item>
+        <item name="larger">@string/larger</item>
+        <item name="largest">@string/largest</item>
     </string-array>
     <string-array name="clock_size_values">
         <item name="small">Small</item>
         <item name="medium">Medium</item>
         <item name="large">Large</item>
-        <item name="large">Larger</item>
-        <item name="large">Largest</item>
+        <item name="larger">Larger</item>
+        <item name="largest">Largest</item>
     </string-array>
     <string-array name="categories_list">
         <item>Always</item>

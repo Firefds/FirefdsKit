@@ -284,5 +284,17 @@
     <string name="carrier_size">גודל טקסט מפעיל סלולרי</string>
     <string name="hide_mtp_notification">אוטומטי MTP</string>
     <string name="hide_mtp_notification_off">אישור או דחייה ידנית של MTP</string>
-    <string name="hide_mtp_notification_on">אישור אוטומטי של MTP והסתרת ההתראה</string>        
+    <string name="hide_mtp_notification_on">אישור אוטומטי של MTP והסתרת ההתראה</string>
+    <string name="NONE">ללא</string>
+    <string name="CASCADE">מדורג</string>
+    <string name="OUTERCUBE">קוביה חיצונית</string>
+    <string name="INNERCUBE">קוביה פנימית</string>
+    <string name="CAROUSAL">קרוסלה</string>
+    <string name="PLAIN">רגיל</string>
+    <string name="CONVEYOR">מסוע</string>
+    <string name="CARD">ערימת קלפים</string>
+    <string name="SPIRAL">ספירלי</string>
+    <string name="transition_effects">אפקט מעבר</string>
+    <string name="transition_effect_title">בחירת אפקט מעבר</string>
+    <string name="transition_effect_summary">בחירה של אפקט מעבר. חלקם לא עובדים על מכשירי מרשמלו ישנים יותר.</string>
 </resources>

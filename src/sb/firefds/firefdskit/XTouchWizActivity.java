@@ -666,7 +666,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 				// No reboot notification required
 				String[] litePrefs = new String[] { "appChooserShowAllActivities", "drt", "drt_ts",
 						"isXTouvhWizFirstLaunch", "forceEnglish", "notificationSize", "autoExpandVolumePanel",
-						"semiTransparentVolumePanel" };
+						"semiTransparentVolumePanel"};
 				for (String string : litePrefs) {
 					if (key.equalsIgnoreCase(string)) {
 						return;

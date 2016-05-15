@@ -98,6 +98,7 @@
                 android:key="NoCMMBatteryText"
                 android:summary="@string/remove_battery_text_from_the_circle_indicator"
                 android:title="@string/hide_cm_battery_text" />
+
             <de.robv.android.xposed.library.ui.ListPreferenceFixedSummary
                 android:defaultValue="Medium"
                 android:entries="@array/clock_size_entries"
@@ -148,6 +149,7 @@
                 android:key="quickSettingsColumns"
                 android:summary="@string/quick_setting_columns_summary"
                 android:title="@string/quick_setting_columns" />
+
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="quickSettingsCollapseOnToggle"
@@ -586,5 +588,18 @@
                 android:title="@string/enable_marshmallow_systemui" />
         </PreferenceCategory>
     </PreferenceScreen>
-
+    <PreferenceScreen
+        android:icon="@drawable/theme"
+        android:key="launcherOptions"
+        android:title="@string/launcher" >
+        <PreferenceCategory android:title="@string/transition_effects" >
+            <ListPreference
+                android:defaultValue="0"
+                android:entries="@array/transition_effect_entries"
+                android:entryValues="@array/transition_effect_values"
+                android:key="transitionEffect"
+                android:summary="@string/transition_effect_summary"
+                android:title="@string/transition_effect_title" />
+        </PreferenceCategory>
+    </PreferenceScreen>
 </PreferenceScreen>

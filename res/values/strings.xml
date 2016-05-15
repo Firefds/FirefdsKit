@@ -285,5 +285,17 @@
     <string name="carrier_size">Carrier label size</string>
     <string name="hide_mtp_notification">Auto MTP</string>
     <string name="hide_mtp_notification_off">Manually allow or deny MTP access</string>
-    <string name="hide_mtp_notification_on">Auto allows MTP and hides the notification</string>        
+    <string name="hide_mtp_notification_on">Auto allows MTP and hides the notification</string>
+    <string name="NONE">None</string>
+    <string name="CASCADE">Cascade</string>
+    <string name="OUTERCUBE">Outercube</string>
+    <string name="INNERCUBE">Innercube</string>
+    <string name="CAROUSAL">Carousal</string>
+    <string name="PLAIN">Plain</string>
+    <string name="CONVEYOR">Conveyor</string>
+    <string name="CARD">Card</string>
+    <string name="SPIRAL">Spiral</string>
+    <string name="transition_effects">Transition Effects</string>
+    <string name="transition_effect_title">Transition Effect Chooser</string>
+    <string name="transition_effect_summary">Choose a transition effect. Some won\'t work for older MM frameworks.</string>
 </resources>

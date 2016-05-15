@@ -139,70 +139,70 @@
                 android:summaryOff="@string/hide_nfc_icon_off"
                 android:summaryOn="@string/hide_nfc_icon_on"
                 android:title="@string/hide_nfc_icon" />
-			</PreferenceCategory>
-            <PreferenceCategory android:title="@string/quick_settings" >
-                <de.robv.android.xposed.library.ui.ValueSeekBarPreference
-                    displayFormat="%d אריחים"
-                    max="8"
-                    min="4"
-                    android:defaultValue="5"
-                    android:key="quickSettingsColumns"
-                    android:summary="@string/quick_setting_columns_summary"
-                    android:title="@string/quick_setting_columns" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="@string/quick_settings" >
+            <de.robv.android.xposed.library.ui.ValueSeekBarPreference
+                displayFormat="%d אריחים"
+                max="8"
+                min="4"
+                android:defaultValue="5"
+                android:key="quickSettingsColumns"
+                android:summary="@string/quick_setting_columns_summary"
+                android:title="@string/quick_setting_columns" />
 
-                <CheckBoxPreference
-                    android:defaultValue="false"
-                    android:key="quickSettingsCollapseOnToggle"
-                    android:summaryOff="@string/notification_panels_stays_open_after_toggle_press"
-                    android:summaryOn="@string/notification_panel_closes_after_toggle_press"
-                    android:title="@string/collapse_panel_after_toggle" />
-                <CheckBoxPreference
-                    android:defaultValue="false"
-                    android:key="disableAirplaneModeDialog"
-                    android:summaryOff="@string/quick_settings_disable_airplane_mode_dialog_off"
-                    android:summaryOn="@string/quick_settings_disable_airplane_mode_dialog_on"
-                    android:title="@string/quick_settings_disable_airplane_mode_dialog" />
-                <CheckBoxPreference
-                    android:defaultValue="false"
-                    android:key="disableAirplaneModeOffDialog"
-                    android:summaryOff="@string/quick_settings_disable_airplane_mode_off_dialog_off"
-                    android:summaryOn="@string/quick_settings_disable_airplane_mode_off_dialog_on"
-                    android:title="@string/quick_settings_disable_airplane_mode_off_dialog" />
-                <CheckBoxPreference
-                    android:defaultValue="false"
-                    android:key="disableBluetoothScanDialog"
-                    android:summary="@string/quick_settings_disable_bluetooth_scan_dialog_sum"
-                    android:title="@string/quick_settings_disable_bluetooth_scan_dialog" />
-                <CheckBoxPreference
-                    android:defaultValue="false"
-                    android:key="showDataPopUp"
-                    android:summary="@string/show_a_warning_popup_when"
-                    android:title="@string/show_data_off_popup" />
-            </PreferenceCategory>
-            <PreferenceCategory android:title="@string/carrier_notification" >
-                <CheckBoxPreference
-                    android:defaultValue="false"
-                    android:disableDependentsState="true"
-                    android:key="hideCarrierLabel"
-                    android:summaryOff="@string/hide_carrier_label_shown"
-                    android:summaryOn="@string/hide_carrier_label_hidden"
-                    android:title="@string/hide_carrier_label" />
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="quickSettingsCollapseOnToggle"
+                android:summaryOff="@string/notification_panels_stays_open_after_toggle_press"
+                android:summaryOn="@string/notification_panel_closes_after_toggle_press"
+                android:title="@string/collapse_panel_after_toggle" />
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="disableAirplaneModeDialog"
+                android:summaryOff="@string/quick_settings_disable_airplane_mode_dialog_off"
+                android:summaryOn="@string/quick_settings_disable_airplane_mode_dialog_on"
+                android:title="@string/quick_settings_disable_airplane_mode_dialog" />
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="disableAirplaneModeOffDialog"
+                android:summaryOff="@string/quick_settings_disable_airplane_mode_off_dialog_off"
+                android:summaryOn="@string/quick_settings_disable_airplane_mode_off_dialog_on"
+                android:title="@string/quick_settings_disable_airplane_mode_off_dialog" />
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="disableBluetoothScanDialog"
+                android:summary="@string/quick_settings_disable_bluetooth_scan_dialog_sum"
+                android:title="@string/quick_settings_disable_bluetooth_scan_dialog" />
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="showDataPopUp"
+                android:summary="@string/show_a_warning_popup_when"
+                android:title="@string/show_data_off_popup" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="@string/carrier_notification" >
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:disableDependentsState="true"
+                android:key="hideCarrierLabel"
+                android:summaryOff="@string/hide_carrier_label_shown"
+                android:summaryOn="@string/hide_carrier_label_hidden"
+                android:title="@string/hide_carrier_label" />
 
-                <EditTextPreference
-                    android:defaultValue=""
-                    android:dependency="hideCarrierLabel"
-                    android:key="customCarrierLabel"
-                    android:summary="@string/default_carrier_label"
-                    android:title="@string/use_custom_carrier_label_shown" />
+            <EditTextPreference
+                android:defaultValue=""
+                android:dependency="hideCarrierLabel"
+                android:key="customCarrierLabel"
+                android:summary="@string/default_carrier_label"
+                android:title="@string/use_custom_carrier_label_shown" />
 
-                <de.robv.android.xposed.library.ui.ListPreferenceFixedSummary
-                    android:defaultValue="Small"
-                    android:dependency="hideCarrierLabel"
-                    android:entries="@array/clock_size_entries"
-                    android:entryValues="@array/clock_size_values"
-                    android:key="carrierSize"
-                    android:summary="@string/carrier_size_summary"
-                    android:title="@string/carrier_size" />
+            <de.robv.android.xposed.library.ui.ListPreferenceFixedSummary
+                android:defaultValue="Small"
+                android:dependency="hideCarrierLabel"
+                android:entries="@array/clock_size_entries"
+                android:entryValues="@array/clock_size_values"
+                android:key="carrierSize"
+                android:summary="@string/carrier_size_summary"
+                android:title="@string/carrier_size" />
         </PreferenceCategory>
     </PreferenceScreen>
     <PreferenceScreen
@@ -366,6 +366,7 @@
                 android:key="nfcBehavior"
                 android:summary="@string/nfc_behavior_summary"
                 android:title="@string/nfc_behavior" />
+
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="hideMTPNotification"
@@ -587,5 +588,18 @@
                 android:title="@string/enable_marshmallow_systemui" />
         </PreferenceCategory>
     </PreferenceScreen>
-
+    <PreferenceScreen
+        android:icon="@drawable/theme"
+        android:key="launcherOptions"
+        android:title="@string/launcher" >
+        <PreferenceCategory android:title="@string/transition_effects" >
+            <ListPreference
+                android:defaultValue="0"
+                android:entries="@array/transition_effect_entries"
+                android:entryValues="@array/transition_effect_values"
+                android:key="transitionEffect"
+                android:summary="@string/transition_effect_summary"
+                android:title="@string/transition_effect_title" />
+        </PreferenceCategory>
+    </PreferenceScreen>
 </PreferenceScreen>
