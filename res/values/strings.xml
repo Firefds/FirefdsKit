@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Firefds Kit</string>
     <string name="signal_icons">Signal icons</string>
     <string name="samsung_rom_warning">Samsung ROM required</string>
@@ -139,7 +138,7 @@
     <string name="recommended_settings">Recommended settings</string>
     <string name="set_recommended_settings">Apply recommended settings?</string>
     <string name="recommended_restored">Recommended settings restored</string>
-    <string name="wanam_xposed_disclaimer">This application has been tested on the Samsung Galaxy S and Note series with WanamLite and stock firmwares, some features may not work properly on other device models\n\nI do NOT take any responsibility of any damage caused by this application, you are using it at your own risk!</string>
+    <string name="firefds_xposed_disclaimer">This application has been tested on the Samsung Galaxy S and Note series with WanamLite and stock firmwares, some features may not work properly on other device models\n\nI do NOT take any responsibility of any damage caused by this application, you are using it at your own risk!</string>
     <string name="disable_wake_home_button">Disable wake HOME button</string>
     <string name="disable_wake_home_button_on">HOME button turns screen on</string>
     <string name="disable_wake_home_button_off">HOME button does not turn screen on</string>
@@ -191,7 +190,7 @@
     <string name="disable_temparature_warnings_on_the_recording">Disable temparature warnings on the recording and flash use. Use it only if you need it!</string>
     <string name="auto_call_recording">Auto call recording</string>
     <string name="enable_automatic_call_recording">Enable automatic call recording</string>
-    <string name="wanam_xposed_is_not_active">Firefds Kit is NOT active! Make sure:\n- This App has Root permissions\n- Xposed framework is installed\n- This module is enabled on Xposed installer then REBOOT.</string>
+    <string name="firefds_kit_is_not_active">Firefds Kit is NOT active! Make sure:\n- This App has Root permissions\n- Xposed framework is installed\n- This module is enabled on Xposed installer then REBOOT.</string>
     <string name="display_4g_for_lte">Display 4G for LTE</string>
     <string name="show_4g_instead_of_lte_when_connected">Show 4G instead of LTE when connected to a LTE network</string>
     <string name="pin_unlock">PIN unlock</string>
@@ -298,4 +297,12 @@
     <string name="transition_effects">Transition Effects</string>
     <string name="transition_effect_title">Transition Effect Chooser</string>
     <string name="transition_effect_summary">Choose a transition effect. Some won\'t work for older MM frameworks.</string>
+    <string name="screen_off_effect_default">Mode warm up</string>
+    <string name="screen_off_effect_crt">Mode cool down</string>
+    <string name="screen_off_effect_fade">Mode fade</string>
+    <string name="screen_off_effect_collapse">Mode edge collapse</string>
+    <string name="screen_off_effect_unite">Mode edge unite</string>
+    <string name="screen_off_effect_off">Animation off</string>
+    <string name="screen_off_effect">Screen Off mode</string>
+    <string name="set_screen_off_effect_crt_tv_">Set Screen Off effect</string>
 </resources>

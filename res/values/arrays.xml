@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string-array name="screen_off_effect_entries">
+        <item>@string/screen_off_effect_default</item>
+        <item>@string/screen_off_effect_crt</item>
+        <item>@string/screen_off_effect_fade</item>
+        <item>@string/screen_off_effect_collapse</item>
+        <item>@string/screen_off_effect_unite</item>
+        <item>@string/screen_off_effect_off</item>
+    </string-array>
+    <string-array name="screen_off_effect_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
     <string-array name="transition_effect_entries">
         <item name="NONE">@string/NONE</item>
         <item name="CASCADE">@string/CASCADE</item>
@@ -9,7 +26,7 @@
         <item name="PLAIN">@string/PLAIN</item>
         <item name="CONVEYOR">@string/CONVEYOR</item>
         <item name="CARD">@string/CARD</item>
-        <item name="SPIRAL">@string/SPIRAL</item>                                                
+        <item name="SPIRAL">@string/SPIRAL</item>
     </string-array>
     <string-array name="transition_effect_values">
         <item name="NONE">0</item>
@@ -20,7 +37,7 @@
         <item name="PLAIN">5</item>
         <item name="CONVEYOR">6</item>
         <item name="CARD">7</item>
-        <item name="SPIRAL">8</item>                                                
+        <item name="SPIRAL">8</item>
     </string-array>
     <string-array name="nfc_behavior_entries">
         <item name="unlocked">@string/unlocked</item>

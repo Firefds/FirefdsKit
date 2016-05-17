@@ -204,18 +204,18 @@ public class StatusBarIconManager implements BroadcastSubReceiver {
 			notifyListeners(FLAG_ICON_ALPHA_CHANGED);
 		}
 	}
-
+	
 	public Drawable applyColorFilter(int index, Drawable drawable, PorterDuff.Mode mode) {
 		if (drawable != null) {
 			drawable.setColorFilter(mColorInfo.iconColor[index], mode);
 		}
 		return drawable;
 	}
-
+	
 	public Drawable applyColorFilter(int index, Drawable drawable) {
 		return applyColorFilter(index, drawable, PorterDuff.Mode.SRC_IN);
 	}
-
+	
 	public Drawable applyColorFilter(Drawable drawable) {
 		return applyColorFilter(0, drawable, PorterDuff.Mode.SRC_IN);
 	}

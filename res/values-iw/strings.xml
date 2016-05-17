@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Firefds Kit</string>
     <string name="signal_icons">אייקוני קליטה</string>
     <string name="samsung_rom_warning">יש צורך ברום של סמסונג</string>
@@ -138,7 +139,7 @@
     <string name="recommended_settings">הגדרות מומלצות</string>
     <string name="set_recommended_settings">להחיל הגדרות מומלצות?</string>
     <string name="recommended_restored">הגדרות מומלצות שוחזרו</string>
-    <string name="wanam_xposed_disclaimer">יישום זה נבדק על מכשירי גלקסי מסדרת S ו Note עם קושחות מקוריות ו WanamLite, חלק מהתכונות עלולות לא לעבוד כמו שצריך על מכשירים מדגמים אחרים\n\nאני לא לוקח שום אחריות על כל נזק שיגרם על ידי יישום זה, השימוש הוא על אחריותך!</string>
+    <string name="firefds_xposed_disclaimer">יישום זה נבדק על מכשירי גלקסי מסדרת S ו Note עם קושחות מקוריות ו WanamLite, חלק מהתכונות עלולות לא לעבוד כמו שצריך על מכשירים מדגמים אחרים\n\nאני לא לוקח שום אחריות על כל נזק שיגרם על ידי יישום זה, השימוש הוא על אחריותך!</string>
     <string name="disable_wake_home_button">ביטול הדלקת מסך על ידי כפתור הבית</string>
     <string name="disable_wake_home_button_on">כפתור הבית מדליק את המסך</string>
     <string name="disable_wake_home_button_off">כפתור הבית לא מדליק את המסך</string>
@@ -190,7 +191,7 @@
     <string name="disable_temparature_warnings_on_the_recording">ביטול התראות טמפרטורה בעת הקלטה ושימוש בהבזק. שימוש רק במקרה שצריך!</string>
     <string name="auto_call_recording">הקלטת שיחות אוטומטית</string>
     <string name="enable_automatic_call_recording">הפעלת הקלטת שיחות אוטומטית</string>
-    <string name="wanam_xposed_is_not_active">Firefds Kit לא פועל! יש לוודא:\n- ליישום זה דרושות השראות Root\n- מסגרת Xposed מתוקנת\n- מודל זה מופעל ב Xposed installer ואז הפעלה מחדש.</string>
+    <string name="firefds_kit_is_not_active">Firefds Kit לא פועל! יש לוודא:\n- ליישום זה דרושות השראות Root\n- מסגרת Xposed מתוקנת\n- מודל זה מופעל ב Xposed installer ואז הפעלה מחדש.</string>
     <string name="display_4g_for_lte">הצגת 4G בשביל LTE</string>
     <string name="show_4g_instead_of_lte_when_connected">הצגת 4G במקום LTE כשיש חיבור לרשת LTE.</string>
     <string name="pin_unlock">פתיחת PIN</string>
@@ -297,4 +298,13 @@
     <string name="transition_effects">אפקט מעבר</string>
     <string name="transition_effect_title">בחירת אפקט מעבר</string>
     <string name="transition_effect_summary">בחירה של אפקט מעבר. חלקם לא עובדים על מכשירי מרשמלו ישנים יותר.</string>
+    <string name="screen_off_effect_default">מצב התחממות</string>
+    <string name="screen_off_effect_crt">מצב התקררות</string>
+    <string name="screen_off_effect_fade">מצב דעיכה</string>
+    <string name="screen_off_effect_collapse">מצב התמוטטות קצה</string>
+    <string name="screen_off_effect_unite">מצב איחוד קצה</string>
+    <string name="screen_off_effect_off">הנפשה כבויה</string>
+    <string name="screen_off_effect">מצב כיבוי מסך</string>
+    <string name="set_screen_off_effect_crt_tv_">קביעת אפקט כיבוי מסך</string>
+
 </resources>

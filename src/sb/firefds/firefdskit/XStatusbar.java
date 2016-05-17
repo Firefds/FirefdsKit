@@ -96,17 +96,17 @@ public class XStatusbar {
 
 			XposedHelpers.findAndHookMethod(sbTransitionsClass, "applyMode", int.class, boolean.class,
 					new XC_MethodHook() {
-						@Override
-						protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-							if (mIconManager != null) {
-								final float signalClusterAlpha = (Float) XposedHelpers.callMethod(param.thisObject,
-										"getNonBatteryClockAlphaFor", (Integer) param.args[0]);
-								final float textAndBatteryAlpha = (Float) XposedHelpers.callMethod(param.thisObject,
-										"getBatteryClockAlpha", (Integer) param.args[0]);
-								mIconManager.setIconAlpha(signalClusterAlpha, textAndBatteryAlpha);
-							}
-						}
-					});
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					if (mIconManager != null) {
+						final float signalClusterAlpha = (Float) XposedHelpers.callMethod(param.thisObject,
+								"getNonBatteryClockAlphaFor", (Integer) param.args[0]);
+						final float textAndBatteryAlpha = (Float) XposedHelpers.callMethod(param.thisObject,
+								"getBatteryClockAlpha", (Integer) param.args[0]);
+						mIconManager.setIconAlpha(signalClusterAlpha, textAndBatteryAlpha);
+					}
+				}
+			});
 
 		} catch (Throwable t) {
 			XposedBridge.log(t);

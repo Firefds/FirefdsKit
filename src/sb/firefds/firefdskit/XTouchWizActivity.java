@@ -77,7 +77,10 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 			"enableCameraDuringCall", "disableNumberFormating", "enableCallButtonLogs", "disableSmsToMmsConversion",
 			"isXTouvhWizFirstLaunch", "expandNotifications", "makeMeTooLegit", "disableTIMA", "showDataUsuage",
 			"autoExpandVolumePanel", "semiTransparentVolumePanel", "enable4WayReboot", "mScreenshot", "mScreenrecord",
-			"disableLoudVolumeWarning", "disableSFinderQConnect", "disablePowerMenuLockscreen" };
+			"disableLoudVolumeWarning", "disableSFinderQConnect", "disablePowerMenuLockscreen","disableBatteryCover",
+			"disableUSBCover", "hideBatteryIcon","selectedBatteryIcon","disableAirplaneModeOffDialog","showDataPopUp",
+			"hideCarrierLabel","customCarrierLabel","carrierSize","hideHeadsetAppsNotification","enableDarkTheme",
+			"enableMarshmallowSystemUI","transitionEffect"};
 
 	// Storage Permissions
 	private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -103,12 +106,12 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 		verifyStoragePermissions(this);
 
 		initScreen();
-		setContentView(R.layout.wanam_main);
-		
+		setContentView(R.layout.firefds_main);
+
 		try {
 			MainApplication.setWindowsSize(new Point());
 			getWindowManager().getDefaultDisplay().getSize(MainApplication.getWindowsSize());
-			
+
 			// SettingsFragment.
 			if (savedInstanceState == null)
 				getFragmentManager().beginTransaction().replace(R.id.prefs, new SettingsFragment()).commit();
@@ -123,7 +126,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 	public void onConfigurationChanged(Configuration newConfig) {
 		initScreen();
 		super.onConfigurationChanged(newConfig);
-		
+
 	}
 
 	private void initScreen() {
@@ -232,20 +235,20 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 	public boolean ShowRecommendedSettingsDiag() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(XTouchWizActivity.this);
 		builder.setCancelable(true).setTitle(R.string.app_name).setMessage(R.string.set_recommended_settings)
-				.setNegativeButton(R.string.cancel, new OnClickListener() {
+		.setNegativeButton(R.string.cancel, new OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.cancel();
-					}
-				}).setPositiveButton(R.string.apply, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.cancel();
+			}
+		}).setPositiveButton(R.string.apply, new OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						restoreRecommendedSettings();
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				restoreRecommendedSettings();
 
-					}
-				}).create().show();
+			}
+		}).create().show();
 
 		return true;
 	}
@@ -253,7 +256,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 	public void restoreRecommendedSettings() {
 
 		MainApplication.getSharedPreferences().edit().clear().commit();
-		PreferenceManager.setDefaultValues(this, R.xml.wanam_settings, false);
+		PreferenceManager.setDefaultValues(this, R.xml.firefds_settings, false);
 
 		Editor editor = MainApplication.getSharedPreferences().edit();
 
@@ -280,12 +283,12 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 	public void onRestoreDefaults() {
 
 		MainApplication.getSharedPreferences().edit().clear().commit();
-		PreferenceManager.setDefaultValues(this, R.xml.wanam_settings, false);
+		PreferenceManager.setDefaultValues(this, R.xml.firefds_settings, false);
 
 		Toast.makeText(this, R.string.defaults_restored, Toast.LENGTH_SHORT).show();
 
 		MainApplication.getSharedPreferences().edit().putInt("notificationSize", MainApplication.getWindowsSize().x)
-				.commit();
+		.commit();
 
 		XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
 
@@ -407,7 +410,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 			getPreferenceManager().setSharedPreferencesMode(Context.MODE_WORLD_READABLE);
 			getPreferenceManager().setSharedPreferencesName(XTouchWizActivity.class.getSimpleName());
 			MainApplication.setSharedPreferences(getActivity().getPreferences(Context.MODE_WORLD_READABLE));
-			
+
 
 			try {
 
@@ -416,20 +419,20 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 
 				res = getResources();
 
-				addPreferencesFromResource(R.xml.wanam_settings);
+				addPreferencesFromResource(R.xml.firefds_settings);
 
 				showDiag();
 
 				MainApplication.getSharedPreferences().edit()
-						.putInt("notificationSize", MainApplication.getWindowsSize().x).commit();
-				
-				
+				.putInt("notificationSize", MainApplication.getWindowsSize().x).commit();
+
+
 				if (!Utils.isSamsungRom()) {
 					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
 					alertDialogBuilder.setTitle(res.getString(R.string.samsung_rom_warning));
 
 					alertDialogBuilder.setMessage(res.getString(R.string.samsung_rom_warning_msg)).setCancelable(false)
-							.setPositiveButton(res.getString(R.string.ok_btn), null);
+					.setPositiveButton(res.getString(R.string.ok_btn), null);
 
 					alertDialog = alertDialogBuilder.create();
 					alertDialog.show();
@@ -458,7 +461,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 				textViewInformationHeader.setTitle("");
 
 				if (!XposedChecker.isActive()) {
-					textViewInformationHeader.setTitle(R.string.wanam_xposed_is_not_active);
+					textViewInformationHeader.setTitle(R.string.firefds_kit_is_not_active);
 					textViewInformationHeader.getTextView().setTextColor(Color.RED);
 					ps.findPreference("xtHeader").setEnabled(false);
 				} else {
@@ -485,12 +488,12 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 					alertDialogBuilder.setTitle(R.string.app_name);
 
 					alertDialogBuilder.setMessage(R.string.root_info)
-							.setPositiveButton(android.R.string.ok, new OnClickListener() {
+					.setPositiveButton(android.R.string.ok, new OnClickListener() {
 
-								public void onClick(DialogInterface dialog, int which) {
-									dialog.dismiss();
-								}
-							}).setCancelable(true);
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					}).setCancelable(true);
 
 					alertDialog = alertDialogBuilder.create();
 					alertDialog.show();
@@ -535,18 +538,18 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 				alertDialogBuilder.setTitle(R.string.support_app);
 
 				alertDialogBuilder.setMessage(res.getString(R.string.note_please_consider_making_a_donation))
-						.setCancelable(true)
-						.setPositiveButton(R.string.rate_app, new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								Uri uri = Uri.parse("market://details?id=" + mContext.getPackageName());
-								Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-								mContext.startActivity(goToMarket);
-							}
-						}).setNegativeButton(R.string.no_thanks, new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								dialog.cancel();
-							}
-						});
+				.setCancelable(true)
+				.setPositiveButton(R.string.rate_app, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						Uri uri = Uri.parse("market://details?id=" + mContext.getPackageName());
+						Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+						mContext.startActivity(goToMarket);
+					}
+				}).setNegativeButton(R.string.no_thanks, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
 
 				alertDialog = alertDialogBuilder.create();
 				alertDialog.show();
@@ -590,16 +593,16 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 						if (!MainApplication.getSharedPreferences().getBoolean("isXTouvhWizFirstLaunch", false)) {
 							AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 							builder.setCancelable(true).setTitle(R.string.app_name)
-									.setMessage(R.string.wanam_xposed_disclaimer)
-									.setPositiveButton(R.string.ok_btn, new OnClickListener() {
+							.setMessage(R.string.firefds_xposed_disclaimer)
+							.setPositiveButton(R.string.ok_btn, new OnClickListener() {
 
-										@Override
-										public void onClick(DialogInterface dialog, int which) {
-											dialog.dismiss();
-										}
-									}).setIcon(android.R.drawable.ic_dialog_alert).create().show();
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									dialog.dismiss();
+								}
+							}).setIcon(android.R.drawable.ic_dialog_alert).create().show();
 							MainApplication.getSharedPreferences().edit().putBoolean("isXTouvhWizFirstLaunch", true)
-									.commit();
+							.commit();
 						}
 					}
 				} catch (Throwable e) {
@@ -666,7 +669,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 				// No reboot notification required
 				String[] litePrefs = new String[] { "appChooserShowAllActivities", "drt", "drt_ts",
 						"isXTouvhWizFirstLaunch", "forceEnglish", "notificationSize", "autoExpandVolumePanel",
-						"semiTransparentVolumePanel"};
+				"semiTransparentVolumePanel"};
 				for (String string : litePrefs) {
 					if (key.equalsIgnoreCase(string)) {
 						return;

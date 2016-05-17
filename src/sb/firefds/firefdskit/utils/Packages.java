@@ -23,7 +23,7 @@ public class Packages {
 	public static final String INCALLUI = "com.android.incallui";
 	public static final String CONTACTS = "com.android.contacts";
 	public static final String SETTINGS = "com.android.settings";
-	public static final String EMAIL = "com.samsung.android.email.provider";
+	public static final String EMAIL = "com.android.email";
 	public static final String SYS_SCOPE = "com.sec.android.app.sysscope";
 	public static final String LAUNCHER = "com.sec.android.app.launcher";
 	public static final String NOVA_LAUNCHER = "com.teslacoilsw.launcher";

@@ -209,6 +209,15 @@
         android:icon="@drawable/lockscreen"
         android:key="lockscreenKey"
         android:title="@string/lockscreen" >
+        <PreferenceCategory android:title="@string/lockscreen" >
+            <de.robv.android.xposed.library.ui.ListPreferenceFixedSummary
+                android:defaultValue="0"
+                android:entries="@array/screen_off_effect_entries"
+                android:entryValues="@array/screen_off_effect_values"
+                android:key="screenOffEffect"
+                android:summary="@string/set_screen_off_effect_crt_tv_"
+                android:title="@string/screen_off_effect" />
+        </PreferenceCategory>
         <PreferenceCategory android:title="@string/pin_unlock" >
             <CheckBoxPreference
                 android:defaultValue="false"
@@ -602,4 +611,5 @@
                 android:title="@string/transition_effect_title" />
         </PreferenceCategory>
     </PreferenceScreen>
+
 </PreferenceScreen>

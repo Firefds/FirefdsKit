@@ -74,7 +74,7 @@ public class XSecEmailPackage {
 	private static void disableExchangeLockSecurity() {
 
 		try {
-			Class<?> policySet = XposedHelpers.findClass("com.samsung.android.emailcommon.service.PolicySet",
+			Class<?> policySet = XposedHelpers.findClass("com.android.emailcommon.service.PolicySet",
 					classLoader);
 			XposedHelpers.findAndHookMethod(Packages.EMAIL + ".SecurityPolicy", classLoader, "isActive", policySet,
 					new XC_MethodReplacement() {
@@ -85,7 +85,7 @@ public class XSecEmailPackage {
 						}
 					});
 
-			XposedHelpers.findAndHookMethod("com.samsung.android.email.composer.Account", classLoader, "setPolicySet",
+			XposedHelpers.findAndHookMethod(Packages.EMAIL +".Account", classLoader, "setPolicySet",
 					policySet, new XC_MethodHook() {
 						@Override
 						protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -94,7 +94,7 @@ public class XSecEmailPackage {
 
 					});
 
-			XposedHelpers.findAndHookMethod("com.samsung.android.email.ui.activity.setup.SetupData", classLoader,
+			XposedHelpers.findAndHookMethod(Packages.EMAIL +".activity.setup.SetupData", classLoader,
 					"setPolicySet", policySet, new XC_MethodHook() {
 						@Override
 						protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -111,7 +111,7 @@ public class XSecEmailPackage {
 
 			});
 		} catch (Throwable e) {
-			XposedBridge.log(e.toString());
+			XposedBridge.log(e);
 		}
 
 	}

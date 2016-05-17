@@ -94,11 +94,11 @@ public class XSecSettingsPackage {
 		try {
 			XposedHelpers.findAndHookMethod(Packages.SETTINGS + ".bluetooth.BluetoothScanDialog", classLoader,
 					"onCreate", Bundle.class, new XC_MethodHook() {
-						@Override
-						protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-							((android.app.Activity) param.thisObject).finish();
-						}
-					});
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					((android.app.Activity) param.thisObject).finish();
+				}
+			});
 		} catch (Throwable e) {
 			XposedBridge.log(e.toString());
 
