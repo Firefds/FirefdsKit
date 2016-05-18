@@ -141,6 +141,16 @@
                 android:title="@string/hide_nfc_icon" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/quick_settings" >
+            <MultiSelectListPreference
+                android:defaultValue="@array/quicksettings_tiles_default"
+                android:dialogTitle="@string/quicksettings_tiles_disable_title"
+                android:entries="@array/quicksettings_tiles_entries"
+                android:entryValues="@array/quicksettings_tiles_values"
+                android:key="qsTiles"
+                android:summary="@string/quicksettings_tiles_disable_summary"
+                android:title="@string/quicksettings_tiles_disable" >
+            </MultiSelectListPreference>
+
             <de.robv.android.xposed.library.ui.ValueSeekBarPreference
                 displayFormat="%d אריחים"
                 max="8"

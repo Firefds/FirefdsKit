@@ -48,7 +48,7 @@ public class XAndroidPackage {
 
 		XAndroidPackage.prefs = prefs;
 		XAndroidPackage.classLoader = classLoader;
-
+		
 		if (prefs.getBoolean("disableTIMA", true))
 			try {
 				disableTIMA();
@@ -101,13 +101,13 @@ public class XAndroidPackage {
 			Class<?> classStatusBarManager = XposedHelpers.findClass("android.app.StatusBarManager", classLoader);
 			XposedHelpers.findAndHookMethod(classStatusBarManager, "setIconVisibility", String.class, boolean.class,
 					new XC_MethodHook() {
-						@Override
-						protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-							if (param.args[0].equals("smart_scroll")) {
-								param.args[1] = false;
-							}
-						}
-					});
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					if (param.args[0].equals("smart_scroll")) {
+						param.args[1] = false;
+					}
+				}
+			});
 		} catch (Throwable e) {
 			XposedBridge.log(e.toString());
 
@@ -139,11 +139,11 @@ public class XAndroidPackage {
 		try {
 			XposedHelpers.findAndHookMethod("com.sec.android.seccamera.SecCamera", classLoader,
 					"setShutterSoundEnable", boolean.class, new XC_MethodHook() {
-						@Override
-						protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-							param.args[0] = false;
-						}
-					});
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.args[0] = false;
+				}
+			});
 		} catch (Throwable e) {
 			XposedBridge.log(e.toString());
 
@@ -152,11 +152,11 @@ public class XAndroidPackage {
 		try {
 			XposedHelpers.findAndHookMethod("com.sec.android.seccamera.SecCamera", classLoader, "enableShutterSound",
 					boolean.class, new XC_MethodHook() {
-						@Override
-						protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-							param.args[0] = false;
-						}
-					});
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.args[0] = false;
+				}
+			});
 		} catch (Throwable e) {
 			XposedBridge.log(e.toString());
 
@@ -167,13 +167,13 @@ public class XAndroidPackage {
 					.findClass("com.sec.android.seccamera.SecCamera$CameraInfo", null);
 			XposedHelpers.findAndHookMethod("com.sec.android.seccamera.SecCamera", classLoader, "getCameraInfo",
 					int.class, mCameraInfo, new XC_MethodHook() {
-						@Override
-						protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-							if (param.args[1] != null) {
-								XposedHelpers.setBooleanField(param.args[1], "canDisableShutterSound", true);
-							}
-						}
-					});
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					if (param.args[1] != null) {
+						XposedHelpers.setBooleanField(param.args[1], "canDisableShutterSound", true);
+					}
+				}
+			});
 		} catch (Throwable e) {
 			XposedBridge.log(e.toString());
 
@@ -182,16 +182,16 @@ public class XAndroidPackage {
 		try {
 			XposedHelpers.findAndHookMethod("android.media.AudioService", classLoader, "handleConfigurationChanged",
 					Context.class, new XC_MethodHook() {
-						@Override
-						protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-							XposedHelpers.setObjectField(param.thisObject, "mCameraSoundForced", Boolean.valueOf(false));
-						}
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					XposedHelpers.setObjectField(param.thisObject, "mCameraSoundForced", Boolean.valueOf(false));
+				}
 
-						@Override
-						protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-							XposedHelpers.setObjectField(param.thisObject, "mCameraSoundForced", Boolean.valueOf(false));
-						}
-					});
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					XposedHelpers.setObjectField(param.thisObject, "mCameraSoundForced", Boolean.valueOf(false));
+				}
+			});
 		} catch (Throwable e) {
 			XposedBridge.log(e.toString());
 
@@ -289,18 +289,18 @@ public class XAndroidPackage {
 		try {
 			XposedHelpers.findAndHookConstructor("android.media.AudioManager", classLoader, Context.class,
 					new XC_MethodHook() {
-						@Override
-						protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 
-							Object objService = XposedHelpers.callMethod(param.thisObject, "getService");
-							Context mApplicationContext = (Context) XposedHelpers.getObjectField(param.thisObject,
-									"mApplicationContext");
+					Object objService = XposedHelpers.callMethod(param.thisObject, "getService");
+					Context mApplicationContext = (Context) XposedHelpers.getObjectField(param.thisObject,
+							"mApplicationContext");
 
-							if (objService != null && mApplicationContext != null) {
-								XposedHelpers.callMethod(param.thisObject, "disableSafeMediaVolume");
-							}
-						}
-					});
+					if (objService != null && mApplicationContext != null) {
+						XposedHelpers.callMethod(param.thisObject, "disableSafeMediaVolume");
+					}
+				}
+			});
 		} catch (Throwable e) {
 			XposedBridge.log(e);
 		}

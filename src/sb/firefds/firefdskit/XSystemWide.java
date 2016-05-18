@@ -37,6 +37,7 @@ public class XSystemWide {
 
 		try {
 			setSystemWideTweaks();
+			
 		} catch (Throwable e) {
 			XposedBridge.log(e.toString());
 		}

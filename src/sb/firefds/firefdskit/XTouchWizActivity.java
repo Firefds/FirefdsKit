@@ -104,7 +104,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 		super.onCreate(savedInstanceState);
 
 		verifyStoragePermissions(this);
-
+		
 		initScreen();
 		setContentView(R.layout.firefds_main);
 

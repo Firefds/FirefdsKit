@@ -101,7 +101,7 @@
 
             <de.robv.android.xposed.library.ui.ListPreferenceFixedSummary
                 android:defaultValue="Medium"
-				android:dependency="selectedBatteryIcon"
+                android:dependency="selectedBatteryIcon"
                 android:entries="@array/clock_size_entries"
                 android:entryValues="@array/clock_size_values"
                 android:key="batterySize"
@@ -142,6 +142,16 @@
                 android:title="@string/hide_nfc_icon" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/quick_settings" >
+            <MultiSelectListPreference
+                android:defaultValue="@array/quicksettings_tiles_default"
+                android:dialogTitle="Choose tiles to DISABLE"
+                android:entries="@array/quicksettings_tiles_entries"
+                android:entryValues="@array/quicksettings_tiles_values"
+                android:key="qsTiles"
+                android:summary="Choose which quicksettings tiles to disable"
+                android:title="Disable Quicksettings Tiles" >
+            </MultiSelectListPreference>
+
             <de.robv.android.xposed.library.ui.ValueSeekBarPreference
                 displayFormat="%d Tiles"
                 max="8"
@@ -265,7 +275,7 @@
                 android:title="@string/auto_expand_volume_panel" />
             <CheckBoxPreference
                 android:defaultValue="false"
-				android:disableDependentsState="true"
+                android:disableDependentsState="true"
                 android:key="hideHeadsetAppsNotification"
                 android:summaryOff="@string/headset_apps_notification_off"
                 android:summaryOn="@string/headset_apps_notification_on"
@@ -613,4 +623,5 @@
                 android:title="@string/transition_effect_title" />
         </PreferenceCategory>
     </PreferenceScreen>
+
 </PreferenceScreen>

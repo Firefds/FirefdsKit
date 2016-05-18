@@ -181,7 +181,7 @@
     <string name="rebooting_">מפעיל מחדש…</string>
     <string name="pending_changes">שינויים ממתינים</string>
     <string name="killed_">"נסגר: "</string>
-    <string name="expand_all_notifications">הרחבת את כל ההתראות</string>
+    <string name="expand_all_notifications">הרחבת כל ההתראות</string>
     <string name="auto_expand_all_notifications_while_shown">הרחבה אוטומטית של כל ההתראות כאשר הן מוצגות במגירת ההתראות</string>
     <string name="fix_call_button_dpi">תיקון DPI של כפתור החיוג</string>
     <string name="fix_call_icon_size_use_it_only_if_you_get_a_bad">תיקון גודל כפתור החיוג, רק אם הגודל לא תקין!</string>
@@ -306,5 +306,31 @@
     <string name="screen_off_effect_off">הנפשה כבויה</string>
     <string name="screen_off_effect">מצב כיבוי מסך</string>
     <string name="set_screen_off_effect_crt_tv_">קביעת אפקט כיבוי מסך</string>
-
+    <string name="quicksettings_tiles_disable_title">בחירת אריחים לביטול</string>
+    <string name="quicksettings_tiles_disable_summary">בחירת אילו אריחים לבטל בהגדרות המהירות</string>
+    <string name="quicksettings_tiles_disable">ביטול אריחי הגדרות מהירות</string>
+    <string name="quicksettings_tiles_Wifi">Wi-Fi</string>
+    <string name="quicksettings_tiles_Location">מיקום</string>
+    <string name="quicksettings_tiles_SilentMode">צליל</string>
+    <string name="quicksettings_tiles_AutoRotate">סיבוב מסך</string>
+    <string name="quicksettings_tiles_Bluetooth">Blutooth</string>
+    <string name="quicksettings_tiles_MobileData">נתונים ניידים</string>
+    <string name="quicksettings_tiles_NetworkBooster">האצת ההורדה</string>
+    <string name="quicksettings_tiles_UltraPowerSaving">חיסכון מירבי</string>
+    <string name="quicksettings_tiles_MultiWindow">חלונות מרובים</string>
+    <string name="quicksettings_tiles_Toolbox">ארגז כלים</string>
+    <string name="quicksettings_tiles_WiFiHotspot">נתב אלחוטי נייד</string>
+    <string name="quicksettings_tiles_AllShareCast">Screen Mirroring</string>
+    <string name="quicksettings_tiles_Nfc">NFC</string>
+    <string name="quicksettings_tiles_Sync">סינכרון</string>
+    <string name="quicksettings_tiles_SmartStay">שהות חכמה</string>
+    <string name="quicksettings_tiles_SmartPause">השהייה חכמה</string>
+    <string name="quicksettings_tiles_PowerSaving">חסכון בחשמל</string>
+    <string name="quicksettings_tiles_DormantMode">נא לא להפריע</string>
+    <string name="quicksettings_tiles_AirplaneMode">מצב טיסה</string>
+    <string name="quicksettings_tiles_CarMode">מצב רכב</string>
+    <string name="quicksettings_tiles_PersonalMode">מצב פרטי</string>
+    <string name="quicksettings_tiles_TouchSensitivity">רגישות למגע</string>
+    <string name="quicksettings_tiles_TorchLight">פנס</string>
+    
 </resources>

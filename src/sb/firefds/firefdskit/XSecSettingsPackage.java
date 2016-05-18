@@ -30,7 +30,7 @@ public class XSecSettingsPackage {
 	public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
 		XSecSettingsPackage.classLoader = classLoader;
-
+		
 		if (prefs.getBoolean("disableBluetoothScanDialog", false)) {
 			try {
 				disableBluetoothScanDialog();
@@ -48,7 +48,6 @@ public class XSecSettingsPackage {
 
 			}
 		}
-
 	}
 
 	private static void disableTetherProvisioning() {
