@@ -51,31 +51,6 @@
         <item>21</item>
         <item>22</item>
     </string-array>
-    <string-array name="quicksettings_tiles_default" translatable="false">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-        <item>16</item>
-        <item>17</item>
-        <item>18</item>
-        <item>19</item>
-        <item>20</item>
-        <item>21</item>
-        <item>22</item>
-    </string-array>
     <string-array name="screen_off_effect_entries">
         <item>@string/screen_off_effect_default</item>
         <item>@string/screen_off_effect_crt</item>

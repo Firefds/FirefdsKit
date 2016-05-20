@@ -47,5 +47,4 @@ public class Constants {
 
 			"<!-- KOR -->\n" + "<FeatureSet>\n";
 	public static final String FEATURES_LIST_FOOTER = "</FeatureSet>\n" + "</SamsungMobileFeature>";
-
 }

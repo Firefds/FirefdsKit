@@ -332,5 +332,15 @@
     <string name="quicksettings_tiles_PersonalMode">מצב פרטי</string>
     <string name="quicksettings_tiles_TouchSensitivity">רגישות למגע</string>
     <string name="quicksettings_tiles_TorchLight">פנס</string>
-    
+    <string name="torch_tile_off">אריח פנס מבוטל</string>
+    <string name="torch_tile_on">אריח פנס פועל</string>
+    <string name="torch_tile_title">הפעלת אריח פנס</string>
+    <string name="screen_timeout_title">הגדרות כיבוי מסך אוטומטי</string>
+    <string name="screen_timeout_seconds_summary">הגדרת השניות עד לכיבוי מסך אוטומטי</string>
+    <string name="screen_timeout_seconds">הגדרת שניות לכיבוי מסך</string>
+    <string name="screen_timeout_minutes_summary">הגדרת הדקות עד לכיבוי מסך אוטומטי</string>
+    <string name="screen_timeout_minutes">הגדרת דקות לכיבוי מסך</string>
+    <string name="screen_timeout_hours_summary">הגדרת השעות עד לכיבוי מסך אוטומטי</string>
+    <string name="screen_timeout_hours">הגדרת שעות לכיבוי מסך</string>
+	
 </resources>

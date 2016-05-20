@@ -36,6 +36,59 @@ public class XSysUIQuickSettingsPackage {
 		XSysUIQuickSettingsPackage.classLoader = classLoader;
 		XSysUIQuickSettingsPackage.prefs = prefs;
 
+		if (prefs.getBoolean("qsTilesEnable", false)) {
+			try {
+				hideQuickSettingsTiles();
+			} catch (Throwable e) {
+				XposedBridge.log(e.toString());
+
+			}
+		}
+		else {
+			if (prefs.getBoolean("addTorchTile", false)) {
+				try {
+					enableFlashlightTile();
+				} catch (Throwable e) {
+					XposedBridge.log(e.toString());
+
+				}
+			}
+		}
+
+		if (prefs.getBoolean("quickSettingsCollapseOnToggle", false)) {
+			try {
+				enableCollapseOnToggle();
+			} catch (Throwable e) {
+				XposedBridge.log(e.toString());
+
+			}
+		}
+
+		if (prefs.getBoolean("disableSFinderQConnect", false)) {
+			try {
+				disableSFinderQConnect(prefs);
+			} catch (Throwable e) {
+				XposedBridge.log(e);
+
+			}
+		}
+	}
+
+	private static void enableFlashlightTile() {
+		XposedHelpers.findAndHookMethod(Settings.System.class, "getStringForUser", ContentResolver.class, String.class, int.class,
+				new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+
+				if (param.args[1].equals("notification_panel_active_app_list"))
+				{
+					param.setResult(param.getResult().toString()+"TorchLight;");
+				}
+			}
+		});
+	}
+
+	private static void hideQuickSettingsTiles() {
 		XposedHelpers.findAndHookMethod(Settings.System.class, "getStringForUser", ContentResolver.class, String.class, int.class,
 				new XC_MethodHook() {
 			@Override
@@ -123,24 +176,6 @@ public class XSysUIQuickSettingsPackage {
 				}
 			}
 		});
-
-		if (prefs.getBoolean("quickSettingsCollapseOnToggle", false)) {
-			try {
-				enableCollapseOnToggle();
-			} catch (Throwable e) {
-				XposedBridge.log(e.toString());
-
-			}
-		}
-
-		if (prefs.getBoolean("disableSFinderQConnect", false)) {
-			try {
-				disableSFinderQConnect(prefs);
-			} catch (Throwable e) {
-				XposedBridge.log(e);
-
-			}
-		}
 	}
 
 	private static void enableCollapseOnToggle() {

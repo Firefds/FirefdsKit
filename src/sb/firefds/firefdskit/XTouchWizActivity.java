@@ -53,6 +53,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -95,6 +96,13 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 			// We don't have permission so prompt the user
 			ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
 		}
+
+		if(!Settings.System.canWrite(activity)){
+			Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+			intent.setData(Uri.parse("package:" + activity.getPackageName()));
+			activity.startActivity(intent);
+		}
+
 	}
 
 	@SuppressLint("WorldReadableFiles")
@@ -104,17 +112,19 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 		super.onCreate(savedInstanceState);
 
 		verifyStoragePermissions(this);
-		
-		initScreen();
-		setContentView(R.layout.firefds_main);
 
+		initScreen();
+
+		setContentView(R.layout.firefds_main);
+		
 		try {
+
 			MainApplication.setWindowsSize(new Point());
 			getWindowManager().getDefaultDisplay().getSize(MainApplication.getWindowsSize());
 
-			// SettingsFragment.
 			if (savedInstanceState == null)
 				getFragmentManager().beginTransaction().replace(R.id.prefs, new SettingsFragment()).commit();
+			
 
 		} catch (Throwable e) {
 			e.printStackTrace();
@@ -138,6 +148,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 				menuKeyField.setAccessible(true);
 				menuKeyField.setBoolean(config, false);
 			}
+			
 		} catch (Throwable t) {
 			// Ignore
 		}
@@ -669,7 +680,11 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 				// No reboot notification required
 				String[] litePrefs = new String[] { "appChooserShowAllActivities", "drt", "drt_ts",
 						"isXTouvhWizFirstLaunch", "forceEnglish", "notificationSize", "autoExpandVolumePanel",
-				"semiTransparentVolumePanel"};
+						"semiTransparentVolumePanel","screenTimeoutSeconds", "screenTimeoutMinutes", "screenTimeoutHours"};
+
+				setTimeoutPrefs(sharedPreferences, key);
+				setTorchLightDisabled(sharedPreferences, key);
+
 				for (String string : litePrefs) {
 					if (key.equalsIgnoreCase(string)) {
 						return;
@@ -688,6 +703,40 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 
 		}
 
-	}
+		private void setTorchLightDisabled(SharedPreferences sharedPreferences, String key) {
 
+			if (key.equalsIgnoreCase("qsTilesEnable"))
+			{
+				boolean isEnabled = sharedPreferences.getBoolean(key, false);
+
+				if (isEnabled)
+				{
+					sharedPreferences.edit().putBoolean("addTorchTile", !isEnabled);
+				}
+				getPreferenceScreen().findPreference("addTorchTile").setEnabled(!isEnabled);
+			}
+		}
+
+		private void setTimeoutPrefs(SharedPreferences sharedPreferences, String key) {
+
+			String[] timeoutPrefs = new String[] { "screenTimeoutSeconds", "screenTimeoutMinutes", "screenTimeoutHours"};
+			int timeoutML = 0;
+
+			if (key.equalsIgnoreCase(timeoutPrefs[0])) {
+				timeoutML+= sharedPreferences.getInt(key, 30)*1000;
+				Settings.System.putInt(getActivity().getContentResolver(),
+						Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
+			}
+			if (key.equalsIgnoreCase(timeoutPrefs[1])) {
+				timeoutML+= sharedPreferences.getInt(key, 0)*60000;
+				Settings.System.putInt(getActivity().getContentResolver(),
+						Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
+			}
+			if (key.equalsIgnoreCase(timeoutPrefs[2])) {
+				timeoutML+= sharedPreferences.getInt(key, 0)*3600000;
+				Settings.System.putInt(getActivity().getContentResolver(),
+						Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
+			}
+		}
+	}
 }

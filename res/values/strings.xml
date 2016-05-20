@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Firefds Kit</string>
     <string name="signal_icons">Signal icons</string>
     <string name="samsung_rom_warning">Samsung ROM required</string>
@@ -331,4 +332,15 @@
     <string name="quicksettings_tiles_PersonalMode">Private Mode</string>
     <string name="quicksettings_tiles_TouchSensitivity">Touch Sensitivity</string>
     <string name="quicksettings_tiles_TorchLight">Flashlight</string>
+    <string name="torch_tile_off">Flashlight tile is disabled</string>
+    <string name="torch_tile_on">Flashlight tile is enabled</string>
+    <string name="torch_tile_title">Enable Flashlight Tile</string>
+    <string name="screen_timeout_title">Screen Timeout Settings</string>
+    <string name="screen_timeout_seconds_summary">Set the screen timeout seconds</string>
+    <string name="screen_timeout_seconds">Screen Timeout Seconds</string>
+    <string name="screen_timeout_minutes_summary">Set the screen timeout minutes</string>
+    <string name="screen_timeout_minutes">Screen Timeout Minutes</string>
+    <string name="screen_timeout_hours_summary">Set the screen timeout hours</string>
+    <string name="screen_timeout_hours">Screen Timeout Hours</string>
+
 </resources>

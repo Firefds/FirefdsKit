@@ -150,7 +150,6 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookInitPackageReso
 				XposedBridge.log(e.toString());
 
 			}
-
 		}
 
 		if (lpparam.packageName.equals(Packages.SETTINGS)) {

@@ -14,33 +14,33 @@
         android:key="statusbarKey"
         android:title="@string/statusbar" >
         <PreferenceCategory android:title="@string/statusbar" >
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="expandNotifications"
                 android:summary="@string/auto_expand_all_notifications_while_shown"
                 android:title="@string/expand_all_notifications" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="showDataUsuage"
                 android:summary="@string/show_your_current_data_usage"
                 android:title="@string/show_data_usage" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="showWirelessChargerInfoPopUp"
                 android:summary="@string/show_wireless_charger_information_popup"
                 android:title="@string/show_wireless_charging_popup" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="hideFullBatteryNotification"
                 android:summaryOff="@string/hide_full_battery_notification_shown"
                 android:summaryOn="@string/hide_full_battery_notification_hidden"
                 android:title="@string/hide_full_battery_notification" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableSFinderQConnect"
                 android:summary="@string/hide_s_finder_and_quick_connect_buttons"
                 android:title="@string/hide_sfinder_bar" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="hideStorageNotification"
                 android:summary="@string/hide_storage_notification_summary"
@@ -58,12 +58,12 @@
         <PreferenceCategory
             android:key="coverCat"
             android:title="@string/cover_warning" >
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableBatteryCover"
                 android:summary="@string/hide_battery_cover_warning_on_boot_for_galaxy_s5"
                 android:title="@string/hide_battery_cover_warning" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableUSBCover"
                 android:summary="@string/hide_usb_cover_warning_after_detaching_usb_ac"
@@ -72,27 +72,27 @@
         <PreferenceCategory
             android:key="batteryCat"
             android:title="@string/battery" >
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:disableDependentsState="true"
                 android:key="hideBatteryIcon"
                 android:summaryOff="@string/hide_battery_icon_shown"
                 android:summaryOn="@string/hide_battery_icon_hidden"
                 android:title="@string/hide_battery_icon" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:dependency="hideBatteryIcon"
                 android:key="selectedBatteryIcon"
                 android:summaryOff="@string/battery_stock"
                 android:summaryOn="@string/battery_circle"
                 android:title="@string/battery_icon" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:dependency="selectedBatteryIcon"
                 android:key="selectedDashedBatteryIcon"
                 android:summary="@string/set_a_circle_of_dots_for_the_battery_indicator"
                 android:title="@string/dashed_battery_icon" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:dependency="selectedBatteryIcon"
                 android:key="NoCMMBatteryText"
@@ -108,31 +108,31 @@
                 android:title="@string/battery_size" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/signal_icons" >
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="show4GForLTE"
                 android:summary="@string/show_4g_instead_of_lte_when_connected"
                 android:title="@string/display_4g_for_lte" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="showNOSim"
                 android:summary="@string/show_sim_card_notification_when_no_sim"
                 android:title="@string/show_no_sim_notification" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/status_icons" >
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="hideSmartStayIcon"
                 android:summaryOff="@string/hide_smart_stay_icon_off"
                 android:summaryOn="@string/hide_smart_stay_icon_on"
                 android:title="@string/hide_smart_stay_icon" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="hideAlarmClockIcon"
                 android:summaryOff="@string/hide_alarm_icon_off"
                 android:summaryOn="@string/hide_alarm_icon_on"
                 android:title="@string/hide_alarm_icon" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:disableDependentsState="true"
                 android:key="hideNfcIcon"
@@ -141,15 +141,27 @@
                 android:title="@string/hide_nfc_icon" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/quick_settings" >
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="qsTilesEnable"
+                android:title="@string/quicksettings_tiles_disable" />
+
             <MultiSelectListPreference
-                android:defaultValue="@array/quicksettings_tiles_default"
+                android:dependency="qsTilesEnable"
                 android:dialogTitle="@string/quicksettings_tiles_disable_title"
                 android:entries="@array/quicksettings_tiles_entries"
                 android:entryValues="@array/quicksettings_tiles_values"
                 android:key="qsTiles"
                 android:summary="@string/quicksettings_tiles_disable_summary"
-                android:title="@string/quicksettings_tiles_disable" >
+                android:title="@string/quicksettings_tiles_disable_title" >
             </MultiSelectListPreference>
+
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="addTorchTile"
+                android:summaryOff="@string/torch_tile_off"
+                android:summaryOn="@string/torch_tile_on"
+                android:title="@string/torch_tile_title" />
 
             <de.robv.android.xposed.library.ui.ValueSeekBarPreference
                 displayFormat="%d אריחים"
@@ -160,37 +172,37 @@
                 android:summary="@string/quick_setting_columns_summary"
                 android:title="@string/quick_setting_columns" />
 
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="quickSettingsCollapseOnToggle"
                 android:summaryOff="@string/notification_panels_stays_open_after_toggle_press"
                 android:summaryOn="@string/notification_panel_closes_after_toggle_press"
                 android:title="@string/collapse_panel_after_toggle" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableAirplaneModeDialog"
                 android:summaryOff="@string/quick_settings_disable_airplane_mode_dialog_off"
                 android:summaryOn="@string/quick_settings_disable_airplane_mode_dialog_on"
                 android:title="@string/quick_settings_disable_airplane_mode_dialog" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableAirplaneModeOffDialog"
                 android:summaryOff="@string/quick_settings_disable_airplane_mode_off_dialog_off"
                 android:summaryOn="@string/quick_settings_disable_airplane_mode_off_dialog_on"
                 android:title="@string/quick_settings_disable_airplane_mode_off_dialog" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableBluetoothScanDialog"
                 android:summary="@string/quick_settings_disable_bluetooth_scan_dialog_sum"
                 android:title="@string/quick_settings_disable_bluetooth_scan_dialog" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="showDataPopUp"
                 android:summary="@string/show_a_warning_popup_when"
                 android:title="@string/show_data_off_popup" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/carrier_notification" >
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:disableDependentsState="true"
                 android:key="hideCarrierLabel"
@@ -229,12 +241,12 @@
                 android:title="@string/screen_off_effect" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/pin_unlock" >
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableLockedAdb"
                 android:summary="@string/disable_adb_connection_during_secured_lockscreen"
                 android:title="@string/disable_adb_on_secured_lock" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="quickPinUnlockEnabled"
                 android:summary="@string/quick_pin_unlock_summary"
@@ -256,58 +268,58 @@
         android:key="soundKey"
         android:title="@string/sound" >
         <PreferenceCategory android:title="@string/sound" >
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="true"
                 android:key="disableLoudVolumeWarning"
                 android:summaryOff="@string/disable_loud_volume_enabled"
                 android:summaryOn="@string/disable_loud_volume_disabled"
                 android:title="@string/disable_loud_volume" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="longPressTrackSkip"
                 android:summary="@string/long_press_skip_summary"
                 android:title="@string/long_press_skip" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="autoExpandVolumePanel"
                 android:summary="@string/auto_expand_volume_panel_sum"
                 android:title="@string/auto_expand_volume_panel" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="hideHeadsetAppsNotification"
                 android:summaryOff="@string/headset_apps_notification_off"
                 android:summaryOn="@string/headset_apps_notification_on"
                 android:title="@string/headset_apps_notification" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:dependency="hideHeadsetAppsNotification"
                 android:key="hideHeadsetNotificationIcon"
                 android:summaryOff="@string/headset_notification_icon_off"
                 android:summaryOn="@string/headset_notification_icon_on"
                 android:title="@string/headset_notification_icon" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="semiTransparentVolumePanel"
                 android:summary="@string/reduce_volume_panel_opacity"
                 android:title="@string/semi_transparent_volume_panel" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableCameraShutterSound"
                 android:summaryOff="@string/camera_shutter_sound_enabled"
                 android:summaryOn="@string/camera_shutter_sound_disabled"
                 android:title="@string/disable_camera_shutter_sound" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableBootSound"
                 android:summaryOff="@string/boot_sound_enabled"
                 android:summaryOn="@string/boot_sound_disabled"
                 android:title="@string/disable_boot_sound" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableVolumeControlSound"
                 android:summary="@string/disable_volume_control_sound_while_changing_sounds"
                 android:title="@string/disable_volume_control_sound" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableLowBatterySound"
                 android:summary="@string/disable_low_battery_sound"
@@ -321,35 +333,35 @@
         <PreferenceCategory
             android:key="powerMenuKey"
             android:title="@string/advanced_power_menu" >
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="enable4WayReboot"
                 android:summary="@string/enable4wayreboot"
                 android:title="@string/enable4wayreboot" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:dependency="enable4WayReboot"
                 android:key="mRebootConfirmRequired"
                 android:summary="@string/reboot_requires_confirmation"
                 android:title="@string/reboot_confirmation" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:dependency="enable4WayReboot"
                 android:key="mScreenshot"
                 android:summary="@string/add_screenshot_to_power_menu"
                 android:title="@string/screenshot" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:dependency="enable4WayReboot"
                 android:key="mScreenrecord"
                 android:summary="@string/add_screen_record_to_power_menu"
                 android:title="@string/screen_record" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="disablePowerMenuLockscreen"
                 android:summary="@string/disable_power_menu_lockscreen_summary"
                 android:title="@string/disable_power_menu_lockscreen" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="true"
                 android:key="enableDarkTheme"
                 android:summaryOff="@string/enable_light_theme"
@@ -357,12 +369,44 @@
                 android:title="@string/dark_theme" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/system" >
-            <CheckBoxPreference
+            <PreferenceScreen
+                android:key="screenTimeoutSettings"
+                android:title="@string/screen_timeout_title" >
+                <de.robv.android.xposed.library.ui.ValueSeekBarPreference
+                    displayFormat="%d שניות"
+                    max="59"
+                    min="0"
+                    step="1"
+                    android:defaultValue="30"
+                    android:key="screenTimeoutSeconds"
+                    android:summary="@string/screen_timeout_seconds_summary"
+                    android:title="@string/screen_timeout_seconds" />
+                <de.robv.android.xposed.library.ui.ValueSeekBarPreference
+                    displayFormat="%d דקות"
+                    max="59"
+                    min="0"
+                    step="1"
+                    android:defaultValue="0"
+                    android:key="screenTimeoutMinutes"
+                    android:summary="@string/screen_timeout_minutes_summary"
+                    android:title="@string/screen_timeout_minutes" />
+                <de.robv.android.xposed.library.ui.ValueSeekBarPreference
+                    displayFormat="%d שעות"
+                    max="24"
+                    min="0"
+                    step="1"
+                    android:defaultValue="0"
+                    android:key="screenTimeoutHours"
+                    android:summary="@string/screen_timeout_hours_summary"
+                    android:title="@string/screen_timeout_hours" />
+            </PreferenceScreen>
+
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableScrollingCache"
                 android:summary="@string/disable_scrolling_cache_sum"
                 android:title="@string/disable_scrolling_cache" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableTetherProvisioning"
                 android:summaryOff="@string/disable_tether_provisioning_off"
@@ -386,7 +430,7 @@
                 android:summary="@string/nfc_behavior_summary"
                 android:title="@string/nfc_behavior" />
 
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="hideMTPNotification"
                 android:summaryOff="@string/hide_mtp_notification_off"
@@ -394,7 +438,7 @@
                 android:title="@string/hide_mtp_notification" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/browser" >
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="addBrowserTerminateButton"
                 android:summaryOff="@string/no_terminate_button_on_the_browser_menu"
@@ -402,18 +446,18 @@
                 android:title="@string/add_terminate_button_to_the_browser" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/camera_and_gallery" >
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="enableCameraDuringCall"
                 android:summaryOff="@string/camera_disabed_during_call"
                 android:summaryOn="@string/camera_enabled_during_call"
                 android:title="@string/enable_camera_during_call" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableTemperatureChecks"
                 android:summary="@string/disable_temparature_warnings_on_the_recording"
                 android:title="@string/disable_temperature_checks" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:disableDependentsState="true"
                 android:key="disbaleLowBatteryCloseWarningLevel"
@@ -440,7 +484,7 @@
                 android:title="@string/select_multi_window_apps" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/launcher" >
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:disableDependentsState="true"
                 android:key="launcherScrollWallpaper"
@@ -451,13 +495,13 @@
         <PreferenceCategory
             android:key="homebuttons"
             android:title="@string/buttons" >
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableWakeOnHome"
                 android:summaryOff="@string/disable_wake_home_button_on"
                 android:summaryOn="@string/disable_wake_home_button_off"
                 android:title="@string/disable_wake_home_button" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="enableLongBackKill"
                 android:summaryOff="@string/enable_long_back_kills_app_off"
@@ -478,60 +522,60 @@
         <PreferenceCategory
             android:key="phoneKeyCat"
             android:title="@string/phone" >
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="enableCallAdd"
                 android:summaryOff="@string/enable_call_add_off"
                 android:summaryOn="@string/enable_call_add_on"
                 android:title="@string/enable_call_add" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:dependency="enableCallAdd"
                 android:key="enableCallRecordingMenu"
                 android:summaryOff="@string/call_recording_menu_disabled"
                 android:summaryOn="@string/call_recording_menu_enabled"
                 android:title="@string/enable_call_recording_menu" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="enableAutoCallRecording"
                 android:summary="@string/enable_automatic_call_recording"
                 android:title="@string/auto_call_recording" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableEscalatingRingtone"
                 android:summaryOff="@string/disable_call_ring_increasing_off"
                 android:summaryOn="@string/disable_call_ring_increasing_on"
                 android:title="@string/disable_call_ring_increasing" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableNumberFormating"
                 android:summaryOff="@string/call_number_formatting_enabled"
                 android:summaryOn="@string/call_number_formatting_disabled"
                 android:title="@string/disable_call_number_formatting" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="enableCallButtonLogs"
                 android:summaryOff="@string/call_button_hidden_on_call_logs"
                 android:summaryOn="@string/call_button_enabled_on_call_logs"
                 android:title="@string/enable_call_button_on_call_logs" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:dependency="enableCallButtonLogs"
                 android:key="fixCallButtonLogs"
                 android:summary="@string/fix_call_icon_size_use_it_only_if_you_get_a_bad"
                 android:title="@string/fix_call_button_dpi" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="unlimittedContactsJoining"
                 android:summaryOff="@string/default_contacts_joining_limit"
                 android:summaryOn="@string/unlimited_contacts_accounts_joining"
                 android:title="@string/enable_unlimited_contacts_joining" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="useSeparateAddressField"
                 android:summary="@string/separate_address_field_used"
                 android:title="@string/use_separate_address_field" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableAccountIconsList"
                 android:summaryOff="@string/account_icons_enabled_on_contact_list"
@@ -544,23 +588,23 @@
         android:key="messagingKey"
         android:title="@string/messaging" >
         <PreferenceCategory android:title="@string/messaging" >
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="true"
                 android:key="enableSaveRestore"
                 android:summary="@string/enable_the_menu_to_save_and_restore_messages"
                 android:title="@string/enable_save_and_restore" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableSmsToMmsConversion"
                 android:summaryOff="@string/mms_sms_mms_conversion_off"
                 android:summaryOn="@string/mms_sms_mms_conversion_on"
                 android:title="@string/mms_sms_mms_conversion" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="forceMMSConnect"
                 android:summary="@string/force_mms_connect_to_receive_mms"
                 android:title="@string/force_mms_connect" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="true"
                 android:key="automaticInputMode"
                 android:summaryOff="@string/automatic_input_mode_disabled"
@@ -573,7 +617,7 @@
         android:key="securityHacks"
         android:title="@string/security" >
         <PreferenceCategory android:title="@string/email" >
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableExchangeLockSecurity"
                 android:summaryOff="@string/bypass_exchange_security_off"
@@ -581,13 +625,13 @@
                 android:title="@string/bypass_exchange_security" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/system" >
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="true"
                 android:key="makeMeTooLegit"
                 android:summaryOff="@string/status_custom"
                 android:summaryOn="@string/status_official"
                 android:title="@string/fake_system_status" />
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="true"
                 android:key="disableTIMA"
                 android:summary="@string/disable_seandroid_knox_notifications_msg"
@@ -599,7 +643,7 @@
         android:key="advancedOptions"
         android:title="@string/advanced" >
         <PreferenceCategory android:title="@string/experimental" >
-            <CheckBoxPreference
+            <SwitchPreference
                 android:defaultValue="false"
                 android:key="enableMarshmallowSystemUI"
                 android:summaryOff="@string/marshmallow_systemui_off"
