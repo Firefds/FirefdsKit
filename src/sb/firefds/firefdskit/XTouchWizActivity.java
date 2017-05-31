@@ -62,6 +62,7 @@ import android.widget.Toast;
 import de.robv.android.xposed.library.ui.TextViewPreference;
 import eu.chainfire.libsuperuser.Shell;
 import sb.firefds.firefdskit.dialogs.CreditsDialog;
+import sb.firefds.firefdskit.dialogs.DVFSBlackListDialog;
 import sb.firefds.firefdskit.dialogs.KillWhiteListDialog;
 import sb.firefds.firefdskit.dialogs.MultiWindowAppsDialog;
 import sb.firefds.firefdskit.dialogs.RestoreDialog;
@@ -75,18 +76,18 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 	private static ProgressDialog mDialog;
 
 	private static final String[] defaultSettings = new String[] {"addBrowserTerminateButton",
-			"enableCameraDuringCall", "disableNumberFormating", "enableCallButtonLogs", "disableSmsToMmsConversion",
-			"isXTouvhWizFirstLaunch", "expandNotifications", "makeMeTooLegit", "disableTIMA", "showDataUsuage",
-			"autoExpandVolumePanel", "semiTransparentVolumePanel", "enable4WayReboot", "mScreenshot", "mScreenrecord",
-			"disableLoudVolumeWarning", "disableSFinderQConnect", "disablePowerMenuLockscreen","disableBatteryCover",
-			"disableUSBCover", "hideBatteryIcon","selectedBatteryIcon","disableAirplaneModeOffDialog","showDataPopUp",
-			"hideCarrierLabel","customCarrierLabel","carrierSize","hideHeadsetAppsNotification","enableDarkTheme",
-			"enableMarshmallowSystemUI","transitionEffect"};
+		"enableCameraDuringCall", "disableNumberFormating", "enableCallButtonLogs", "disableSmsToMmsConversion",
+		"isXTouvhWizFirstLaunch", "expandNotifications", "makeMeTooLegit", "disableTIMA", "showDataUsuage",
+		"autoExpandVolumePanel", "semiTransparentVolumePanel", "enable4WayReboot", "mScreenshot", "mScreenrecord",
+		"disableLoudVolumeWarning", "disableSFinderQConnect", "disablePowerMenuLockscreen","disableBatteryCover",
+		"disableUSBCover", "hideBatteryIcon","selectedBatteryIcon","disableAirplaneModeOffDialog","showDataPopUp",
+		"hideCarrierLabel","customCarrierLabel","carrierSize","hideHeadsetAppsNotification","enableDarkTheme",
+		"enableMarshmallowSystemUI","transitionEffect"};
 
 	// Storage Permissions
 	private static final int REQUEST_EXTERNAL_STORAGE = 1;
 	private static String[] PERMISSIONS_STORAGE = { Manifest.permission.READ_EXTERNAL_STORAGE,
-			Manifest.permission.WRITE_EXTERNAL_STORAGE };
+		Manifest.permission.WRITE_EXTERNAL_STORAGE };
 
 	public static void verifyStoragePermissions(Activity activity) {
 		// Check if we have write permission
@@ -116,7 +117,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 		initScreen();
 
 		setContentView(R.layout.firefds_main);
-		
+
 		try {
 
 			MainApplication.setWindowsSize(new Point());
@@ -124,7 +125,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 
 			if (savedInstanceState == null)
 				getFragmentManager().beginTransaction().replace(R.id.prefs, new SettingsFragment()).commit();
-			
+
 
 		} catch (Throwable e) {
 			e.printStackTrace();
@@ -148,7 +149,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 				menuKeyField.setAccessible(true);
 				menuKeyField.setBoolean(config, false);
 			}
-			
+
 		} catch (Throwable t) {
 			// Ignore
 		}
@@ -462,6 +463,14 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 					@Override
 					public boolean onPreferenceClick(Preference preference) {
 						new MultiWindowAppsDialog().show(getFragmentManager(), "multiWindowApps");
+						return true;
+					}
+				});
+
+				findPreference("disableDVFSWhiteList").setOnPreferenceClickListener(new OnPreferenceClickListener() {
+					@Override
+					public boolean onPreferenceClick(Preference preference) {
+						new DVFSBlackListDialog().show(getFragmentManager(), "DVFSWhiteList");
 						return true;
 					}
 				});

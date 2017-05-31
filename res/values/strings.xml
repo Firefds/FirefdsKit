@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
-
     <string name="app_name">Firefds Kit</string>
     <string name="signal_icons">Signal icons</string>
     <string name="samsung_rom_warning">Samsung ROM required</string>
@@ -342,5 +341,11 @@
     <string name="screen_timeout_minutes">Screen Timeout Minutes</string>
     <string name="screen_timeout_hours_summary">Set the screen timeout hours</string>
     <string name="screen_timeout_hours">Screen Timeout Hours</string>
-
+	<string name="disable_touchwiz_dvfs">Disable TouchWiz DVFS</string>
+    <string name="disable_dynamic_voltage_and_frequency_scaling">Disable Dynamic Voltage and Frequency Scaling, EXPERIMENTAL!</string>
+    <string name="touchwiz_dvfs">TouchWiz DVFS</string>
+    <string name="dvfs_black_list">DVFS blackList</string>
+    <string name="set_dvfs_diabler_blacklist">Set DVFS blacklist</string>
+    <string name="select_applications_which_should_keep_dvfs_disabled">Select applications where DVFS should be disabled</string>
+	<string name="select_all_none">"Select All/None"</string>        
 </resources>
