@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
-
     <string name="app_name">Firefds Kit</string>
     <string name="signal_icons">אייקוני קליטה</string>
     <string name="samsung_rom_warning">יש צורך ברום של סמסונג</string>
@@ -14,7 +13,7 @@
     <string name="quick_setting_columns">אריחי הגדרות מהירות</string>
     <string name="reboot">הפעלה מחדש</string>
     <string name="cancel">ביטול</string>
-    <string name="reboot_options">אפשרויות הפעלה מחדש</string>
+    <string name="reboot_options">תפריט הפעלה מחדש</string>
     <string name="reboot_recovery">מצב Recovery</string>
     <string name="reboot_hotboot">הפעלה מהירה</string>
     <string name="reboot_download">מצב Download</string>
@@ -39,7 +38,7 @@
     <string name="reboot_required_title">נדרשת הפעלה מחדש</string>
     <string name="reboot_required_message">Firefds Kit דורש הפעלה מחדש</string>
     <string name="rebooting">מפעיל מחדש…</string>
-    <string name="credit_details">"\nתודה ל Rovo89 על יצירת מסגרת ה Xposed.\n\nתודה ל C3C076, Romracer, Tungstwenty… על התרומה שלהם ליצירת Xposed ומודלים.\n\nמפתח: <a href="http://forum.xda-developers.com/member.php?u=3562083">Wanam @Xda-Developers</a>\n\nטוויטר: <a href="https://twitter.com/wanamxda">Mohamed Karami</a>\n\nהותאם לגלקסי S5 על ידי: <a href="http://forum.xda-developers.com/member.php?u=3844620">Firefds firefds@Xda-Developers</a>"</string>
+    <string name="credit_details">"\nתודה ל Rovo89 על יצירת מסגרת ה Xposed.\n\nתודה ל C3C076, Romracer, Tungstwenty… על התרומה שלהם ליצירת Xposed ומודלים.\n\nמפתח: <a href="http://forum.xda-developers.com/member.php?u=3562083">Wanam @Xda-Developers</a>\n\nטוויטר: <a href="https://twitter.com/wanamxda">Mohamed Karami</a>\n\nהותאם לגלקסי S8 על ידי: <a href="http://forum.xda-developers.com/member.php?u=3844620">Firefds firefds@Xda-Developers</a>"</string>
     <string name="restore">שיחזור גיבוי</string>
     <string name="save">שמירת גיבוי</string>
     <string name="restoring_backup">משחזר גיבוי</string>
@@ -200,7 +199,7 @@
     <string name="disable_scrolling_cache">ביטול זיכרון מטמון של גלילה</string>
     <string name="disable_scrolling_cache_sum">ביטול זיכרון מטמון של גלילה בחלונות גלילה</string>
     <string name="show_data_usage">הצג שימוש בנתונים</string>
-    <string name="show_your_current_data_usage">הצג את השימוש בנתונים הנוכחיים שלך בפאנל ההתראות (לא עובד על הגלקסי S5)</string>
+    <string name="show_your_current_data_usage">הצג את השימוש בנתונים הנוכחיים שלך בפאנל ההתראות</string>
     <string name="show_data_off_popup">הצגת חלונית כיבוי נתונים</string>
     <string name="show_a_warning_popup_when">הצגת חלונית התראה כאשר מכבים נתונים לנייד</string>
     <string name="show_no_sim_notification">הצגת התראת אין כרטיס SIM</string>
@@ -342,5 +341,8 @@
     <string name="screen_timeout_minutes">הגדרת דקות לכיבוי מסך</string>
     <string name="screen_timeout_hours_summary">הגדרת השעות עד לכיבוי מסך אוטומטי</string>
     <string name="screen_timeout_hours">הגדרת שעות לכיבוי מסך</string>
-	
+    <string name="device_phone">טלפון</string>
+    <string name="safe_mode">מצב בטוח</string>
+    <string name="enable_navigationbar_color_summary">הפעלת צביעה מותאמת אישית של סרגל הניווט</string>
+    <string name="enable_navigationbar_color_title">צבע סרגל הניווט</string>
 </resources>

@@ -18,7 +18,7 @@ package eu.chainfire.libsuperuser;
 
 import android.os.Looper;
 import android.util.Log;
-import sb.firefds.firefdskit.BuildConfig;
+import sb.firefds.nougat.firefdskit.BuildConfig;
 
 /**
  * Utility class for logging and debug features that (by default) does nothing when not in debug mode

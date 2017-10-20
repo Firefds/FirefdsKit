@@ -101,9 +101,9 @@
     </string-array>
     <string-array name="reboot_options">
         <item name="reboot">@string/reboot</item>
-        <item name="recovery">@string/reboot_recovery</item>
         <item name="hotboot">@string/reboot_hotboot</item>
         <item name="download">@string/reboot_download</item>
+        <item name="recovery">@string/reboot_recovery</item>
     </string-array>
     <string-array name="config_pen_window_applist">
         <item>com.diotek.diodict4.EDictionary</item>
@@ -236,76 +236,82 @@
         <item name="largest">Largest</item>
     </string-array>
     <string-array name="categories_list">
-        <item>Always</item>
-        <item>Briefing</item>
+        <item>AOD</item>
+        <item>Audio</item>
         <item>BT</item>
+        <item>Briefing</item>
+        <item>CSC</item>
         <item>Calculator</item>
         <item>Calendar</item>
-        <item>CallDialerLogSettings</item>
         <item>Camera</item>
         <item>Clock</item>
-        <item>Cloud</item>
         <item>Common</item>
         <item>Contact</item>
-        <item>Contacts</item>
         <item>ContextService</item>
+        <item>DeviceManagement</item>
         <item>Dictionary</item>
         <item>Email</item>
+        <item>EmergencyMode</item>
         <item>Empty</item>
-        <item>FeliCa</item>
-        <item>Finder</item>
         <item>FmRadio</item>
+        <item>Fido</item>
+        <item>Finder</item>
         <item>Framework</item>
-        <item>GalaxyFinder</item>
-        <item>Gallery</item>
         <item>GMS</item>
+        <item>GPS</item>
+        <item>Gallery</item>
+        <item>HiddenMenu</item>
         <item>IMS</item>
         <item>JobManager</item>
         <item>Kies</item>
         <item>Launcher</item>
-        <item>LiveWallpaper</item>
         <item>LockScreen</item>
         <item>Logs</item>
-        <item>MCommerce</item>
+        <item>MMFW</item>
         <item>MediaProvider</item>
         <item>MediaScanner</item>
         <item>Memo</item>
         <item>Message</item>
-        <item>MiniDiary</item>
-        <item>Mms</item>
+        <item>Milk</item>
         <item>MobileTV</item>
         <item>Music</item>
         <item>MyFiles</item>
         <item>NFC</item>
-        <item>Organizer</item>
         <item>Phone</item>
-        <item>PopupuiReceiver</item>
         <item>RIL</item>
+        <item>SIP</item>
+        <item>SMemo</item>
+        <item>SNote</item>
+        <item>SPen</item>
+        <item>SSRM</item>
+        <item>SecureFolder</item>
         <item>Security</item>
         <item>Settig</item>
         <item>Setting</item>
         <item>Settings</item>
         <item>SetupWizard</item>
-        <item>SFinder</item>
         <item>Sip</item>
-        <item>SmartcardService</item>
+        <item>SmartManager</item>
+        <item>SmartPage</item>
         <item>SmartcardSvc</item>
-        <item>SMemo</item>
-        <item>SNote</item>
-        <item>SPenGesturePad</item>
-        <item>StoryAlbum</item>
         <item>Streaming</item>
         <item>SyncML</item>
+        <item>System</item>
+        <item>SystemUI</item>
+        <item>VT</item>
         <item>Video</item>
+        <item>VideoCall</item>
+        <item>Vision</item>
         <item>VoiceCall</item>
         <item>VoiceRecorder</item>
-        <item>Voicetalk</item>
-        <item>VT</item>
-        <item>Wallpaper</item>
+        <item>Weather</item>
         <item>Web</item>
         <item>WFC</item>
         <item>Wifi</item>
-        <item>WritingBuddy</item>
+        <item>mCommerce</item>
     </string-array>
-
+        <array name="navigationbar_color_values">
+        <item>#00000000</item>
+    </array>
+    
 </resources>

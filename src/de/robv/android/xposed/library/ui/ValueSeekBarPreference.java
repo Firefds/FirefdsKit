@@ -28,7 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-import sb.firefds.firefdskit.R;
+import sb.firefds.nougat.firefdskit.R;
 import android.widget.TextView;
 
 public class ValueSeekBarPreference extends Preference implements OnSeekBarChangeListener {

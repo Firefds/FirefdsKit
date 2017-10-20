@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
-    <string name="app_name">Firefds Kit</string>
+    <string name="app_name">Firefds Kit [Nougat]</string>
     <string name="signal_icons">Signal icons</string>
     <string name="samsung_rom_warning">Samsung ROM required</string>
     <string name="samsung_rom_warning_msg">Your ROM doesn\'t seem to be a Samsung ROM\nThis application doesn\'t support CM or AOSP ROMs.</string>
@@ -11,11 +11,11 @@
     <string name="system">System</string>
     <string name="quick_setting_columns_summary">Number of quick setting tiles per row\nNote: These settings also apply to landscape mode!</string>
     <string name="quick_setting_columns">Quick settings tiles</string>
-    <string name="reboot">Reboot</string>
+    <string name="reboot">Restart</string>
     <string name="cancel">Cancel</string>
-    <string name="reboot_options">Reboot options</string>
+    <string name="reboot_options">Restart Menu</string>
     <string name="reboot_recovery">Recovery</string>
-    <string name="reboot_hotboot">Hotboot</string>
+    <string name="reboot_hotboot">Soft Reboot</string>
     <string name="reboot_download">Download</string>
     <string name="quick_settings">Quick settings</string>
     <string name="collapse_panel_after_toggle">Collapse panel after toggle</string>
@@ -38,7 +38,7 @@
     <string name="reboot_required_title">Reboot requested</string>
     <string name="reboot_required_message">Firefds Kit requires a reboot to apply changes</string>
     <string name="rebooting">Rebooting now…</string>
-    <string name="credit_details">"\nThanks to Rovo89 for creating Xposed framework.\n\nThanks to C3C076, Romracer, Tungstwenty… for their contribution on Xposed framework and modules.\n\nDeveloper: <a href="http://forum.xda-developers.com/member.php?u=3562083">Wanam @Xda-Developers</a>\n\nTwitter: <a href="https://twitter.com/wanamxda">Mohamed Karami</a>\n\nModed for Galaxy S5 framework by: <a href="http://forum.xda-developers.com/member.php?u=3844620">Firefds firefds@Xda-Developers</a>"</string>
+    <string name="credit_details">"\nThanks to Rovo89 for creating Xposed framework.\n\nThanks to C3C076, Romracer, Tungstwenty… for their contribution on Xposed framework and modules.\n\nDeveloper: <a href="http://forum.xda-developers.com/member.php?u=3562083">Wanam @Xda-Developers</a>\n\nTwitter: <a href="https://twitter.com/wanamxda">Mohamed Karami</a>\n\nModed for Galaxy S8 framework by: <a href="http://forum.xda-developers.com/member.php?u=3844620">Firefds firefds@Xda-Developers</a>"</string>
     <string name="restore">Restore a backup</string>
     <string name="save">Save a backup</string>
     <string name="restoring_backup">Restoring backup</string>
@@ -199,7 +199,7 @@
     <string name="disable_scrolling_cache">Disable scrolling cache</string>
     <string name="disable_scrolling_cache_sum">Disable scrolling cache on scrollable windows</string>
     <string name="show_data_usage">Show Data usage</string>
-    <string name="show_your_current_data_usage">Show your current data usage on the notification panel (DOES NOT WORK ON GALAXY S5)</string>
+    <string name="show_your_current_data_usage">Show your current data usage on the notification panel</string>
     <string name="show_data_off_popup">Show Data off popup</string>
     <string name="show_a_warning_popup_when">Show a warning popup when disabling data</string>
     <string name="show_no_sim_notification">Show no SIM notification</string>
@@ -341,11 +341,15 @@
     <string name="screen_timeout_minutes">Screen Timeout Minutes</string>
     <string name="screen_timeout_hours_summary">Set the screen timeout hours</string>
     <string name="screen_timeout_hours">Screen Timeout Hours</string>
-	<string name="disable_touchwiz_dvfs">Disable TouchWiz DVFS</string>
+    <string name="disable_touchwiz_dvfs">Disable TouchWiz DVFS</string>
     <string name="disable_dynamic_voltage_and_frequency_scaling">Disable Dynamic Voltage and Frequency Scaling, EXPERIMENTAL!</string>
     <string name="touchwiz_dvfs">TouchWiz DVFS</string>
     <string name="dvfs_black_list">DVFS blackList</string>
     <string name="set_dvfs_diabler_blacklist">Set DVFS blacklist</string>
     <string name="select_applications_which_should_keep_dvfs_disabled">Select applications where DVFS should be disabled</string>
-	<string name="select_all_none">"Select All/None"</string>        
+    <string name="select_all_none">"Select All/None"</string>
+    <string name="device_phone">phone	</string>
+    <string name="safe_mode">Safe mode</string>
+    <string name="enable_navigationbar_color_summary">Enable navigation bar custom color</string>
+    <string name="enable_navigationbar_color_title">Navigation Bar Custom Color</string>
 </resources>
