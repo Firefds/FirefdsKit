@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="sb.firefds.firefdskit"
-    android:versionCode="1060"
-    android:versionName="1.0.6.1" >
+    android:versionCode="1062"
+    android:versionName="1.0.6.2" >
 
     <uses-sdk
         android:minSdkVersion="23"
-        android:targetSdkVersion="23" />
+        android:targetSdkVersion="24" />
 
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
