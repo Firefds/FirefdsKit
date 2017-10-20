@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -153,11 +154,11 @@ public class Shell {
                 STDIN.write("exit\n".getBytes("UTF-8"));
                 STDIN.flush();
             } catch (IOException e) {
-                if (e.getMessage().contains("EPIPE")) {
-                    // method most horrid to catch broken pipe, in which case we
-                    // do nothing. the command is not a shell, the shell closed
+                if (e.getMessage().contains("EPIPE") || e.getMessage().contains("Stream closed")) {
+                    // Method most horrid to catch broken pipe, in which case we
+                    // do nothing. The command is not a shell, the shell closed
                     // STDIN, the script already contained the exit command, etc.
-                    // these cases we want the output instead of returning null
+                    // these cases we want the output instead of returning null.
                 } else {
                     // other issues we don't know how to handle, leads to
                     // returning null
@@ -359,7 +360,7 @@ public class Shell {
 
                 List<String> ret = Shell.run(
                         internal ? "su -V" : "su -v",
-                        new String[]{"exit" },
+                        new String[] { "exit" },
                         null,
                         false
                 );
@@ -489,9 +490,17 @@ public class Shell {
                         }
                     }
 
-                    // 4.4+ builds are enforcing by default, take the gamble
+                    // 4.4+ has a new API to detect SELinux mode, so use it
+                    // SELinux is typically in enforced mode, but emulators may have SELinux disabled
                     if (enforcing == null) {
-                        enforcing = (android.os.Build.VERSION.SDK_INT >= 19);
+                        try {
+                            Class seLinux = Class.forName("android.os.SELinux");
+                            Method isSELinuxEnforced = seLinux.getMethod("isSELinuxEnforced");
+                            enforcing = (Boolean) isSELinuxEnforced.invoke(seLinux.newInstance());
+                        } catch (Exception e) {
+                            // 4.4+ release builds are enforcing by default, take the gamble
+                            enforcing = (android.os.Build.VERSION.SDK_INT >= 19);
+                        }
                     }
                 }
 
@@ -892,6 +901,8 @@ public class Shell {
 
         /**
          * Construct a {@link Shell.Interactive} instance, and start the shell
+         *
+         * @return Interactive shell
          */
         public Interactive open() {
             return new Interactive(this, null);
@@ -902,6 +913,7 @@ public class Shell {
          * shell, and call onCommandResultListener to report success or failure
          *
          * @param onCommandResultListener Callback to return shell open status
+         * @return Interactive shell
          */
         public Interactive open(OnCommandResultListener onCommandResultListener) {
             return new Interactive(this, onCommandResultListener);
@@ -1243,9 +1255,7 @@ public class Shell {
                 Debug.log(String.format("[%s%%] WATCHDOG_EXIT", shell.toUpperCase(Locale.ENGLISH)));
             }
 
-            if (handler != null) {
-                postCallback(command, exitCode, buffer);
-            }
+            postCallback(command, exitCode, buffer);
 
             // prevent multiple callbacks for the same command
             command = null;
@@ -1419,7 +1429,7 @@ public class Shell {
                 return;
             }
             if (handler == null) {
-                if ((fCommand.onCommandResultListener != null) && (fOutput != null))
+                if (fCommand.onCommandResultListener != null)
                     fCommand.onCommandResultListener.onCommandResult(fCommand.code, fExitCode,
                             fOutput);
                 if (fCommand.onCommandLineListener != null)
@@ -1431,7 +1441,7 @@ public class Shell {
                 @Override
                 public void run() {
                     try {
-                        if ((fCommand.onCommandResultListener != null) && (fOutput != null))
+                        if (fCommand.onCommandResultListener != null)
                             fCommand.onCommandResultListener.onCommandResult(fCommand.code,
                                     fExitCode, fOutput);
                         if (fCommand.onCommandLineListener != null)
@@ -1607,7 +1617,7 @@ public class Shell {
                     STDIN.write(("exit\n").getBytes("UTF-8"));
                     STDIN.flush();
                 } catch (IOException e) {
-                    if (e.getMessage().contains("EPIPE")) {
+                    if (e.getMessage().contains("EPIPE") || e.getMessage().contains("Stream closed")) {
                         // we're not running a shell, the shell closed STDIN,
                         // the script already contained the exit command, etc.                        
                     } else {
@@ -1660,6 +1670,11 @@ public class Shell {
                 process.destroy();
             } catch (Exception e) {
                 // in case it was already destroyed or can't be
+            }
+
+            idle = true;
+            synchronized (idleSync) {
+                idleSync.notifyAll();
             }
         }
 

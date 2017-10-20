@@ -37,7 +37,7 @@ public class XSystemWide {
 
 		try {
 			setSystemWideTweaks();
-			
+
 		} catch (Throwable e) {
 			XposedBridge.log(e.toString());
 		}
@@ -47,7 +47,6 @@ public class XSystemWide {
 				XVolumeKeysSkipTrack.init(classLoader);
 			} catch (Throwable e) {
 				XposedBridge.log(e.toString());
-
 			}
 		}
 
@@ -58,7 +57,6 @@ public class XSystemWide {
 			XposedBridge.log(e.toString());
 
 		}
-
 	}
 
 	private static void setMultiWindowApps(ClassLoader classLoader) {
@@ -180,6 +178,5 @@ public class XSystemWide {
 				XposedBridge.log(e.toString());
 			}
 		}
-
 	}
 }

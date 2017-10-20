@@ -165,7 +165,7 @@ public class XGlobalActions {
 				XposedHelpers.findAndHookMethod(CLASS_GLOBAL_ACTIONS + "$GlobalActionsDialog", classLoader,
 						"getDialogTheme", Context.class,
 						XC_MethodReplacement.returnConstant(menuTheme));
-
+				
 				XposedHelpers.findAndHookMethod(globalActionsClass, "createDialog", new XC_MethodHook() {
 
 					@Override
