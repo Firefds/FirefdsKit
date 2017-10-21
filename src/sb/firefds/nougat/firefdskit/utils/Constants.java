@@ -19,11 +19,16 @@ public class Constants {
 	public static final String BACKUP_DIR = ".XTouchWiz";
 	public static final String PREFS = Packages.FIREFDSKIT + "_preferences";
 
-	public static final String FEATURE_XML = "cscfeature.xml";
+	public static final String FEATURE_XML = Utils.isOMCDevice() ? "cscfeature.xml" : "feature.xml";
 	public static final String REBOOT_DEVICE = "reboot";
 
-	public static final String SYSTEM_CSC_FEATURE_XML = "cscfeature.xml";
-	public static final String SYSTEM_CSC_FEATURE_BKP = "cscfeature.xml.bak";
+	public static final String SYSTEM_CSC_FEATURE_XML = Utils.isOMCDevice() ? Utils.getOMCPath() + "/" + "cscfeature.xml" : "/system/csc/feature.xml";
+	public static final String SYSTEM_CSC_FEATURE_BKP =	Utils.isOMCDevice() ? Utils.getOMCPath() + "/" + "cscfeature.xml.bak" :"/system/csc/feature.xml.bak";		
+	
+	public static final String SYSTEM_CSC_OTHER_XML = "/system/csc/others.xml";
+	public static final String SYSTEM_OTHER_FEATURE_BKP = "/system/csc/others.xml.bak";
+	public static final String SYSTEM_CSC_FEATURE_DIR = Utils.isOMCDevice() ? Utils.getOMCPath() + "/" : "/system/csc/";
+	
 	public static final String FEATURES_LIST_HEADER1 = "<?xml  version=\"1.0\" encoding=\"UTF-8\" ?>\n" + "<SamsungMobileFeature>\n" + "\t<Version>";
 	public static final String FEATURES_LIST_HEADER2 = "</Version>\n" + "\t<Country>";
 	public static final String FEATURES_LIST_HEADER3 = "</Country>\n" + "\t<CountryISO>";

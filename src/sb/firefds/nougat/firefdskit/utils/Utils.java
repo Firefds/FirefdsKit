@@ -41,6 +41,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.os.SystemProperties;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +53,9 @@ import eu.chainfire.libsuperuser.Shell.SU;
 
 public class Utils {
 	
+	private static final String OMC_PATH = "persist.sys.omc_path";
 	private static Boolean mIsExynosDevice = null;
+	private static Boolean mIsOMCDevice = null;
 
 	public static int cmdId = 1982;
 	// GB Context
@@ -70,11 +73,11 @@ public class Utils {
 	}
 
 	public static void createCSCFiles(Context context) {
-		executeScript(context, "create_csc_files");
+		executeScript(context, Utils.isOMCDevice() ? "create_omc_csc_files" : "create_csc_files" );
 	}
 
 	public static void applyCSCFeatues(Context context) {
-		executeScript(context, "apply_csc_features");
+		executeScript(context, Utils.isOMCDevice() ? "apply_omc_csc_features" : "apply_csc_features");
 	}
 
 	public static void reboot(Context context) {
@@ -302,7 +305,7 @@ public class Utils {
 	}
 
 	public static boolean isSamsungRom() {
-		if (new File("/system/framework/samsung-framework-res/samsung-framework-res.apk").isFile()) {
+		if (new File("/system/framework/touchwiz.jar").isFile() || new File("/system/framework/twframework-res.apk").isFile()) {
 			return true;
 		}
 
@@ -327,6 +330,18 @@ public class Utils {
 
 		mIsExynosDevice = Build.HARDWARE.toLowerCase(Locale.UK).contains("smdk");
 		return mIsExynosDevice;
+	}
+	
+	public static boolean isOMCDevice(){
+		if (mIsOMCDevice != null)
+			return mIsOMCDevice;
+		mIsOMCDevice = SystemProperties.get(OMC_PATH).isEmpty() ? false : true;
+		return mIsOMCDevice;
+	}
+	
+	public static String getOMCPath()
+	{
+		return SystemProperties.get(OMC_PATH);
 	}
 
 	public static boolean contains(final int[] array, final int v) {

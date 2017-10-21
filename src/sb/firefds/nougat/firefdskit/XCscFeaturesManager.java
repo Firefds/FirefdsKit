@@ -42,9 +42,8 @@ import com.samsung.android.feature.SemCscFeature;;
 public class XCscFeaturesManager {
 
 	private static final String RO_BUILD_PDA = "ro.build.PDA";
-	private static final String OMC_PATH = "persist.sys.omc_path";
-	private static final String SYSTEM_CSC_SALES_CODE_DAT = "/system/omc/sales_code.dat";
-	private static final String SYSTEM_CSC_VERSION_TXT = "/system/omc/CSCVersion.txt";
+	private final static String SYSTEM_CSC_SALES_CODE_DAT = Utils.isOMCDevice() ? "/system/omc/sales_code.dat" : "/system/csc/sales_code.dat";
+	private static final String SYSTEM_CSC_VERSION_TXT = Utils.isOMCDevice() ? "/system/omc/CSCVersion.txt" : "/system/CSCVersion.txt";
 	private static ArrayList<FeatureDTO> defaultFeatureDTOs;
 	private static String version = "";
 	private static String country = "";
@@ -127,9 +126,9 @@ public class XCscFeaturesManager {
 
 		// Call button
 		if (prefs.getBoolean("enableCallButtonLogs", false))
-			featuresDTOList.add(new FeatureDTO("CscFeature_Contact_EnableCallButtonInList", "TRUE"));
+			featuresDTOList.add(new FeatureDTO("CscFeature_VoiceCall_EnableCallButtonInFdnList", "TRUE"));
 		else
-			featuresDTOList.add(new FeatureDTO("CscFeature_Contact_EnableCallButtonInList", "FALSE"));
+			featuresDTOList.add(new FeatureDTO("CscFeature_VoiceCall_EnableCallButtonInFdnList", "FALSE"));
 
 		// Account icons
 		if (prefs.getBoolean("disableAccountIconsList", false))
@@ -240,7 +239,7 @@ public class XCscFeaturesManager {
 
 		@Override
 		protected void onPostExecute(Void result) {
-			Log.d("sb.firefds.firefdskit", featureXML.toString());
+			Log.d("sb.firefds.nougat.firefdskit", featureXML.toString());
 			if (featureXML.isFile()) {
 				try {
 					Utils.applyCSCFeatues(MainApplication.getAppContext());
@@ -318,11 +317,11 @@ public class XCscFeaturesManager {
 		XmlPullParser p = null;
 		DefaultCSCCollector tc = new DefaultCSCCollector();
 		InputStream is = null;
-		String omcPath = SystemProperties.get(OMC_PATH);
 
 		try {
-			String files[] = { omcPath + "/" + Constants.SYSTEM_CSC_FEATURE_XML, omcPath + "/" + Constants.SYSTEM_CSC_FEATURE_BKP };
-			
+			String files[] = {Constants.SYSTEM_CSC_FEATURE_XML, Constants.SYSTEM_CSC_OTHER_XML,
+					Constants.SYSTEM_OTHER_FEATURE_BKP, Constants.SYSTEM_CSC_FEATURE_BKP };
+
 			for (String cscFile : files) {
 				if (new File(cscFile).isFile()) {
 					try {

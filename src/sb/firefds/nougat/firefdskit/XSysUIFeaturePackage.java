@@ -15,8 +15,6 @@
 
 package sb.firefds.nougat.firefdskit;
 
-import java.lang.reflect.Method;
-
 import android.graphics.Color;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -27,7 +25,6 @@ import sb.firefds.nougat.firefdskit.utils.Packages;
 
 public class XSysUIFeaturePackage {
 
-	private static Object objKeyguardAbsKeyInputView;
 
 	public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
@@ -38,39 +35,6 @@ public class XSysUIFeaturePackage {
 				XposedBridge.log(e);
 
 			}
-		}
-
-		try {
-			Class<?> KeyguardAbsKeyInputView = XposedHelpers.findClass("com.android.keyguard.KeyguardAbsKeyInputView",
-					classLoader);
-			Class<?> PasswordTextView = XposedHelpers.findClass("com.android.keyguard.PasswordTextView", classLoader);
-			final Method verifyPasswordAndUnlock = XposedHelpers.findMethodExact(KeyguardAbsKeyInputView,
-					"verifyPasswordAndUnlock");
-
-			XposedHelpers.findAndHookMethod(KeyguardAbsKeyInputView, "onFinishInflate", new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-
-					objKeyguardAbsKeyInputView = param.thisObject;
-				}
-			});
-
-			XposedHelpers.findAndHookMethod(PasswordTextView, "append", char.class, new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-					prefs.reload();
-					if (prefs.getBoolean("quickPinUnlockEnabled", false)) {
-						String mText = (String) XposedHelpers.getObjectField(param.thisObject, "mText");
-
-						if (mText.length() == prefs.getInt("PINSize", 4)) {
-							XposedBridge.invokeOriginalMethod(verifyPasswordAndUnlock, objKeyguardAbsKeyInputView, null);
-						}
-					}
-				}
-			});
-		}
-		catch (Exception e1) {
-			XposedBridge.log(e1.getMessage());
 		}
 
 		try {
