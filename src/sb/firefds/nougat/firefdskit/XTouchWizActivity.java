@@ -406,7 +406,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 
 			}
 		};
-
+		
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
