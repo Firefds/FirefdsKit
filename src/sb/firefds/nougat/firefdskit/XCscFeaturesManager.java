@@ -118,12 +118,6 @@ public class XCscFeaturesManager {
 	private static ArrayList<FeatureDTO> getCscFeaturesList(SharedPreferences prefs) {
 		ArrayList<FeatureDTO> featuresDTOList = new ArrayList<FeatureDTO>();
 
-		// Call recording
-		if (prefs.getBoolean("enableCallRecordingMenu", false) || !prefs.getBoolean("enableCallAdd", false))
-			featuresDTOList.add(new FeatureDTO("CscFeature_VoiceCall_ConfigRecording", "RecordingAllowed"));
-		else
-			featuresDTOList.add(new FeatureDTO("CscFeature_VoiceCall_ConfigRecording", "RecordingNotAllowed"));
-
 		// Call button
 		if (prefs.getBoolean("enableCallButtonLogs", false))
 			featuresDTOList.add(new FeatureDTO("CscFeature_VoiceCall_EnableCallButtonInFdnList", "TRUE"));

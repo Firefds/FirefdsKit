@@ -662,7 +662,8 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 				// No reboot notification required
 				String[] litePrefs = new String[] { "appChooserShowAllActivities", "drt", "drt_ts",
 						"isFirefdsKitFirstLaunch", "notificationSize", "screenTimeoutSeconds", "disableBluetoothScanDialog",
-						"screenTimeoutMinutes", "screenTimeoutHours","hideCarrierLabel","carrierSize","navigationBarCustomColor"};
+						"screenTimeoutMinutes", "screenTimeoutHours","hideCarrierLabel","carrierSize","navigationBarCustomColor",
+						"enableCallAdd", "enableCallRecordingMenu", "enableAutoCallRecording"};
 
 				setTimeoutPrefs(sharedPreferences, key);
 

@@ -111,16 +111,7 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookInitPackageReso
 			*/
 		}
 
-		if (lpparam.packageName.equals(Packages.PHONE)) {
-			try {
-				XSecPhonePackage.doHook(prefs, lpparam.classLoader);
-			} catch (Throwable e) {
-				XposedBridge.log(e.toString());
-
-			}
-		}
-
-		if (lpparam.packageName.equals(Packages.INCALLUI)) {
+		if (lpparam.packageName.equals(Packages.SAMSUNG_INCALLUI)) {
 			try {
 				XInCallUIPackage.doHook(prefs, lpparam.classLoader);
 			} catch (Throwable e) {
