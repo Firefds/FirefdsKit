@@ -63,8 +63,6 @@ import de.robv.android.xposed.library.ui.TextViewPreference;
 import eu.chainfire.libsuperuser.Shell;
 import sb.firefds.nougat.firefdskit.dialogs.CreditsDialog;
 import sb.firefds.nougat.firefdskit.dialogs.DVFSBlackListDialog;
-//import sb.firefds.nougat.firefdskit.dialogs.KillWhiteListDialog;
-//import sb.firefds.nougat.firefdskit.dialogs.MultiWindowAppsDialog;
 import sb.firefds.nougat.firefdskit.dialogs.RestoreDialog;
 import sb.firefds.nougat.firefdskit.dialogs.SaveDialog;
 import sb.firefds.nougat.firefdskit.dialogs.RestoreDialog.RestoreDialogListener;

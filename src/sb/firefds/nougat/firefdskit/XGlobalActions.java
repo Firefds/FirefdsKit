@@ -74,7 +74,7 @@ public class XGlobalActions {
 			final Class<?> actionClass = XposedHelpers.findClass(CLASS_ACTION, classLoader);
 
 			//hides reboot confirmation screen
-			XposedHelpers.findAndHookMethod(globalActionsClass, "initValueForCreate", boolean.class, new XC_MethodHook() {
+			XposedBridge.hookAllMethods(globalActionsClass, "initValueForCreate", new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 					prefs.reload();
@@ -120,11 +120,11 @@ public class XGlobalActions {
 					List<Object> mItems = (List<Object>) XposedHelpers.getObjectField(param.thisObject, "mItems");
 					BaseAdapter mAdapter = (BaseAdapter) XposedHelpers.getObjectField(param.thisObject, "mAdapter");
 					int index = 1;
-					
+
 					// try to find out if reboot action item already exists in the list of GlobalActions items
-                    // strategy:
-                    // 1) check if Action has mIconResId field or mMessageResId field
-                    // 2) check if the name of the corresponding resource contains "reboot" or "restart" substring
+					// strategy:
+					// 1) check if Action has mIconResId field or mMessageResId field
+					// 2) check if the name of the corresponding resource contains "reboot" or "restart" substring
 					if (mRebootActionItem == null) {
 						Resources res = mContext.getResources();
 						for (Object o : mItems) {

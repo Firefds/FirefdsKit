@@ -42,8 +42,8 @@ import com.samsung.android.feature.SemCscFeature;;
 public class XCscFeaturesManager {
 
 	private static final String RO_BUILD_PDA = "ro.build.PDA";
-	private final static String SYSTEM_CSC_SALES_CODE_DAT = Utils.isOMCDevice() ? "/system/omc/sales_code.dat" : "/system/csc/sales_code.dat";
-	private static final String SYSTEM_CSC_VERSION_TXT = Utils.isOMCDevice() ? "/system/omc/CSCVersion.txt" : "/system/CSCVersion.txt";
+	private final static String SYSTEM_CSC_SALES_CODE_DAT = Utils.getCSCType().equals(Utils.CscType.OMC_OMC) ? "/system/omc/sales_code.dat" : "/system/csc/sales_code.dat";
+	private static final String SYSTEM_CSC_VERSION_TXT = Utils.getCSCType().equals(Utils.CscType.OMC_OMC) ? "/system/omc/CSCVersion.txt" : "/system/CSCVersion.txt";
 	private static ArrayList<FeatureDTO> defaultFeatureDTOs;
 	private static String version = "";
 	private static String country = "";
@@ -120,9 +120,15 @@ public class XCscFeaturesManager {
 
 		// Call button
 		if (prefs.getBoolean("enableCallButtonLogs", false))
+		{
 			featuresDTOList.add(new FeatureDTO("CscFeature_VoiceCall_EnableCallButtonInFdnList", "TRUE"));
+			featuresDTOList.add(new FeatureDTO("CscFeature_Contact_EnableCallButtonInList", "TRUE"));
+		}
 		else
+		{
 			featuresDTOList.add(new FeatureDTO("CscFeature_VoiceCall_EnableCallButtonInFdnList", "FALSE"));
+			featuresDTOList.add(new FeatureDTO("CscFeature_Contact_EnableCallButtonInList", "FALSE"));
+		}
 
 		// Account icons
 		if (prefs.getBoolean("disableAccountIconsList", false))

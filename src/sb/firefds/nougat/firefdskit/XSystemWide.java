@@ -37,7 +37,7 @@ public class XSystemWide {
 	}
 
 	private static void setSystemWideTweaks() {
-
+		
 		if (prefs.getBoolean("disbaleLowBatteryCloseWarningLevel", false)) {
 			try {
 				XResources.setSystemWideReplacement(Packages.ANDROID, "integer", "config_lowBatteryWarningLevel", 1);

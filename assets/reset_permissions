@@ -11,6 +11,8 @@ chmod 0644 $OMC_PATH/cscfeature.xml.bak
 
 chmod 0644 /system/csc/feature.xml
 chmod 0644 /system/csc/feature.xml.bak
+chmod 0644 /system/csc/cscfeature.xml
+chmod 0644 /system/csc/cscfeature.xml.bak
 chmod 0644 /system/csc/others.xml
 chmod 0644 /system/csc/others.xml.bak
 

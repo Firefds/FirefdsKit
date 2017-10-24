@@ -52,10 +52,13 @@ import de.robv.android.xposed.XposedHelpers;
 import eu.chainfire.libsuperuser.Shell.SU;
 
 public class Utils {
-	
+
 	private static final String OMC_PATH = "persist.sys.omc_path";
+	private static final String OMC_SUPPORT = "persist.sys.omc_support";
+	private static final String OMC_ENABLE = "persist.sys.omc.enable";
+	public static enum CscType { CSC, OMC_CSC, OMC_OMC };
 	private static Boolean mIsExynosDevice = null;
-	private static Boolean mIsOMCDevice = null;
+	private static CscType mCscType = null;
 
 	public static int cmdId = 1982;
 	// GB Context
@@ -73,11 +76,33 @@ public class Utils {
 	}
 
 	public static void createCSCFiles(Context context) {
-		executeScript(context, Utils.isOMCDevice() ? "create_omc_csc_files" : "create_csc_files" );
+		switch (getCSCType())
+		{
+		case CSC:
+			executeScript(context, "create_csc_files" );
+			break;
+		case OMC_CSC:
+			executeScript(context, "create_omc_csc_files" );
+			break;
+		case OMC_OMC:
+			executeScript(context, "create_omc_omc_files" );
+			break;
+		}
 	}
 
 	public static void applyCSCFeatues(Context context) {
-		executeScript(context, Utils.isOMCDevice() ? "apply_omc_csc_features" : "apply_csc_features");
+		switch (getCSCType())
+		{
+		case CSC:
+			executeScript(context, "apply_csc_features" );
+			break;
+		case OMC_CSC:
+			executeScript(context, "apply_omc_csc_features" );
+			break;
+		case OMC_OMC:
+			executeScript(context, "apply_omc_omc_features" );
+			break;
+		}
 	}
 
 	public static void reboot(Context context) {
@@ -96,14 +121,14 @@ public class Utils {
 		}
 		return mGbContext;
 	}
-	
+
 	public static synchronized Context getGbContext(Context context, Configuration config) throws Throwable {
-        if (mGbContext == null) {
-            mGbContext = context.createPackageContext(Packages.FIREFDSKIT,
-                    Context.CONTEXT_IGNORE_SECURITY);
-        }
-        return (config == null ? mGbContext : mGbContext.createConfigurationContext(config));
-    }
+		if (mGbContext == null) {
+			mGbContext = context.createPackageContext(Packages.FIREFDSKIT,
+					Context.CONTEXT_IGNORE_SECURITY);
+		}
+		return (config == null ? mGbContext : mGbContext.createConfigurationContext(config));
+	}
 
 	public static void rebootEPM(Context context, String rebootType) {
 		try {
@@ -331,14 +356,26 @@ public class Utils {
 		mIsExynosDevice = Build.HARDWARE.toLowerCase(Locale.UK).contains("smdk");
 		return mIsExynosDevice;
 	}
-	
-	public static boolean isOMCDevice(){
-		if (mIsOMCDevice != null)
-			return mIsOMCDevice;
-		mIsOMCDevice = SystemProperties.get(OMC_PATH).isEmpty() ? false : true;
-		return mIsOMCDevice;
+
+	public static CscType getCSCType(){
+		if (mCscType != null)
+			return mCscType;
+		
+		mCscType = SystemProperties.getBoolean(OMC_ENABLE, false) ? 
+				SystemProperties.getBoolean(OMC_SUPPORT, false) ? CscType.OMC_OMC : CscType.OMC_CSC :
+					CscType.CSC;
+		/*				
+		if (SystemProperties.getBoolean(OMC_ENABLE, false)) {
+			if (SystemProperties.getBoolean(OMC_SUPPORT, false))
+				mCscType = CscType.OMC_OMC;
+			else
+				mCscType = CscType.OMC_CSC;
+		}
+		else 
+			mCscType = CscType.CSC;*/
+		return mCscType;
 	}
-	
+
 	public static String getOMCPath()
 	{
 		return SystemProperties.get(OMC_PATH);
@@ -351,119 +388,119 @@ public class Utils {
 
 		return false;
 	}
-    public static void performSoftReboot() {
-        try {
-            Class<?> classSm = XposedHelpers.findClass("android.os.ServiceManager", null);
-            Class<?> classIpm = XposedHelpers.findClass("android.os.IPowerManager.Stub", null);
-            IBinder b = (IBinder) XposedHelpers.callStaticMethod(
-                    classSm, "getService", Context.POWER_SERVICE);
-            Object ipm = XposedHelpers.callStaticMethod(classIpm, "asInterface", b);
-            XposedHelpers.callMethod(ipm, "crash", "Hot reboot");
-        } catch (Throwable t) {
-            try {
-                SystemProp.set("ctl.restart", "surfaceflinger");
-                SystemProp.set("ctl.restart", "zygote");
-            } catch (Throwable t2) {
-                XposedBridge.log(t);
-                XposedBridge.log(t2);
-            }
-        }
-    }
-    static class SystemProp extends Utils {
-        
-        private SystemProp() {
+	public static void performSoftReboot() {
+		try {
+			Class<?> classSm = XposedHelpers.findClass("android.os.ServiceManager", null);
+			Class<?> classIpm = XposedHelpers.findClass("android.os.IPowerManager.Stub", null);
+			IBinder b = (IBinder) XposedHelpers.callStaticMethod(
+					classSm, "getService", Context.POWER_SERVICE);
+			Object ipm = XposedHelpers.callStaticMethod(classIpm, "asInterface", b);
+			XposedHelpers.callMethod(ipm, "crash", "Hot reboot");
+		} catch (Throwable t) {
+			try {
+				SystemProp.set("ctl.restart", "surfaceflinger");
+				SystemProp.set("ctl.restart", "zygote");
+			} catch (Throwable t2) {
+				XposedBridge.log(t);
+				XposedBridge.log(t2);
+			}
+		}
+	}
+	static class SystemProp extends Utils {
 
-        }
+		private SystemProp() {
 
-        // Get the value for the given key
-        // @param key: key to lookup
-        // @return null if the key isn't found
-        public static String get(String key) {
-            String ret;
+		}
 
-            try {
-                Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
-                ret = (String) callStaticMethod(classSystemProperties, "get", key);
-            } catch (Throwable t) {
-                ret = null;
-            }
-            return ret;
-        }
+		// Get the value for the given key
+		// @param key: key to lookup
+		// @return null if the key isn't found
+		public static String get(String key) {
+			String ret;
 
-        // Get the value for the given key
-        // @param key: key to lookup
-        // @param def: default value to return
-        // @return if the key isn't found, return def if it isn't null, or an empty string otherwise
-        public static String get(String key, String def) {
-            String ret = def;
-            
-            try {
-                Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
-                ret = (String) callStaticMethod(classSystemProperties, "get", key, def);
-            } catch (Throwable t) {
-                ret = def;
-            }
-            return ret;
-        }
+			try {
+				Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
+				ret = (String) callStaticMethod(classSystemProperties, "get", key);
+			} catch (Throwable t) {
+				ret = null;
+			}
+			return ret;
+		}
 
-        // Get the value for the given key, and return as an integer
-        // @param key: key to lookup
-        // @param def: default value to return
-        // @return the key parsed as an integer, or def if the key isn't found or cannot be parsed
-        public static Integer getInt(String key, Integer def) {
-            Integer ret = def;
-            
-            try {
-                Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
-                ret = (Integer) callStaticMethod(classSystemProperties, "getInt", key, def);
-            } catch (Throwable t) {
-                ret = def;
-            }
-            return ret;
-        }
+		// Get the value for the given key
+		// @param key: key to lookup
+		// @param def: default value to return
+		// @return if the key isn't found, return def if it isn't null, or an empty string otherwise
+		public static String get(String key, String def) {
+			String ret = def;
 
-        // Get the value for the given key, and return as a long
-        // @param key: key to lookup
-        // @param def: default value to return
-        // @return the key parsed as a long, or def if the key isn't found or cannot be parsed
-        public static Long getLong(String key, Long def) {
-            Long ret = def;
-            
-            try {
-                Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
-                ret = (Long) callStaticMethod(classSystemProperties, "getLong", key, def);
-            } catch (Throwable t) {
-                ret = def;
-            }
-            return ret;
-        }
+			try {
+				Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
+				ret = (String) callStaticMethod(classSystemProperties, "get", key, def);
+			} catch (Throwable t) {
+				ret = def;
+			}
+			return ret;
+		}
 
-        // Get the value (case insensitive) for the given key, returned as a boolean
-        // Values 'n', 'no', '0', 'false' or 'off' are considered false
-        // Values 'y', 'yes', '1', 'true' or 'on' are considered true
-        // If the key does not exist, or has any other value, then the default result is returned
-        // @param key: key to lookup
-        // @param def: default value to return
-        // @return the key parsed as a boolean, or def if the key isn't found or cannot be parsed
-        public static Boolean getBoolean(String key, boolean def) {
-            Boolean ret = def;
-            
-            try {
-                Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
-                ret = (Boolean) callStaticMethod(classSystemProperties, "getBoolean", key, def);
-            } catch (Throwable t) {
-                ret = def;
-            }
-            return ret;
-        }
+		// Get the value for the given key, and return as an integer
+		// @param key: key to lookup
+		// @param def: default value to return
+		// @return the key parsed as an integer, or def if the key isn't found or cannot be parsed
+		public static Integer getInt(String key, Integer def) {
+			Integer ret = def;
 
-        // Set the value for the given key
-        public static void set(String key, String val) {
-            try{
-                Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
-                callStaticMethod(classSystemProperties, "set", key, val);
-            } catch (Throwable t) {
-            }
-        }
-    }
+			try {
+				Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
+				ret = (Integer) callStaticMethod(classSystemProperties, "getInt", key, def);
+			} catch (Throwable t) {
+				ret = def;
+			}
+			return ret;
+		}
+
+		// Get the value for the given key, and return as a long
+		// @param key: key to lookup
+		// @param def: default value to return
+		// @return the key parsed as a long, or def if the key isn't found or cannot be parsed
+		public static Long getLong(String key, Long def) {
+			Long ret = def;
+
+			try {
+				Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
+				ret = (Long) callStaticMethod(classSystemProperties, "getLong", key, def);
+			} catch (Throwable t) {
+				ret = def;
+			}
+			return ret;
+		}
+
+		// Get the value (case insensitive) for the given key, returned as a boolean
+		// Values 'n', 'no', '0', 'false' or 'off' are considered false
+		// Values 'y', 'yes', '1', 'true' or 'on' are considered true
+		// If the key does not exist, or has any other value, then the default result is returned
+		// @param key: key to lookup
+		// @param def: default value to return
+		// @return the key parsed as a boolean, or def if the key isn't found or cannot be parsed
+		public static Boolean getBoolean(String key, boolean def) {
+			Boolean ret = def;
+
+			try {
+				Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
+				ret = (Boolean) callStaticMethod(classSystemProperties, "getBoolean", key, def);
+			} catch (Throwable t) {
+				ret = def;
+			}
+			return ret;
+		}
+
+		// Set the value for the given key
+		public static void set(String key, String val) {
+			try{
+				Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
+				callStaticMethod(classSystemProperties, "set", key, val);
+			} catch (Throwable t) {
+			}
+		}
+	}
 }
