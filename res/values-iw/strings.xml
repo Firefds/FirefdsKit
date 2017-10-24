@@ -345,4 +345,10 @@
     <string name="safe_mode">מצב בטוח</string>
     <string name="enable_navigationbar_color_summary">הפעלת צביעה מותאמת אישית של סרגל הניווט</string>
     <string name="enable_navigationbar_color_title">צבע סרגל הניווט</string>
+    <string name="select_all_none">"בחירת הכל/כלום"</string>
+    <string name="select_applications_which_should_keep_dvfs_disabled">בחירת יישומים בהם DVFS ינוטרל</string>
+    <string name="dvfs_black_list">רשימה שחורה של DVFS</string>
+    <string name="disable_touchwiz_dvfs">ניטרול TouchWiz DVFS</string>
+    <string name="set_dvfs_diabler_blacklist">קביעת רשימה שחורה ל DVFS</string>
+    <string name="disable_dynamic_voltage_and_frequency_scaling">ביטול DVFS, ניסיוני!!!</string>
 </resources>
