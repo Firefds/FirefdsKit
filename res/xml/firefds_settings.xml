@@ -41,6 +41,11 @@
                 android:key="disableBluetoothScanDialog"
                 android:summary="@string/quick_settings_disable_bluetooth_scan_dialog_sum"
                 android:title="@string/quick_settings_disable_bluetooth_scan_dialog" />
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="disableSyncDialog"
+                android:summary="@string/quick_settings_disable_sync_dialog_sum"
+                android:title="@string/quick_settings_disable_sync_dialog" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/carrier_notification" >
             <SwitchPreference
