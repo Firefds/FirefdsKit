@@ -107,8 +107,10 @@ public class XSecSettingsPackage {
 						@Override
 						protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 							prefs.reload();
-							if (prefs.getBoolean("disableSyncDialog", false))
+							if (prefs.getBoolean("disableSyncDialog", false)){
 								ContentResolver.setMasterSyncAutomatically((Boolean) param.args[0]);
+								param.setResult(null);
+							}
 						}
 					});
 

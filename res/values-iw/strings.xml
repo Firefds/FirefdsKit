@@ -351,4 +351,6 @@
     <string name="disable_touchwiz_dvfs">ניטרול TouchWiz DVFS</string>
     <string name="set_dvfs_diabler_blacklist">קביעת רשימה שחורה ל DVFS</string>
     <string name="disable_dynamic_voltage_and_frequency_scaling">ביטול DVFS, ניסיוני!!!</string>
+    <string name="quick_settings_disable_sync_dialog_sum">ביטול דיאלוג האישור אחרי הפעלת או ביטול סנכון</string>
+    <string name="quick_settings_disable_sync_dialog">ביטול קפיצת חלון סנכרון</string>
 </resources>
