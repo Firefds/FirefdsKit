@@ -17,6 +17,7 @@ package sb.firefds.nougat.firefdskit;
 import com.samsung.android.app.SemColorPickerDialog;
 
 import android.content.Context;
+import android.content.ContentResolver;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
@@ -98,7 +99,23 @@ public class XSecSettingsPackage {
 
 		} catch (Throwable e) {
 			XposedBridge.log(e.toString());
-		}	
+		}
+
+		try {
+			XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".qstile.SecAccountTiles", classLoader,
+					"showConfirmPopup", boolean.class, new XC_MethodHook() {
+						@Override
+						protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+							prefs.reload();
+							if (prefs.getBoolean("disableSyncDialog", false))
+								ContentResolver.setMasterSyncAutomatically((Boolean) param.args[0]);
+						}
+					});
+
+		} catch (Throwable e) {
+			XposedBridge.log(e.toString());
+
+		}
 
 	}
 

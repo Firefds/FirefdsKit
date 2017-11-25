@@ -109,6 +109,8 @@
     <string name="disable_tether_provisioning_on">Tether provisioning is disabled</string>
     <string name="quick_settings_disable_bluetooth_scan_dialog">Disable bluetooth toggle popup</string>
     <string name="quick_settings_disable_bluetooth_scan_dialog_sum">Disable the scan dialog after enabling bluetooth</string>
+    <string name="quick_settings_disable_sync_dialog">Disable sync toggle popup</string>
+    <string name="quick_settings_disable_sync_dialog_sum">Disable the confirmation dialog when toggling sync</string>
     <string name="quick_settings_disable_airplane_mode_dialog">Disable airplane toggle on popup</string>
     <string name="quick_settings_disable_airplane_mode_dialog_off">Airplane mode dialog on enabled</string>
     <string name="quick_settings_disable_airplane_mode_dialog_on">Airplane mode dialog on disabled</string>
