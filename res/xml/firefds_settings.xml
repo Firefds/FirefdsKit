@@ -19,12 +19,6 @@
                 android:key="showWirelessChargerInfoPopUp"
                 android:summary="@string/show_wireless_charger_information_popup"
                 android:title="@string/show_wireless_charging_popup" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="hideFullBatteryNotification"
-                android:summaryOff="@string/hide_full_battery_notification_shown"
-                android:summaryOn="@string/hide_full_battery_notification_hidden"
-                android:title="@string/hide_full_battery_notification" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/status_icons" >
             <SwitchPreference
@@ -85,11 +79,6 @@
         <PreferenceCategory android:title="@string/sound" >
             <SwitchPreference
                 android:defaultValue="false"
-                android:key="semiTransparentVolumePanel"
-                android:summary="@string/reduce_volume_panel_opacity"
-                android:title="@string/semi_transparent_volume_panel" />
-            <SwitchPreference
-                android:defaultValue="false"
                 android:key="disableVolumeControlSound"
                 android:summary="@string/disable_volume_control_sound_while_changing_sounds"
                 android:title="@string/disable_volume_control_sound" />
@@ -104,6 +93,19 @@
         android:icon="@drawable/system"
         android:key="systemKey"
         android:title="@string/system" >
+        		<PreferenceCategory android:key="powerMenuKey"
+			android:title="@string/advanced_power_menu">
+			<SwitchPreference android:defaultValue="false"
+				android:key="enable4WayReboot" android:summary="@string/enable4wayreboot"
+				android:title="@string/enable4wayreboot" />
+			<SwitchPreference android:defaultValue="false"
+				android:dependency="enable4WayReboot" android:key="mRebootConfirmRequired"
+				android:summary="@string/reboot_requires_confirmation"
+				android:title="@string/reboot_confirmation" />
+			<SwitchPreference android:defaultValue="false"
+				android:key="disablePowerMenuLockscreen" android:summary="@string/disable_power_menu_lockscreen_summary"
+				android:title="@string/disable_power_menu_lockscreen" />
+		</PreferenceCategory>
         <PreferenceCategory android:title="@string/system" >
             <PreferenceScreen
                 android:key="screenTimeoutSettings"
@@ -136,12 +138,6 @@
                     android:summary="@string/screen_timeout_hours_summary"
                     android:title="@string/screen_timeout_hours" />
             </PreferenceScreen>
-
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="navigationBarCustomColor"
-                android:summary="@string/enable_navigationbar_color_summary"
-                android:title="@string/enable_navigationbar_color_title" />
             <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableScrollingCache"
@@ -170,14 +166,6 @@
                 android:key="nfcBehavior"
                 android:summary="@string/nfc_behavior_summary"
                 android:title="@string/nfc_behavior" />
-        </PreferenceCategory>
-        <PreferenceCategory android:title="@string/browser" >
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="addBrowserTerminateButton"
-                android:summaryOff="@string/no_terminate_button_on_the_browser_menu"
-                android:summaryOn="@string/terminate_button_added_to_the_browser_menu"
-                android:title="@string/add_terminate_button_to_the_browser" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/camera_and_gallery" >
             <SwitchPreference
@@ -257,18 +245,6 @@
                 android:title="@string/disable_call_number_formatting" />
             <SwitchPreference
                 android:defaultValue="false"
-                android:key="enableCallButtonLogs"
-                android:summaryOff="@string/call_button_hidden_on_call_logs"
-                android:summaryOn="@string/call_button_enabled_on_call_logs"
-                android:title="@string/enable_call_button_on_call_logs" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:dependency="enableCallButtonLogs"
-                android:key="fixCallButtonLogs"
-                android:summary="@string/fix_call_icon_size_use_it_only_if_you_get_a_bad"
-                android:title="@string/fix_call_button_dpi" />
-            <SwitchPreference
-                android:defaultValue="false"
                 android:key="unlimittedContactsJoining"
                 android:summaryOff="@string/default_contacts_joining_limit"
                 android:summaryOn="@string/unlimited_contacts_accounts_joining"
@@ -278,12 +254,6 @@
                 android:key="useSeparateAddressField"
                 android:summary="@string/separate_address_field_used"
                 android:title="@string/use_separate_address_field" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="disableAccountIconsList"
-                android:summaryOff="@string/account_icons_enabled_on_contact_list"
-                android:summaryOn="@string/account_icons_disabled_on_contact_list"
-                android:title="@string/disable_account_icons" />
         </PreferenceCategory>
     </PreferenceScreen>
     <PreferenceScreen

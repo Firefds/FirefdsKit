@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
-    <string name="app_name">Firefds Kit [Nougat]</string>
+    <string name="app_name">Firefds Kit [Oreo]</string>
     <string name="signal_icons">Signal icons</string>
     <string name="samsung_rom_warning">Samsung ROM required</string>
     <string name="samsung_rom_warning_msg">Your ROM doesn\'t seem to be a Samsung ROM\nThis application doesn\'t support CM or AOSP ROMs.</string>

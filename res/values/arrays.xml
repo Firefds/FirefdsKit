@@ -1,94 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string-array name="quicksettings_tiles_entries">
-        <item>@string/quicksettings_tiles_Wifi</item>
-        <item>@string/quicksettings_tiles_Location</item>
-        <item>@string/quicksettings_tiles_SilentMode</item>
-        <item>@string/quicksettings_tiles_AutoRotate</item>
-        <item>@string/quicksettings_tiles_Bluetooth</item>
-        <item>@string/quicksettings_tiles_MobileData</item>
-        <item>@string/quicksettings_tiles_NetworkBooster</item>
-        <item>@string/quicksettings_tiles_UltraPowerSaving</item>
-        <item>@string/quicksettings_tiles_MultiWindow</item>
-        <item>@string/quicksettings_tiles_Toolbox</item>
-        <item>@string/quicksettings_tiles_WiFiHotspot</item>
-        <item>@string/quicksettings_tiles_AllShareCast</item>
-        <item>@string/quicksettings_tiles_Nfc</item>
-        <item>@string/quicksettings_tiles_Sync</item>
-        <item>@string/quicksettings_tiles_SmartStay</item>
-        <item>@string/quicksettings_tiles_SmartPause</item>
-        <item>@string/quicksettings_tiles_PowerSaving</item>
-        <item>@string/quicksettings_tiles_DormantMode</item>
-        <item>@string/quicksettings_tiles_AirplaneMode</item>
-        <item>@string/quicksettings_tiles_CarMode</item>
-        <item>@string/quicksettings_tiles_PersonalMode</item>
-        <item>@string/quicksettings_tiles_TouchSensitivity</item>
-        <item>@string/quicksettings_tiles_TorchLight</item>
-    </string-array>
-    <string-array name="quicksettings_tiles_values" translatable="false">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-        <item>16</item>
-        <item>17</item>
-        <item>18</item>
-        <item>19</item>
-        <item>20</item>
-        <item>21</item>
-        <item>22</item>
-    </string-array>
-    <string-array name="screen_off_effect_entries">
-        <item>@string/screen_off_effect_default</item>
-        <item>@string/screen_off_effect_crt</item>
-        <item>@string/screen_off_effect_fade</item>
-        <item>@string/screen_off_effect_collapse</item>
-        <item>@string/screen_off_effect_unite</item>
-        <item>@string/screen_off_effect_off</item>
-    </string-array>
-    <string-array name="screen_off_effect_values" translatable="false">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-    </string-array>
-    <string-array name="transition_effect_entries">
-        <item name="NONE">@string/NONE</item>
-        <item name="CASCADE">@string/CASCADE</item>
-        <item name="OUTERCUBE">@string/OUTERCUBE</item>
-        <item name="INNERCUBE">@string/INNERCUBE</item>
-        <item name="CAROUSAL">@string/CAROUSAL</item>
-        <item name="PLAIN">@string/PLAIN</item>
-        <item name="CONVEYOR">@string/CONVEYOR</item>
-        <item name="CARD">@string/CARD</item>
-        <item name="SPIRAL">@string/SPIRAL</item>
-    </string-array>
-    <string-array name="transition_effect_values">
-        <item name="NONE">0</item>
-        <item name="CASCADE">1</item>
-        <item name="OUTERCUBE">2</item>
-        <item name="INNERCUBE">3</item>
-        <item name="CAROUSAL">4</item>
-        <item name="PLAIN">5</item>
-        <item name="CONVEYOR">6</item>
-        <item name="CARD">7</item>
-        <item name="SPIRAL">8</item>
-    </string-array>
     <string-array name="nfc_behavior_entries">
         <item name="unlocked">@string/unlocked</item>
         <item name="screen_on">@string/screen_on</item>
@@ -104,122 +15,6 @@
         <item name="hotboot">@string/reboot_hotboot</item>
         <item name="download">@string/reboot_download</item>
         <item name="recovery">@string/reboot_recovery</item>
-    </string-array>
-    <string-array name="config_pen_window_applist">
-        <item>com.diotek.diodict4.EDictionary</item>
-        <item>com.diotek.diodict3.hc.samsung.p5</item>
-        <item>com.sec.android.app.popupcalculator</item>
-        <item>com.google.android.youtube</item>
-        <item>com.android.contacts</item>
-        <item>com.android.mms</item>
-        <item>com.sec.chaton</item>
-        <item>com.google.android.talk</item>
-        <item>com.kakao.talk</item>
-        <item>com.facebook.katana</item>
-        <item>com.sec.android.app.sbrowser</item>
-        <item>com.sec.android.gallery3d</item>
-    </string-array>
-    <string-array name="config_multiWindowSupportAppList">
-        <item>com.android.email</item>
-        <item>com.android.mms</item>
-        <item>com.sec.android.mms.kor</item>
-        <item>com.sec.chaton</item>
-        <item>com.google.android.apps.maps</item>
-        <item>com.google.android.maps</item>
-        <item>com.google.android.gm</item>
-        <item>com.google.android.talk</item>
-        <item>com.google.android.youtube</item>
-        <item>com.google.android.gsf.login</item>
-        <item>com.google.android.music</item>
-        <item>com.google.android.apps.books</item>
-        <item>com.google.android.videos</item>
-        <item>com.android.vending</item>
-        <item>com.facebook.katana</item>
-        <item>com.kakao.talk</item>
-        <item>com.infraware.polarisviewer4</item>
-        <item>com.infraware.polarisoffice4</item>
-        <item>com.infraware.polarisviewer5</item>
-        <item>com.infraware.polarisoffice5</item>
-        <item>com.android.providers.applications</item>
-        <item>com.tencent.mobileqq</item>
-        <item>com.instagram.android</item>
-        <item>com.facebook.appmanager</item>
-        <item>kik.android</item>
-        <item>com.bbm</item>
-        <item>com.facebook.orca</item>
-        <item>com.twitter.android</item>
-        <item>com.viber.voip</item>
-        <item>com.kakao.story</item>
-        <item>com.baidu.browser.inter</item>
-        <item>com.joeware.android.gpulumera</item>
-        <item>com.taobao.taobao</item>
-        <item>com.qvod.player</item>
-        <item>com.dragon.android.pandaspace</item>
-        <item>com.tencent.news</item>
-        <item>jp.co.nttdocomo.carriermail</item>
-        <item>com.android.dialer</item>
-        <item>com.kddi.android.email</item>
-        <item>jp.ne.kddi.ks.android</item>
-        <item>com.free.mt2</item>
-        <item>jp.co.yahoo.android.yjtop</item>
-        <item>com.kddi.android.cmail</item>
-        <item>jp.r246.twicca</item>
-        <item>com.jb.gosms</item>
-        <item>com.pandora.android</item>
-        <item>com.spotify.music</item>
-        <item>com.yahoo.mobile.client.android.mail</item>
-        <item>com.tumblr</item>
-        <item>com.ebay.mobile</item>
-        <item>com.skype.raider</item>
-        <item>com.sgiggle.production</item>
-        <item>com.joelapenna.foursquared</item>
-        <item>com.venticake.retrica</item>
-        <item>com.news24.ui.core</item>
-        <item>com.opera.mini.android</item>
-        <item>com.vkontakte.android</item>
-        <item>ru.yandex.yandexmaps</item>
-        <item>com.mxtech.videoplayer.ad</item>
-        <item>com.bsb.hike</item>
-        <item>com.pinterest</item>
-        <item>bb.iplayer.android</item>
-        <item>bbc.iplayer.android</item>
-        <item>air.ITVMobilePlayer</item>
-        <item>com.channel4.ondemand</item>
-        <item>co.vine.android</item>
-        <item>com.HBO</item>
-        <item>com.amazon.avod</item>
-        <item>fm.last.android</item>
-        <item>com.amazon.mShop.android</item>
-        <item>com.amazon.mShop.android.shopping</item>
-        <item>com.groupon</item>
-        <item>com.ithcity.android.groupon</item>
-        <item>com.imdb.mobile</item>
-        <item>com.melodis.midomiMusicIdentifier.freemium</item>
-        <item>com.soundcloud.android</item>
-        <item>com.shazam.android</item>
-        <item>com.linkedin.android</item>
-        <item>com.dropbox.android</item>
-        <item>com.slovoed.dictionaries</item>
-        <item>bs.app</item>
-        <item>ru.yandex.searchplugin</item>
-        <item>com.crossforward.audiobooks</item>
-        <item>Yandex.Music</item>
-        <item>ru.yandex.weatherplugin</item>
-        <item>com.skt.skaf.l001mtm091</item>
-        <item>kt.navi</item>
-        <item>com.mnsoft.lgunavi</item>
-    </string-array>
-    <string-array name="clock_position_entries">
-        <item name="right">@string/right</item>
-        <item name="center">@string/center</item>
-        <item name="left">@string/left</item>
-        <item name="hide">@string/hide</item>
-    </string-array>
-    <string-array name="clock_position_values">
-        <item name="right">Right</item>
-        <item name="center">Center</item>
-        <item name="center">Left</item>
-        <item name="hide">Hide</item>
     </string-array>
     <string-array name="clock_size_entries">
         <item name="small">@string/small</item>
@@ -238,16 +33,18 @@
     <string-array name="categories_list">
         <item>AOD</item>
         <item>Audio</item>
-        <item>BT</item>
         <item>Briefing</item>
+        <item>BT</item>        
         <item>CSC</item>
         <item>Calculator</item>
         <item>Calendar</item>
         <item>Camera</item>
         <item>Clock</item>
         <item>Common</item>
+        <item>COMMON</item>
         <item>Contact</item>
         <item>ContextService</item>
+        <item>CSC</item>
         <item>DeviceManagement</item>
         <item>Dictionary</item>
         <item>Email</item>
@@ -257,9 +54,9 @@
         <item>Fido</item>
         <item>Finder</item>
         <item>Framework</item>
+        <item>Gallery</item>
         <item>GMS</item>
         <item>GPS</item>
-        <item>Gallery</item>
         <item>HiddenMenu</item>
         <item>IMS</item>
         <item>JobManager</item>
@@ -267,51 +64,47 @@
         <item>Launcher</item>
         <item>LockScreen</item>
         <item>Logs</item>
-        <item>MMFW</item>
+        <item>mCommerce</item>
         <item>MediaProvider</item>
         <item>MediaScanner</item>
         <item>Memo</item>
         <item>Message</item>
         <item>Milk</item>
+        <item>MMFW</item>
         <item>MobileTV</item>
         <item>Music</item>
         <item>MyFiles</item>
         <item>NFC</item>
         <item>Phone</item>
         <item>RIL</item>
-        <item>SIP</item>
-        <item>SMemo</item>
-        <item>SNote</item>
-        <item>SPen</item>
-        <item>SSRM</item>
-        <item>SecureFolder</item>
         <item>Security</item>
         <item>Settig</item>
         <item>Setting</item>
         <item>Settings</item>
-        <item>SetupWizard</item>
-        <item>Sip</item>
+        <item>SetupWizard</item> 
+        <item>Sip</item>       
+        <item>SIP</item>
+        <item>SmartcardSvc</item>
         <item>SmartManager</item>
         <item>SmartPage</item>
-        <item>SmartcardSvc</item>
+        <item>SmartSwitch</item>
+        <item>SMemo</item>
+        <item>SNote</item>
+        <item>SPen</item>
+        <item>SSRM</item>
         <item>Streaming</item>
         <item>SyncML</item>
         <item>System</item>
         <item>SystemUI</item>
-        <item>VT</item>
         <item>Video</item>
         <item>VideoCall</item>
         <item>Vision</item>
         <item>VoiceCall</item>
         <item>VoiceRecorder</item>
+        <item>VT</item>        
         <item>Weather</item>
         <item>Web</item>
-        <item>WFC</item>
         <item>Wifi</item>
-        <item>mCommerce</item>
+        <item>WiFi</item>
     </string-array>
-        <array name="navigationbar_color_values">
-        <item>#00000000</item>
-    </array>
-    
 </resources>
