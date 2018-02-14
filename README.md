@@ -1,4 +1,4 @@
-Firefds Kit [Nougat]
+Firefds Kit [Oreo]
 ====================
 
 Xposed module for Samsung Nougat devices. This was built and tested on the Samsung Galaxy S8.
@@ -7,8 +7,8 @@ If you are using an older Nougat device and have a problem, please submit a but 
 More info at XDA thread: https://forum.xda-developers.com/xposed/modules/app-firefds-kit-customization-touchwiz-t3692391
 
 This module only has features that GravityBox Nougat doesn't have. I've been fixing compatibility issues in GravityBox Nougat and @C3C076 has been merging them into the module.
-Most of the features that were previously on the MM version of Firefds Kit are now working on GravityBox Nougat.
-For more info about GravityBox Nougat: https://forum.xda-developers.com/xposed/modules/app-gravitybox-v7-0-0-tweak-box-android-t3653953
+Most of the features that were previously on the MM version of Firefds Kit are now working on GravityBox Oreo.
+For more info about GravityBox Nougat: https://forum.xda-developers.com/xposed/modules/app-gravitybox-v8-0-0-beta-1-tweak-box-t3739929
 
 This application uses also Root access to apply some Samsung CSC features.
 
