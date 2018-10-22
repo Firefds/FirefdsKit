@@ -183,6 +183,11 @@
                 android:key="configCriticalBatteryWarningLevel"
                 android:summary="@string/set_camera_critical_battery_level_warning"
                 android:title="@string/critical_battery_level" />
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="disableShutterSound"
+                android:summary="@string/disable_shutter_sound"
+                android:title="@string/disable_shutter_sound" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/touchwiz_dvfs" >
             <CheckBoxPreference
