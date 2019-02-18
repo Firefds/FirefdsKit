@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="prefsRoot" >
+
+    <de.robv.android.xposed.library.ui.TextViewPreference
+        android:key="fkHeader"
+        android:selectable="false"
+        android:title="" />
+
+    <de.robv.android.xposed.library.ui.SeparatorPreference height="3" />
+
+    <PreferenceScreen
+        android:icon="@drawable/notification"
+        android:key="statusbarKey"
+        android:title="@string/statusbar" >
+        <PreferenceCategory android:title="@string/statusbar" >
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="showWirelessChargerInfoPopUp"
+                android:summary="@string/show_wireless_charger_information_popup"
+                android:title="@string/show_wireless_charging_popup" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="@string/status_icons" >
+            <SwitchPreference
+                android:defaultValue="false"
+                android:disableDependentsState="true"
+                android:key="hideNfcIcon"
+                android:summaryOff="@string/hide_nfc_icon_off"
+                android:summaryOn="@string/hide_nfc_icon_on"
+                android:title="@string/hide_nfc_icon" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="@string/quick_settings" >
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="disableBluetoothScanDialog"
+                android:summary="@string/quick_settings_disable_bluetooth_scan_dialog_sum"
+                android:title="@string/quick_settings_disable_bluetooth_scan_dialog" />
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="disableSyncDialog"
+                android:summary="@string/quick_settings_disable_sync_dialog_sum"
+                android:title="@string/quick_settings_disable_sync_dialog" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="@string/carrier_notification" >
+            <SwitchPreference
+                android:defaultValue="false"
+                android:disableDependentsState="true"
+                android:key="hideCarrierLabel"
+                android:summaryOff="@string/hide_carrier_label_shown"
+                android:summaryOn="@string/hide_carrier_label_hidden"
+                android:title="@string/hide_carrier_label" />
+
+            <de.robv.android.xposed.library.ui.ListPreferenceFixedSummary
+                android:defaultValue="Small"
+                android:dependency="hideCarrierLabel"
+                android:entries="@array/clock_size_entries"
+                android:entryValues="@array/clock_size_values"
+                android:key="carrierSize"
+                android:summary="@string/carrier_size_summary"
+                android:title="@string/carrier_size" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+    <PreferenceScreen
+        android:icon="@drawable/lockscreen"
+        android:key="lockscreenKey"
+        android:title="@string/lockscreen" >
+        <PreferenceCategory android:title="@string/pin_unlock" >
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="disableLockedAdb"
+                android:summary="@string/disable_adb_connection_during_secured_lockscreen"
+                android:title="@string/disable_adb_on_secured_lock" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+    <PreferenceScreen
+        android:icon="@drawable/sound"
+        android:key="soundKey"
+        android:title="@string/sound" >
+        <PreferenceCategory android:title="@string/sound" >
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="disableVolumeControlSound"
+                android:summary="@string/disable_volume_control_sound_while_changing_sounds"
+                android:title="@string/disable_volume_control_sound" />
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="disableLowBatterySound"
+                android:summary="@string/disable_low_battery_sound"
+                android:title="@string/disable_low_battery_sound" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+    <PreferenceScreen
+        android:icon="@drawable/system"
+        android:key="systemKey"
+        android:title="@string/system" >
+        <PreferenceCategory android:title="@string/system" >
+            <PreferenceScreen
+                android:key="screenTimeoutSettings"
+                android:title="@string/screen_timeout_title" >
+                <de.robv.android.xposed.library.ui.ValueSeekBarPreference
+                    displayFormat="%d שניות"
+                    max="59"
+                    min="0"
+                    step="1"
+                    android:defaultValue="30"
+                    android:key="screenTimeoutSeconds"
+                    android:summary="@string/screen_timeout_seconds_summary"
+                    android:title="@string/screen_timeout_seconds" />
+                <de.robv.android.xposed.library.ui.ValueSeekBarPreference
+                    displayFormat="%d דקות"
+                    max="59"
+                    min="0"
+                    step="1"
+                    android:defaultValue="0"
+                    android:key="screenTimeoutMinutes"
+                    android:summary="@string/screen_timeout_minutes_summary"
+                    android:title="@string/screen_timeout_minutes" />
+                <de.robv.android.xposed.library.ui.ValueSeekBarPreference
+                    displayFormat="%d שעות"
+                    max="24"
+                    min="0"
+                    step="1"
+                    android:defaultValue="0"
+                    android:key="screenTimeoutHours"
+                    android:summary="@string/screen_timeout_hours_summary"
+                    android:title="@string/screen_timeout_hours" />
+            </PreferenceScreen>
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="disableScrollingCache"
+                android:summary="@string/disable_scrolling_cache_sum"
+                android:title="@string/disable_scrolling_cache" />
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="disableTetherProvisioning"
+                android:summaryOff="@string/disable_tether_provisioning_off"
+                android:summaryOn="@string/disable_tether_provisioning_on"
+                android:title="@string/disable_tether_provisioning" />
+
+            <de.robv.android.xposed.library.ui.ValueSeekBarPreference
+                displayFormat="%d לקוחות"
+                max="10"
+                min="1"
+                android:defaultValue="4"
+                android:key="wifiAPClients"
+                android:summary="@string/set_the_the_number_of_maximum_wifi_ap_clients"
+                android:title="@string/wifi_ap_clients_number" />
+
+            <de.robv.android.xposed.library.ui.IntegerListPreference
+                android:defaultValue="0"
+                android:entries="@array/nfc_behavior_entries"
+                android:entryValues="@array/nfc_behavior_values"
+                android:key="nfcBehavior"
+                android:summary="@string/nfc_behavior_summary"
+                android:title="@string/nfc_behavior" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="@string/camera_and_gallery" >
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="enableCameraDuringCall"
+                android:summaryOff="@string/camera_disabed_during_call"
+                android:summaryOn="@string/camera_enabled_during_call"
+                android:title="@string/enable_camera_during_call" />
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="disableTemperatureChecks"
+                android:summary="@string/disable_temparature_warnings_on_the_recording"
+                android:title="@string/disable_temperature_checks" />
+            <SwitchPreference
+                android:defaultValue="false"
+                android:disableDependentsState="true"
+                android:key="disbaleLowBatteryCloseWarningLevel"
+                android:summaryOff="@string/camera_low_battery_warning_enabled"
+                android:summaryOn="@string/camera_low_battery_warning_disabled"
+                android:title="@string/disable_camera_low_battery_warning" />
+
+            <de.robv.android.xposed.library.ui.ValueSeekBarPreference
+                displayFormat="%d%%"
+                max="100"
+                min="1"
+                android:defaultValue="5"
+                android:dependency="disbaleLowBatteryCloseWarningLevel"
+                android:key="configCriticalBatteryWarningLevel"
+                android:summary="@string/set_camera_critical_battery_level_warning"
+                android:title="@string/critical_battery_level" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="@string/touchwiz_dvfs" >
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:disableDependentsState="true"
+                android:key="disableDVFS"
+                android:summary="@string/disable_dynamic_voltage_and_frequency_scaling"
+                android:title="@string/disable_touchwiz_dvfs" />
+
+            <Preference
+                android:dependency="disableDVFS"
+                android:key="disableDVFSWhiteList"
+                android:summary="@string/select_applications_which_should_keep_dvfs_disabled"
+                android:title="@string/set_dvfs_diabler_blacklist" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+    <PreferenceScreen
+        android:icon="@drawable/phone"
+        android:key="phoneKey"
+        android:title="@string/phone" >
+        <PreferenceCategory
+            android:key="phoneKeyCat"
+            android:title="@string/phone" >
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="enableCallAdd"
+                android:summaryOff="@string/enable_call_add_off"
+                android:summaryOn="@string/enable_call_add_on"
+                android:title="@string/enable_call_add" />
+            <SwitchPreference
+                android:defaultValue="false"
+                android:dependency="enableCallAdd"
+                android:key="enableCallRecordingMenu"
+                android:summaryOff="@string/call_recording_menu_disabled"
+                android:summaryOn="@string/call_recording_menu_enabled"
+                android:title="@string/enable_call_recording_menu" />
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="enableAutoCallRecording"
+                android:summary="@string/enable_automatic_call_recording"
+                android:title="@string/auto_call_recording" />
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="disableNumberFormating"
+                android:summaryOff="@string/call_number_formatting_enabled"
+                android:summaryOn="@string/call_number_formatting_disabled"
+                android:title="@string/disable_call_number_formatting" />
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="unlimittedContactsJoining"
+                android:summaryOff="@string/default_contacts_joining_limit"
+                android:summaryOn="@string/unlimited_contacts_accounts_joining"
+                android:title="@string/enable_unlimited_contacts_joining" />
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="useSeparateAddressField"
+                android:summary="@string/separate_address_field_used"
+                android:title="@string/use_separate_address_field" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+    <PreferenceScreen
+        android:icon="@drawable/sms"
+        android:key="messagingKey"
+        android:title="@string/messaging" >
+        <PreferenceCategory android:title="@string/messaging" >
+            <SwitchPreference
+                android:defaultValue="true"
+                android:key="enableSaveRestore"
+                android:summary="@string/enable_the_menu_to_save_and_restore_messages"
+                android:title="@string/enable_save_and_restore" />
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="disableSmsToMmsConversion"
+                android:summaryOff="@string/mms_sms_mms_conversion_off"
+                android:summaryOn="@string/mms_sms_mms_conversion_on"
+                android:title="@string/mms_sms_mms_conversion" />
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="forceMMSConnect"
+                android:summary="@string/force_mms_connect_to_receive_mms"
+                android:title="@string/force_mms_connect" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+    <PreferenceScreen
+        android:icon="@drawable/security"
+        android:key="securityHacks"
+        android:title="@string/security" >
+        <PreferenceCategory android:title="@string/email" >
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="disableExchangeLockSecurity"
+                android:summaryOff="@string/bypass_exchange_security_off"
+                android:summaryOn="@string/bypass_exchange_security_on"
+                android:title="@string/bypass_exchange_security" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="@string/system" >
+            <SwitchPreference
+                android:defaultValue="true"
+                android:key="makeMeTooLegit"
+                android:summaryOff="@string/status_custom"
+                android:summaryOn="@string/status_official"
+                android:title="@string/fake_system_status" />
+            <SwitchPreference
+                android:defaultValue="true"
+                android:key="disableTIMA"
+                android:summary="@string/disable_seandroid_knox_notifications_msg"
+                android:title="@string/disable_knox_notifications" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+
+</PreferenceScreen>

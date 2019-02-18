@@ -1,0 +1,33 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+    }
+    compileSdkVersion 27
+    buildToolsVersion "28.0.3"
+    defaultConfig {
+        applicationId 'sb.firefds.pie.firefdskit'
+        minSdkVersion 27
+        targetSdkVersion 27
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+    productFlavors {
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation 'com.android.support:support-compat:27.0.0'
+    compileOnly 'de.robv.android.xposed:api:82'
+    compileOnly 'de.robv.android.xposed:api:82:sources'
+    compileOnly files('libs/framework2-dex2jar.jar')
+    compileOnly files('libs/framework3-dex2jar.jar')
+}
