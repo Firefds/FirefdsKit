@@ -3,11 +3,11 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
     }
-    compileSdkVersion 27
+    compileSdkVersion 28
     buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId 'sb.firefds.pie.firefdskit'
-        minSdkVersion 27
+        minSdkVersion 28
         targetSdkVersion 27
     }
     buildTypes {
@@ -25,7 +25,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.android.support:support-compat:27.0.0'
+    implementation 'com.android.support:support-compat:28.0.0'
     compileOnly 'de.robv.android.xposed:api:82'
     compileOnly 'de.robv.android.xposed:api:82:sources'
     compileOnly files('libs/framework2-dex2jar.jar')
