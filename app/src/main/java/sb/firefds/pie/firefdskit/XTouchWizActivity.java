@@ -15,7 +15,6 @@
 package sb.firefds.pie.firefdskit;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -60,6 +59,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.library.ui.TextViewPreference;
 import eu.chainfire.libsuperuser.Shell;
 import sb.firefds.pie.firefdskit.dialogs.CreditsDialog;
@@ -74,6 +74,10 @@ import sb.firefds.pie.firefdskit.utils.Utils;
 public class XTouchWizActivity extends Activity implements RestoreDialogListener {
 
     private static ProgressDialog mDialog;
+    private static Context context;
+    //public static final String THIS_PACKAGE_NAME = Xposed.class.getPackage().getName();
+    private static PreferenceManager preferenceManager;
+
 
     private static final String[] defaultSettings = new String[]{"enableCameraDuringCall", "disableNumberFormating",
             "disableSmsToMmsConversion", "isFirefdsKitFirstLaunch", "makeMeTooLegit", "disableTIMA"};
@@ -100,12 +104,12 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 
     }
 
-    @SuppressLint("WorldReadableFiles")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
+        context = getApplicationContext();
         verifyStoragePermissions(this);
 
         initScreen();
@@ -261,13 +265,13 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 
     public void restoreRecommendedSettings() {
 
-        MainApplication.getSharedPreferences().edit().clear().commit();
+        MainApplication.getSharedPreferences().edit().clear().apply();
         PreferenceManager.setDefaultValues(this, R.xml.firefds_settings, false);
 
         Editor editor = MainApplication.getSharedPreferences().edit();
 
         for (String defaultSetting : defaultSettings) {
-            editor.putBoolean(defaultSetting, true).commit();
+            editor.putBoolean(defaultSetting, true).apply();
         }
 
         editor.putInt("notificationSize", MainApplication.getWindowsSize().x).commit();
@@ -285,13 +289,13 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
     @Override
     public void onRestoreDefaults() {
 
-        MainApplication.getSharedPreferences().edit().clear().commit();
+        MainApplication.getSharedPreferences().edit().clear().apply();
         PreferenceManager.setDefaultValues(this, R.xml.firefds_settings, false);
 
         Toast.makeText(this, R.string.defaults_restored, Toast.LENGTH_SHORT).show();
 
         MainApplication.getSharedPreferences().edit().putInt("notificationSize", MainApplication.getWindowsSize().x)
-                .commit();
+                .apply();
 
         XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
 
@@ -347,7 +351,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
                     else if (v instanceof String)
                         prefEdit.putString(key, ((String) v));
                 }
-                prefEdit.commit();
+                prefEdit.apply();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -374,7 +378,6 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
             Toast.makeText(XTouchWizActivity.this, R.string.backup_restored, Toast.LENGTH_SHORT).show();
             RebootNotification.notify(XTouchWizActivity.this, 999, false);
         }
-
     }
 
     public static class SettingsFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener {
@@ -409,22 +412,29 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            getPreferenceManager().setSharedPreferencesMode(Context.MODE_PRIVATE);
+            /*getPreferenceManager().setSharedPreferencesMode(Context.MODE_PRIVATE);
+            getPreferenceManager().setStorageDeviceProtected();
             getPreferenceManager().setSharedPreferencesName(XTouchWizActivity.class.getSimpleName());
-            MainApplication.setSharedPreferences(getActivity().getPreferences(Context.MODE_PRIVATE));
+            MainApplication.setSharedPreferences(getActivity().getSharedPreferences(XTouchWizActivity.class.getSimpleName(),Context.MODE_PRIVATE));*/
+
 
             try {
                 changesMade = new ArrayList<String>();
-                mContext = getActivity();
+                mContext = getActivity().getBaseContext();
 
                 res = getResources();
 
+                getPreferenceManager().setStorageDeviceProtected();
+                getPreferenceManager().setSharedPreferencesName(XTouchWizActivity.class.getSimpleName());
+                getPreferenceManager().setSharedPreferencesMode(MODE_PRIVATE);
                 addPreferencesFromResource(R.xml.firefds_settings);
+
+                MainApplication.setSharedPreferences(getPreferencesAndKeepItReadable(mContext, XTouchWizActivity.class.getSimpleName()));
 
                 showDiag();
 
                 MainApplication.getSharedPreferences().edit()
-                        .putInt("notificationSize", MainApplication.getWindowsSize().x).commit();
+                        .putInt("notificationSize", MainApplication.getWindowsSize().x).apply();
 
 
                 if (!Utils.isSamsungRom()) {
@@ -703,6 +713,14 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
                 Settings.System.putInt(getActivity().getContentResolver(),
                         Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
             }
+        }
+
+        public static SharedPreferences getPreferencesAndKeepItReadable(Context ctx, String prefName) {
+            SharedPreferences prefs = ctx.getSharedPreferences(prefName, MODE_PRIVATE);
+            File prefsFile = new File(ctx.getFilesDir() + "/../shared_prefs/" + prefName + ".xml");
+            prefsFile.setReadable(true, false);
+            XposedBridge.log("Activity: " + prefsFile);
+            return prefs;
         }
     }
 }

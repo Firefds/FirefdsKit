@@ -10,16 +10,19 @@ import sb.firefds.pie.firefdskit.utils.Utils;
 
 public class XSysUINotificationPanelPackage {
 
-    public static void doHook(final XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
         try {
-            XposedHelpers.findAndHookMethod("com.android.keyguard.CarrierText", classLoader, "updateCarrierText",
+            XposedBridge.log("Perf Boolean out: " + prefs.getBoolean("hideCarrierLabel", false));
+            XposedHelpers.findAndHookMethod("com.android.keyguard.CarrierText",
+                    classLoader, "updateCarrierText",
                     new XC_MethodHook() {
                         @Override
                         protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                             TextView tvCarrier = (TextView) param.thisObject;
 
                             prefs.reload();
+                            XposedBridge.log("Perf Boolean: " + prefs.getBoolean("hideCarrierLabel", false));
                             if (prefs.getBoolean("hideCarrierLabel", false)) {
                                 tvCarrier.setText(" ");
                             }
@@ -40,7 +43,7 @@ public class XSysUINotificationPanelPackage {
                         }
                     });
         } catch (Throwable e) {
-            XposedBridge.log(e.toString());
+            XposedBridge.log(e);
         }
     }
 }

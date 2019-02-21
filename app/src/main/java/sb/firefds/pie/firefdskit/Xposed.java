@@ -14,7 +14,7 @@
  */
 package sb.firefds.pie.firefdskit;
 
-import android.util.Log;
+import java.io.File;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
@@ -30,6 +30,7 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     private static String MODULE_PATH = null;
     private static XSharedPreferences prefs;
+    private static final File prefsFile = new File("/data/user/0/sb.firefds.pie.firefdskit/shared_prefs/XTouchWizActivity.xml");
 
     @Override
     public void initZygote(StartupParam startupParam) {
@@ -42,12 +43,13 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
         if (prefs == null) {
             try {
-                prefs = new XSharedPreferences(Packages.FIREFDSKIT, XTouchWizActivity.class.getSimpleName());
+                prefs = new XSharedPreferences(prefsFile);
+                XposedBridge.log("Xposed: " + prefs.getFile().toString());
+                XposedBridge.log("Xposed Package: " + Xposed.class.getPackage().getName());
             } catch (Throwable e) {
-                Log.d("xposed",e.toString());
+                XposedBridge.log(e);
             }
         }
-
     }
 
     @Override
@@ -60,55 +62,67 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         if (lpparam.packageName.equals(Packages.FIREFDSKIT)) {
             if (prefs != null) {
                 try {
-                    XposedHelpers.findAndHookMethod(Packages.FIREFDSKIT + ".XposedChecker", lpparam.classLoader,
+                    XposedHelpers.findAndHookMethod(Packages.FIREFDSKIT + ".XposedChecker",
+                            lpparam.classLoader,
                             "isActive", XC_MethodReplacement.returnConstant(Boolean.TRUE));
                 } catch (Throwable t) {
-                    Log.d("xposed",t.toString());
+                    XposedBridge.log(t.toString());
                 }
             } else {
-                Log.d("xposed","Xposed cannot read XTouchWiz preferences!");
+                XposedBridge.log("Xposed cannot read XTouchWiz preferences!");
             }
         }
 
         if (lpparam.packageName.equals(Packages.ANDROID)) {
-
-            try {
+            /*try {
                 XPM23.initZygote(prefs, lpparam.classLoader);
             } catch (Exception e1) {
                 XposedBridge.log(e1);
-            }
+            }*/
 
-            try {
-
+            /*try {
                 XSystemWide.doHook(MODULE_PATH, prefs, lpparam.classLoader);
 
             } catch (Throwable e) {
-                XposedBridge.log(e.toString());
-
-            }
+                XposedBridge.log(e);
+            }*/
 
             try {
                 XAndroidPackage.doHook(prefs, lpparam.classLoader);
             } catch (Throwable e) {
-                XposedBridge.log(e.toString());
-
+                XposedBridge.log(e);
             }
 
             try {
                 XFrameworkWidgetPackage.doHook(prefs, lpparam.classLoader);
             } catch (Throwable e) {
-                XposedBridge.log(e.toString());
-
+                XposedBridge.log(e);
             }
 
-        }
-
-        if (lpparam.packageName.equals(Packages.SAMSUNG_INCALLUI)) {
-            try {
-                XInCallUIPackage.doHook(prefs, lpparam.classLoader);
+            /*try {
+                XGlobalActions.init(prefs, lpparam.classLoader);
             } catch (Throwable e) {
                 XposedBridge.log(e.toString());
+            }*/
+        }
 
+        //Doesn't work
+        if (lpparam.packageName.equals(Packages.SAMSUNG_INCALLUI)) {
+            try {
+                XposedBridge.log("inside " + lpparam.packageName);
+                XInCallUIPackage.doHook(prefs, lpparam.classLoader);
+            } catch (Throwable e) {
+                XposedBridge.log(e);
+            }
+        }
+
+        //Doesn't work
+        if (lpparam.packageName.equals(Packages.INCALLUI)) {
+            try {
+                XposedBridge.log("inside " + lpparam.packageName);
+                XInCallUIPackage.doHook(prefs, lpparam.classLoader);
+            } catch (Throwable e) {
+                XposedBridge.log(e);
             }
         }
 
@@ -116,8 +130,7 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             try {
                 XNfcPackage.doHook(prefs, lpparam.classLoader);
             } catch (Throwable e) {
-                XposedBridge.log(e.toString());
-
+                XposedBridge.log(e);
             }
         }
 
@@ -125,25 +138,15 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             try {
                 XSysUIPackage.doHook(prefs, lpparam.classLoader);
             } catch (Throwable e) {
-                XposedBridge.log(e.toString());
-
+                XposedBridge.log(e);
             }
-
-            try {
-                XGlobalActions.init(prefs, lpparam.classLoader);
-            } catch (Throwable e) {
-                XposedBridge.log(e.toString());
-
-            }
-
         }
 
-        if (lpparam.packageName.equals(Packages.SETTINGS)) {
+        if (lpparam.packageName.equalsIgnoreCase(Packages.SETTINGS)) {
             try {
                 XSecSettingsPackage.doHook(prefs, lpparam.classLoader);
             } catch (Throwable e) {
-                XposedBridge.log(e.toString());
-
+                XposedBridge.log(e);
             }
         }
 
@@ -151,8 +154,7 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             try {
                 XSecEmailPackage.doHook(prefs, lpparam.classLoader);
             } catch (Throwable e) {
-                XposedBridge.log(e.toString());
-
+                XposedBridge.log(e);
             }
         }
 
@@ -160,20 +162,9 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             try {
                 XSecCameraPackage.doHook(prefs, lpparam.classLoader);
             } catch (Throwable e) {
-                XposedBridge.log(e.toString());
-
+                XposedBridge.log(e);
             }
         }
-
-        if (lpparam.packageName.equals(Packages.SYS_SCOPE)) {
-            try {
-                XSysScopePackage.doHook(prefs, lpparam.classLoader);
-            } catch (Throwable e) {
-                XposedBridge.log(e.toString());
-
-            }
-        }
-
     }
 
     /*@Override

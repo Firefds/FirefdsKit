@@ -16,6 +16,7 @@ package sb.firefds.pie.firefdskit.utils;
 
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -44,7 +45,6 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Locale;
 
-import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import eu.chainfire.libsuperuser.Shell.SU;
@@ -301,7 +301,7 @@ public class Utils {
         }
     }
 
-    public static TextView setTypeface(XSharedPreferences prefs, TextView tv) {
+    public static TextView setTypeface(SharedPreferences prefs, TextView tv) {
 
         int typeStyle = Typeface.NORMAL;
         if (!prefs.getString("statusbarTextStyle", "Normal").equalsIgnoreCase("Normal")) {

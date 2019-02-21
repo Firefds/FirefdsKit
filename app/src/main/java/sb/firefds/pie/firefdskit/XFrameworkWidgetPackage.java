@@ -24,13 +24,13 @@ import static de.robv.android.xposed.XposedHelpers.findClass;
 
 public class XFrameworkWidgetPackage {
 
-    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(final XSharedPreferences prefs, ClassLoader classLoader) {
 
         if (prefs.getBoolean("disableScrollingCache", false)) {
             try {
                 disableScrollingCache();
             } catch (Throwable e) {
-                XposedBridge.log(e.toString());
+                XposedBridge.log(e);
 
             }
         }
@@ -50,7 +50,7 @@ public class XFrameworkWidgetPackage {
                     });
 
         } catch (Throwable e) {
-            XposedBridge.log(e.toString());
+            XposedBridge.log(e);
 
         }
     }

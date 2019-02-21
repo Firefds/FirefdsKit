@@ -19,7 +19,7 @@ import de.robv.android.xposed.XposedBridge;
 
 public class XSysUIPackage {
 
-    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(final XSharedPreferences prefs, ClassLoader classLoader) {
 
 		/*try {
 			XSysUIFeaturePackage.doHook(prefs, classLoader);
@@ -31,7 +31,7 @@ public class XSysUIPackage {
         try {
             XSysUINotificationPanelPackage.doHook(prefs, classLoader);
         } catch (Throwable e) {
-            XposedBridge.log(e.toString());
+            XposedBridge.log(e);
 
         }
     }

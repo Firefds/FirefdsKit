@@ -17,6 +17,7 @@ package sb.firefds.pie.firefdskit;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.PowerManager;
 
 import java.util.List;
@@ -31,11 +32,11 @@ import sb.firefds.pie.firefdskit.utils.Packages;
 public class XAndroidPackage {
 
     public static final String PHONE_WINDOW_MANAGER = "com.android.server.policy.PhoneWindowManager";
-    private static XSharedPreferences prefs;
+    private static SharedPreferences  prefs;
     private static ClassLoader classLoader;
     private static Context mContext = null;
 
-    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(final XSharedPreferences prefs, ClassLoader classLoader) {
 
         XAndroidPackage.prefs = prefs;
         XAndroidPackage.classLoader = classLoader;

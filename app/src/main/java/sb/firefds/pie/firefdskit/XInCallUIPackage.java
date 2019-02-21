@@ -15,6 +15,7 @@
 package sb.firefds.pie.firefdskit;
 
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
@@ -26,7 +27,7 @@ public class XInCallUIPackage {
 
         //Enable call recording
         try {
-            Object[] arrayOfObject = new Object[2];
+            /*Object[] arrayOfObject = new Object[2];
             arrayOfObject[0] = String.class;
             arrayOfObject[1] = new XC_MethodHook() {
                 protected void beforeHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
@@ -38,9 +39,9 @@ public class XInCallUIPackage {
                             param.setResult(Boolean.TRUE);
                         }
                 }
-            };
-            XposedHelpers.findAndHookMethod(Packages.INCALLUI + ".InCallUIFeature", classLoader, "hasFeature",
-                    arrayOfObject);
+            };*/
+            XposedHelpers.findAndHookMethod(Packages.INCALLUI + ".modal.feature.function.VoiceRecordingFeature", classLoader, "isEnabled",
+                    XC_MethodReplacement.returnConstant(prefs.getBoolean("enableCallAdd", false) ? Boolean.TRUE : Boolean.FALSE));
         } catch (Throwable e1) {
             XposedBridge.log(e1.toString());
         }
@@ -51,7 +52,7 @@ public class XInCallUIPackage {
             arrayOfObject[0] = String.class;
             arrayOfObject[1] = new XC_MethodHook() {
                 protected void beforeHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
-                    prefs.reload();
+                    //prefs.reload();
                     if (prefs.getBoolean("enableCallAdd", false) && prefs.getBoolean("enableCallRecordingMenu", false))
                         if ("voice_call_recording_menu".equals(param.args[0])) {
                             param.setResult(Boolean.TRUE);
@@ -61,7 +62,7 @@ public class XInCallUIPackage {
             XposedHelpers.findAndHookMethod(Packages.INCALLUI + ".InCallUIFeature", classLoader, "hasFeature",
                     arrayOfObject);
         } catch (Throwable e) {
-            XposedBridge.log(e.toString());
+            XposedBridge.log(e);
         }
 
         //Enable automatic call recording
@@ -73,7 +74,7 @@ public class XInCallUIPackage {
 
                         @Override
                         protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                            prefs.reload();
+                            //prefs.reload();
                             if (prefs.getBoolean("enableAutoCallRecording", false)) {
                                 Object mCall = XposedHelpers.callMethod(param.args[0], "getFirstCall");
 

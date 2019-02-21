@@ -17,10 +17,7 @@ package sb.firefds.pie.firefdskit;
 //import com.samsung.android.app.SemColorPickerDialog;
 
 import android.content.Context;
-import android.content.ContentResolver;
-//import android.content.res.Resources;
-import android.os.Bundle;
-//import android.view.View;
+
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
@@ -28,9 +25,13 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.utils.Packages;
 
+//import android.content.res.Resources;
+//import android.view.View;
+
 public class XSecSettingsPackage {
 
     private static ClassLoader classLoader;
+    private static XSharedPreferences prefs;
     //private static SemColorPickerDialog semColorPickerDialog;
     //private static Context mContext;
     //private static int[] colorArray;
@@ -38,20 +39,24 @@ public class XSecSettingsPackage {
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
-        XSecSettingsPackage.classLoader = classLoader;
+        //XSecSettingsPackage.classLoader = classLoader;
 
-        try {
-            XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".bluetooth.BluetoothScanDialog", classLoader,
-                    "onCreate", Bundle.class, new XC_MethodHook() {
+        /*try {
+            XposedHelpers.findAndHookMethod(
+                    Packages.SAMSUNG_SETTINGS + ".bluetooth.BluetoothScanDialog",
+                    classLoader,
+                    "onCreate",
+                    Bundle.class, new XC_MethodHook() {
                         @Override
                         protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                            prefs.reload();
                             if (prefs.getBoolean("disableBluetoothScanDialog", false))
                                 ((android.app.Activity) param.thisObject).finish();
                         }
                     });
 
         } catch (Throwable e) {
-            XposedBridge.log(e.toString());
+            XposedBridge.log(e);
 
         }
 
@@ -59,10 +64,55 @@ public class XSecSettingsPackage {
             try {
                 disableTetherProvisioning();
             } catch (Throwable e) {
-                XposedBridge.log(e.toString());
+                XposedBridge.log(e);
+            }
+        }*/
+
+        try {
+            XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".deviceinfo.status.SyscopeStatusPreferenceController", classLoader,
+                    "getICDVerification", new XC_MethodHook() {
+                        @Override
+                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                            param.setResult(1);
+                            XposedBridge.log("getICDVerification called");
+                        }
+                    });
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
+
+        try {
+            XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".deviceinfo.SecDeviceInfoUtils", classLoader,
+                    "checkRootingCondition", new XC_MethodHook() {
+                        @Override
+                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                            param.setResult(Boolean.FALSE);
+                        }
+                    });
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
+
+        try {
+            XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".deviceinfo.SecDeviceInfoUtils", classLoader,
+                    "isSupportRootBadge", Context.class, new XC_MethodHook() {
+                        @Override
+                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                            param.setResult(Boolean.FALSE);
+                        }
+                    });
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
+
+      /*  if (prefs.getBoolean("disableTetherProvisioning", false)) {
+            try {
+                disableTetherProvisioning();
+            } catch (Throwable e) {
+                XposedBridge.log(e);
 
             }
-        }
+        }*/
 
 		/*try {
 			final Class<?> NavigationbarColorPreference = XposedHelpers.findClass(Packages.SAMSUNG_SETTINGS + ".navigationbar.NavigationbarColorPreference", classLoader);
@@ -95,10 +145,10 @@ public class XSecSettingsPackage {
 			});
 
 		} catch (Throwable e) {
-			XposedBridge.log(e.toString());
+			XposedBridge.log(e);
 		}*/
 
-        try {
+        /*try {
             XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".qstile.SecAccountTiles", classLoader,
                     "showConfirmPopup", boolean.class, new XC_MethodHook() {
                         @Override
@@ -111,9 +161,9 @@ public class XSecSettingsPackage {
                     });
 
         } catch (Throwable e) {
-            XposedBridge.log(e.toString());
+            XposedBridge.log(e);
 
-        }
+        }*/
 
     }
 

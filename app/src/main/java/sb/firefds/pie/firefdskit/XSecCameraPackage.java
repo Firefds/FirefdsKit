@@ -24,7 +24,7 @@ public class XSecCameraPackage {
 
     private static ClassLoader classLoader;
 
-    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(final XSharedPreferences prefs, ClassLoader classLoader) {
 
         XSecCameraPackage.classLoader = classLoader;
 
@@ -32,7 +32,7 @@ public class XSecCameraPackage {
             try {
                 disableTemperatureChecks();
             } catch (Throwable e) {
-                XposedBridge.log(e.toString());
+                XposedBridge.log(e);
 
             }
         }
@@ -44,7 +44,7 @@ public class XSecCameraPackage {
             XposedHelpers.findAndHookMethod(Packages.CAMERA + ".CameraSettings", classLoader,
                     "isTemperatureHighToUseFlash", XC_MethodReplacement.returnConstant(false));
         } catch (Throwable e) {
-            XposedBridge.log(e.toString());
+            XposedBridge.log(e);
 
         }
 
@@ -52,7 +52,7 @@ public class XSecCameraPackage {
             XposedHelpers.findAndHookMethod(Packages.CAMERA + ".CameraSettings", classLoader,
                     "isTemperatureLowToUseFlash", XC_MethodReplacement.returnConstant(false));
         } catch (Throwable e) {
-            XposedBridge.log(e.toString());
+            XposedBridge.log(e);
 
         }
 
@@ -60,7 +60,7 @@ public class XSecCameraPackage {
             XposedHelpers.findAndHookMethod(Packages.CAMERA + ".CameraSettings", classLoader,
                     "isTemperatureHighToRecord", XC_MethodReplacement.returnConstant(false));
         } catch (Throwable e) {
-            XposedBridge.log(e.toString());
+            XposedBridge.log(e);
 
         }
     }

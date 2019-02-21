@@ -16,17 +16,17 @@ package sb.firefds.pie.firefdskit;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
-import sb.firefds.pie.firefdskit.utils.Packages;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
+import sb.firefds.pie.firefdskit.utils.Packages;
 
 public class XSecEmailPackage {
 
     private static ClassLoader classLoader;
 
-    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(final XSharedPreferences prefs, ClassLoader classLoader) {
 
         XSecEmailPackage.classLoader = classLoader;
 
@@ -34,7 +34,7 @@ public class XSecEmailPackage {
             try {
                 disableExchangeLockSecurity();
             } catch (Throwable e) {
-                XposedBridge.log(e.toString());
+                XposedBridge.log(e);
 
             }
         }

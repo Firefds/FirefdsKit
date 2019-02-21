@@ -29,7 +29,7 @@ public class XSystemWide {
             setSystemWideTweaks();
 
         } catch (Throwable e) {
-            XposedBridge.log(e.toString());
+            XposedBridge.log(e);
         }
 
     }
@@ -42,7 +42,7 @@ public class XSystemWide {
                 XResources.setSystemWideReplacement(Packages.ANDROID, "integer", "config_criticalBatteryWarningLevel",
                         1);*/
             } catch (Throwable e) {
-                XposedBridge.log(e.toString());
+                XposedBridge.log(e);
             }
         } else if (prefs.getInt("configCriticalBatteryWarningLevel", 5) != 5) {
             try {
@@ -51,7 +51,7 @@ public class XSystemWide {
                 XResources.setSystemWideReplacement(Packages.ANDROID, "integer", "config_lowBatteryCloseWarningLevel",
                         prefs.getInt("configCriticalBatteryWarningLevel", 5));*/
             } catch (Throwable e) {
-                XposedBridge.log(e.toString());
+                XposedBridge.log(e);
             }
         }
     }

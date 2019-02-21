@@ -47,8 +47,8 @@ import sb.firefds.pie.firefdskit.utils.Packages;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
 public class XGlobalActions {
-    public static final String CLASS_GLOBAL_ACTIONS = "com.android.systemui.globalactions.GlobalActionsDialog";
-    public static final String CLASS_ACTION = CLASS_GLOBAL_ACTIONS + ".Action";
+    public static final String CLASS_GLOBAL_ACTIONS = "com.android.server.policy.GlobalActions";
+    public static final String CLASS_ACTION = "com.android.internal.globalactions.Action";
 
     private static Context mContext;
     private static String mRebootConfirmStr;
