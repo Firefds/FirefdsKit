@@ -19,6 +19,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import java.util.Objects;
+
 import sb.firefds.pie.firefdskit.activities.WanamRebootActivity;
 import sb.firefds.pie.firefdskit.notifications.RebootNotification;
 
@@ -31,17 +33,18 @@ public class WanamRebootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        if (action.equalsIgnoreCase(REBOOT_DEVICE) || action.equalsIgnoreCase(SOFT_REBOOT_DEVICE)
+        if (Objects.requireNonNull(action).equalsIgnoreCase(REBOOT_DEVICE)
+                || action.equalsIgnoreCase(SOFT_REBOOT_DEVICE)
                 || action.equalsIgnoreCase(REBOOT_OPTIONS)) {
             RebootNotification.cancel(context);
             Intent rebootIntent = new Intent(context, WanamRebootActivity.class);
             Bundle b = new Bundle();
             if (action.equalsIgnoreCase(REBOOT_DEVICE)) {
-                b.putInt("reboot", 0);
+                b.putInt(REBOOT_DEVICE, 0);
             } else if (action.equalsIgnoreCase(SOFT_REBOOT_DEVICE)) {
-                b.putInt("reboot", 1);
+                b.putInt(REBOOT_DEVICE, 1);
             } else if (action.equalsIgnoreCase(REBOOT_OPTIONS)) {
-                b.putInt("reboot", 2);
+                b.putInt(REBOOT_DEVICE, 2);
             }
             rebootIntent.putExtras(b);
             rebootIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

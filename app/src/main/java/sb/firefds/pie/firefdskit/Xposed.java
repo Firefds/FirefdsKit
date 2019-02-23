@@ -14,8 +14,6 @@
  */
 package sb.firefds.pie.firefdskit;
 
-import java.io.File;
-
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -30,7 +28,6 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     private static String MODULE_PATH = null;
     private static XSharedPreferences prefs;
-    private static final File prefsFile = new File("/data/user/0/sb.firefds.pie.firefdskit/shared_prefs/XTouchWizActivity.xml");
 
     @Override
     public void initZygote(StartupParam startupParam) {
@@ -41,19 +38,11 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
         MODULE_PATH = startupParam.modulePath;
 
-        if (prefs == null) {
-            try {
-                prefs = new XSharedPreferences(prefsFile);
-                XposedBridge.log("Xposed: " + prefs.getFile().toString());
-                XposedBridge.log("Xposed Package: " + Xposed.class.getPackage().getName());
-            } catch (Throwable e) {
-                XposedBridge.log(e);
-            }
-        }
+        setModuleSharedPreferences();
     }
 
     @Override
-    public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
+    public void handleLoadPackage(LoadPackageParam lpparam) {
 
         // Do not load if Not a Touchwiz Rom
         if (!Utils.isSamsungRom())
@@ -75,13 +64,13 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
         if (lpparam.packageName.equals(Packages.ANDROID)) {
             /*try {
-                XPM23.initZygote(prefs, lpparam.classLoader);
+                XPM23.initZygote(lpparam.classLoader);
             } catch (Exception e1) {
                 XposedBridge.log(e1);
             }*/
 
             /*try {
-                XSystemWide.doHook(MODULE_PATH, prefs, lpparam.classLoader);
+                XSystemWide.doHook(prefs);
 
             } catch (Throwable e) {
                 XposedBridge.log(e);
@@ -94,7 +83,7 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             }
 
             try {
-                XFrameworkWidgetPackage.doHook(prefs, lpparam.classLoader);
+                XFrameworkWidgetPackage.doHook(prefs);
             } catch (Throwable e) {
                 XposedBridge.log(e);
             }
@@ -164,6 +153,15 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             } catch (Throwable e) {
                 XposedBridge.log(e);
             }
+        }
+    }
+
+    private static void setModuleSharedPreferences() {
+        if (prefs == null) {
+            prefs = new XSharedPreferences(BuildConfig.APPLICATION_ID);
+            prefs.makeWorldReadable();
+        } else {
+            prefs.reload();
         }
     }
 

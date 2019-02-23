@@ -23,7 +23,7 @@ import sb.firefds.pie.firefdskit.utils.Packages;
 
 public class XInCallUIPackage {
 
-    public static void doHook(final XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
         //Enable call recording
         try {
@@ -40,8 +40,12 @@ public class XInCallUIPackage {
                         }
                 }
             };*/
-            XposedHelpers.findAndHookMethod(Packages.INCALLUI + ".modal.feature.function.VoiceRecordingFeature", classLoader, "isEnabled",
-                    XC_MethodReplacement.returnConstant(prefs.getBoolean("enableCallAdd", false) ? Boolean.TRUE : Boolean.FALSE));
+            XposedHelpers.findAndHookMethod(
+                    Packages.INCALLUI + ".modal.feature.function.VoiceRecordingFeature",
+                    classLoader,
+                    "isEnabled",
+                    XC_MethodReplacement.returnConstant(prefs.getBoolean("enableCallAdd", false) ?
+                            Boolean.TRUE : Boolean.FALSE));
         } catch (Throwable e1) {
             XposedBridge.log(e1.toString());
         }
@@ -51,15 +55,18 @@ public class XInCallUIPackage {
             Object[] arrayOfObject = new Object[2];
             arrayOfObject[0] = String.class;
             arrayOfObject[1] = new XC_MethodHook() {
-                protected void beforeHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
-                    //prefs.reload();
-                    if (prefs.getBoolean("enableCallAdd", false) && prefs.getBoolean("enableCallRecordingMenu", false))
+                protected void beforeHookedMethod(XC_MethodHook.MethodHookParam param) {
+                    prefs.reload();
+                    if (prefs.getBoolean("enableCallAdd", false)
+                            && prefs.getBoolean("enableCallRecordingMenu", false))
                         if ("voice_call_recording_menu".equals(param.args[0])) {
                             param.setResult(Boolean.TRUE);
                         }
                 }
             };
-            XposedHelpers.findAndHookMethod(Packages.INCALLUI + ".InCallUIFeature", classLoader, "hasFeature",
+            XposedHelpers.findAndHookMethod(Packages.INCALLUI + ".InCallUIFeature",
+                    classLoader,
+                    "hasFeature",
                     arrayOfObject);
         } catch (Throwable e) {
             XposedBridge.log(e);
@@ -67,24 +74,33 @@ public class XInCallUIPackage {
 
         //Enable automatic call recording
         try {
-            final Class<?> mCallList = XposedHelpers.findClass(Packages.INCALLUI + ".CallList", classLoader);
+            final Class<?> mCallList =
+                    XposedHelpers.findClass(Packages.INCALLUI + ".CallList", classLoader);
 
-            XposedHelpers.findAndHookMethod(Packages.INCALLUI + ".InCallPresenter", classLoader,
-                    "processOnCallListChange", mCallList, new XC_MethodHook() {
+            XposedHelpers.findAndHookMethod(Packages.INCALLUI + ".InCallPresenter",
+                    classLoader,
+                    "processOnCallListChange",
+                    mCallList,
+                    new XC_MethodHook() {
 
                         @Override
-                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        protected void afterHookedMethod(MethodHookParam param) {
                             //prefs.reload();
                             if (prefs.getBoolean("enableAutoCallRecording", false)) {
-                                Object mCall = XposedHelpers.callMethod(param.args[0], "getFirstCall");
+                                Object mCall =
+                                        XposedHelpers.callMethod(param.args[0], "getFirstCall");
 
-                                Object mRecorderMgr = XposedHelpers.getObjectField(param.thisObject, "mRecorderMgr");
+                                Object mRecorderMgr =
+                                        XposedHelpers.getObjectField(param.thisObject, "mRecorderMgr");
 
                                 if (mRecorderMgr != null) {
 
-                                    Boolean mIsRecording = (Boolean) XposedHelpers.callMethod(mRecorderMgr, "isRecording");
+                                    Boolean mIsRecording =
+                                            (Boolean) XposedHelpers
+                                                    .callMethod(mRecorderMgr, "isRecording");
                                     if (mCall != null) {
-                                        int mState = (Integer) XposedHelpers.callMethod(mCall, "getState");
+                                        int mState = (Integer) XposedHelpers
+                                                .callMethod(mCall, "getState");
 
                                         if (mIsRecording && mState != 3) {// Recording on an Inactive Call
                                             XposedHelpers.callMethod(mRecorderMgr, "toggleRecord");

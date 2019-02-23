@@ -31,12 +31,11 @@ import sb.firefds.pie.firefdskit.utils.Packages;
 
 public class XAndroidPackage {
 
-    public static final String PHONE_WINDOW_MANAGER = "com.android.server.policy.PhoneWindowManager";
-    private static SharedPreferences  prefs;
+    private static SharedPreferences prefs;
     private static ClassLoader classLoader;
     private static Context mContext = null;
 
-    public static void doHook(final XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
         XAndroidPackage.prefs = prefs;
         XAndroidPackage.classLoader = classLoader;
@@ -64,7 +63,8 @@ public class XAndroidPackage {
     }
 
     private static void disableTIMA() {
-        final Class<?> mTimaService = XposedHelpers.findClass("com.android.server.TimaService", classLoader);
+        final Class<?> mTimaService = XposedHelpers.findClass("com.android.server.TimaService",
+                classLoader);
 
         XposedHelpers.findAndHookMethod(mTimaService, "checkEvent", int.class, int.class,
                 XC_MethodReplacement.returnConstant(null));
@@ -76,15 +76,23 @@ public class XAndroidPackage {
                 + ".os.CustomFrequencyManager", classLoader);
 
         try {
-            XposedHelpers.findAndHookMethod(mCustomFrequencyManager, "newFrequencyRequest", int.class, int.class,
-                    long.class, String.class, Context.class, new XC_MethodHook() {
+            XposedHelpers.findAndHookMethod(mCustomFrequencyManager,
+                    "newFrequencyRequest",
+                    int.class,
+                    int.class,
+                    long.class,
+                    String.class,
+                    Context.class,
+                    new XC_MethodHook() {
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                             if (mContext == null) {
-                                mContext = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
+                                mContext = (Context) XposedHelpers.getObjectField(param.thisObject,
+                                        "mContext");
                             }
                             if (mContext != null) {
-                                PowerManager pm = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
+                                PowerManager pm = (PowerManager) mContext
+                                        .getSystemService(Context.POWER_SERVICE);
                                 if (!pm.isPowerSaveMode()) {
                                     param.setResult(null);
                                 }
@@ -102,8 +110,14 @@ public class XAndroidPackage {
                 + ".os.CustomFrequencyManager", classLoader);
 
         try {
-            XposedHelpers.findAndHookMethod(mCustomFrequencyManager, "newFrequencyRequest", int.class, int.class,
-                    long.class, String.class, Context.class, new XC_MethodHook() {
+            XposedHelpers.findAndHookMethod(mCustomFrequencyManager,
+                    "newFrequencyRequest",
+                    int.class,
+                    int.class,
+                    long.class,
+                    String.class,
+                    Context.class,
+                    new XC_MethodHook() {
 
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -115,16 +129,20 @@ public class XAndroidPackage {
                                 }
 
                                 if (mContext != null) {
-                                    PowerManager pm = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
+                                    PowerManager pm = (PowerManager) mContext
+                                            .getSystemService(Context.POWER_SERVICE);
                                     if (!pm.isPowerSaveMode()) {
                                         @SuppressWarnings("deprecation")
                                         List<RunningTaskInfo> list = ((ActivityManager) mContext
-                                                .getSystemService(Context.ACTIVITY_SERVICE)).getRunningTasks(1);
+                                                .getSystemService(Context.ACTIVITY_SERVICE))
+                                                .getRunningTasks(1);
                                         if (list != null && list.size() > 0) {
                                             pkg = list.get(0).topActivity.getPackageName();
                                         }
 
-                                        if (pkg != null && prefs.getString("enableDVFSBlackList", "").contains(pkg)) {
+                                        if (pkg != null &&
+                                                prefs.getString("enableDVFSBlackList", "")
+                                                        .contains(pkg)) {
                                             param.setResult(null);
                                             return;
                                         }

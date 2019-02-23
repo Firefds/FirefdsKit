@@ -59,22 +59,12 @@
                 <action android:name="ma.wanam.xposed.action.SHOW_TOAST" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name="sb.firefds.pie.firefdskit.receivers.WanamRebootReceiver"
-            android:exported="false">
-            <intent-filter android:priority="1000">
-                <action android:name="ma.wanam.xposed.action.REBOOT_DEVICE" />
-                <action android:name="ma.wanam.xposed.action.SOFT_REBOOT_DEVICE" />
-                <action android:name="ma.wanam.xposed.action.REBOOT_OPTIONS" />
-            </intent-filter>
-        </receiver>
 
         <activity
             android:name="sb.firefds.pie.firefdskit.activities.WanamRebootActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:label="@string/rebooting_"
-            android:theme="@android:style/Theme.DeviceDefault.Dialog">
-        </activity>
+            android:theme="@android:style/Theme.DeviceDefault.Dialog" />
     </application>
 
 </manifest>

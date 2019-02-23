@@ -21,7 +21,7 @@ public class XSystemWide {
 
     private static XSharedPreferences prefs;
 
-    public static void doHook(String modulePath, XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(XSharedPreferences prefs) {
 
         XSystemWide.prefs = prefs;
 

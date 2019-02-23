@@ -19,6 +19,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 import sb.firefds.pie.firefdskit.R;
 
 public class WanamToastReceiver extends BroadcastReceiver {
@@ -28,9 +30,10 @@ public class WanamToastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        if (action.equalsIgnoreCase(SHOW_TOAST)) {
+        if (Objects.requireNonNull(action).equalsIgnoreCase(SHOW_TOAST)) {
             Toast.makeText(context,
-                    context.getResources().getString(R.string.killed_) + intent.getStringExtra("processName"),
+                    context.getResources()
+                            .getString(R.string.killed_) + intent.getStringExtra("processName"),
                     Toast.LENGTH_SHORT).show();
 
         }

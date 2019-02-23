@@ -13,16 +13,14 @@ public class XSysUINotificationPanelPackage {
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
         try {
-            XposedBridge.log("Perf Boolean out: " + prefs.getBoolean("hideCarrierLabel", false));
             XposedHelpers.findAndHookMethod("com.android.keyguard.CarrierText",
                     classLoader, "updateCarrierText",
                     new XC_MethodHook() {
                         @Override
-                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        protected void afterHookedMethod(MethodHookParam param) {
                             TextView tvCarrier = (TextView) param.thisObject;
 
                             prefs.reload();
-                            XposedBridge.log("Perf Boolean: " + prefs.getBoolean("hideCarrierLabel", false));
                             if (prefs.getBoolean("hideCarrierLabel", false)) {
                                 tvCarrier.setText(" ");
                             }
@@ -39,7 +37,7 @@ public class XSysUINotificationPanelPackage {
                                 textSize = 20;
                             }
                             tvCarrier.setTextSize(textSize);
-                            tvCarrier = Utils.setTypeface(prefs, tvCarrier);
+                            Utils.setTypeface(prefs, tvCarrier);
                         }
                     });
         } catch (Throwable e) {

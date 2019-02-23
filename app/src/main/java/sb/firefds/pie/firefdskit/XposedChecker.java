@@ -14,9 +14,9 @@
  */
 package sb.firefds.pie.firefdskit;
 
-public class XposedChecker {
+class XposedChecker {
 
-    public static Boolean isActive() {
+    static Boolean isActive() {
         return Boolean.FALSE;
     }
 }

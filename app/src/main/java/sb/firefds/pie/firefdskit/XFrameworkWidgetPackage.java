@@ -24,7 +24,7 @@ import static de.robv.android.xposed.XposedHelpers.findClass;
 
 public class XFrameworkWidgetPackage {
 
-    public static void doHook(final XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(final XSharedPreferences prefs) {
 
         if (prefs.getBoolean("disableScrollingCache", false)) {
             try {
@@ -43,7 +43,7 @@ public class XFrameworkWidgetPackage {
                     new XC_MethodHook() {
 
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        protected void beforeHookedMethod(MethodHookParam param) {
                             param.args[0] = false;
                         }
 

@@ -33,11 +33,8 @@ public class RebootNotification {
 
     private static final String NOTIFICATION_TAG = "RebootNotification";
 
-    private static int number = 0;
-
     @SuppressLint("NewApi")
     public static void notify(final Context context, final int n, boolean showSoftReboot) {
-        number = n;
 
         final Resources res = context.getResources();
 
@@ -55,39 +52,48 @@ public class RebootNotification {
                 .setPriority(Notification.PRIORITY_DEFAULT)
                 .setLargeIcon(picture)
                 .setTicker(ticker)
-                .setNumber(number)
+                .setNumber(n)
                 .setWhen(0)
-                .setContentIntent(
-                        PendingIntent.getActivity(context, 0, new Intent(context, XTouchWizActivity.class),
-                                PendingIntent.FLAG_UPDATE_CURRENT))
-                .setStyle(
-                        new Notification.BigTextStyle().bigText(text).setBigContentTitle(title)
-                                .setSummaryText(context.getString(R.string.pending_changes))).setAutoCancel(true);
+                .setContentIntent(PendingIntent.getActivity(context,
+                        0,
+                        new Intent(context, XTouchWizActivity.class),
+                        PendingIntent.FLAG_UPDATE_CURRENT))
+                .setStyle(new Notification.BigTextStyle()
+                        .bigText(text)
+                        .setBigContentTitle(title)
+                        .setSummaryText(context.getString(R.string.pending_changes)))
+                .setAutoCancel(true);
 
-        builder.addAction(new Action.Builder(Icon.createWithResource(context, android.R.drawable.ic_menu_rotate), res
-                .getString(R.string.reboot), PendingIntent.getBroadcast(context, 1337, new Intent(
-                "ma.wanam.xposed.action.REBOOT_DEVICE"), PendingIntent.FLAG_UPDATE_CURRENT)).build());
+        builder.addAction(new Action.Builder(Icon.createWithResource(context,
+                android.R.drawable.ic_menu_rotate),
+                res.getString(R.string.reboot),
+                PendingIntent.getBroadcast(context,
+                        1337,
+                        new Intent("ma.wanam.xposed.action.REBOOT_DEVICE"),
+                        PendingIntent.FLAG_UPDATE_CURRENT))
+                .build());
 
         if (showSoftReboot) {
             new Action.Builder(Icon.createWithResource(context, android.R.drawable.ic_menu_rotate),
-                    res.getString(R.string.soft_reboot), PendingIntent.getBroadcast(context, 1337, new Intent(
-                    "ma.wanam.xposed.action.SOFT_REBOOT_DEVICE"), PendingIntent.FLAG_UPDATE_CURRENT));
+                    res.getString(R.string.soft_reboot),
+                    PendingIntent.getBroadcast(context,
+                            1337,
+                            new Intent("ma.wanam.xposed.action.SOFT_REBOOT_DEVICE"),
+                            PendingIntent.FLAG_UPDATE_CURRENT));
         }
 
         notify(context, builder.build());
     }
 
     private static void notify(final Context context, final Notification notification) {
-        final NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        final NotificationManager nm =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(NOTIFICATION_TAG, 0, notification);
     }
 
     public static void cancel(final Context context) {
-        final NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        final NotificationManager nm =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancel(NOTIFICATION_TAG, 0);
-    }
-
-    public static int getNumber() {
-        return number;
     }
 }

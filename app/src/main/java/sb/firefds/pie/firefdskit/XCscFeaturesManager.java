@@ -40,19 +40,23 @@ import sb.firefds.pie.firefdskit.utils.Constants;
 import sb.firefds.pie.firefdskit.utils.Utils;
 import sb.firefds.pie.firefdskit.utils.Utils.SuTask;
 
-public class XCscFeaturesManager {
+class XCscFeaturesManager {
 
     private static final String RO_BUILD_PDA = "ro.build.PDA";
-    private final static String SYSTEM_CSC_SALES_CODE_DAT = Utils.getCSCType().equals(Utils.CscType.OMC_OMC) ? "/system/omc/sales_code.dat" : "/system/csc/sales_code.dat";
-    private static final String SYSTEM_CSC_VERSION_TXT = Utils.getCSCType().equals(Utils.CscType.OMC_OMC) ? "/system/omc/CSCVersion.txt" : "/system/CSCVersion.txt";
+    private final static String SYSTEM_CSC_SALES_CODE_DAT =
+            Utils.getCSCType().equals(Utils.CscType.OMC_OMC) ?
+                    "/system/omc/sales_code.dat" : "/system/csc/sales_code.dat";
+    private static final String SYSTEM_CSC_VERSION_TXT =
+            Utils.getCSCType().equals(Utils.CscType.OMC_OMC) ?
+                    "/system/omc/CSCVersion.txt" : "/system/CSCVersion.txt";
     private static ArrayList<FeatureDTO> defaultFeatureDTOs;
     private static String version = "";
     private static String country = "";
     private static String countryISO = "";
     private static String salesCode = "";
 
-    public static void applyCscFeatures(SharedPreferences prefs) {
-        StringBuffer features = new StringBuffer();
+    static void applyCscFeatures(SharedPreferences prefs) {
+        StringBuilder features = new StringBuilder();
         ArrayList<FeatureDTO> featuresDTOList;
 
         try {
@@ -64,25 +68,39 @@ public class XCscFeaturesManager {
             featuresDTOList = getCscFeaturesList(prefs);
 
             for (FeatureDTO featureDTO : featuresDTOList) {
-                features.append("\t\t<" + featureDTO.getfeatureCode() + ">" + featureDTO.getFeatureValue() + "</"
-                        + featureDTO.getfeatureCode() + ">\n");
+                features.append("\t\t<")
+                        .append(featureDTO.getfeatureCode())
+                        .append(">")
+                        .append(featureDTO.getFeatureValue())
+                        .append("</")
+                        .append(featureDTO.getfeatureCode())
+                        .append(">\n");
             }
 
             if (defaultFeatureDTOs != null && defaultFeatureDTOs.size() > 0) {
                 for (FeatureDTO defaultFeatureDTO : defaultFeatureDTOs) {
                     if (features.indexOf(defaultFeatureDTO.getfeatureCode()) < 0) {
-                        features.append("\t\t<" + defaultFeatureDTO.getfeatureCode() + ">"
-                                + defaultFeatureDTO.getFeatureValue() + "</" + defaultFeatureDTO.getfeatureCode()
-                                + ">\n");
+                        features.append("\t\t<")
+                                .append(defaultFeatureDTO.getfeatureCode())
+                                .append(">")
+                                .append(defaultFeatureDTO.getFeatureValue())
+                                .append("</")
+                                .append(defaultFeatureDTO.getfeatureCode())
+                                .append(">\n");
                     }
                 }
             }
 
-            applyCSCFeatures(Constants.FEATURES_LIST_HEADER1 + (version.isEmpty() ? "ED0001" : version)
-                    + Constants.FEATURES_LIST_HEADER2 + (country.isEmpty() ? "UNITED KINGDOM" : country)
-                    + Constants.FEATURES_LIST_HEADER3 + (countryISO.isEmpty() ? "GB" : countryISO)
-                    + Constants.FEATURES_LIST_HEADER4 + (salesCode.isEmpty() ? "BTU" : salesCode)
-                    + Constants.FEATURES_LIST_HEADER5 + features + Constants.FEATURES_LIST_FOOTER);
+            applyCSCFeatures(Constants.FEATURES_LIST_HEADER1
+                    + (version.isEmpty() ? "ED0001" : version)
+                    + Constants.FEATURES_LIST_HEADER2
+                    + (country.isEmpty() ? "UNITED KINGDOM" : country)
+                    + Constants.FEATURES_LIST_HEADER3
+                    + (countryISO.isEmpty() ? "GB" : countryISO)
+                    + Constants.FEATURES_LIST_HEADER4
+                    + (salesCode.isEmpty() ? "BTU" : salesCode)
+                    + Constants.FEATURES_LIST_HEADER5
+                    + features + Constants.FEATURES_LIST_FOOTER);
             new SuTask().execute("echo " + (salesCode.isEmpty() ? "BTU" : salesCode) + " > "
                     + SYSTEM_CSC_SALES_CODE_DAT);
 
@@ -113,96 +131,130 @@ public class XCscFeaturesManager {
     }
 
     /**
-     * @param prefs
+     * @param prefs CSC Preference
      */
     private static ArrayList<FeatureDTO> getCscFeaturesList(SharedPreferences prefs) {
-        ArrayList<FeatureDTO> featuresDTOList = new ArrayList<FeatureDTO>();
+        ArrayList<FeatureDTO> featuresDTOList = new ArrayList<>();
 
         // Call button
         if (prefs.getBoolean("enableCallButtonLogs", false)) {
-            featuresDTOList.add(new FeatureDTO("CscFeature_VoiceCall_EnableCallButtonInFdnList", "TRUE"));
-            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_EnableCallButtonInList", "TRUE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_VoiceCall_EnableCallButtonInFdnList",
+                    "TRUE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_EnableCallButtonInList",
+                    "TRUE"));
         } else {
-            featuresDTOList.add(new FeatureDTO("CscFeature_VoiceCall_EnableCallButtonInFdnList", "FALSE"));
-            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_EnableCallButtonInList", "FALSE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_VoiceCall_EnableCallButtonInFdnList",
+                    "FALSE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_EnableCallButtonInList",
+                    "FALSE"));
         }
 
         // Account icons
         if (prefs.getBoolean("disableAccountIconsList", false))
-            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_DisableAccountIconsInContactList", "TRUE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_DisableAccountIconsInContactList",
+                    "TRUE"));
         else
-            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_DisableAccountIconsInContactList", "FALSE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_DisableAccountIconsInContactList",
+                    "FALSE"));
 
         // Email App BG
         if (prefs.getBoolean("enableWhiteEmailBackgroung", true)) {
-            featuresDTOList.add(new FeatureDTO("CscFeature_Email_UseFixedBgColorAsWhite", "TRUE"));
-            featuresDTOList.add(new FeatureDTO("CscFeature_Email_BackgroundColorWhite", "TRUE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Email_UseFixedBgColorAsWhite",
+                    "TRUE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Email_BackgroundColorWhite",
+                    "TRUE"));
         } else {
-            featuresDTOList.add(new FeatureDTO("CscFeature_Email_UseFixedBgColorAsWhite", "FALSE"));
-            featuresDTOList.add(new FeatureDTO("CscFeature_Email_BackgroundColorWhite", "FALSE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Email_UseFixedBgColorAsWhite",
+                    "FALSE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Email_BackgroundColorWhite",
+                    "FALSE"));
         }
 
         // Messaging
         if (prefs.getBoolean("forceMMSConnect", false))
-            featuresDTOList.add(new FeatureDTO("CscFeature_RIL_ForceConnectMMS", "TRUE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_RIL_ForceConnectMMS",
+                    "TRUE"));
         else
-            featuresDTOList.add(new FeatureDTO("CscFeature_RIL_ForceConnectMMS", "FALSE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_RIL_ForceConnectMMS",
+                    "FALSE"));
 
         if (prefs.getBoolean("enableSaveRestore", true))
-            featuresDTOList.add(new FeatureDTO("CscFeature_Message_EnableSaveRestoreSDCard", "TRUE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Message_EnableSaveRestoreSDCard",
+                    "TRUE"));
         else
-            featuresDTOList.add(new FeatureDTO("CscFeature_Message_EnableSaveRestoreSDCard", "FALSE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Message_EnableSaveRestoreSDCard",
+                    "FALSE"));
 
         if (prefs.getBoolean("disableSmsToMmsConversion", false)) {
-            featuresDTOList.add(new FeatureDTO("CscFeature_Message_DisableSmsToMmsConversionByTextInput", "TRUE"));
-            featuresDTOList.add(new FeatureDTO("CscFeature_Message_SmsMaxByte", "999"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Message_DisableSmsToMmsConversionByTextInput",
+                    "TRUE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Message_SmsMaxByte",
+                    "999"));
         } else {
-            featuresDTOList.add(new FeatureDTO("CscFeature_Message_DisableSmsToMmsConversionByTextInput", "FALSE"));
-            featuresDTOList.add(new FeatureDTO("CscFeature_Message_SmsMaxByte", "140"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Message_DisableSmsToMmsConversionByTextInput",
+                    "FALSE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Message_SmsMaxByte",
+                    "140"));
         }
-        featuresDTOList.add(new FeatureDTO("CscFeature_Message_MaxRecipientLengthAs", "999"));
+        featuresDTOList.add(new FeatureDTO("CscFeature_Message_MaxRecipientLengthAs",
+                "999"));
 
         // Browser Terminate button
         if (prefs.getBoolean("addBrowserTerminateButton", false))
-            featuresDTOList.add(new FeatureDTO("CscFeature_Web_AddOptionToTerminate", "TRUE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Web_AddOptionToTerminate",
+                    "TRUE"));
         else
-            featuresDTOList.add(new FeatureDTO("CscFeature_Web_AddOptionToTerminate", "FALSE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Web_AddOptionToTerminate",
+                    "FALSE"));
 
         // Wifi AP Clients
         featuresDTOList
-                .add(new FeatureDTO("CscFeature_Wifi_MaxClient4MobileAp", "" + prefs.getInt("wifiAPClients", 4)));
+                .add(new FeatureDTO("CscFeature_Wifi_MaxClient4MobileAp",
+                        "" + prefs.getInt("wifiAPClients", 4)));
 
         // Contacts
         if (prefs.getBoolean("unlimittedContactsJoining", false))
-            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_SetLinkCountMaxAs", "999"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_SetLinkCountMaxAs",
+                    "999"));
         else
-            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_SetLinkCountMaxAs", "5"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_SetLinkCountMaxAs",
+                    "5"));
 
         if (prefs.getBoolean("useSeparateAddressField", false))
-            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_UseSeparateAddressField", "TRUE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_UseSeparateAddressField",
+                    "TRUE"));
         else
-            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_UseSeparateAddressField", "FALSE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_UseSeparateAddressField",
+                    "FALSE"));
 
         if (prefs.getBoolean("disableNumberFormating", false))
-            featuresDTOList.add(new FeatureDTO("CscFeature_Common_DisablePhoneNumberFormatting", "TRUE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Common_DisablePhoneNumberFormatting",
+                    "TRUE"));
         else
-            featuresDTOList.add(new FeatureDTO("CscFeature_Common_DisablePhoneNumberFormatting", "FALSE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Common_DisablePhoneNumberFormatting",
+                    "FALSE"));
 
         // Lockscreen
         if (prefs.getBoolean("disableLockedAdb", false))
-            featuresDTOList.add(new FeatureDTO("CscFeature_LockScreen_DisableADBConnDuringSecuredLock", "TRUE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_LockScreen_DisableADBConnDuringSecuredLock",
+                    "TRUE"));
         else
-            featuresDTOList.add(new FeatureDTO("CscFeature_LockScreen_DisableADBConnDuringSecuredLock", "FALSE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_LockScreen_DisableADBConnDuringSecuredLock",
+                    "FALSE"));
 
         // Camera
         if (prefs.getBoolean("enableCameraDuringCall", false))
-            featuresDTOList.add(new FeatureDTO("CscFeature_Camera_EnableCameraDuringCall", "TRUE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Camera_EnableCameraDuringCall",
+                    "TRUE"));
         else
-            featuresDTOList.add(new FeatureDTO("CscFeature_Camera_EnableCameraDuringCall", "FALSE"));
+            featuresDTOList.add(new FeatureDTO("CscFeature_Camera_EnableCameraDuringCall",
+                    "FALSE"));
 
-        featuresDTOList.add(new FeatureDTO("CscFeature_Camera_CamcoderForceShutterSoundDuringSnapShot", "FALSE"));
+        featuresDTOList.add(new FeatureDTO("CscFeature_Camera_CamcoderForceShutterSoundDuringSnapShot",
+                "FALSE"));
 
-        featuresDTOList.add(new FeatureDTO("CscFeature_Camera_ShutterSoundMenu", "TRUE"));
+        featuresDTOList.add(new FeatureDTO("CscFeature_Camera_ShutterSoundMenu",
+                "TRUE"));
 
         return featuresDTOList;
     }
@@ -213,13 +265,14 @@ public class XCscFeaturesManager {
 
     private static class CSCFeaturesTask extends AsyncTask<String, Void, Void> {
         private OutputStream out = null;
-        private File featureXML = new File(MainApplication.getAppContext().getCacheDir(), Constants.FEATURE_XML);
+        private File featureXML = new File(MainApplication.getAppContext().getCacheDir(),
+                Constants.FEATURE_XML);
 
         protected Void doInBackground(String... params) {
             try {
 
                 out = new FileOutputStream(featureXML);
-                out.write(((String) params[0]).getBytes());
+                out.write(params[0].getBytes());
 
             } catch (Throwable e) {
                 e.printStackTrace();
@@ -246,18 +299,17 @@ public class XCscFeaturesManager {
             }
             super.onPostExecute(result);
         }
-
     }
 
-    public static void getDefaultCSCFeatures() {
+    static void getDefaultCSCFeatures() {
 
-        defaultFeatureDTOs = new ArrayList<FeatureDTO>();
+        defaultFeatureDTOs = new ArrayList<>();
 
         try {
 
-            List<FeatureDTO> cscDTOList = new ArrayList<FeatureDTO>();
-            SemCscFeature mCscFeature = null;
-            Field fieldFeatureList = null;
+            List<FeatureDTO> cscDTOList = new ArrayList<>();
+            SemCscFeature mCscFeature;
+            Field fieldFeatureList;
 
             mCscFeature = SemCscFeature.getInstance();
 
@@ -266,15 +318,19 @@ public class XCscFeaturesManager {
             countryISO = mCscFeature.getString("CountryISO");
             salesCode = mCscFeature.getString("SalesCode");
 
-            String[] classes = MainApplication.getAppContext().getResources().getStringArray(R.array.categories_list);
+            String[] classes = MainApplication
+                    .getAppContext()
+                    .getResources()
+                    .getStringArray(R.array.categories_list);
 
             fieldFeatureList = SemCscFeature.class.getDeclaredField("mFeatureList");
             fieldFeatureList.setAccessible(true);
 
             for (String classFeatureName : classes) {
                 try {
-                    Class<?> cscClass = Class.forName("com.sec.android.app.CscFeatureTag" + classFeatureName);
-                    Object someclass = cscClass.newInstance();
+                    Class<?> cscClass
+                            = Class.forName("com.sec.android.app.CscFeatureTag" + classFeatureName);
+                    Object someClass = cscClass.newInstance();
 
                     Field[] fields = cscClass.getDeclaredFields();
 
@@ -282,9 +338,11 @@ public class XCscFeaturesManager {
                         try {
                             field.setAccessible(true);
                             if (field.getType().equals(String.class)) {
-                                String fieldValue = (String) field.get(someclass);
+                                String fieldValue = (String) field.get(someClass);
                                 String value = mCscFeature.getString(fieldValue);
-                                if (fieldValue != null && fieldValue.startsWith("CscFeature_") && !value.isEmpty()) {
+                                if (fieldValue != null
+                                        && fieldValue.startsWith("CscFeature_")
+                                        && !value.isEmpty()) {
                                     cscDTOList.add(new FeatureDTO(fieldValue, value));
                                 }
                             }
@@ -298,20 +356,18 @@ public class XCscFeaturesManager {
                 } catch (Throwable e) {
                     e.printStackTrace();
                 }
-
             }
 
             defaultFeatureDTOs.addAll(cscDTOList);
         } catch (Throwable e) {
             e.printStackTrace();
         }
-
     }
 
-    public static void getDefaultCSCFeaturesFromFiles() {
+    static void getDefaultCSCFeaturesFromFiles() {
 
-        XmlPullParserFactory factory = null;
-        XmlPullParser p = null;
+        XmlPullParserFactory factory;
+        XmlPullParser p;
         DefaultCSCCollector tc = new DefaultCSCCollector();
         InputStream is = null;
 
@@ -327,7 +383,7 @@ public class XCscFeaturesManager {
                         is = new FileInputStream(cscFile);
                         p.setInput(is, "UTF-8");
 
-                        skipToTag(p, XmlPullParser.START_TAG);
+                        skipToTag(p);
                         processTag(p, p.getName(), tc);
 
                     } catch (Throwable e) {
@@ -346,9 +402,7 @@ public class XCscFeaturesManager {
                 } catch (Throwable e2) {
                     e2.printStackTrace();
                 }
-
         }
-
     }
 
     private static void processTag(XmlPullParser p, String tag, TagProcessor tp) throws IOException,
@@ -367,24 +421,23 @@ public class XCscFeaturesManager {
         p.require(XmlPullParser.END_TAG, null, tag);
     }
 
-    private static int skipToTag(XmlPullParser p, int tag) throws IOException, XmlPullParserException {
+    private static void skipToTag(XmlPullParser p) throws IOException, XmlPullParserException {
         int nextEvent = p.next();
-        while (nextEvent != tag && nextEvent != XmlPullParser.END_DOCUMENT) {
+        while (nextEvent != XmlPullParser.START_TAG && nextEvent != XmlPullParser.END_DOCUMENT) {
             nextEvent = p.next();
         }
-        return nextEvent;
     }
 }
 
 interface TagProcessor {
-    public void processTag(XmlPullParser p, String tag) throws IOException, XmlPullParserException;
+    void processTag(XmlPullParser p, String tag) throws IOException, XmlPullParserException;
 }
 
 class DefaultCSCCollector implements TagProcessor {
     private ArrayList<FeatureDTO> defaultFeatures;
 
-    public DefaultCSCCollector() {
-        defaultFeatures = new ArrayList<FeatureDTO>();
+    DefaultCSCCollector() {
+        defaultFeatures = new ArrayList<>();
     }
 
     public void processTag(XmlPullParser p, String tag) throws IOException, XmlPullParserException {
@@ -393,7 +446,7 @@ class DefaultCSCCollector implements TagProcessor {
         }
     }
 
-    public ArrayList<FeatureDTO> defaultFeatures() {
+    ArrayList<FeatureDTO> defaultFeatures() {
         return defaultFeatures;
     }
 }

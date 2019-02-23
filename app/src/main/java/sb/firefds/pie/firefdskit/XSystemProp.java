@@ -30,7 +30,8 @@ public class XSystemProp {
         String ret;
 
         try {
-            Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
+            Class<?> classSystemProperties =
+                    findClass("android.os.SystemProperties", null);
             ret = (String) callStaticMethod(classSystemProperties, "get", key);
         } catch (Throwable t) {
             t.printStackTrace();
@@ -48,7 +49,8 @@ public class XSystemProp {
         String ret = def;
 
         try {
-            Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
+            Class<?> classSystemProperties =
+                    findClass("android.os.SystemProperties", null);
             ret = (String) callStaticMethod(classSystemProperties, "get", key, def);
         } catch (Throwable t) {
             t.printStackTrace();
@@ -66,7 +68,8 @@ public class XSystemProp {
         Integer ret = def;
 
         try {
-            Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
+            Class<?> classSystemProperties =
+                    findClass("android.os.SystemProperties", null);
             ret = (Integer) callStaticMethod(classSystemProperties, "getInt", key, def);
         } catch (Throwable t) {
             t.printStackTrace();
@@ -84,7 +87,8 @@ public class XSystemProp {
         Long ret = def;
 
         try {
-            Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
+            Class<?> classSystemProperties =
+                    findClass("android.os.SystemProperties", null);
             ret = (Long) callStaticMethod(classSystemProperties, "getLong", key, def);
         } catch (Throwable t) {
             t.printStackTrace();
@@ -107,7 +111,8 @@ public class XSystemProp {
         Boolean ret = def;
 
         try {
-            Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
+            Class<?> classSystemProperties =
+                    findClass("android.os.SystemProperties", null);
             ret = (Boolean) callStaticMethod(classSystemProperties, "getBoolean", key, def);
         } catch (Throwable t) {
             t.printStackTrace();
@@ -119,7 +124,8 @@ public class XSystemProp {
     // Set the value for the given key
     public static void set(String key, String val) {
         try {
-            Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
+            Class<?> classSystemProperties =
+                    findClass("android.os.SystemProperties", null);
             callStaticMethod(classSystemProperties, "set", key, val);
         } catch (Throwable t) {
             t.printStackTrace();

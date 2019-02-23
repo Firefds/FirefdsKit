@@ -35,7 +35,7 @@ public class XNfcPackage {
                     boolean.class,
                     new XC_MethodHook() {
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        protected void beforeHookedMethod(MethodHookParam param) {
 
                             if ((Boolean) XposedHelpers.callMethod(param.thisObject,
                                     "isNfcEnabled")) {
@@ -56,37 +56,45 @@ public class XNfcPackage {
                     boolean.class,
                     new XC_MethodHook() {
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                           // prefs.reload();
+                        protected void beforeHookedMethod(MethodHookParam param) {
+                            // prefs.reload();
                             behavior = prefs.getInt("nfcBehavior", 0);
                             if (behavior != 0) {
-                                final Object mScreenStateHelper = XposedHelpers.getObjectField(param.thisObject,
-                                        "mScreenStateHelper");
-                                final int currScreenState = (Integer) XposedHelpers.callMethod(mScreenStateHelper,
-                                        "checkScreenState");
+                                final Object mScreenStateHelper = XposedHelpers
+                                        .getObjectField(param.thisObject, "mScreenStateHelper");
+                                final int currScreenState = (Integer) XposedHelpers
+                                        .callMethod(mScreenStateHelper, "checkScreenState");
                                 if ((currScreenState == SCREEN_STATE_ON_UNLOCKED)
                                         || (behavior == 1 && currScreenState != SCREEN_STATE_ON_LOCKED)) {
-                                    XposedHelpers.setAdditionalInstanceField(param.thisObject, "mOrigScreenState", -1);
+                                    XposedHelpers.setAdditionalInstanceField(param.thisObject,
+                                            "mOrigScreenState",
+                                            -1);
                                     return;
                                 }
 
                                 synchronized (param.thisObject) {
-                                    XposedHelpers.setAdditionalInstanceField(param.thisObject, "mOrigScreenState",
-                                            XposedHelpers.getIntField(param.thisObject, "mScreenState"));
-                                    XposedHelpers.setIntField(param.thisObject, "mScreenState", SCREEN_STATE_ON_UNLOCKED);
+                                    XposedHelpers.setAdditionalInstanceField(param.thisObject,
+                                            "mOrigScreenState",
+                                            XposedHelpers
+                                                    .getIntField(param.thisObject, "mScreenState"));
+                                    XposedHelpers.setIntField(param.thisObject,
+                                            "mScreenState",
+                                            SCREEN_STATE_ON_UNLOCKED);
                                 }
                             }
                         }
 
                         @Override
-                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                            final int mOrigScreenState = (Integer) XposedHelpers.getAdditionalInstanceField(
-                                    param.thisObject, "mOrigScreenState");
+                        protected void afterHookedMethod(MethodHookParam param) {
+                            final int mOrigScreenState = (Integer) XposedHelpers
+                                    .getAdditionalInstanceField(param.thisObject, "mOrigScreenState");
                             if (mOrigScreenState == -1)
                                 return;
 
                             synchronized (param.thisObject) {
-                                XposedHelpers.setIntField(param.thisObject, "mScreenState", mOrigScreenState);
+                                XposedHelpers.setIntField(param.thisObject,
+                                        "mScreenState",
+                                        mOrigScreenState);
                             }
                         }
 

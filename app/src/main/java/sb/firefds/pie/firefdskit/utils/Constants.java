@@ -14,22 +14,27 @@
  */
 package sb.firefds.pie.firefdskit.utils;
 
+import sb.firefds.pie.firefdskit.BuildConfig;
 import sb.firefds.pie.firefdskit.utils.Utils.CscType;
 
 public class Constants {
 
     public static final String BACKUP_DIR = ".XTouchWiz";
-    public static final String PREFS = Packages.FIREFDSKIT + "_preferences";
+    public static final String PREFS = BuildConfig.APPLICATION_ID + "_preferences";
 
-    public static final String FEATURE_XML = Utils.getCSCType().equals(CscType.CSC) ? "feature.xml" : "cscfeature.xml";
+    public static final String FEATURE_XML = Utils.getCSCType().equals(CscType.CSC) ?
+            "feature.xml" : "cscfeature.xml";
     public static final String REBOOT_DEVICE = "reboot";
 
-    public static final String SYSTEM_CSC_FEATURE_XML = Utils.getCSCType().equals(CscType.OMC_OMC) ? Utils.getOMCPath() + "/" + FEATURE_XML : "/system/csc/" + FEATURE_XML;
-    public static final String SYSTEM_CSC_FEATURE_BKP = Utils.getCSCType().equals(CscType.OMC_OMC) ? Utils.getOMCPath() + "/" + FEATURE_XML + ".bak" : "/system/csc/" + FEATURE_XML + ".bak";
+    public static final String SYSTEM_CSC_FEATURE_XML = Utils.getCSCType().equals(CscType.OMC_OMC) ?
+            Utils.getOMCPath() + "/" + FEATURE_XML : "/system/csc/" + FEATURE_XML;
+    public static final String SYSTEM_CSC_FEATURE_BKP = Utils.getCSCType().equals(CscType.OMC_OMC) ?
+            Utils.getOMCPath() + "/" + FEATURE_XML + ".bak" : "/system/csc/" + FEATURE_XML + ".bak";
 
     public static final String SYSTEM_CSC_OTHER_XML = "/system/csc/others.xml";
     public static final String SYSTEM_OTHER_FEATURE_BKP = "/system/csc/others.xml.bak";
-    public static final String SYSTEM_CSC_FEATURE_DIR = Utils.getCSCType().equals(CscType.OMC_OMC) ? Utils.getOMCPath() + "/" : "/system/csc/";
+    public static final String SYSTEM_CSC_FEATURE_DIR = Utils.getCSCType().equals(CscType.OMC_OMC) ?
+            Utils.getOMCPath() + "/" : "/system/csc/";
 
     public static final String FEATURES_LIST_HEADER1 = "<?xml  version=\"1.0\" encoding=\"UTF-8\" ?>\n" + "<SamsungMobileFeature>\n" + "\t<Version>";
     public static final String FEATURES_LIST_HEADER2 = "</Version>\n" + "\t<Country>";

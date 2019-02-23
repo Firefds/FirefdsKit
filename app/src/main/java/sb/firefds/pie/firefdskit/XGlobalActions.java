@@ -36,6 +36,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.Unhook;
@@ -46,9 +47,11 @@ import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.utils.Packages;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
+import static sb.firefds.pie.firefdskit.utils.Constants.REBOOT_DEVICE;
+
 public class XGlobalActions {
-    public static final String CLASS_GLOBAL_ACTIONS = "com.android.server.policy.GlobalActions";
-    public static final String CLASS_ACTION = "com.android.internal.globalactions.Action";
+    private static final String CLASS_GLOBAL_ACTIONS = "com.android.server.policy.GlobalActions";
+    private static final String CLASS_ACTION = "com.android.internal.globalactions.Action";
 
     private static Context mContext;
     private static String mRebootConfirmStr;
@@ -77,11 +80,15 @@ public class XGlobalActions {
             //hides reboot confirmation screen
             XposedBridge.hookAllMethods(globalActionsClass, "initValueForShow", new XC_MethodHook() {
                 @Override
-                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                protected void afterHookedMethod(MethodHookParam param) {
                     prefs.reload();
                     if (prefs.getBoolean("enable4WayReboot", false)) {
-                        XposedHelpers.setIntField(param.thisObject, "mRestartIconResId", 0);
-                        XposedHelpers.setIntField(param.thisObject, "mConfirmRestartIconResId", 0);
+                        XposedHelpers.setIntField(param.thisObject,
+                                "mRestartIconResId",
+                                0);
+                        XposedHelpers.setIntField(param.thisObject,
+                                "mConfirmRestartIconResId",
+                                0);
                     }
                 }
             });
@@ -105,7 +112,7 @@ public class XGlobalActions {
 
             XposedHelpers.findAndHookMethod(globalActionsClass, "createDialog", new XC_MethodHook() {
                 @Override
-                protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+                protected void beforeHookedMethod(final MethodHookParam param) {
                     if (mRebootActionHook != null) {
                         mRebootActionHook.unhook();
                         mRebootActionHook = null;
@@ -119,22 +126,26 @@ public class XGlobalActions {
                     mRebootConfirmRequired = prefs.getBoolean("mRebootConfirmRequired", false);
 
                     @SuppressWarnings("unchecked")
-                    ArrayList<Object> mItems = (ArrayList<Object>) XposedHelpers.getObjectField(param.thisObject, "mItems");
-                    BaseAdapter mAdapter = (BaseAdapter) XposedHelpers.getObjectField(param.thisObject, "mAdapter");
+                    ArrayList<Object> mItems = (ArrayList<Object>) XposedHelpers
+                            .getObjectField(param.thisObject, "mItems");
+                    BaseAdapter mAdapter = (BaseAdapter) XposedHelpers
+                            .getObjectField(param.thisObject, "mAdapter");
                     int index = 1;
 
-                    // try to find out if reboot action item already exists in the list of GlobalActions items
-                    // strategy:
-                    // 1) check if Action has mIconResId field or mMessageResId field
-                    // 2) check if the name of the corresponding resource contains "reboot" or "restart" substring
+                    /* try to find out if reboot action item already exists in the list of
+                     GlobalActions items strategy:
+                     1) check if Action has mIconResId field or mMessageResId field
+                     2) check if the name of the corresponding resource contains "reboot"
+                        or "restart" substring*/
                     if (mRebootActionItem == null) {
                         Resources res = mContext.getResources();
                         for (Object o : mItems) {
                             // search for drawable
                             try {
                                 Field f = XposedHelpers.findField(o.getClass(), "mIconResId");
-                                String resName = res.getResourceEntryName((Integer) f.get(o)).toLowerCase(Locale.US);
-                                if (resName.contains("reboot") || resName.contains("restart")) {
+                                String resName = res.getResourceEntryName((Integer) f.get(o))
+                                        .toLowerCase(Locale.US);
+                                if (resName.contains(REBOOT_DEVICE) || resName.contains("restart")) {
                                     mRebootActionItem = o;
                                     break;
                                 }
@@ -152,7 +163,7 @@ public class XGlobalActions {
                                     Field f = XposedHelpers.findField(o.getClass(), "mMessageResId");
                                     String resName = res.getResourceEntryName((Integer) f.get(o))
                                             .toLowerCase(Locale.US);
-                                    if (resName.contains("reboot") || resName.contains("restart")) {
+                                    if (resName.contains(REBOOT_DEVICE) || resName.contains("restart")) {
                                         mRebootActionItem = o;
                                         break;
                                     }
@@ -168,7 +179,8 @@ public class XGlobalActions {
 
                         if (mRebootActionItem == null) {
                             mRebootActionItemStockExists = false;
-                            mRebootActionItem = Proxy.newProxyInstance(classLoader, new Class<?>[]{actionClass},
+                            mRebootActionItem = Proxy.newProxyInstance(classLoader,
+                                    new Class<?>[]{actionClass},
                                     new RebootAction());
                         } else {
                             mRebootActionItemStockExists = true;
@@ -178,16 +190,17 @@ public class XGlobalActions {
                     if (enable4WayReboot) {
                         // Add/hook reboot action if enabled
                         if (mRebootActionItemStockExists) {
-                            mRebootActionHook = XposedHelpers.findAndHookMethod(mRebootActionItem.getClass(),
-                                    "onPress", new XC_MethodReplacement() {
-                                        @Override
-                                        protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
-                                            RebootAction.showRebootDialog(mContext);
-                                            return null;
-                                        }
-                                    });
-                            //XposedHelpers.callMethod(param.thisObject, "addDialogItemsIfEnabled", 512, mRebootActionItem, mItems, true);
-                            //mItems.add(mRebootActionItem);
+                            mRebootActionHook =
+                                    XposedHelpers.findAndHookMethod(mRebootActionItem.getClass(),
+                                            "onPress",
+                                            new XC_MethodReplacement() {
+                                                @Override
+                                                protected Object replaceHookedMethod
+                                                        (MethodHookParam param) {
+                                                    RebootAction.showRebootDialog(mContext);
+                                                    return null;
+                                                }
+                                            });
                         } else {
                             // add to the second position
                             mItems.add(index, mRebootActionItem);
@@ -195,14 +208,12 @@ public class XGlobalActions {
                         index++;
                     }
                     mAdapter.notifyDataSetChanged();
-                    //XposedHelpers.setObjectField(param.thisObject, "mItems", mItems);
-                    //XposedHelpers.setObjectField(param.thisObject, "mAdapter", mAdapter);
                 }
             });
 
             XC_MethodHook showDialogHook = new XC_MethodHook() {
                 @Override
-                protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+                protected void beforeHookedMethod(final MethodHookParam param) {
                     prefs.reload();
                     if (prefs.getBoolean("disablePowerMenuLockscreen", false)) {
                         boolean locked = (Boolean) param.args[0];
@@ -214,7 +225,7 @@ public class XGlobalActions {
                                 KeyguardManager km = (KeyguardManager) context.getSystemService(
                                         Context.KEYGUARD_SERVICE);
                                 locked = km.isKeyguardLocked();
-                            } catch (Throwable t) {
+                            } catch (Throwable ignored) {
                             }
                         }
 
@@ -230,40 +241,30 @@ public class XGlobalActions {
             };
             XposedHelpers.findAndHookMethod(globalActionsClass, "showDialog",
                     boolean.class, boolean.class, showDialogHook);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
     private static class RebootAction implements InvocationHandler {
         private Context mContext;
 
-        public static void showRebootDialog(final Context context) {
+        static void showRebootDialog(final Context context) {
             if (context == null) {
                 return;
             }
             try {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context)
                         .setTitle(rebootMenu)
-                        .setSingleChoiceItems(rebootString, -1, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                rebootMode = which;
-                            }
-
-                            ;
-                        })
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                handleReboot(context, rebootMenu, rebootMode);
-                            }
-
-                            ;
+                        .setSingleChoiceItems(rebootString, -1, (dialog, which) -> rebootMode = which)
+                        .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                            dialog.dismiss();
+                            handleReboot(context, rebootMenu, rebootMode);
                         })
                         .setNegativeButton(android.R.string.no, null);
 
                 AlertDialog dialog = builder.create();
-                dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
+                Objects.requireNonNull(dialog.getWindow())
+                        .setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
                 dialog.getWindow().setFlags(4, 4);
                 dialog.show();
             } catch (Throwable t) {
@@ -300,17 +301,14 @@ public class XGlobalActions {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(context).setTitle(caption)
                             .setMessage(message)
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    doReboot(context, mode);
-                                }
+                            .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                                dialog.dismiss();
+                                doReboot(context, mode);
                             })
                             .setNegativeButton(android.R.string.no, null);
                     AlertDialog dialog = builder.create();
-                    dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
+                    Objects.requireNonNull(dialog.getWindow())
+                            .setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
                     dialog.show();
                 }
             } catch (Throwable t) {
@@ -319,39 +317,40 @@ public class XGlobalActions {
         }
 
         @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        public Object invoke(Object proxy, Method method, Object[] args) {
             String methodName = method.getName();
 
-            if (methodName.equals("create")) {
-                mContext = (Context) args[0];
-                Resources res = mContext.getResources();
-                LayoutInflater li = (LayoutInflater) args[3];
-                int layoutId = res.getIdentifier("global_actions_item", "layout", "android");
-                View v = li.inflate(layoutId, (ViewGroup) args[2], false);
+            switch (methodName) {
+                case "create":
+                    mContext = (Context) args[0];
+                    Resources res = mContext.getResources();
+                    LayoutInflater li = (LayoutInflater) args[3];
+                    int layoutId = res.getIdentifier("global_actions_item", "layout", "android");
+                    View v = li.inflate(layoutId, (ViewGroup) args[2], false);
 
-                TextView messageView = (TextView) v.findViewById(res.getIdentifier("message", "id", "android"));
-                messageView.setText(rebootMenu);
+                    TextView messageView = v.findViewById(res.getIdentifier("message", "id", "android"));
+                    messageView.setText(rebootMenu);
 
-                TextView statusView = (TextView) v.findViewById(res.getIdentifier("status", "id", "android"));
-                statusView.setVisibility(View.GONE);
+                    TextView statusView = v.findViewById(res.getIdentifier("status", "id", "android"));
+                    statusView.setVisibility(View.GONE);
 
-                return v;
-            } else if (methodName.equals("onPress")) {
-                showRebootDialog(mContext);
-                return null;
-            } else if (methodName.equals("onLongPress")) {
-                handleReboot(mContext, rebootMenu, REBOOT_MODE_NORMAL);
-                return true;
-            } else if (methodName.equals("showDuringKeyguard")) {
-                return true;
-            } else if (methodName.equals("showBeforeProvisioning")) {
-                return true;
-            } else if (methodName.equals("isEnabled")) {
-                return true;
-            } else if (methodName.equals("showConditional")) {
-                return true;
-            } else {
-                return null;
+                    return v;
+                case "onPress":
+                    showRebootDialog(mContext);
+                    return null;
+                case "onLongPress":
+                    handleReboot(mContext, rebootMenu, REBOOT_MODE_NORMAL);
+                    return true;
+                case "showDuringKeyguard":
+                    return true;
+                case "showBeforeProvisioning":
+                    return true;
+                case "isEnabled":
+                    return true;
+                case "showConditional":
+                    return true;
+                default:
+                    return null;
             }
         }
     }

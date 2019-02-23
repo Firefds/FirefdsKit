@@ -19,25 +19,18 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.content.res.Resources.NotFoundException;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.preference.CheckBoxPreference;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
@@ -45,7 +38,6 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewConfiguration;
 import android.widget.Toast;
 
 import java.io.File;
@@ -53,13 +45,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.library.ui.TextViewPreference;
 import eu.chainfire.libsuperuser.Shell;
 import sb.firefds.pie.firefdskit.dialogs.CreditsDialog;
@@ -70,17 +61,15 @@ import sb.firefds.pie.firefdskit.dialogs.SaveDialog;
 import sb.firefds.pie.firefdskit.notifications.RebootNotification;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
+import static sb.firefds.pie.firefdskit.utils.Constants.PREFS;
+
 @SuppressWarnings("deprecation")
 public class XTouchWizActivity extends Activity implements RestoreDialogListener {
 
     private static ProgressDialog mDialog;
-    private static Context context;
-    //public static final String THIS_PACKAGE_NAME = Xposed.class.getPackage().getName();
-    private static PreferenceManager preferenceManager;
-
-
-    private static final String[] defaultSettings = new String[]{"enableCameraDuringCall", "disableNumberFormating",
-            "disableSmsToMmsConversion", "isFirefdsKitFirstLaunch", "makeMeTooLegit", "disableTIMA"};
+    private static final String[] defaultSettings = new String[]{"enableCameraDuringCall",
+            "disableNumberFormating", "disableSmsToMmsConversion", "isFirefdsKitFirstLaunch",
+            "makeMeTooLegit", "disableTIMA"};
 
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -89,11 +78,13 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 
     public static void verifyStoragePermissions(Activity activity) {
         // Check if we have write permission
-        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permission = ActivityCompat.checkSelfPermission(activity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         if (permission != PackageManager.PERMISSION_GRANTED) {
             // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
+            ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE);
         }
 
         if (!Settings.System.canWrite(activity)) {
@@ -109,10 +100,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 
         super.onCreate(savedInstanceState);
 
-        context = getApplicationContext();
         verifyStoragePermissions(this);
-
-        initScreen();
 
         setContentView(R.layout.firefds_main);
 
@@ -122,35 +110,14 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
             getWindowManager().getDefaultDisplay().getSize(MainApplication.getWindowsSize());
 
             if (savedInstanceState == null)
-                getFragmentManager().beginTransaction().replace(R.id.prefs, new SettingsFragment()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.prefs,
+                        new SettingsFragment()).commit();
 
 
         } catch (Throwable e) {
             e.printStackTrace();
         }
 
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        initScreen();
-        super.onConfigurationChanged(newConfig);
-
-    }
-
-    private void initScreen() {
-
-        try {
-            ViewConfiguration config = ViewConfiguration.get(this);
-            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-            if (menuKeyField != null) {
-                menuKeyField.setAccessible(true);
-                menuKeyField.setBoolean(config, false);
-            }
-
-        } catch (Throwable t) {
-            // Ignore
-        }
     }
 
     @Override
@@ -186,7 +153,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
         protected Void doInBackground(Activity... params) {
 
             try {
-                mActivity = (Activity) params[0];
+                mActivity = params[0];
 
                 XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
             } catch (Throwable e) {
@@ -242,25 +209,15 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 
     }
 
-    public boolean ShowRecommendedSettingsDiag() {
+    public void ShowRecommendedSettingsDiag() {
         AlertDialog.Builder builder = new AlertDialog.Builder(XTouchWizActivity.this);
-        builder.setCancelable(true).setTitle(R.string.app_name).setMessage(R.string.set_recommended_settings)
-                .setNegativeButton(R.string.cancel, new OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                }).setPositiveButton(R.string.apply, new OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                restoreRecommendedSettings();
-
-            }
-        }).create().show();
-
-        return true;
+        builder.setCancelable(true)
+                .setTitle(R.string.app_name)
+                .setMessage(R.string.set_recommended_settings)
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel())
+                .setPositiveButton(R.string.apply, (dialog, which) -> restoreRecommendedSettings())
+                .create()
+                .show();
     }
 
     public void restoreRecommendedSettings() {
@@ -294,7 +251,9 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 
         Toast.makeText(this, R.string.defaults_restored, Toast.LENGTH_SHORT).show();
 
-        MainApplication.getSharedPreferences().edit().putInt("notificationSize", MainApplication.getWindowsSize().x)
+        MainApplication.getSharedPreferences()
+                .edit()
+                .putInt("notificationSize", MainApplication.getWindowsSize().x)
                 .apply();
 
         XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
@@ -314,7 +273,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
         private ProgressDialog progressDialog;
         private File backup;
 
-        public RestoreBackupTask(File backup) {
+        RestoreBackupTask(File backup) {
             this.backup = backup;
         }
 
@@ -341,13 +300,13 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
                     String key = entry.getKey();
 
                     if (v instanceof Boolean)
-                        prefEdit.putBoolean(key, ((Boolean) v).booleanValue());
+                        prefEdit.putBoolean(key, (Boolean) v);
                     else if (v instanceof Float)
-                        prefEdit.putFloat(key, ((Float) v).floatValue());
+                        prefEdit.putFloat(key, (Float) v);
                     else if (v instanceof Integer)
-                        prefEdit.putInt(key, ((Integer) v).intValue());
+                        prefEdit.putInt(key, (Integer) v);
                     else if (v instanceof Long)
-                        prefEdit.putLong(key, ((Long) v).longValue());
+                        prefEdit.putLong(key, (Long) v);
                     else if (v instanceof String)
                         prefEdit.putString(key, ((String) v));
                 }
@@ -389,7 +348,6 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
         private static Resources res;
         private AlertDialog alertDialog;
         private static ProgressDialog mDialog;
-        public static CheckBoxPreference quickPinPref;
 
         private static Runnable delayedRoot = new Runnable() {
 
@@ -412,24 +370,16 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            /*getPreferenceManager().setSharedPreferencesMode(Context.MODE_PRIVATE);
-            getPreferenceManager().setStorageDeviceProtected();
-            getPreferenceManager().setSharedPreferencesName(XTouchWizActivity.class.getSimpleName());
-            MainApplication.setSharedPreferences(getActivity().getSharedPreferences(XTouchWizActivity.class.getSimpleName(),Context.MODE_PRIVATE));*/
-
-
             try {
-                changesMade = new ArrayList<String>();
+                changesMade = new ArrayList<>();
                 mContext = getActivity().getBaseContext();
 
                 res = getResources();
 
-                getPreferenceManager().setStorageDeviceProtected();
-                getPreferenceManager().setSharedPreferencesName(XTouchWizActivity.class.getSimpleName());
-                getPreferenceManager().setSharedPreferencesMode(MODE_PRIVATE);
+                SharedPreferences sharedPreferences
+                        = mContext.getSharedPreferences(PREFS, 0);
+                MainApplication.setSharedPreferences(sharedPreferences);
                 addPreferencesFromResource(R.xml.firefds_settings);
-
-                MainApplication.setSharedPreferences(getPreferencesAndKeepItReadable(mContext, XTouchWizActivity.class.getSimpleName()));
 
                 showDiag();
 
@@ -441,19 +391,17 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
                     alertDialogBuilder.setTitle(res.getString(R.string.samsung_rom_warning));
 
-                    alertDialogBuilder.setMessage(res.getString(R.string.samsung_rom_warning_msg)).setCancelable(false)
+                    alertDialogBuilder.setMessage(res.getString(R.string.samsung_rom_warning_msg))
+                            .setCancelable(false)
                             .setPositiveButton(res.getString(R.string.ok_btn), null);
 
                     alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
                 }
 
-                findPreference("disableDVFSWhiteList").setOnPreferenceClickListener(new OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        new DVFSBlackListDialog().show(getFragmentManager(), "DVFSWhiteList");
-                        return true;
-                    }
+                findPreference("disableDVFSWhiteList").setOnPreferenceClickListener(preference -> {
+                    new DVFSBlackListDialog().show(getFragmentManager(), "DVFSWhiteList");
+                    return true;
                 });
 
                 TextViewPreference textViewInformationHeader;
@@ -489,12 +437,8 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
                     alertDialogBuilder.setTitle(R.string.app_name);
 
                     alertDialogBuilder.setMessage(R.string.root_info)
-                            .setPositiveButton(android.R.string.ok, new OnClickListener() {
-
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            }).setCancelable(true);
+                            .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                            .setCancelable(true);
 
                     alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
@@ -531,36 +475,6 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
             super.onDestroy();
         }
 
-        protected void showDonateAlert() {
-
-            try {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
-
-                alertDialogBuilder.setTitle(R.string.support_app);
-
-                alertDialogBuilder.setMessage(res.getString(R.string.note_please_consider_making_a_donation))
-                        .setCancelable(true)
-                        .setPositiveButton(R.string.rate_app, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Uri uri = Uri.parse("market://details?id=" + mContext.getPackageName());
-                                Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-                                mContext.startActivity(goToMarket);
-                            }
-                        }).setNegativeButton(R.string.no_thanks, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-                alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-        }
-
         private class CheckRootTask extends AsyncTask<Void, Void, Void> {
             private boolean suAvailable = false;
 
@@ -585,31 +499,32 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
                     if (!suAvailable) {
                         showRootDisclaimer();
                     } else {
-                        mDialog.setMessage(res.getString(R.string.loading_application_preferences_));
+                        Objects.requireNonNull(mDialog)
+                                .setMessage(res.getString(R.string.loading_application_preferences_));
                         if (!mDialog.isShowing()) {
                             mDialog.show();
                         }
                         new CopyCSCTask().execute(mContext);
 
-                        if (!MainApplication.getSharedPreferences().getBoolean("isFirefdsKitFirstLaunch", false)) {
+                        if (!MainApplication.getSharedPreferences()
+                                .getBoolean("isFirefdsKitFirstLaunch", false)) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                            builder.setCancelable(true).setTitle(R.string.app_name)
+                            builder.setCancelable(true)
+                                    .setTitle(R.string.app_name)
                                     .setMessage(R.string.firefds_xposed_disclaimer)
-                                    .setPositiveButton(R.string.ok_btn, new OnClickListener() {
-
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    }).setIcon(android.R.drawable.ic_dialog_alert).create().show();
-                            MainApplication.getSharedPreferences().edit().putBoolean("isFirefdsKitFirstLaunch", true)
-                                    .commit();
+                                    .setPositiveButton(R.string.ok_btn, (dialog, which) -> dialog.dismiss())
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .create()
+                                    .show();
+                            MainApplication.getSharedPreferences()
+                                    .edit()
+                                    .putBoolean("isFirefdsKitFirstLaunch", true)
+                                    .apply();
                         }
                     }
                 } catch (Throwable e) {
                     e.printStackTrace();
                 }
-
             }
         }
 
@@ -640,7 +555,6 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
                 }
                 super.onPostExecute(result);
             }
-
         }
 
         @Override
@@ -669,9 +583,10 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
             try {
                 // No reboot notification required
                 String[] litePrefs = new String[]{"isFirefdsKitFirstLaunch", "screenTimeoutSeconds",
-                        "screenTimeoutMinutes", "screenTimeoutHours", "hideCarrierLabel", "carrierSize",
-                        "enableCallAdd", "enableCallRecordingMenu", "enableAutoCallRecording", "enable4WayReboot",
-                        "mRebootConfirmRequired", "disablePowerMenuLockscreen"};
+                        "screenTimeoutMinutes", "screenTimeoutHours", "hideCarrierLabel",
+                        "carrierSize", "enableCallAdd", "enableCallRecordingMenu",
+                        "enableAutoCallRecording", "enable4WayReboot", "mRebootConfirmRequired",
+                        "disablePowerMenuLockscreen"};
 
                 setTimeoutPrefs(sharedPreferences, key);
 
@@ -690,12 +605,12 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
             } catch (Throwable e) {
                 e.printStackTrace();
             }
-
         }
 
         private void setTimeoutPrefs(SharedPreferences sharedPreferences, String key) {
 
-            String[] timeoutPrefs = new String[]{"screenTimeoutSeconds", "screenTimeoutMinutes", "screenTimeoutHours"};
+            String[] timeoutPrefs = new String[]{"screenTimeoutSeconds", "screenTimeoutMinutes",
+                    "screenTimeoutHours"};
             int timeoutML = 0;
 
             if (key.equalsIgnoreCase(timeoutPrefs[0])) {
@@ -713,14 +628,6 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
                 Settings.System.putInt(getActivity().getContentResolver(),
                         Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
             }
-        }
-
-        public static SharedPreferences getPreferencesAndKeepItReadable(Context ctx, String prefName) {
-            SharedPreferences prefs = ctx.getSharedPreferences(prefName, MODE_PRIVATE);
-            File prefsFile = new File(ctx.getFilesDir() + "/../shared_prefs/" + prefName + ".xml");
-            prefsFile.setReadable(true, false);
-            XposedBridge.log("Activity: " + prefsFile);
-            return prefs;
         }
     }
 }

@@ -32,6 +32,10 @@ public class XSecSettingsPackage {
 
     private static ClassLoader classLoader;
     private static XSharedPreferences prefs;
+    private static String SYSCOPE_STATUS_PREFERENCE_CONTROLLER =
+            Packages.SAMSUNG_SETTINGS + ".deviceinfo.status.SyscopeStatusPreferenceController";
+    private static String SEC_DEVICE_INFO_UTILS =
+            Packages.SAMSUNG_SETTINGS + ".deviceinfo.SecDeviceInfoUtils";
     //private static SemColorPickerDialog semColorPickerDialog;
     //private static Context mContext;
     //private static int[] colorArray;
@@ -69,12 +73,16 @@ public class XSecSettingsPackage {
         }*/
 
         try {
-            XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".deviceinfo.status.SyscopeStatusPreferenceController", classLoader,
-                    "getICDVerification", new XC_MethodHook() {
+            XposedHelpers.findAndHookMethod(SYSCOPE_STATUS_PREFERENCE_CONTROLLER,
+                    classLoader,
+                    "getICDVerification",
+                    new XC_MethodHook() {
                         @Override
-                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                            param.setResult(1);
-                            XposedBridge.log("getICDVerification called");
+                        protected void afterHookedMethod(MethodHookParam param) {
+                            prefs.reload();
+                            if (prefs.getBoolean("makeMeTooLegit", true)) {
+                                param.setResult(1);
+                            }
                         }
                     });
         } catch (Throwable e) {
@@ -82,11 +90,16 @@ public class XSecSettingsPackage {
         }
 
         try {
-            XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".deviceinfo.SecDeviceInfoUtils", classLoader,
-                    "checkRootingCondition", new XC_MethodHook() {
+            XposedHelpers.findAndHookMethod(SEC_DEVICE_INFO_UTILS,
+                    classLoader,
+                    "checkRootingCondition",
+                    new XC_MethodHook() {
                         @Override
-                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                            param.setResult(Boolean.FALSE);
+                        protected void afterHookedMethod(MethodHookParam param) {
+                            prefs.reload();
+                            if (prefs.getBoolean("makeMeTooLegit", true)) {
+                                param.setResult(Boolean.FALSE);
+                            }
                         }
                     });
         } catch (Throwable e) {
@@ -94,11 +107,16 @@ public class XSecSettingsPackage {
         }
 
         try {
-            XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".deviceinfo.SecDeviceInfoUtils", classLoader,
-                    "isSupportRootBadge", Context.class, new XC_MethodHook() {
+            XposedHelpers.findAndHookMethod(SEC_DEVICE_INFO_UTILS, classLoader,
+                    "isSupportRootBadge",
+                    Context.class,
+                    new XC_MethodHook() {
                         @Override
-                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                            param.setResult(Boolean.FALSE);
+                        protected void afterHookedMethod(MethodHookParam param) {
+                            prefs.reload();
+                            if (prefs.getBoolean("makeMeTooLegit", true)) {
+                                param.setResult(Boolean.FALSE);
+                            }
                         }
                     });
         } catch (Throwable e) {
@@ -169,31 +187,41 @@ public class XSecSettingsPackage {
 
     private static void disableTetherProvisioning() {
         try {
-            XposedHelpers.findAndHookMethod("com.android.settingslib.TetherUtil", classLoader, "isProvisioningNeeded",
-                    Context.class, XC_MethodReplacement.returnConstant(Boolean.FALSE));
+            XposedHelpers.findAndHookMethod("com.android.settingslib.TetherUtil",
+                    classLoader,
+                    "isProvisioningNeeded",
+                    Context.class,
+                    XC_MethodReplacement.returnConstant(Boolean.FALSE));
 
         } catch (Throwable e) {
             XposedBridge.log(e);
         }
 
         try {
-            XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".wifi.mobileap.WifiApBroadcastReceiver", classLoader,
-                    "isProvisioningNeeded", Context.class, XC_MethodReplacement.returnConstant(Boolean.FALSE));
+            XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".wifi.mobileap.WifiApBroadcastReceiver",
+                    classLoader,
+                    "isProvisioningNeeded",
+                    Context.class,
+                    XC_MethodReplacement.returnConstant(Boolean.FALSE));
         } catch (Throwable e) {
             XposedBridge.log(e);
         }
 
         try {
-            XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".wifi.mobileap.WifiApSwitchEnabler", classLoader,
-                    "isProvisioningNeeded", XC_MethodReplacement.returnConstant(Boolean.FALSE));
+            XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".wifi.mobileap.WifiApSwitchEnabler",
+                    classLoader,
+                    "isProvisioningNeeded",
+                    XC_MethodReplacement.returnConstant(Boolean.FALSE));
         } catch (Throwable e) {
             XposedBridge.log(e);
         }
 
         try {
 
-            XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".wifi.mobileap.WifiApWarning", classLoader,
-                    "isProvisioningNeeded", XC_MethodReplacement.returnConstant(Boolean.FALSE));
+            XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".wifi.mobileap.WifiApWarning",
+                    classLoader,
+                    "isProvisioningNeeded",
+                    XC_MethodReplacement.returnConstant(Boolean.FALSE));
         } catch (Throwable e) {
             XposedBridge.log(e);
         }

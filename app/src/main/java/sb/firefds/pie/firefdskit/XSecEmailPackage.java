@@ -74,41 +74,46 @@ public class XSecEmailPackage {
     private static void disableExchangeLockSecurity() {
 
         try {
-            Class<?> policySet = XposedHelpers.findClass("com.android.emailcommon.service.PolicySet",
-                    classLoader);
-            XposedHelpers.findAndHookMethod(Packages.EMAIL + ".SecurityPolicy", classLoader, "isActive", policySet,
+            Class<?> policySet =
+                    XposedHelpers.findClass("com.android.emailcommon.service.PolicySet", classLoader);
+            XposedHelpers.findAndHookMethod(Packages.EMAIL + ".SecurityPolicy",
+                    classLoader,
+                    "isActive",
+                    policySet,
                     new XC_MethodReplacement() {
 
                         @Override
-                        protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
-                            return Boolean.valueOf(true);
+                        protected Object replaceHookedMethod(MethodHookParam param) {
+                            return Boolean.TRUE;
                         }
                     });
 
-            XposedHelpers.findAndHookMethod(Packages.EMAIL + ".Account", classLoader, "setPolicySet",
+            XposedHelpers.findAndHookMethod(Packages.EMAIL + ".Account",
+                    classLoader,
+                    "setPolicySet",
                     policySet, new XC_MethodHook() {
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        protected void beforeHookedMethod(MethodHookParam param) {
                             setPolicySets(param);
                         }
-
                     });
 
-            XposedHelpers.findAndHookMethod(Packages.EMAIL + ".activity.setup.SetupData", classLoader,
-                    "setPolicySet", policySet, new XC_MethodHook() {
+            XposedHelpers.findAndHookMethod(Packages.EMAIL + ".activity.setup.SetupData",
+                    classLoader,
+                    "setPolicySet",
+                    policySet,
+                    new XC_MethodHook() {
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        protected void beforeHookedMethod(MethodHookParam param) {
                             setPolicySets(param);
                         }
-
                     });
 
             XposedBridge.hookAllConstructors(policySet, new XC_MethodHook() {
                 @Override
-                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                protected void afterHookedMethod(MethodHookParam param) {
                     disableAdmin(param.thisObject);
                 }
-
             });
         } catch (Throwable e) {
             XposedBridge.log(e);

@@ -31,47 +31,55 @@ public class XSysUIFeaturePackage {
 
 
         try {
-            Class<?> classVolumePanel = XposedHelpers.findClass(Packages.SYSTEM_UI + ".volume.SecVolumeDialogImpl", classLoader);
+            Class<?> classVolumePanel =
+                    XposedHelpers.findClass(Packages.SYSTEM_UI + ".volume.SecVolumeDialogImpl", classLoader);
 
             XposedBridge.hookAllConstructors(classVolumePanel, new XC_MethodHook() {
                 @Override
-                protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+                protected void afterHookedMethod(final MethodHookParam param) {
                     mVolumePanel = param.thisObject;
                 }
             });
 
-            XposedHelpers.findAndHookMethod(classVolumePanel, "updateTintColor", new XC_MethodHook() {
-                @Override
-                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+            XposedHelpers.findAndHookMethod(classVolumePanel,
+                    "updateTintColor",
+                    new XC_MethodHook() {
+                        @Override
+                        protected void afterHookedMethod(MethodHookParam param) {
 
-                    //if (prefs.getBoolean("semiTransparentVolumePanel", false)) {
-                    XposedHelpers.setObjectField(
-                            mVolumePanel,
-                            "mVolumePanelBgColor",
-                            XposedHelpers.callMethod(mVolumePanel, "colorToColorStateList",
-                                    Color.parseColor("#55FF0000")));
-                    XposedBridge.log(Packages.FIREFDSKIT + "Color set to #55FF0000");
-                    //}
-                }
-            });
+                            if (prefs.getBoolean("semiTransparentVolumePanel", false)) {
+                                XposedHelpers.setObjectField(
+                                        mVolumePanel,
+                                        "mVolumePanelBgColor",
+                                        XposedHelpers.callMethod(mVolumePanel,
+                                                "colorToColorStateList",
+                                                Color.parseColor("#55FF0000")));
+                                XposedBridge.log(Packages.FIREFDSKIT + "Color set to #55FF0000");
+                            }
+                        }
+                    });
 
-            XposedHelpers.findAndHookMethod(classVolumePanel, "updateDefaultTintColor", new XC_MethodHook() {
-                @Override
-                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+            XposedHelpers.findAndHookMethod(classVolumePanel,
+                    "updateDefaultTintColor",
+                    new XC_MethodHook() {
+                        @Override
+                        protected void afterHookedMethod(MethodHookParam param) {
 
-                    //if (prefs.getBoolean("semiTransparentVolumePanel", false)) {
-                    XposedHelpers.setObjectField(
-                            mVolumePanel,
-                            "mVolumePanelBgDefaultColor",
-                            XposedHelpers.callMethod(mVolumePanel, "colorToColorStateList",
-                                    Color.parseColor("#55FF0000")));
-                    XposedBridge.log(Packages.FIREFDSKIT + "Color default set to #55FF0000");
-                    //}
-                }
-            });
+                            if (prefs.getBoolean("semiTransparentVolumePanel", false)) {
+                                XposedHelpers.setObjectField(
+                                        mVolumePanel,
+                                        "mVolumePanelBgDefaultColor",
+                                        XposedHelpers
+                                                .callMethod(mVolumePanel,
+                                                        "colorToColorStateList",
+                                                        Color.parseColor("#55FF0000")));
+                                XposedBridge
+                                        .log(Packages.FIREFDSKIT + "Color default set to #55FF0000");
+                            }
+                        }
+                    });
         } catch (Throwable e1) {
             XposedBridge.log(e1.getMessage());
         }
     }
-
 }

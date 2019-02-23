@@ -14,6 +14,7 @@
  */
 package sb.firefds.pie.firefdskit.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.SharedPreferences;
@@ -44,6 +45,7 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
@@ -58,11 +60,10 @@ public class Utils {
     private static final String OMC_SUPPORT = "persist.sys.omc_support";
 
     //private static final String OMC_ENABLE = "persist.sys.omc.enable";
-    public static enum CscType {
+    public enum CscType {
         CSC, OMC_CSC, OMC_OMC
     }
 
-    ;
     private static Boolean mIsExynosDevice = null;
     private static CscType mCscType = null;
 
@@ -72,7 +73,7 @@ public class Utils {
 
     public static void closeStatusBar(Context context) throws Throwable {
         Object sbservice = context.getSystemService("statusbar");
-        Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
+        @SuppressLint("PrivateApi") Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
         Method showsb = statusbarManager.getMethod("collapsePanels");
         showsb.invoke(sbservice);
     }
@@ -142,18 +143,15 @@ public class Utils {
         }
     }
 
-    public static void rebootSystem(final Context context, final String rebootType) {
-        new Handler().postDelayed(new Runnable() {
+    private static void rebootSystem(final Context context, final String rebootType) {
+        new Handler().postDelayed(() -> {
+            try {
+                final PowerManager pm =
+                        (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+                pm.reboot(rebootType);
 
-            @Override
-            public void run() {
-                try {
-                    final PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-                    pm.reboot(rebootType);
-
-                } catch (Throwable e) {
-                    XposedBridge.log(e);
-                }
+            } catch (Throwable e) {
+                XposedBridge.log(e);
             }
         }, 500);
 
@@ -188,13 +186,13 @@ public class Utils {
                     bis.close();
                 if (bos != null)
                     bos.close();
-            } catch (Throwable e) {
+            } catch (Throwable ignored) {
 
             }
         }
     }
 
-    public static String getUriPath(Context context, Uri uri) {
+    private static String getUriPath(Context context, Uri uri) {
         String[] data = {MediaStore.Images.Media.DATA};
         CursorLoader loader = new CursorLoader(context, uri, data, null, null, null);
         Cursor cursor = loader.loadInBackground();
@@ -247,6 +245,7 @@ public class Utils {
         }
     }
 
+    @SuppressLint("SetWorldReadable")
     private static void executeScript(Context context, String name) {
         File scriptFile = writeAssetToCacheFile(context, name);
         if (scriptFile == null)
@@ -255,8 +254,8 @@ public class Utils {
         scriptFile.setReadable(true, false);
         scriptFile.setExecutable(true, false);
 
-        new SuTask().execute(new String[]{"cd " + context.getCacheDir(), "./" + scriptFile.getName(),
-                "rm " + scriptFile.getName()});
+        new SuTask().execute("cd " + context.getCacheDir(), "./" + scriptFile.getName(),
+                "rm " + scriptFile.getName());
     }
 
     public static class SuTask extends AsyncTask<String, Void, Void> {
@@ -270,7 +269,6 @@ public class Utils {
 
             return null;
         }
-
     }
 
     private static File writeAssetToCacheFile(Context context, String name) {
@@ -301,26 +299,33 @@ public class Utils {
         }
     }
 
-    public static TextView setTypeface(SharedPreferences prefs, TextView tv) {
+    public static void setTypeface(SharedPreferences prefs, TextView tv) {
 
         int typeStyle = Typeface.NORMAL;
-        if (!prefs.getString("statusbarTextStyle", "Normal").equalsIgnoreCase("Normal")) {
-            if (prefs.getString("statusbarTextStyle", "Normal").equalsIgnoreCase("Italic")) {
+        if (!Objects.requireNonNull(prefs.getString("statusbarTextStyle", "Normal"))
+                .equalsIgnoreCase("Normal")) {
+            if (Objects.requireNonNull(prefs.getString("statusbarTextStyle", "Normal"))
+                    .equalsIgnoreCase("Italic")) {
                 typeStyle = Typeface.ITALIC;
-            } else if (prefs.getString("statusbarTextStyle", "Normal").equalsIgnoreCase("Bold")) {
+            } else if (Objects.requireNonNull(prefs.getString("statusbarTextStyle", "Normal"))
+                    .equalsIgnoreCase("Bold")) {
                 typeStyle = Typeface.BOLD;
             }
         }
 
-        if (!prefs.getString("statusbarTextFace", "Regular").equalsIgnoreCase("Regular")) {
+        if (!Objects.requireNonNull(prefs.getString("statusbarTextFace", "Regular"))
+                .equalsIgnoreCase("Regular")) {
             String typeFace = "sans-serif";
-            if (prefs.getString("statusbarTextFace", "Regular").equalsIgnoreCase("Light")) {
+            if (Objects.requireNonNull(prefs.getString("statusbarTextFace", "Regular"))
+                    .equalsIgnoreCase("Light")) {
                 typeFace = "sans-serif-light";
             }
-            if (prefs.getString("statusbarTextFace", "Regular").equalsIgnoreCase("Condensed")) {
+            if (Objects.requireNonNull(prefs.getString("statusbarTextFace", "Regular"))
+                    .equalsIgnoreCase("Condensed")) {
                 typeFace = "sans-serif-condensed";
             }
-            if (prefs.getString("statusbarTextFace", "Regular").equalsIgnoreCase("Thin")) {
+            if (Objects.requireNonNull(prefs.getString("statusbarTextFace", "Regular"))
+                    .equalsIgnoreCase("Thin")) {
                 typeFace = "sans-serif-thin";
             }
             tv.setTypeface(Typeface.create(typeFace, typeStyle));
@@ -328,16 +333,10 @@ public class Utils {
             tv.setTypeface(tv.getTypeface(), typeStyle);
         }
 
-        return tv;
-
     }
 
     public static boolean isSamsungRom() {
-        if (new File("/system/framework/com.samsung.device.jar").isFile()) {
-            return true;
-        }
-
-        return false;
+        return new File("/system/framework/com.samsung.device.jar").isFile();
     }
 
     public static boolean isPackageExisted(Context context, String targetPackage) {
@@ -381,7 +380,7 @@ public class Utils {
         return mCscType;
     }
 
-    public static String getOMCPath() {
+    static String getOMCPath() {
         return SystemProperties.get(OMC_PATH);
     }
 

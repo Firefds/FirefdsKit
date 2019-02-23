@@ -74,23 +74,17 @@ public class SaveDialog extends DialogFragment {
             }
         });
         dialog = builder.setCancelable(true).setTitle(R.string.save).setView(editText)
-                .setPositiveButton(R.string.save, new OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (savePreferencesToSdCard(editText.getText().toString())) {
-                            Toast.makeText(getActivity(), R.string.save_successful, Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getActivity(), R.string.save_unsuccessful, Toast.LENGTH_SHORT).show();
-                        }
+                .setPositiveButton(R.string.save, (dialog, which) -> {
+                    if (savePreferencesToSdCard(editText.getText().toString())) {
+                        Toast.makeText(getActivity(), R.string.save_successful, Toast.LENGTH_SHORT)
+                                .show();
+                    } else {
+                        Toast.makeText(getActivity(), R.string.save_unsuccessful, Toast.LENGTH_SHORT)
+                                .show();
                     }
-                }).setNegativeButton(android.R.string.cancel, new OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).create();
+                })
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
+                .create();
         return dialog;
     }
 
@@ -131,5 +125,4 @@ public class SaveDialog extends DialogFragment {
         }
         return res;
     }
-
 }
