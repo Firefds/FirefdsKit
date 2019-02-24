@@ -231,7 +231,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
             editor.putBoolean(defaultSetting, true).apply();
         }
 
-        editor.putInt("notificationSize", MainApplication.getWindowsSize().x).commit();
+        editor.putInt("notificationSize", MainApplication.getWindowsSize().x).apply();
 
         Toast.makeText(this, R.string.recommended_restored, Toast.LENGTH_SHORT).show();
 

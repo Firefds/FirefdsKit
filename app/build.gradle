@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+ext {
+    VERSION_DATE = '24/02/19'
+}
+
 android {
     signingConfigs {
         release {
@@ -15,6 +19,7 @@ android {
         applicationId 'sb.firefds.pie.firefdskit'
         minSdkVersion 28
         targetSdkVersion 28
+        project.ext.set("archivesBaseName", "FirefdsKit_" + VERSION_DATE.replaceAll("/", "_"))
     }
     buildTypes {
         release {
