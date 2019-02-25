@@ -30,6 +30,7 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -92,14 +93,32 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
             intent.setData(Uri.parse("package:" + activity.getPackageName()));
             activity.startActivity(intent);
         }
+    }
 
+    public static void fixPermissions(Context context) {
+        File sharedPrefsFolder = new File(context.getDataDir().getAbsolutePath() + "/shared_prefs");
+        if (sharedPrefsFolder.exists()) {
+            sharedPrefsFolder.setExecutable(true, false);
+            sharedPrefsFolder.setReadable(true, false);
+            File f = new File(sharedPrefsFolder.getAbsolutePath() + "/" + BuildConfig.APPLICATION_ID + ".xml");
+            if (f.exists()) {
+                f.setReadable(true, false);
+                sharedPrefsFolder.setExecutable(true, false);
+            }
+        }
+    }
+
+    public static void fixAppPermissions() {
+        File appFolder = new File(Environment.getDataDirectory(), "data/" + BuildConfig.APPLICATION_ID);
+        appFolder.setExecutable(true, false);
+        appFolder.setReadable(true, false);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
+        fixAppPermissions();
         verifyStoragePermissions(this);
 
         setContentView(R.layout.firefds_main);
@@ -233,6 +252,8 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 
         editor.putInt("notificationSize", MainApplication.getWindowsSize().x).apply();
 
+        fixPermissions(getApplicationContext());
+
         Toast.makeText(this, R.string.recommended_restored, Toast.LENGTH_SHORT).show();
 
         XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
@@ -255,6 +276,8 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
                 .edit()
                 .putInt("notificationSize", MainApplication.getWindowsSize().x)
                 .apply();
+
+        fixPermissions(getApplicationContext());
 
         XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
 
@@ -311,6 +334,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
                         prefEdit.putString(key, ((String) v));
                 }
                 prefEdit.apply();
+                fixPermissions(getApplicationContext());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -385,6 +409,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 
                 MainApplication.getSharedPreferences().edit()
                         .putInt("notificationSize", MainApplication.getWindowsSize().x).apply();
+                fixPermissions(mContext);
 
 
                 if (!Utils.isSamsungRom()) {
@@ -520,6 +545,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
                                     .edit()
                                     .putBoolean("isFirefdsKitFirstLaunch", true)
                                     .apply();
+                            fixPermissions(mContext);
                         }
                     }
                 } catch (Throwable e) {

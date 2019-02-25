@@ -29,7 +29,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.PowerManager;
 import android.os.SystemProperties;
 import android.provider.MediaStore;
 import android.view.View;
@@ -110,10 +109,9 @@ public class Utils {
         }
     }
 
-    public static void reboot(Context context) {
+    public static void reboot() {
         try {
-            rebootSystem(context, null);
-            return;
+            rebootSystem(null);
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -135,26 +133,17 @@ public class Utils {
         return (config == null ? mGbContext : mGbContext.createConfigurationContext(config));
     }
 
-    public static void rebootEPM(Context context, String rebootType) {
+    public static void rebootEPM(String rebootType) {
         try {
-            rebootSystem(context, rebootType);
+            rebootSystem(rebootType);
         } catch (Throwable e) {
             e.printStackTrace();
         }
     }
 
-    private static void rebootSystem(final Context context, final String rebootType) {
-        new Handler().postDelayed(() -> {
-            try {
-                final PowerManager pm =
-                        (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-                pm.reboot(rebootType);
-
-            } catch (Throwable e) {
-                XposedBridge.log(e);
-            }
-        }, 500);
-
+    private static void rebootSystem(final String rebootType) {
+        new Handler().postDelayed(() -> new SuTask()
+                .execute("reboot " + rebootType), 1000);
     }
 
     public static void savefile(Context context, Uri sourceuri, String path) {

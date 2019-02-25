@@ -43,7 +43,11 @@ public class XSecSettingsPackage {
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
-        //XSecSettingsPackage.classLoader = classLoader;
+        XSecSettingsPackage.classLoader = classLoader;
+
+        if (prefs.getBoolean("makeMeTooLegit", true)) {
+            makeOfficial();
+        }
 
         /*try {
             XposedHelpers.findAndHookMethod(
@@ -70,69 +74,18 @@ public class XSecSettingsPackage {
             } catch (Throwable e) {
                 XposedBridge.log(e);
             }
-        }*/
-
-        try {
-            XposedHelpers.findAndHookMethod(SYSCOPE_STATUS_PREFERENCE_CONTROLLER,
-                    classLoader,
-                    "getICDVerification",
-                    new XC_MethodHook() {
-                        @Override
-                        protected void afterHookedMethod(MethodHookParam param) {
-                            prefs.reload();
-                            if (prefs.getBoolean("makeMeTooLegit", true)) {
-                                param.setResult(1);
-                            }
-                        }
-                    });
-        } catch (Throwable e) {
-            XposedBridge.log(e);
         }
 
-        try {
-            XposedHelpers.findAndHookMethod(SEC_DEVICE_INFO_UTILS,
-                    classLoader,
-                    "checkRootingCondition",
-                    new XC_MethodHook() {
-                        @Override
-                        protected void afterHookedMethod(MethodHookParam param) {
-                            prefs.reload();
-                            if (prefs.getBoolean("makeMeTooLegit", true)) {
-                                param.setResult(Boolean.FALSE);
-                            }
-                        }
-                    });
-        } catch (Throwable e) {
-            XposedBridge.log(e);
-        }
-
-        try {
-            XposedHelpers.findAndHookMethod(SEC_DEVICE_INFO_UTILS, classLoader,
-                    "isSupportRootBadge",
-                    Context.class,
-                    new XC_MethodHook() {
-                        @Override
-                        protected void afterHookedMethod(MethodHookParam param) {
-                            prefs.reload();
-                            if (prefs.getBoolean("makeMeTooLegit", true)) {
-                                param.setResult(Boolean.FALSE);
-                            }
-                        }
-                    });
-        } catch (Throwable e) {
-            XposedBridge.log(e);
-        }
-
-      /*  if (prefs.getBoolean("disableTetherProvisioning", false)) {
+        if (prefs.getBoolean("disableTetherProvisioning", false)) {
             try {
                 disableTetherProvisioning();
             } catch (Throwable e) {
                 XposedBridge.log(e);
 
             }
-        }*/
+        }
 
-		/*try {
+		try {
 			final Class<?> NavigationbarColorPreference = XposedHelpers.findClass(Packages.SAMSUNG_SETTINGS + ".navigationbar.NavigationbarColorPreference", classLoader);
 
 			XposedBridge.hookAllConstructors(NavigationbarColorPreference, new XC_MethodHook() {
@@ -164,9 +117,9 @@ public class XSecSettingsPackage {
 
 		} catch (Throwable e) {
 			XposedBridge.log(e);
-		}*/
+		}
 
-        /*try {
+        try {
             XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".qstile.SecAccountTiles", classLoader,
                     "showConfirmPopup", boolean.class, new XC_MethodHook() {
                         @Override
@@ -229,6 +182,50 @@ public class XSecSettingsPackage {
         try {
             XSystemProp.set("net.tethering.noprovisioning", "false");
             XSystemProp.set("Provisioning.disable", "0");
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
+    }
+
+    private static void makeOfficial() {
+        try {
+            XposedHelpers.findAndHookMethod(SYSCOPE_STATUS_PREFERENCE_CONTROLLER,
+                    classLoader,
+                    "getICDVerification",
+                    new XC_MethodHook() {
+                        @Override
+                        protected void afterHookedMethod(MethodHookParam param) {
+                            param.setResult(1);
+                        }
+                    });
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
+
+        try {
+            XposedHelpers.findAndHookMethod(SEC_DEVICE_INFO_UTILS,
+                    classLoader,
+                    "checkRootingCondition",
+                    new XC_MethodHook() {
+                        @Override
+                        protected void afterHookedMethod(MethodHookParam param) {
+                            param.setResult(Boolean.FALSE);
+                        }
+                    });
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
+
+        try {
+            XposedHelpers.findAndHookMethod(SEC_DEVICE_INFO_UTILS, classLoader,
+                    "isSupportRootBadge",
+                    Context.class,
+                    new XC_MethodHook() {
+                        @Override
+                        protected void afterHookedMethod(MethodHookParam param) {
+                            param.setResult(Boolean.FALSE);
+                        }
+                    });
         } catch (Throwable e) {
             XposedBridge.log(e);
         }

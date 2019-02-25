@@ -53,7 +53,7 @@ public class WanamRebootActivity extends Activity {
     private void rebootDevice() throws Throwable {
         Utils.closeStatusBar(this);
         ProgressDialog.show(this, "", getString(R.string.rebooting));
-        Utils.reboot(this);
+        Utils.reboot();
     }
 
     private void softRebootOptions() {
@@ -67,13 +67,13 @@ public class WanamRebootActivity extends Activity {
 
                     switch (which) {
                         case 0:
-                            Utils.reboot(getBaseContext());
+                            Utils.reboot();
                             break;
                         case 1:
-                            Utils.rebootEPM(getBaseContext(), "recovery");
+                            Utils.rebootEPM("recovery");
                             break;
                         case 3:
-                            Utils.rebootEPM(getBaseContext(), "download");
+                            Utils.rebootEPM("download");
                             break;
                     }
 
