@@ -38,7 +38,7 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
         MODULE_PATH = startupParam.modulePath;
 
-        setModuleSharedPreferences();
+        getModuleSharedPreferences();
     }
 
     @Override
@@ -156,13 +156,14 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         }
     }
 
-    private static void setModuleSharedPreferences() {
+    public static XSharedPreferences getModuleSharedPreferences() {
         if (prefs == null) {
             prefs = new XSharedPreferences(BuildConfig.APPLICATION_ID);
             prefs.makeWorldReadable();
         } else {
             prefs.reload();
         }
+        return prefs;
     }
 
     /*@Override
