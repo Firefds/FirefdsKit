@@ -16,7 +16,6 @@ package sb.firefds.pie.firefdskit.notifications;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
-import android.app.Notification.Action;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -69,26 +68,6 @@ public class RebootNotification {
                         .setBigContentTitle(title)
                         .setSummaryText(context.getString(R.string.pending_changes)))
                 .setAutoCancel(true);
-
-        /*final Notification.Builder builder2 = new Notification.Builder(context)
-                .setDefaults(0)
-                .setSmallIcon(android.R.drawable.ic_menu_rotate)
-                .setContentTitle(title)
-                .setContentText(text)
-                .setPriority(Notification.PRIORITY_DEFAULT)
-                .setLargeIcon(picture)
-                .setTicker(ticker)
-                .setNumber(n)
-                .setWhen(0)
-                .setContentIntent(PendingIntent.getActivity(context,
-                        0,
-                        new Intent(context, XTouchWizActivity.class),
-                        PendingIntent.FLAG_UPDATE_CURRENT))
-                .setStyle(new Notification.BigTextStyle()
-                        .bigText(text)
-                        .setBigContentTitle(title)
-                        .setSummaryText(context.getString(R.string.pending_changes)))
-                .setAutoCancel(true);*/
 
         Intent rebootIntent = new Intent(context, WanamRebootReceiver.class)
                 .setAction("ma.wanam.xposed.action.REBOOT_DEVICE");
