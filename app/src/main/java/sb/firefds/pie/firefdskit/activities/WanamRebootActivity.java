@@ -39,6 +39,8 @@ public class WanamRebootActivity extends Activity {
                 case 0:
                     rebootDevice();
                     break;
+                case 1:
+                    softRebootDevice();
                 case 2:
                     softRebootOptions();
                     break;
@@ -54,6 +56,12 @@ public class WanamRebootActivity extends Activity {
         Utils.closeStatusBar(this);
         ProgressDialog.show(this, "", getString(R.string.rebooting));
         Utils.reboot();
+    }
+
+    private void softRebootDevice() throws Throwable {
+        Utils.closeStatusBar(this);
+        ProgressDialog.show(this, "", getString(R.string.rebooting));
+        Utils.performSoftReboot();
     }
 
     private void softRebootOptions() {

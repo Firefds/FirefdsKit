@@ -83,13 +83,14 @@ public class RebootNotification {
         if (showSoftReboot) {
             Intent SoftRebootIntent = new Intent(context, WanamRebootReceiver.class)
                     .setAction("ma.wanam.xposed.action.SOFT_REBOOT_DEVICE");
-            new Notification.Action.Builder(
+            builder.addAction(new Notification.Action.Builder(
                     Icon.createWithResource(context, android.R.drawable.ic_menu_rotate),
                     res.getString(R.string.soft_reboot),
                     PendingIntent.getBroadcast(context,
                             1337,
                             SoftRebootIntent,
-                            PendingIntent.FLAG_UPDATE_CURRENT));
+                            PendingIntent.FLAG_UPDATE_CURRENT))
+                    .build());
         }
 
         notify(context, builder.build());

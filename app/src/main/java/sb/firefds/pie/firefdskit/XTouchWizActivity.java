@@ -100,10 +100,10 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
         if (sharedPrefsFolder.exists()) {
             sharedPrefsFolder.setExecutable(true, false);
             sharedPrefsFolder.setReadable(true, false);
-            File f = new File(sharedPrefsFolder.getAbsolutePath() + "/" + BuildConfig.APPLICATION_ID + ".xml");
+            File f = new File(sharedPrefsFolder.getAbsolutePath() + "/" + BuildConfig.APPLICATION_ID + "_preferences.xml");
             if (f.exists()) {
                 f.setReadable(true, false);
-                sharedPrefsFolder.setExecutable(true, false);
+                f.setExecutable(true, false);
             }
         }
     }
@@ -587,12 +587,14 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
         public void onResume() {
             super.onResume();
             registerPrefsReceiver();
+            fixPermissions(mContext);
         }
 
         @Override
         public void onPause() {
             super.onPause();
             unregisterPrefsReceiver();
+            fixPermissions(mContext);
         }
 
         private void registerPrefsReceiver() {
@@ -618,6 +620,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 
                 for (String string : litePrefs) {
                     if (key.equalsIgnoreCase(string)) {
+                        fixPermissions(mContext);
                         return;
                     }
                 }
@@ -626,7 +629,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
                 if (!changesMade.contains(key)) {
                     changesMade.add(key);
                 }
-
+                fixPermissions(mContext);
                 RebootNotification.notify(getActivity(), changesMade.size(), true);
             } catch (Throwable e) {
                 e.printStackTrace();
