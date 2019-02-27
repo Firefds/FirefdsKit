@@ -22,8 +22,8 @@ import sb.firefds.pie.firefdskit.utils.Packages;
 
 public class XNfcPackage {
 
-    private static final int SCREEN_STATE_ON_LOCKED = 2;
-    private static final int SCREEN_STATE_ON_UNLOCKED = 3;
+    private static final int SCREEN_STATE_ON_LOCKED = 4;
+    private static final int SCREEN_STATE_ON_UNLOCKED = 8;
     private static int behavior;
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
@@ -39,7 +39,7 @@ public class XNfcPackage {
 
                             if ((Boolean) XposedHelpers.callMethod(param.thisObject,
                                     "isNfcEnabled")) {
-                                //prefs.reload();
+                                prefs.reload();
                                 param.args[0] =
                                         !prefs.getBoolean("hideNfcIcon", false);
                             }
@@ -57,13 +57,19 @@ public class XNfcPackage {
                     new XC_MethodHook() {
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) {
-                            // prefs.reload();
                             behavior = prefs.getInt("nfcBehavior", 0);
-                            if (behavior != 0) {
+                            if (behavior == 0) {
+                                return;
+                            }
+                            try {
+                                final int currScreenState;
                                 final Object mScreenStateHelper = XposedHelpers
                                         .getObjectField(param.thisObject, "mScreenStateHelper");
-                                final int currScreenState = (Integer) XposedHelpers
-                                        .callMethod(mScreenStateHelper, "checkScreenState");
+                                if (mScreenStateHelper != null) {
+                                    currScreenState = (Integer) XposedHelpers.callMethod(mScreenStateHelper, "checkScreenState");
+                                } else {
+                                    currScreenState = (Integer) XposedHelpers.callMethod(param.thisObject, "checkScreenState");
+                                }
                                 if ((currScreenState == SCREEN_STATE_ON_UNLOCKED)
                                         || (behavior == 1 && currScreenState != SCREEN_STATE_ON_LOCKED)) {
                                     XposedHelpers.setAdditionalInstanceField(param.thisObject,
@@ -81,11 +87,18 @@ public class XNfcPackage {
                                             "mScreenState",
                                             SCREEN_STATE_ON_UNLOCKED);
                                 }
+                            } catch (Exception e) {
+                                XposedBridge.log("applyRouting beforeHookedMethod threw exception: " + e);
+                                e.printStackTrace();
                             }
                         }
 
                         @Override
                         protected void afterHookedMethod(MethodHookParam param) {
+                            if (behavior == 0) {
+                                return;
+                            }
+
                             final int mOrigScreenState = (Integer) XposedHelpers
                                     .getAdditionalInstanceField(param.thisObject, "mOrigScreenState");
                             if (mOrigScreenState == -1)
@@ -97,7 +110,6 @@ public class XNfcPackage {
                                         mOrigScreenState);
                             }
                         }
-
                     });
         } catch (Throwable e) {
             XposedBridge.log(e);

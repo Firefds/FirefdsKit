@@ -17,6 +17,7 @@ package sb.firefds.pie.firefdskit;
 //import com.samsung.android.app.SemColorPickerDialog;
 
 import android.content.Context;
+import android.os.Bundle;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -45,14 +46,15 @@ public class XSecSettingsPackage {
             makeOfficial();
         }
 
-        /*try {
+        try {
             XposedHelpers.findAndHookMethod(
                     Packages.SAMSUNG_SETTINGS + ".bluetooth.BluetoothScanDialog",
                     classLoader,
                     "onCreate",
-                    Bundle.class, new XC_MethodHook() {
+                    Bundle.class,
+                    new XC_MethodHook() {
                         @Override
-                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        protected void afterHookedMethod(MethodHookParam param) {
                             prefs.reload();
                             if (prefs.getBoolean("disableBluetoothScanDialog", false))
                                 ((android.app.Activity) param.thisObject).finish();
@@ -64,7 +66,7 @@ public class XSecSettingsPackage {
 
         }
 
-        if (prefs.getBoolean("disableTetherProvisioning", false)) {
+        /*if (prefs.getBoolean("disableTetherProvisioning", false)) {
             try {
                 disableTetherProvisioning();
             } catch (Throwable e) {

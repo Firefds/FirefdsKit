@@ -35,10 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -57,8 +54,8 @@ public class Utils {
 
     private static final String OMC_PATH = "persist.sys.omc_path";
     private static final String OMC_SUPPORT = "persist.sys.omc_support";
+    private static final String STATUSBAR_SERVICE = "statusbar";
 
-    //private static final String OMC_ENABLE = "persist.sys.omc.enable";
     public enum CscType {
         CSC, OMC_CSC, OMC_OMC
     }
@@ -66,12 +63,11 @@ public class Utils {
     private static Boolean mIsExynosDevice = null;
     private static CscType mCscType = null;
 
-    public static int cmdId = 1982;
     // GB Context
     private static Context mGbContext;
 
     public static void closeStatusBar(Context context) throws Throwable {
-        Object sbservice = context.getSystemService("statusbar");
+        @SuppressLint("WrongConstant") Object sbservice = context.getSystemService(STATUSBAR_SERVICE);
         @SuppressLint("PrivateApi") Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
         Method showsb = statusbarManager.getMethod("collapsePanels");
         showsb.invoke(sbservice);
@@ -144,41 +140,6 @@ public class Utils {
     private static void rebootSystem(final String rebootType) {
         new Handler().postDelayed(() -> new SuTask()
                 .execute("reboot " + rebootType), 1000);
-    }
-
-    public static void savefile(Context context, Uri sourceuri, String path) {
-        String sourceFilename = getUriPath(context, sourceuri);
-        String dir = android.os.Environment.getExternalStorageDirectory().getPath() + File.separatorChar
-                + Constants.BACKUP_DIR;
-
-        String destinationFilename = dir + File.separatorChar + path;
-
-        BufferedInputStream bis = null;
-        BufferedOutputStream bos = null;
-
-        try {
-
-            new File(dir).mkdirs();
-
-            bis = new BufferedInputStream(new FileInputStream(sourceFilename));
-            bos = new BufferedOutputStream(new FileOutputStream(destinationFilename, false));
-            byte[] buf = new byte[1024];
-            bis.read(buf);
-            do {
-                bos.write(buf);
-            } while (bis.read(buf) != -1);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (bis != null)
-                    bis.close();
-                if (bos != null)
-                    bos.close();
-            } catch (Throwable ignored) {
-
-            }
-        }
     }
 
     private static String getUriPath(Context context, Uri uri) {
@@ -354,18 +315,6 @@ public class Utils {
 
         mCscType = SystemProperties.getBoolean(OMC_SUPPORT, false) ? CscType.OMC_OMC : CscType.OMC_CSC;
 
-        //mCscType = SystemProperties.getBoolean(OMC_ENABLE, false) ?
-        //		SystemProperties.getBoolean(OMC_SUPPORT, false) ? CscType.OMC_OMC : CscType.OMC_CSC :
-        //			CscType.CSC;
-		/*				
-		if (SystemProperties.getBoolean(OMC_ENABLE, false)) {
-			if (SystemProperties.getBoolean(OMC_SUPPORT, false))
-				mCscType = CscType.OMC_OMC;
-			else
-				mCscType = CscType.OMC_CSC;
-		}
-		else 
-			mCscType = CscType.CSC;*/
         return mCscType;
     }
 
