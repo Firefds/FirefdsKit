@@ -15,6 +15,7 @@
 package sb.firefds.pie.firefdskit;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -66,7 +67,6 @@ import static sb.firefds.pie.firefdskit.utils.Constants.PREFS;
 
 public class FirefdsKitActivity extends Activity implements RestoreDialogListener {
 
-    private static ProgressDialog mDialog;
     private static final String[] defaultSettings = MainApplication
             .getAppContext()
             .getResources()
@@ -95,6 +95,7 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
         }
     }
 
+    @SuppressLint("SetWorldReadable")
     public static void fixPermissions(Context context) {
         File sharedPrefsFolder =
                 new File(String.format("%s/shared_prefs", context.getDataDir().getAbsolutePath()));
@@ -111,6 +112,7 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
         }
     }
 
+    @SuppressLint("SetWorldReadable")
     public static void fixAppPermissions() {
         File appFolder = new File(Environment.getDataDirectory(), "data/" + BuildConfig.APPLICATION_ID);
         appFolder.setExecutable(true, false);
@@ -144,29 +146,7 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
 
     @Override
     public void onBackPressed() {
-        try {
-            if (!isFinishing()) {
-                mDialog = new ProgressDialog(this);
-                mDialog.setCancelable(false);
-                mDialog.setMessage(getString(R.string.exiting_the_application_));
-                mDialog.show();
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
         new QuitTask().execute(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        try {
-            if (mDialog != null) {
-                mDialog.dismiss();
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        super.onDestroy();
     }
 
     private static class QuitTask extends AsyncTask<Activity, Void, Void> {
