@@ -64,13 +64,13 @@ import sb.firefds.pie.firefdskit.utils.Utils;
 
 import static sb.firefds.pie.firefdskit.utils.Constants.PREFS;
 
-@SuppressWarnings("deprecation")
-public class XTouchWizActivity extends Activity implements RestoreDialogListener {
+public class FirefdsKitActivity extends Activity implements RestoreDialogListener {
 
     private static ProgressDialog mDialog;
-    private static final String[] defaultSettings = new String[]{"enableCameraDuringCall",
-            "disableNumberFormating", "disableSmsToMmsConversion", "isFirefdsKitFirstLaunch",
-            "makeMeTooLegit", "disableTIMA"};
+    private static final String[] defaultSettings = MainApplication
+            .getAppContext()
+            .getResources()
+            .getStringArray(R.array.default_settings);
 
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -96,11 +96,14 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
     }
 
     public static void fixPermissions(Context context) {
-        File sharedPrefsFolder = new File(context.getDataDir().getAbsolutePath() + "/shared_prefs");
+        File sharedPrefsFolder =
+                new File(String.format("%s/shared_prefs", context.getDataDir().getAbsolutePath()));
         if (sharedPrefsFolder.exists()) {
             sharedPrefsFolder.setExecutable(true, false);
             sharedPrefsFolder.setReadable(true, false);
-            File f = new File(sharedPrefsFolder.getAbsolutePath() + "/" + BuildConfig.APPLICATION_ID + "_preferences.xml");
+            File f = new File(String.format("%s/%s_preferences.xml",
+                    sharedPrefsFolder.getAbsolutePath(),
+                    BuildConfig.APPLICATION_ID));
             if (f.exists()) {
                 f.setReadable(true, false);
                 f.setExecutable(true, false);
@@ -129,7 +132,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
             getWindowManager().getDefaultDisplay().getSize(MainApplication.getWindowsSize());
 
             if (savedInstanceState == null)
-                getFragmentManager().beginTransaction().replace(R.id.prefs,
+                getFragmentManager().beginTransaction().replace(android.R.id.content,
                         new SettingsFragment()).commit();
 
 
@@ -224,12 +227,12 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
             default:
                 break;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
 
     }
 
     public void ShowRecommendedSettingsDiag() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(XTouchWizActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(FirefdsKitActivity.this);
         builder.setCancelable(true)
                 .setTitle(R.string.app_name)
                 .setMessage(R.string.set_recommended_settings)
@@ -303,7 +306,7 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(XTouchWizActivity.this);
+            progressDialog = new ProgressDialog(FirefdsKitActivity.this);
             progressDialog.setIndeterminate(true);
             progressDialog.setMessage(getString(R.string.restoring_backup));
             progressDialog.show();
@@ -358,8 +361,8 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             progressDialog.dismiss();
-            Toast.makeText(XTouchWizActivity.this, R.string.backup_restored, Toast.LENGTH_SHORT).show();
-            RebootNotification.notify(XTouchWizActivity.this, 999, false);
+            Toast.makeText(FirefdsKitActivity.this, R.string.backup_restored, Toast.LENGTH_SHORT).show();
+            RebootNotification.notify(FirefdsKitActivity.this, 999, false);
         }
     }
 
@@ -610,11 +613,8 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 
             try {
                 // No reboot notification required
-                String[] litePrefs = new String[]{"isFirefdsKitFirstLaunch", "screenTimeoutSeconds",
-                        "screenTimeoutMinutes", "screenTimeoutHours", "hideCarrierLabel",
-                        "carrierSize", "enableCallAdd", "enableCallRecordingMenu",
-                        "enableAutoCallRecording", "enable4WayReboot", "mRebootConfirmRequired",
-                        "disablePowerMenuLockscreen"};
+                String[] litePrefs =
+                        mContext.getResources().getStringArray(R.array.lite_preferences);
 
                 setTimeoutPrefs(sharedPreferences, key);
 
@@ -638,8 +638,8 @@ public class XTouchWizActivity extends Activity implements RestoreDialogListener
 
         private void setTimeoutPrefs(SharedPreferences sharedPreferences, String key) {
 
-            String[] timeoutPrefs = new String[]{"screenTimeoutSeconds", "screenTimeoutMinutes",
-                    "screenTimeoutHours"};
+            String[] timeoutPrefs =
+                    mContext.getResources().getStringArray(R.array.timeout_preferences);
             int timeoutML = 0;
 
             if (key.equalsIgnoreCase(timeoutPrefs[0])) {

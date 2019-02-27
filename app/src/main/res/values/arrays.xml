@@ -107,4 +107,31 @@
         <item>Wifi</item>
         <item>WiFi</item>
     </string-array>
+    <string-array name="default_settings">
+        <item>enableCameraDuringCall</item>
+        <item>disableNumberFormating</item>
+        <item>disableSmsToMmsConversion</item>
+        <item>isFirefdsKitFirstLaunch</item>
+        <item>makeMeTooLegit</item>
+        <item>disableTIMA</item>
+    </string-array>
+    <string-array name="lite_preferences">
+        <item>isFirefdsKitFirstLaunch</item>
+        <item>screenTimeoutSeconds</item>
+        <item>screenTimeoutMinutes</item>
+        <item>screenTimeoutHours</item>
+        <item>hideCarrierLabel</item>
+        <item>carrierSize</item>
+        <item>enableCallAdd</item>
+        <item>enableCallRecordingMenu</item>
+        <item>enableAutoCallRecording</item>
+        <item>enable4WayReboot</item>
+        <item>mRebootConfirmRequired</item>
+        <item>disablePowerMenuLockscreen</item>
+    </string-array>
+    <string-array name="timeout_preferences">
+        <item>screenTimeoutSeconds</item>
+        <item>screenTimeoutMinutes</item>
+        <item>screenTimeoutHours</item>
+    </string-array>
 </resources>

@@ -26,8 +26,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Icon;
 
+import java.util.Objects;
+
 import sb.firefds.pie.firefdskit.R;
-import sb.firefds.pie.firefdskit.XTouchWizActivity;
+import sb.firefds.pie.firefdskit.FirefdsKitActivity;
 import sb.firefds.pie.firefdskit.receivers.WanamRebootReceiver;
 
 import static android.support.v4.content.ContextCompat.getSystemService;
@@ -47,9 +49,12 @@ public class RebootNotification {
         final String title = res.getString(R.string.reboot_required_title);
         final String text = res.getString(R.string.reboot_required_message);
 
-        NotificationChannel mChannel = new NotificationChannel("Reboot_ID", "Reboot Name", NotificationManager.IMPORTANCE_DEFAULT);
-        NotificationManager mNotificationManager = getSystemService(context, NotificationManager.class);
-        mNotificationManager.createNotificationChannel(mChannel);
+        NotificationChannel mChannel = new NotificationChannel("Reboot_ID",
+                "Reboot Name",
+                NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationManager mNotificationManager =
+                getSystemService(context, NotificationManager.class);
+        Objects.requireNonNull(mNotificationManager).createNotificationChannel(mChannel);
 
         final Notification.Builder builder = new Notification.Builder(context, "Reboot_ID")
                 .setSmallIcon(android.R.drawable.ic_menu_rotate)
@@ -61,7 +66,7 @@ public class RebootNotification {
                 .setWhen(0)
                 .setContentIntent(PendingIntent.getActivity(context,
                         0,
-                        new Intent(context, XTouchWizActivity.class),
+                        new Intent(context, FirefdsKitActivity.class),
                         PendingIntent.FLAG_UPDATE_CURRENT))
                 .setStyle(new Notification.BigTextStyle()
                         .bigText(text)
@@ -70,7 +75,7 @@ public class RebootNotification {
                 .setAutoCancel(true);
 
         Intent rebootIntent = new Intent(context, WanamRebootReceiver.class)
-                .setAction("ma.wanam.xposed.action.REBOOT_DEVICE");
+                .setAction(context.getResources().getString(R.string.reboot_device_action));
         builder.addAction(new Notification.Action.Builder(
                 Icon.createWithResource(context, android.R.drawable.ic_menu_rotate),
                 res.getString(R.string.reboot),
@@ -82,7 +87,7 @@ public class RebootNotification {
 
         if (showSoftReboot) {
             Intent SoftRebootIntent = new Intent(context, WanamRebootReceiver.class)
-                    .setAction("ma.wanam.xposed.action.SOFT_REBOOT_DEVICE");
+                    .setAction(context.getResources().getString(R.string.soft_reboot_device_action));
             builder.addAction(new Notification.Action.Builder(
                     Icon.createWithResource(context, android.R.drawable.ic_menu_rotate),
                     res.getString(R.string.soft_reboot),

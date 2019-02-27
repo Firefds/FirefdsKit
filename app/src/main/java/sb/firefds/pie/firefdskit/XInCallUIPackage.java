@@ -14,7 +14,6 @@
  */
 package sb.firefds.pie.firefdskit;
 
-import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
@@ -25,95 +24,85 @@ public class XInCallUIPackage {
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
-        //Enable call recording
         try {
-            /*Object[] arrayOfObject = new Object[2];
-            arrayOfObject[0] = String.class;
-            arrayOfObject[1] = new XC_MethodHook() {
-                protected void beforeHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
-                    prefs.reload();
-                    if ((prefs.getBoolean("enableCallAdd", false) && prefs.getBoolean("enableCallRecordingMenu", false)) ||
-                            (!prefs.getBoolean("enableCallAdd", false)) ||
-                            (prefs.getBoolean("enableAutoCallRecording", false)))
-                        if ("voice_call_recording".equals(param.args[0])) {
-                            param.setResult(Boolean.TRUE);
-                        }
-                }
-            };*/
             XposedHelpers.findAndHookMethod(
-                    Packages.INCALLUI + ".modal.feature.function.VoiceRecordingFeature",
+                    Packages.INCALLUI + ".modelimpl.feature.function.VoiceRecordingFeatureImpl",
                     classLoader,
-                    "isEnabled",
-                    XC_MethodReplacement.returnConstant(prefs.getBoolean("enableCallAdd", false) ?
-                            Boolean.TRUE : Boolean.FALSE));
+                    "isSupportVoiceRecording",
+                    new XC_MethodReplacement() {
+                        @Override
+                        protected Object replaceHookedMethod(MethodHookParam param) {
+                            prefs.reload();
+                            if (prefs.getBoolean("enableCallAdd", false)
+                                    && !prefs.getBoolean("enableAutoCallRecording", false)) {
+                                return Boolean.FALSE;
+                            } else {
+                                return Boolean.TRUE;
+                            }
+                        }
+                    });
         } catch (Throwable e1) {
             XposedBridge.log(e1.toString());
         }
 
-        //Enable call recording menu
         try {
-            Object[] arrayOfObject = new Object[2];
-            arrayOfObject[0] = String.class;
-            arrayOfObject[1] = new XC_MethodHook() {
-                protected void beforeHookedMethod(XC_MethodHook.MethodHookParam param) {
-                    prefs.reload();
-                    if (prefs.getBoolean("enableCallAdd", false)
-                            && prefs.getBoolean("enableCallRecordingMenu", false))
-                        if ("voice_call_recording_menu".equals(param.args[0])) {
-                            param.setResult(Boolean.TRUE);
-                        }
-                }
-            };
-            XposedHelpers.findAndHookMethod(Packages.INCALLUI + ".InCallUIFeature",
+            XposedHelpers.findAndHookMethod(
+                    Packages.INCALLUI + ".modelimpl.feature.function.VoiceRecordingByMenuFeatureImpl",
                     classLoader,
-                    "hasFeature",
-                    arrayOfObject);
-        } catch (Throwable e) {
-            XposedBridge.log(e);
-        }
-
-        //Enable automatic call recording
-        try {
-            final Class<?> mCallList =
-                    XposedHelpers.findClass(Packages.INCALLUI + ".CallList", classLoader);
-
-            XposedHelpers.findAndHookMethod(Packages.INCALLUI + ".InCallPresenter",
-                    classLoader,
-                    "processOnCallListChange",
-                    mCallList,
-                    new XC_MethodHook() {
-
+                    "isSupportVoiceRecording",
+                    new XC_MethodReplacement() {
                         @Override
-                        protected void afterHookedMethod(MethodHookParam param) {
-                            //prefs.reload();
-                            if (prefs.getBoolean("enableAutoCallRecording", false)) {
-                                Object mCall =
-                                        XposedHelpers.callMethod(param.args[0], "getFirstCall");
-
-                                Object mRecorderMgr =
-                                        XposedHelpers.getObjectField(param.thisObject, "mRecorderMgr");
-
-                                if (mRecorderMgr != null) {
-
-                                    Boolean mIsRecording =
-                                            (Boolean) XposedHelpers
-                                                    .callMethod(mRecorderMgr, "isRecording");
-                                    if (mCall != null) {
-                                        int mState = (Integer) XposedHelpers
-                                                .callMethod(mCall, "getState");
-
-                                        if (mIsRecording && mState != 3) {// Recording on an Inactive Call
-                                            XposedHelpers.callMethod(mRecorderMgr, "toggleRecord");
-                                        } else if (!mIsRecording && mState == 3) { // Not recording on an Active Call
-                                            XposedHelpers.callMethod(mRecorderMgr, "toggleRecord");
-                                        }
-                                    }
-                                }
+                        protected Object replaceHookedMethod(MethodHookParam param) {
+                            prefs.reload();
+                            if (prefs.getBoolean("enableCallRecordingMenu", false)) {
+                                return Boolean.TRUE;
+                            } else {
+                                return Boolean.FALSE;
                             }
                         }
                     });
-        } catch (Throwable e) {
-            XposedBridge.log(e);
+        } catch (Throwable e1) {
+            XposedBridge.log(e1.toString());
+        }
+
+        try {
+            XposedHelpers.findAndHookMethod(
+                    Packages.INCALLUI + ".modelimpl.feature.function.VoiceRecordingByButtonFeatureImpl",
+                    classLoader,
+                    "isSupportVoiceRecording",
+                    new XC_MethodReplacement() {
+                        @Override
+                        protected Object replaceHookedMethod(MethodHookParam param) {
+                            prefs.reload();
+                            if (prefs.getBoolean("enableCallAdd", false)) {
+                                return Boolean.FALSE;
+                            } else {
+                                return Boolean.TRUE;
+                            }
+                        }
+                    });
+        } catch (Throwable e1) {
+            XposedBridge.log(e1.toString());
+        }
+
+        try {
+            XposedHelpers.findAndHookMethod(
+                    Packages.INCALLUI + ".modelimpl.callcontext.VoiceRecordingContextImpl",
+                    classLoader,
+                    "isForcedToAutoRecord",
+                    new XC_MethodReplacement() {
+                        @Override
+                        protected Object replaceHookedMethod(MethodHookParam param) {
+                            prefs.reload();
+                            if (prefs.getBoolean("enableAutoCallRecording", false)) {
+                                return Boolean.TRUE;
+                            } else {
+                                return Boolean.FALSE;
+                            }
+                        }
+                    });
+        } catch (Throwable e1) {
+            XposedBridge.log(e1.toString());
         }
     }
 }

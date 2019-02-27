@@ -345,7 +345,7 @@
     <string name="screen_timeout_hours">Screen Timeout Hours</string>
     <string name="disable_touchwiz_dvfs">Disable TouchWiz DVFS</string>
     <string name="disable_dynamic_voltage_and_frequency_scaling">Disable Dynamic Voltage and Frequency Scaling, EXPERIMENTAL!</string>
-    <string name="touchwiz_dvfs">TouchWiz DVFS</string>
+    <string name="touchwiz_dvfs" translatable="false">TouchWiz DVFS</string>
     <string name="dvfs_black_list">DVFS blackList</string>
     <string name="set_dvfs_diabler_blacklist">Set DVFS blacklist</string>
     <string name="select_applications_which_should_keep_dvfs_disabled">Select applications where DVFS should be disabled</string>
@@ -354,4 +354,7 @@
     <string name="safe_mode">Safe mode</string>
     <string name="enable_navigationbar_color_summary">Enable navigation bar custom color</string>
     <string name="enable_navigationbar_color_title">Navigation Bar Custom Color</string>
+    <string name="reboot_device_action" translatable="false">ma.wanam.xposed.action.REBOOT_DEVICE</string>
+    <string name="soft_reboot_device_action" translatable="false">ma.wanam.xposed.action.SOFT_REBOOT_DEVICE</string>
+    <string name="reboot_options_action" translatable="false">ma.wanam.xposed.action.REBOOT_OPTIONS</string>
 </resources>

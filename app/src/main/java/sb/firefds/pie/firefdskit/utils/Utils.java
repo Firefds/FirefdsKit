@@ -146,11 +146,6 @@ public class Utils {
                 .execute("reboot " + rebootType), 1000);
     }
 
-    public static void SoftRebootSystem() {
-        new Handler().postDelayed(() -> new SuTask()
-                .execute("setprop ctl.restart zygote"), 1000);
-    }
-
     public static void savefile(Context context, Uri sourceuri, String path) {
         String sourceFilename = getUriPath(context, sourceuri);
         String dir = android.os.Environment.getExternalStorageDirectory().getPath() + File.separatorChar

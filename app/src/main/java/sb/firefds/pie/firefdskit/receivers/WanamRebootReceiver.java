@@ -21,14 +21,19 @@ import android.os.Bundle;
 
 import java.util.Objects;
 
+import sb.firefds.pie.firefdskit.MainApplication;
+import sb.firefds.pie.firefdskit.R;
 import sb.firefds.pie.firefdskit.activities.WanamRebootActivity;
 import sb.firefds.pie.firefdskit.notifications.RebootNotification;
 
 public class WanamRebootReceiver extends BroadcastReceiver {
 
-    private static final String REBOOT_DEVICE = "ma.wanam.xposed.action.REBOOT_DEVICE";
-    private static final String SOFT_REBOOT_DEVICE = "ma.wanam.xposed.action.SOFT_REBOOT_DEVICE";
-    private static final String REBOOT_OPTIONS = "ma.wanam.xposed.action.REBOOT_OPTIONS";
+    private static final String REBOOT_DEVICE =
+            MainApplication.getAppContext().getString(R.string.reboot_device_action);
+    private static final String SOFT_REBOOT_DEVICE =
+            MainApplication.getAppContext().getString(R.string.soft_reboot_device_action);
+    private static final String REBOOT_OPTIONS =
+            MainApplication.getAppContext().getString(R.string.reboot_options_action);
 
     @Override
     public void onReceive(Context context, Intent intent) {

@@ -32,10 +32,6 @@ public class XSecSettingsPackage {
 
     private static ClassLoader classLoader;
     private static XSharedPreferences prefs;
-    private static String SYSCOPE_STATUS_PREFERENCE_CONTROLLER =
-            Packages.SAMSUNG_SETTINGS + ".deviceinfo.status.SyscopeStatusPreferenceController";
-    private static String SEC_DEVICE_INFO_UTILS =
-            Packages.SAMSUNG_SETTINGS + ".deviceinfo.SecDeviceInfoUtils";
     //private static SemColorPickerDialog semColorPickerDialog;
     //private static Context mContext;
     //private static int[] colorArray;
@@ -188,6 +184,11 @@ public class XSecSettingsPackage {
     }
 
     private static void makeOfficial() {
+        String SYSCOPE_STATUS_PREFERENCE_CONTROLLER =
+                Packages.SAMSUNG_SETTINGS + ".deviceinfo.status.SyscopeStatusPreferenceController";
+        String SEC_DEVICE_INFO_UTILS =
+                Packages.SAMSUNG_SETTINGS + ".deviceinfo.SecDeviceInfoUtils";
+
         try {
             XposedHelpers.findAndHookMethod(SYSCOPE_STATUS_PREFERENCE_CONTROLLER,
                     classLoader,
