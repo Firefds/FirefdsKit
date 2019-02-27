@@ -16,6 +16,7 @@ package sb.firefds.pie.firefdskit;
 
 //import com.samsung.android.app.SemColorPickerDialog;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -63,7 +64,25 @@ public class XSecSettingsPackage {
 
         } catch (Throwable e) {
             XposedBridge.log(e);
+        }
 
+        try {
+            XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".qstile.SecAccountTiles",
+                    classLoader,
+                    "showConfirmPopup",
+                    boolean.class,
+                    new XC_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param) {
+                            if (prefs.getBoolean("disableSyncDialog", false)) {
+                                ContentResolver.setMasterSyncAutomatically((Boolean) param.args[0]);
+                                param.setResult(null);
+                            }
+                        }
+                    });
+
+        } catch (Throwable e) {
+            XposedBridge.log(e);
         }
 
         /*if (prefs.getBoolean("disableTetherProvisioning", false)) {
@@ -115,25 +134,7 @@ public class XSecSettingsPackage {
 
 		} catch (Throwable e) {
 			XposedBridge.log(e);
-		}
-
-        try {
-            XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".qstile.SecAccountTiles", classLoader,
-                    "showConfirmPopup", boolean.class, new XC_MethodHook() {
-                        @Override
-                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                            if (prefs.getBoolean("disableSyncDialog", false)) {
-                                ContentResolver.setMasterSyncAutomatically((Boolean) param.args[0]);
-                                param.setResult(null);
-                            }
-                        }
-                    });
-
-        } catch (Throwable e) {
-            XposedBridge.log(e);
-
-        }*/
-
+		}*/
     }
 
     private static void disableTetherProvisioning() {

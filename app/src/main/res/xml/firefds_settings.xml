@@ -13,13 +13,13 @@
         android:icon="@drawable/notification"
         android:key="statusbarKey"
         android:title="@string/statusbar">
-        <PreferenceCategory android:title="@string/statusbar">
+<!--        <PreferenceCategory android:title="@string/statusbar">
             <SwitchPreference
                 android:defaultValue="false"
                 android:key="showWirelessChargerInfoPopUp"
                 android:summary="@string/show_wireless_charger_information_popup"
                 android:title="@string/show_wireless_charging_popup" />
-        </PreferenceCategory>
+        </PreferenceCategory>-->
         <PreferenceCategory android:title="@string/status_icons">
             <SwitchPreference
                 android:defaultValue="false"
