@@ -357,4 +357,6 @@
     <string name="reboot_device_action" translatable="false">ma.wanam.xposed.action.REBOOT_DEVICE</string>
     <string name="soft_reboot_device_action" translatable="false">ma.wanam.xposed.action.SOFT_REBOOT_DEVICE</string>
     <string name="reboot_options_action" translatable="false">ma.wanam.xposed.action.REBOOT_OPTIONS</string>
+    <string name="enable_camera_shutter_menu">Enable Shutter Sound Menu</string>
+    <string name="enable_camera_shutter_menu_summary">Enable shutter sound menu in camera app</string>
 </resources>

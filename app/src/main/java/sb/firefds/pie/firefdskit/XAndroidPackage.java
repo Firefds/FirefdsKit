@@ -14,20 +14,13 @@
  */
 package sb.firefds.pie.firefdskit;
 
-import android.app.ActivityManager;
-import android.app.ActivityManager.RunningTaskInfo;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.PowerManager;
 
-import java.util.List;
 
-import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-import sb.firefds.pie.firefdskit.utils.Packages;
 
 public class XAndroidPackage {
 
@@ -47,7 +40,7 @@ public class XAndroidPackage {
                 e.printStackTrace();
             }
 
-        if (prefs.getBoolean("disableDVFS", true)) {
+        /*if (prefs.getBoolean("disableDVFS", true)) {
             try {
                 disableTwDvfs();
             } catch (Throwable e) {
@@ -59,7 +52,7 @@ public class XAndroidPackage {
             } catch (Throwable e) {
                 XposedBridge.log(e);
             }
-        }
+        }*/
     }
 
     private static void disableTIMA() {
@@ -70,7 +63,7 @@ public class XAndroidPackage {
                 XC_MethodReplacement.returnConstant(null));
     }
 
-    private static void disableTwDvfs() {
+    /*private static void disableTwDvfs() {
 
         final Class<?> mCustomFrequencyManager = XposedHelpers.findClass(Packages.ANDROID
                 + ".os.CustomFrequencyManager", classLoader);
@@ -156,5 +149,5 @@ public class XAndroidPackage {
         } catch (Throwable e) {
             XposedBridge.log(e);
         }
-    }
+    }*/
 }

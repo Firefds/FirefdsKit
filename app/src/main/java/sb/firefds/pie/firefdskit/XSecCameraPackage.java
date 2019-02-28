@@ -14,7 +14,7 @@
  */
 package sb.firefds.pie.firefdskit;
 
-import de.robv.android.xposed.XC_MethodReplacement;
+import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
@@ -22,53 +22,46 @@ import sb.firefds.pie.firefdskit.utils.Packages;
 
 public class XSecCameraPackage {
 
-    private static ClassLoader classLoader;
 
     public static void doHook(final XSharedPreferences prefs, ClassLoader classLoader) {
 
-        XSecCameraPackage.classLoader = classLoader;
+        final Class<?> cameraFeatureClass
+                = XposedHelpers.findClass(Packages.SAMSUNG_CAMERA + ".feature.Feature", classLoader);
 
         if (prefs.getBoolean("disableTemperatureChecks", false)) {
             try {
-                disableTemperatureChecks();
+                XposedHelpers.findAndHookMethod(Packages.CAMERA + ".provider.CameraTemperatureManager",
+                        classLoader,
+                        "start",
+                        new XC_MethodHook() {
+                            @Override
+                            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                                super.beforeHookedMethod(param);
+                                XposedHelpers.setStaticBooleanField(cameraFeatureClass,
+                                        "SUPPORT_THERMISTOR_TEMPERATURE", false);
+                            }
+                        });
             } catch (Throwable e) {
                 XposedBridge.log(e);
-
             }
         }
-    }
-
-    private static void disableTemperatureChecks() {
 
         try {
-            XposedHelpers.findAndHookMethod(Packages.CAMERA + ".CameraSettings",
+            XposedHelpers.findAndHookMethod(Packages.CAMERA + ".setting.PreferenceSettingFragment",
                     classLoader,
-                    "isTemperatureHighToUseFlash",
-                    XC_MethodReplacement.returnConstant(false));
+                    "updateFeaturedPreference",
+                    new XC_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                            super.beforeHookedMethod(param);
+                            prefs.reload();
+                            XposedHelpers.setStaticBooleanField(cameraFeatureClass,
+                                    "ENABLE_SHUTTER_SOUND_MENU",
+                                    prefs.getBoolean("enableCameraShutterMenu", false));
+                        }
+                    });
         } catch (Throwable e) {
             XposedBridge.log(e);
-
-        }
-
-        try {
-            XposedHelpers.findAndHookMethod(Packages.CAMERA + ".CameraSettings",
-                    classLoader,
-                    "isTemperatureLowToUseFlash",
-                    XC_MethodReplacement.returnConstant(false));
-        } catch (Throwable e) {
-            XposedBridge.log(e);
-
-        }
-
-        try {
-            XposedHelpers.findAndHookMethod(Packages.CAMERA + ".CameraSettings",
-                    classLoader,
-                    "isTemperatureHighToRecord",
-                    XC_MethodReplacement.returnConstant(false));
-        } catch (Throwable e) {
-            XposedBridge.log(e);
-
         }
     }
-
 }

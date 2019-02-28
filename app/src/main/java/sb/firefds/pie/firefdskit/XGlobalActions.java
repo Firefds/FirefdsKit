@@ -51,7 +51,10 @@ import static sb.firefds.pie.firefdskit.utils.Constants.REBOOT_DEVICE;
 
 public class XGlobalActions {
     private static final String CLASS_GLOBAL_ACTIONS = "com.android.server.policy.GlobalActions";
+    private static final String CLASS_GLOBAL_ACTIONS_FEATURES = "com.android.server.policy.globalactions.presentation.features.GlobalActionFeatures";
     private static final String CLASS_ACTION = "com.android.internal.globalactions.Action";
+    private static final String CLASS_GLOBAL_ACTIONS_PRESENT = "com.samsung.android.globalactions.presentation.SecGlobalActionsPresenter";
+    private static final String CLASS_ACTION_VIEW_MODEL = "com.samsung.android.globalactions.presentation.viewmodel.ActionViewModel";
 
     private static Context mContext;
     private static String mRebootConfirmStr;
@@ -74,10 +77,36 @@ public class XGlobalActions {
     public static void init(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
         try {
+            XposedBridge.log("inside XGlobalActions");
             final Class<?> globalActionsClass = XposedHelpers.findClass(CLASS_GLOBAL_ACTIONS, classLoader);
-            final Class<?> actionClass = XposedHelpers.findClass(CLASS_ACTION, classLoader);
+            final Class<?> globalActionFeatures = XposedHelpers.findClass(CLASS_GLOBAL_ACTIONS_FEATURES, classLoader);
+            //final Class<?> actionClass = XposedHelpers.findClass(CLASS_ACTION, classLoader);
+            final Class<?> globalActionsPresent = XposedHelpers.findClass(CLASS_GLOBAL_ACTIONS_PRESENT, classLoader);
+            //final Class<?> actionViewModelClass = XposedHelpers.findClass(CLASS_ACTION_VIEW_MODEL, classLoader);
 
-            //hides reboot confirmation screen
+            XposedHelpers.findAndHookMethod(globalActionFeatures,
+                    "isDataModeSupported", XC_MethodReplacement.returnConstant(Boolean.TRUE));
+
+
+            XposedBridge.log("Before createDefaultActions");
+            XposedHelpers.findAndHookMethod(globalActionsPresent,
+                    "createDefaultActions",
+                    new XC_MethodHook() {
+                        @Override
+                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                            XposedHelpers.callMethod(param.thisObject,
+                                    "addAction",
+                                    XposedHelpers.callMethod(XposedHelpers.getObjectField(param.thisObject,
+                                            "mViewModelFactory"),
+                                            "createActionViewModel",
+                                            param.thisObject,
+                                            "data_mode"));
+                            XposedBridge.log("After createDefaultActions");
+                            super.afterHookedMethod(param);
+                        }
+                    });
+
+            /*//hides reboot confirmation screen
             XposedBridge.hookAllMethods(globalActionsClass, "initValueForShow", new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) {
@@ -91,7 +120,7 @@ public class XGlobalActions {
                                 0);
                     }
                 }
-            });
+            });*/
 
             //hooks constructors and sets resources
             XposedBridge.hookAllConstructors(globalActionsClass, new XC_MethodHook() {
@@ -110,106 +139,112 @@ public class XGlobalActions {
                 }
             });
 
-            XposedHelpers.findAndHookMethod(globalActionsClass, "createDialog", new XC_MethodHook() {
-                @Override
-                protected void beforeHookedMethod(final MethodHookParam param) {
-                    if (mRebootActionHook != null) {
-                        mRebootActionHook.unhook();
-                        mRebootActionHook = null;
-                    }
-                }
+            XposedHelpers.findAndHookMethod(globalActionsClass,
+                    "showDialog",
+                    boolean.class,
+                    boolean.class,
+                    boolean.class,
+                    new XC_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(final MethodHookParam param) {
+                            if (mRebootActionHook != null) {
+                                mRebootActionHook.unhook();
+                                mRebootActionHook = null;
+                            }
+                            XposedHelpers.setBooleanField(param.thisObject, "mGlobalActionsAvailable", true);
+                        }
 
-                @Override
-                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                    prefs.reload();
-                    enable4WayReboot = prefs.getBoolean("enable4WayReboot", false);
-                    mRebootConfirmRequired = prefs.getBoolean("mRebootConfirmRequired", false);
+                        /*@Override
+                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                            prefs.reload();
+                            enable4WayReboot = prefs.getBoolean("enable4WayReboot", false);
+                            mRebootConfirmRequired = prefs.getBoolean("mRebootConfirmRequired", false);
 
-                    @SuppressWarnings("unchecked")
-                    ArrayList<Object> mItems = (ArrayList<Object>) XposedHelpers
-                            .getObjectField(param.thisObject, "mItems");
-                    BaseAdapter mAdapter = (BaseAdapter) XposedHelpers
-                            .getObjectField(param.thisObject, "mAdapter");
-                    int index = 1;
+                            @SuppressWarnings("unchecked")
+                            ArrayList<Object> mItems = (ArrayList<Object>) XposedHelpers
+                                    .getObjectField(param.thisObject, "mItems");
+                            BaseAdapter mAdapter = (BaseAdapter) XposedHelpers
+                                    .getObjectField(param.thisObject, "mAdapter");
+                            int index = 1;
 
-                    /* try to find out if reboot action item already exists in the list of
+                    *//* try to find out if reboot action item already exists in the list of
                      GlobalActions items strategy:
                      1) check if Action has mIconResId field or mMessageResId field
                      2) check if the name of the corresponding resource contains "reboot"
-                        or "restart" substring*/
-                    if (mRebootActionItem == null) {
-                        Resources res = mContext.getResources();
-                        for (Object o : mItems) {
-                            // search for drawable
-                            try {
-                                Field f = XposedHelpers.findField(o.getClass(), "mIconResId");
-                                String resName = res.getResourceEntryName((Integer) f.get(o))
-                                        .toLowerCase(Locale.US);
-                                if (resName.contains(REBOOT_DEVICE) || resName.contains("restart")) {
-                                    mRebootActionItem = o;
-                                    break;
-                                }
-                            } catch (NoSuchFieldError nfe) {
-                                // continue
-                            } catch (Resources.NotFoundException resnfe) {
-                                // continue
-                            } catch (IllegalArgumentException iae) {
-                                // continue
-                            }
-
+                        or "restart" substring*//*
                             if (mRebootActionItem == null) {
-                                // search for text
-                                try {
-                                    Field f = XposedHelpers.findField(o.getClass(), "mMessageResId");
-                                    String resName = res.getResourceEntryName((Integer) f.get(o))
-                                            .toLowerCase(Locale.US);
-                                    if (resName.contains(REBOOT_DEVICE) || resName.contains("restart")) {
-                                        mRebootActionItem = o;
-                                        break;
+                                Resources res = mContext.getResources();
+                                for (Object o : mItems) {
+                                    // search for drawable
+                                    try {
+                                        Field f = XposedHelpers.findField(o.getClass(), "mIconResId");
+                                        String resName = res.getResourceEntryName((Integer) f.get(o))
+                                                .toLowerCase(Locale.US);
+                                        if (resName.contains(REBOOT_DEVICE) || resName.contains("restart")) {
+                                            mRebootActionItem = o;
+                                            break;
+                                        }
+                                    } catch (NoSuchFieldError nfe) {
+                                        // continue
+                                    } catch (Resources.NotFoundException resnfe) {
+                                        // continue
+                                    } catch (IllegalArgumentException iae) {
+                                        // continue
                                     }
-                                } catch (NoSuchFieldError nfe) {
-                                    // continue
-                                } catch (Resources.NotFoundException resnfe) {
-                                    // continue
-                                } catch (IllegalArgumentException iae) {
-                                    // continue
+
+                                    if (mRebootActionItem == null) {
+                                        // search for text
+                                        try {
+                                            Field f = XposedHelpers.findField(o.getClass(), "mMessageResId");
+                                            String resName = res.getResourceEntryName((Integer) f.get(o))
+                                                    .toLowerCase(Locale.US);
+                                            if (resName.contains(REBOOT_DEVICE) || resName.contains("restart")) {
+                                                mRebootActionItem = o;
+                                                break;
+                                            }
+                                        } catch (NoSuchFieldError nfe) {
+                                            // continue
+                                        } catch (Resources.NotFoundException resnfe) {
+                                            // continue
+                                        } catch (IllegalArgumentException iae) {
+                                            // continue
+                                        }
+                                    }
+                                }
+
+                                if (mRebootActionItem == null) {
+                                    mRebootActionItemStockExists = false;
+                                    mRebootActionItem = Proxy.newProxyInstance(classLoader,
+                                            new Class<?>[]{actionClass},
+                                            new RebootAction());
+                                } else {
+                                    mRebootActionItemStockExists = true;
                                 }
                             }
-                        }
 
-                        if (mRebootActionItem == null) {
-                            mRebootActionItemStockExists = false;
-                            mRebootActionItem = Proxy.newProxyInstance(classLoader,
-                                    new Class<?>[]{actionClass},
-                                    new RebootAction());
-                        } else {
-                            mRebootActionItemStockExists = true;
-                        }
-                    }
-
-                    if (enable4WayReboot) {
-                        // Add/hook reboot action if enabled
-                        if (mRebootActionItemStockExists) {
-                            mRebootActionHook =
-                                    XposedHelpers.findAndHookMethod(mRebootActionItem.getClass(),
-                                            "onPress",
-                                            new XC_MethodReplacement() {
-                                                @Override
-                                                protected Object replaceHookedMethod
-                                                        (MethodHookParam param) {
-                                                    RebootAction.showRebootDialog(mContext);
-                                                    return null;
-                                                }
-                                            });
-                        } else {
-                            // add to the second position
-                            mItems.add(index, mRebootActionItem);
-                        }
-                        index++;
-                    }
-                    mAdapter.notifyDataSetChanged();
-                }
-            });
+                            if (enable4WayReboot) {
+                                // Add/hook reboot action if enabled
+                                if (mRebootActionItemStockExists) {
+                                    mRebootActionHook =
+                                            XposedHelpers.findAndHookMethod(mRebootActionItem.getClass(),
+                                                    "onPress",
+                                                    new XC_MethodReplacement() {
+                                                        @Override
+                                                        protected Object replaceHookedMethod
+                                                                (MethodHookParam param) {
+                                                            RebootAction.showRebootDialog(mContext);
+                                                            return null;
+                                                        }
+                                                    });
+                                } else {
+                                    // add to the second position
+                                    mItems.add(index, mRebootActionItem);
+                                }
+                                index++;
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }*/
+                    });
 
             XC_MethodHook showDialogHook = new XC_MethodHook() {
                 @Override
@@ -240,8 +275,9 @@ public class XGlobalActions {
                 }
             };
             XposedHelpers.findAndHookMethod(globalActionsClass, "showDialog",
-                    boolean.class, boolean.class, showDialogHook);
-        } catch (Exception ignored) {
+                    boolean.class, boolean.class, boolean.class, showDialogHook);
+        } catch (Exception e) {
+            XposedBridge.log("Globalactions: " + e);
         }
     }
 

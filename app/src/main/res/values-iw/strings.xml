@@ -353,4 +353,6 @@
     <string name="disable_dynamic_voltage_and_frequency_scaling">ביטול DVFS, ניסיוני!!!</string>
     <string name="quick_settings_disable_sync_dialog_sum">ביטול דיאלוג האישור אחרי הפעלת או ביטול סנכון</string>
     <string name="quick_settings_disable_sync_dialog">ביטול קפיצת חלון סנכרון</string>
+    <string name="enable_camera_shutter_menu">הפעלת תפריט צליל צמצם</string>
+    <string name="enable_camera_shutter_menu_summary">הפעלת תפריט צליל צמצם באפליקציית המצלמה</string>
 </resources>

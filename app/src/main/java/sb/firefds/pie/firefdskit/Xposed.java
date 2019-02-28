@@ -95,20 +95,8 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             }*/
         }
 
-        //Doesn't work
         if (lpparam.packageName.equals(Packages.SAMSUNG_INCALLUI)) {
             try {
-                XposedBridge.log("inside " + lpparam.packageName);
-                XInCallUIPackage.doHook(prefs, lpparam.classLoader);
-            } catch (Throwable e) {
-                XposedBridge.log(e);
-            }
-        }
-
-        //Doesn't work
-        if (lpparam.packageName.equals(Packages.INCALLUI)) {
-            try {
-                XposedBridge.log("inside " + lpparam.packageName);
                 XInCallUIPackage.doHook(prefs, lpparam.classLoader);
             } catch (Throwable e) {
                 XposedBridge.log(e);
@@ -156,7 +144,7 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         }
     }
 
-    public static XSharedPreferences getModuleSharedPreferences() {
+    private static XSharedPreferences getModuleSharedPreferences() {
         if (prefs == null) {
             prefs = new XSharedPreferences(BuildConfig.APPLICATION_ID);
             prefs.makeWorldReadable();

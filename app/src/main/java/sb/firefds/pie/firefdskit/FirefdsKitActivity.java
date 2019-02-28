@@ -56,7 +56,6 @@ import java.util.Objects;
 import de.robv.android.xposed.library.ui.TextViewPreference;
 import eu.chainfire.libsuperuser.Shell;
 import sb.firefds.pie.firefdskit.dialogs.CreditsDialog;
-import sb.firefds.pie.firefdskit.dialogs.DVFSBlackListDialog;
 import sb.firefds.pie.firefdskit.dialogs.RestoreDialog;
 import sb.firefds.pie.firefdskit.dialogs.RestoreDialog.RestoreDialogListener;
 import sb.firefds.pie.firefdskit.dialogs.SaveDialog;
@@ -407,10 +406,10 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
                     alertDialog.show();
                 }
 
-                findPreference("disableDVFSWhiteList").setOnPreferenceClickListener(preference -> {
+                /*findPreference("disableDVFSWhiteList").setOnPreferenceClickListener(preference -> {
                     new DVFSBlackListDialog().show(getFragmentManager(), "DVFSWhiteList");
                     return true;
-                });
+                });*/
 
                 TextViewPreference textViewInformationHeader;
                 PreferenceScreen ps = (PreferenceScreen) findPreference("prefsRoot");
@@ -528,7 +527,6 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
                                     .edit()
                                     .putBoolean("isFirefdsKitFirstLaunch", true)
                                     .apply();
-                            fixPermissions(mContext);
                         }
                     }
                 } catch (Throwable e) {
@@ -541,13 +539,10 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
 
             protected Void doInBackground(Context... params) {
                 try {
-                    XCscFeaturesManager.getDefaultCSCFeatures();
+                    XCscFeaturesManager.getDefaultCSCFeaturesFromFiles();
                 } catch (Throwable e) {
                     e.printStackTrace();
-                } finally {
-                    XCscFeaturesManager.getDefaultCSCFeaturesFromFiles();
                 }
-
                 return null;
             }
 

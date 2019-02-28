@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="prefsRoot" >
 
-    <de.robv.android.xposed.library.ui.TextViewPreference
+    <de.robv.android.xposed.library.ulockscreeni.TextViewPreference
         android:key="fkHeader"
         android:selectable="false"
         android:title="" />
@@ -13,13 +13,13 @@
         android:icon="@drawable/notification"
         android:key="statusbarKey"
         android:title="@string/statusbar" >
-        <PreferenceCategory android:title="@string/statusbar" >
+        <!--<PreferenceCategory android:title="@string/statusbar" >
             <SwitchPreference
                 android:defaultValue="false"
                 android:key="showWirelessChargerInfoPopUp"
                 android:summary="@string/show_wireless_charger_information_popup"
                 android:title="@string/show_wireless_charging_popup" />
-        </PreferenceCategory>
+        </PreferenceCategory>-->
         <PreferenceCategory android:title="@string/status_icons" >
             <SwitchPreference
                 android:defaultValue="false"
@@ -60,7 +60,7 @@
                 android:title="@string/carrier_size" />
         </PreferenceCategory>
     </PreferenceScreen>
-    <PreferenceScreen
+    <!--<PreferenceScreen
         android:icon="@drawable/lockscreen"
         android:key="lockscreenKey"
         android:title="@string/lockscreen" >
@@ -71,7 +71,7 @@
                 android:summary="@string/disable_adb_connection_during_secured_lockscreen"
                 android:title="@string/disable_adb_on_secured_lock" />
         </PreferenceCategory>
-    </PreferenceScreen>
+    </PreferenceScreen>-->
     <PreferenceScreen
         android:icon="@drawable/sound"
         android:key="soundKey"
@@ -125,26 +125,26 @@
                     android:summary="@string/screen_timeout_hours_summary"
                     android:title="@string/screen_timeout_hours" />
             </PreferenceScreen>
-            <SwitchPreference
+            <!--<SwitchPreference
                 android:defaultValue="false"
                 android:key="disableScrollingCache"
                 android:summary="@string/disable_scrolling_cache_sum"
-                android:title="@string/disable_scrolling_cache" />
-            <SwitchPreference
+                android:title="@string/disable_scrolling_cache" />-->
+           <!-- <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableTetherProvisioning"
                 android:summaryOff="@string/disable_tether_provisioning_off"
                 android:summaryOn="@string/disable_tether_provisioning_on"
-                android:title="@string/disable_tether_provisioning" />
+                android:title="@string/disable_tether_provisioning" />-->
 
-            <de.robv.android.xposed.library.ui.ValueSeekBarPreference
+            <!--<de.robv.android.xposed.library.ui.ValueSeekBarPreference
                 displayFormat="%d לקוחות"
                 max="10"
                 min="1"
                 android:defaultValue="4"
                 android:key="wifiAPClients"
                 android:summary="@string/set_the_the_number_of_maximum_wifi_ap_clients"
-                android:title="@string/wifi_ap_clients_number" />
+                android:title="@string/wifi_ap_clients_number" />-->
 
             <de.robv.android.xposed.library.ui.IntegerListPreference
                 android:defaultValue="0"
@@ -155,26 +155,26 @@
                 android:title="@string/nfc_behavior" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/camera_and_gallery" >
-            <SwitchPreference
+            <!--<SwitchPreference
                 android:defaultValue="false"
                 android:key="enableCameraDuringCall"
                 android:summaryOff="@string/camera_disabed_during_call"
                 android:summaryOn="@string/camera_enabled_during_call"
-                android:title="@string/enable_camera_during_call" />
+                android:title="@string/enable_camera_during_call" />-->
             <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableTemperatureChecks"
                 android:summary="@string/disable_temparature_warnings_on_the_recording"
                 android:title="@string/disable_temperature_checks" />
-            <SwitchPreference
+            <!--<SwitchPreference
                 android:defaultValue="false"
                 android:disableDependentsState="true"
                 android:key="disbaleLowBatteryCloseWarningLevel"
                 android:summaryOff="@string/camera_low_battery_warning_enabled"
                 android:summaryOn="@string/camera_low_battery_warning_disabled"
-                android:title="@string/disable_camera_low_battery_warning" />
+                android:title="@string/disable_camera_low_battery_warning" />-->
 
-            <de.robv.android.xposed.library.ui.ValueSeekBarPreference
+            <!--<de.robv.android.xposed.library.ui.ValueSeekBarPreference
                 displayFormat="%d%%"
                 max="100"
                 min="1"
@@ -182,9 +182,9 @@
                 android:dependency="disbaleLowBatteryCloseWarningLevel"
                 android:key="configCriticalBatteryWarningLevel"
                 android:summary="@string/set_camera_critical_battery_level_warning"
-                android:title="@string/critical_battery_level" />
+                android:title="@string/critical_battery_level" />-->
         </PreferenceCategory>
-        <PreferenceCategory android:title="@string/touchwiz_dvfs" >
+        <!--<PreferenceCategory android:title="@string/touchwiz_dvfs" >
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:disableDependentsState="true"
@@ -197,7 +197,7 @@
                 android:key="disableDVFSWhiteList"
                 android:summary="@string/select_applications_which_should_keep_dvfs_disabled"
                 android:title="@string/set_dvfs_diabler_blacklist" />
-        </PreferenceCategory>
+        </PreferenceCategory>-->
     </PreferenceScreen>
     <PreferenceScreen
         android:icon="@drawable/phone"
