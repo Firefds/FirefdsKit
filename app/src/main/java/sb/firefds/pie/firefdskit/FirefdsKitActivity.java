@@ -605,7 +605,7 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
                     changesMade.add(key);
                 }
                 fixPermissions(mContext);
-                RebootNotification.notify(getActivity(), changesMade.size(), true);
+                RebootNotification.notify(getActivity(), changesMade.size(), false);
             } catch (Throwable e) {
                 e.printStackTrace();
             }

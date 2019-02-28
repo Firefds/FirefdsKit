@@ -38,7 +38,7 @@ import sb.firefds.pie.firefdskit.utils.Constants;
 import sb.firefds.pie.firefdskit.utils.Utils;
 import sb.firefds.pie.firefdskit.utils.Utils.SuTask;
 
-class XCscFeaturesManager {
+public class XCscFeaturesManager {
 
     private static final String RO_BUILD_PDA = "ro.build.PDA";
     private final static String SYSTEM_CSC_SALES_CODE_DAT =
@@ -53,7 +53,7 @@ class XCscFeaturesManager {
     private static String countryISO = "";
     private static String salesCode = "";
 
-    static void applyCscFeatures(SharedPreferences prefs) {
+    public static void applyCscFeatures(SharedPreferences prefs) {
         StringBuilder features = new StringBuilder();
         ArrayList<FeatureDTO> featuresDTOList;
 

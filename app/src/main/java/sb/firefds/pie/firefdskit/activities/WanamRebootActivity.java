@@ -21,7 +21,9 @@ import android.os.Bundle;
 
 import java.util.Objects;
 
+import sb.firefds.pie.firefdskit.MainApplication;
 import sb.firefds.pie.firefdskit.R;
+import sb.firefds.pie.firefdskit.XCscFeaturesManager;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
 import static sb.firefds.pie.firefdskit.utils.Constants.REBOOT_DEVICE;
@@ -55,6 +57,7 @@ public class WanamRebootActivity extends Activity {
     private void rebootDevice() throws Throwable {
         Utils.closeStatusBar(this);
         ProgressDialog.show(this, "", getString(R.string.rebooting));
+        XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
         Utils.reboot();
     }
 
