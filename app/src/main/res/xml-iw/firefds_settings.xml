@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:key="prefsRoot" >
+    android:key="prefsRoot">
 
     <de.robv.android.xposed.library.ulockscreeni.TextViewPreference
         android:key="fkHeader"
@@ -12,7 +12,7 @@
     <PreferenceScreen
         android:icon="@drawable/notification"
         android:key="statusbarKey"
-        android:title="@string/statusbar" >
+        android:title="@string/statusbar">
         <!--<PreferenceCategory android:title="@string/statusbar" >
             <SwitchPreference
                 android:defaultValue="false"
@@ -20,7 +20,7 @@
                 android:summary="@string/show_wireless_charger_information_popup"
                 android:title="@string/show_wireless_charging_popup" />
         </PreferenceCategory>-->
-        <PreferenceCategory android:title="@string/status_icons" >
+        <PreferenceCategory android:title="@string/status_icons">
             <SwitchPreference
                 android:defaultValue="false"
                 android:disableDependentsState="true"
@@ -29,7 +29,7 @@
                 android:summaryOn="@string/hide_nfc_icon_on"
                 android:title="@string/hide_nfc_icon" />
         </PreferenceCategory>
-        <PreferenceCategory android:title="@string/quick_settings" >
+        <PreferenceCategory android:title="@string/quick_settings">
             <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableBluetoothScanDialog"
@@ -41,7 +41,7 @@
                 android:summary="@string/quick_settings_disable_sync_dialog_sum"
                 android:title="@string/quick_settings_disable_sync_dialog" />
         </PreferenceCategory>
-        <PreferenceCategory android:title="@string/carrier_notification" >
+        <PreferenceCategory android:title="@string/carrier_notification">
             <SwitchPreference
                 android:defaultValue="false"
                 android:disableDependentsState="true"
@@ -75,8 +75,8 @@
     <PreferenceScreen
         android:icon="@drawable/sound"
         android:key="soundKey"
-        android:title="@string/sound" >
-        <PreferenceCategory android:title="@string/sound" >
+        android:title="@string/sound">
+        <PreferenceCategory android:title="@string/sound">
             <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableVolumeControlSound"
@@ -92,11 +92,11 @@
     <PreferenceScreen
         android:icon="@drawable/system"
         android:key="systemKey"
-        android:title="@string/system" >
-        <PreferenceCategory android:title="@string/system" >
+        android:title="@string/system">
+        <PreferenceCategory android:title="@string/system">
             <PreferenceScreen
                 android:key="screenTimeoutSettings"
-                android:title="@string/screen_timeout_title" >
+                android:title="@string/screen_timeout_title">
                 <de.robv.android.xposed.library.ui.ValueSeekBarPreference
                     displayFormat="%d שניות"
                     max="59"
@@ -130,12 +130,12 @@
                 android:key="disableScrollingCache"
                 android:summary="@string/disable_scrolling_cache_sum"
                 android:title="@string/disable_scrolling_cache" />-->
-           <!-- <SwitchPreference
-                android:defaultValue="false"
-                android:key="disableTetherProvisioning"
-                android:summaryOff="@string/disable_tether_provisioning_off"
-                android:summaryOn="@string/disable_tether_provisioning_on"
-                android:title="@string/disable_tether_provisioning" />-->
+            <!-- <SwitchPreference
+                 android:defaultValue="false"
+                 android:key="disableTetherProvisioning"
+                 android:summaryOff="@string/disable_tether_provisioning_off"
+                 android:summaryOn="@string/disable_tether_provisioning_on"
+                 android:title="@string/disable_tether_provisioning" />-->
 
             <!--<de.robv.android.xposed.library.ui.ValueSeekBarPreference
                 displayFormat="%d לקוחות"
@@ -153,8 +153,14 @@
                 android:key="nfcBehavior"
                 android:summary="@string/nfc_behavior_summary"
                 android:title="@string/nfc_behavior" />
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="hideMTPNotification"
+                android:summaryOff="@string/hide_mtp_notification_off"
+                android:summaryOn="@string/hide_mtp_notification_on"
+                android:title="@string/hide_mtp_notification" />
         </PreferenceCategory>
-        <PreferenceCategory android:title="@string/camera_and_gallery" >
+        <PreferenceCategory android:title="@string/camera_and_gallery">
             <!--<SwitchPreference
                 android:defaultValue="false"
                 android:key="enableCameraDuringCall"
@@ -202,10 +208,10 @@
     <PreferenceScreen
         android:icon="@drawable/phone"
         android:key="phoneKey"
-        android:title="@string/phone" >
+        android:title="@string/phone">
         <PreferenceCategory
             android:key="phoneKeyCat"
-            android:title="@string/phone" >
+            android:title="@string/phone">
             <SwitchPreference
                 android:defaultValue="false"
                 android:key="enableCallAdd"
@@ -246,8 +252,8 @@
     <PreferenceScreen
         android:icon="@drawable/sms"
         android:key="messagingKey"
-        android:title="@string/messaging" >
-        <PreferenceCategory android:title="@string/messaging" >
+        android:title="@string/messaging">
+        <PreferenceCategory android:title="@string/messaging">
             <SwitchPreference
                 android:defaultValue="true"
                 android:key="enableSaveRestore"
@@ -269,8 +275,8 @@
     <PreferenceScreen
         android:icon="@drawable/security"
         android:key="securityHacks"
-        android:title="@string/security" >
-        <PreferenceCategory android:title="@string/email" >
+        android:title="@string/security">
+        <PreferenceCategory android:title="@string/email">
             <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableExchangeLockSecurity"
@@ -278,7 +284,7 @@
                 android:summaryOn="@string/bypass_exchange_security_on"
                 android:title="@string/bypass_exchange_security" />
         </PreferenceCategory>
-        <PreferenceCategory android:title="@string/system" >
+        <PreferenceCategory android:title="@string/system">
             <SwitchPreference
                 android:defaultValue="true"
                 android:key="makeMeTooLegit"

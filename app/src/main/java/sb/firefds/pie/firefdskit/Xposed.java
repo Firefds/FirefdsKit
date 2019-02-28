@@ -142,6 +142,14 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                 XposedBridge.log(e);
             }
         }
+
+        if (lpparam.packageName.equals(Packages.MTP_APPLICATION)) {
+            try {
+                XMtpApplication.doHook(prefs, lpparam.classLoader);
+            } catch (Throwable e) {
+                XposedBridge.log(e);
+            }
+        }
     }
 
     private static XSharedPreferences getModuleSharedPreferences() {

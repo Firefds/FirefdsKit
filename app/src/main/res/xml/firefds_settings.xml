@@ -13,13 +13,13 @@
         android:icon="@drawable/notification"
         android:key="statusbarKey"
         android:title="@string/statusbar">
-<!--        <PreferenceCategory android:title="@string/statusbar">
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="showWirelessChargerInfoPopUp"
-                android:summary="@string/show_wireless_charger_information_popup"
-                android:title="@string/show_wireless_charging_popup" />
-        </PreferenceCategory>-->
+        <!--        <PreferenceCategory android:title="@string/statusbar">
+                    <SwitchPreference
+                        android:defaultValue="false"
+                        android:key="showWirelessChargerInfoPopUp"
+                        android:summary="@string/show_wireless_charger_information_popup"
+                        android:title="@string/show_wireless_charging_popup" />
+                </PreferenceCategory>-->
         <PreferenceCategory android:title="@string/status_icons">
             <SwitchPreference
                 android:defaultValue="false"
@@ -173,14 +173,20 @@
                 android:key="nfcBehavior"
                 android:summary="@string/nfc_behavior_summary"
                 android:title="@string/nfc_behavior" />
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="hideMTPNotification"
+                android:summaryOff="@string/hide_mtp_notification_off"
+                android:summaryOn="@string/hide_mtp_notification_on"
+                android:title="@string/hide_mtp_notification" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/camera_and_gallery">
-           <!-- <SwitchPreference
-                android:defaultValue="false"
-                android:key="enableCameraDuringCall"
-                android:summaryOff="@string/camera_disabed_during_call"
-                android:summaryOn="@string/camera_enabled_during_call"
-                android:title="@string/enable_camera_during_call" />-->
+            <!-- <SwitchPreference
+                 android:defaultValue="false"
+                 android:key="enableCameraDuringCall"
+                 android:summaryOff="@string/camera_disabed_during_call"
+                 android:summaryOn="@string/camera_enabled_during_call"
+                 android:title="@string/enable_camera_during_call" />-->
             <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableTemperatureChecks"
