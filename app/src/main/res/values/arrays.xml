@@ -77,7 +77,7 @@
         <item>disablePowerMenuLockscreen</item>
         <item>disableBluetoothScanDialog</item>
         <item>enableCameraShutterMenu</item>
-        <item>isDataModeSupported</item>
+        <item>enableDataModeSwitch</item>
     </string-array>
     <string-array name="timeout_preferences">
         <item>screenTimeoutSeconds</item>

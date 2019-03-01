@@ -23,6 +23,8 @@ public class XSysUINotificationPanelPackage {
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
         XSysUINotificationPanelPackage.classLoader = classLoader;
+        final Class<?> systemUIRuneClass =
+                XposedHelpers.findClass(Packages.SYSTEM_UI + ".Rune", classLoader);
 
         try {
             XposedHelpers.findAndHookMethod("com.android.keyguard.CarrierText",
@@ -59,18 +61,18 @@ public class XSysUINotificationPanelPackage {
 
         dataIconBehavior = prefs.getInt("dataIconBehavior", 0);
         if (dataIconBehavior != 0) {
-            changeDataIcon();
+            changeDataIcon(systemUIRuneClass);
         }
 
         try {
-            XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".globalactions.presentation.features.GlobalActionFeatures",
+            XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".bar.DataUsageBar",
                     classLoader,
-                    "isDataModeSupported",
+                    "isAvailable",
                     new XC_MethodReplacement() {
                         @Override
                         protected Object replaceHookedMethod(MethodHookParam param) {
                             prefs.reload();
-                            return prefs.getBoolean("enableDataModeSwitch", false);
+                            return prefs.getBoolean("DataUsageView", false);
                         }
                     });
 
@@ -79,10 +81,8 @@ public class XSysUINotificationPanelPackage {
         }
     }
 
-    private static void changeDataIcon() {
+    private static void changeDataIcon(Class<?> aClass) {
         try {
-            final Class<?> systemUIRuneClass =
-                    XposedHelpers.findClass(Packages.SYSTEM_UI + ".Rune", classLoader);
             String MOBILE_SIGNAL_CONTROLLER_CLASS =
                     Packages.SYSTEM_UI + ".statusbar.policy.MobileSignalController";
 
@@ -91,22 +91,22 @@ public class XSysUINotificationPanelPackage {
                 protected void afterHookedMethod(MethodHookParam param) {
                     switch (dataIconBehavior) {
                         case 1:
-                            XposedHelpers.setStaticBooleanField(systemUIRuneClass,
+                            XposedHelpers.setStaticBooleanField(aClass,
                                     LTE_INSTEAD_OF_4G,
                                     true);
                             break;
                         case 2:
-                            XposedHelpers.setStaticBooleanField(systemUIRuneClass,
+                            XposedHelpers.setStaticBooleanField(aClass,
                                     FOUR_G_PLUS_INSTEAD_OF_4G,
                                     true);
                             break;
                         case 3:
-                            XposedHelpers.setStaticBooleanField(systemUIRuneClass,
+                            XposedHelpers.setStaticBooleanField(aClass,
                                     FOUR_G_INSTEAD_OF_4G_PLUS,
                                     true);
                             break;
                         case 4:
-                            XposedHelpers.setStaticBooleanField(systemUIRuneClass,
+                            XposedHelpers.setStaticBooleanField(aClass,
                                     FOUR_HALF_G_INSTEAD_OF_4G_PLUS,
                                     true);
                             break;

@@ -32,7 +32,12 @@ public class XSysUIPackage {
             XSysUINotificationPanelPackage.doHook(prefs, classLoader);
         } catch (Throwable e) {
             XposedBridge.log(e);
+        }
 
+        try {
+            XSysUIGlobalActions.doHook(prefs, classLoader);
+        } catch (Throwable e) {
+            XposedBridge.log(e);
         }
     }
 }

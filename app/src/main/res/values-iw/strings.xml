@@ -363,4 +363,6 @@
     <string name="four_half_g_4g_plus">4.5G במקום 4G Plus</string>
     <string name="enable_data_mode_switch_summary">הפעלת מתג נתונים ניידים בתפריט הפעלה</string>
     <string name="enable_data_mode_switch_title">מתג נתונים ניידים</string>
+    <string name="quick_settings_data_usage_view_summary">הצגת שימוש בנתונים בשורת ההגדרות המהירות</string>
+    <string name="quick_settings_data_usage_view_title">הצגת שימוש בנתונים</string>
 </resources>

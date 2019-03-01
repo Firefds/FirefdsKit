@@ -367,4 +367,6 @@
     <string name="four_half_g_4g_plus">4.5G instead of 4G Plus</string>
     <string name="enable_data_mode_switch_summary">Enable data mode switch in power menu</string>
     <string name="enable_data_mode_switch_title">Data Mode Switch</string>
+    <string name="quick_settings_data_usage_view_summary">Show data usage view in quick panel</string>
+    <string name="quick_settings_data_usage_view_title">Data Usage View</string>
 </resources>
