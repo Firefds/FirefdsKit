@@ -6,15 +6,27 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
+import sb.firefds.pie.firefdskit.utils.Packages;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
 public class XSysUINotificationPanelPackage {
 
+    private static String LTE_INSTEAD_OF_4G = "STATBAR_DISPLAY_LTE_INSTEAD_OF_4G_ICON";
+    private static String FOUR_G_PLUS_INSTEAD_OF_4G = "STATBAR_DISPLAY_4G_PLUS_INSTEAD_OF_4G_ICON";
+    private static String FOUR_G_INSTEAD_OF_4G_PLUS = "STATBAR_DISPLAY_4G_INSTEAD_OF_4G_PLUS_ICON";
+    private static String FOUR_HALF_G_INSTEAD_OF_4G_PLUS =
+            "STATBAR_DISPLAY_4_HALF_G_INSTEAD_OF_4G_PLUS_ICON";
+    private static int dataIconBehavior;
+    private static ClassLoader classLoader;
+
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
+
+        XSysUINotificationPanelPackage.classLoader = classLoader;
 
         try {
             XposedHelpers.findAndHookMethod("com.android.keyguard.CarrierText",
-                    classLoader, "updateCarrierText",
+                    classLoader,
+                    "updateCarrierText",
                     new XC_MethodHook() {
                         @Override
                         protected void afterHookedMethod(MethodHookParam param) {
@@ -40,6 +52,60 @@ public class XSysUINotificationPanelPackage {
                             Utils.setTypeface(prefs, tvCarrier);
                         }
                     });
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
+
+        dataIconBehavior = prefs.getInt("dataIconBehavior", 0);
+        if (dataIconBehavior != 0) {
+            changeDataIcon();
+        }
+    }
+
+    private static void changeDataIcon() {
+        try {
+            final Class<?> systemUIRuneClass =
+                    XposedHelpers.findClass(Packages.SYSTEM_UI + ".Rune", classLoader);
+            String MOBILE_SIGNAL_CONTROLLER_CLASS =
+                    Packages.SYSTEM_UI + ".statusbar.policy.MobileSignalController";
+
+            XC_MethodHook mobileSignalMethodHook = new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) {
+                    switch (dataIconBehavior) {
+                        case 1:
+                            XposedHelpers.setStaticBooleanField(systemUIRuneClass,
+                                    LTE_INSTEAD_OF_4G,
+                                    true);
+                            break;
+                        case 2:
+                            XposedHelpers.setStaticBooleanField(systemUIRuneClass,
+                                    FOUR_G_PLUS_INSTEAD_OF_4G,
+                                    true);
+                            break;
+                        case 3:
+                            XposedHelpers.setStaticBooleanField(systemUIRuneClass,
+                                    FOUR_G_INSTEAD_OF_4G_PLUS,
+                                    true);
+                            break;
+                        case 4:
+                            XposedHelpers.setStaticBooleanField(systemUIRuneClass,
+                                    FOUR_HALF_G_INSTEAD_OF_4G_PLUS,
+                                    true);
+                            break;
+                    }
+                }
+            };
+
+            XposedHelpers.findAndHookMethod(MOBILE_SIGNAL_CONTROLLER_CLASS,
+                    classLoader,
+                    "updateMobileIconGroup",
+                    mobileSignalMethodHook);
+            XposedHelpers.findAndHookMethod(MOBILE_SIGNAL_CONTROLLER_CLASS,
+                    classLoader,
+                    "updateTelephony",
+                    mobileSignalMethodHook);
+
         } catch (Throwable e) {
             XposedBridge.log(e);
         }

@@ -28,6 +28,13 @@
                 android:summaryOff="@string/hide_nfc_icon_off"
                 android:summaryOn="@string/hide_nfc_icon_on"
                 android:title="@string/hide_nfc_icon" />
+            <de.robv.android.xposed.library.ui.IntegerListPreference
+                android:defaultValue="0"
+                android:entries="@array/data_icon_entries"
+                android:entryValues="@array/data_icon_values"
+                android:key="dataIconBehavior"
+                android:summary="@string/data_icon_behavior_summary"
+                android:title="@string/data_icon_behavior_title" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/quick_settings">
             <SwitchPreference
@@ -93,10 +100,10 @@
         android:icon="@drawable/system"
         android:key="systemKey"
         android:title="@string/system">
-        <!--<PreferenceCategory
+        <PreferenceCategory
             android:key="powerMenuKey"
             android:title="@string/advanced_power_menu">
-            <SwitchPreference
+            <!--<SwitchPreference
                 android:defaultValue="false"
                 android:key="enable4WayReboot"
                 android:summary="@string/enable4wayreboot"
@@ -111,8 +118,8 @@
                 android:defaultValue="false"
                 android:key="disablePowerMenuLockscreen"
                 android:summary="@string/disable_power_menu_lockscreen_summary"
-                android:title="@string/disable_power_menu_lockscreen" />
-        </PreferenceCategory>-->
+                android:title="@string/disable_power_menu_lockscreen" />-->
+        </PreferenceCategory>
         <PreferenceCategory android:title="@string/system">
             <PreferenceScreen
                 android:key="screenTimeoutSettings"
@@ -261,17 +268,17 @@
                 android:summaryOff="@string/call_number_formatting_enabled"
                 android:summaryOn="@string/call_number_formatting_disabled"
                 android:title="@string/disable_call_number_formatting" />
-            <SwitchPreference
+            <!--<SwitchPreference
                 android:defaultValue="false"
                 android:key="unlimittedContactsJoining"
                 android:summaryOff="@string/default_contacts_joining_limit"
                 android:summaryOn="@string/unlimited_contacts_accounts_joining"
-                android:title="@string/enable_unlimited_contacts_joining" />
-            <SwitchPreference
+                android:title="@string/enable_unlimited_contacts_joining" />-->
+            <!--<SwitchPreference
                 android:defaultValue="false"
                 android:key="useSeparateAddressField"
                 android:summary="@string/separate_address_field_used"
-                android:title="@string/use_separate_address_field" />
+                android:title="@string/use_separate_address_field" />-->
         </PreferenceCategory>
     </PreferenceScreen>
     <PreferenceScreen
@@ -279,11 +286,11 @@
         android:key="messagingKey"
         android:title="@string/messaging">
         <PreferenceCategory android:title="@string/messaging">
-            <SwitchPreference
+            <!--<SwitchPreference
                 android:defaultValue="true"
                 android:key="enableSaveRestore"
                 android:summary="@string/enable_the_menu_to_save_and_restore_messages"
-                android:title="@string/enable_save_and_restore" />
+                android:title="@string/enable_save_and_restore" />-->
             <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableSmsToMmsConversion"

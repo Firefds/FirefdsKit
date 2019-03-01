@@ -46,7 +46,6 @@ public class WanamRebootActivity extends Activity {
                 case 2:
                     softRebootOptions();
                     break;
-
             }
 
         } catch (Throwable e) {
