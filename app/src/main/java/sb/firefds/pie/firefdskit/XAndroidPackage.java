@@ -33,12 +33,12 @@ public class XAndroidPackage {
         XAndroidPackage.prefs = prefs;
         XAndroidPackage.classLoader = classLoader;
 
-        if (prefs.getBoolean("disableTIMA", true))
+        /*if (prefs.getBoolean("disableTIMA", true))
             try {
                 disableTIMA();
             } catch (Throwable e) {
                 e.printStackTrace();
-            }
+            }*/
 
         /*if (prefs.getBoolean("disableDVFS", true)) {
             try {

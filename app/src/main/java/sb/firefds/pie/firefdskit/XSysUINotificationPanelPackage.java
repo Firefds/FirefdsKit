@@ -79,6 +79,25 @@ public class XSysUINotificationPanelPackage {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        if (prefs.getBoolean("showNetworkSpeedMenu", false)) {
+            try {
+                XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".statusbar.policy.NetspeedView",
+                        classLoader,
+                        "onAttachedToWindow",
+                        new XC_MethodHook() {
+                            @Override
+                            protected void beforeHookedMethod(MethodHookParam param) {
+                                XposedHelpers.setStaticBooleanField(systemUIRuneClass,
+                                        "STATBAR_SUPPORT_REAL_TIME_NETWORK_SPEED",
+                                        true);
+                            }
+                        });
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private static void changeDataIcon(Class<?> aClass) {

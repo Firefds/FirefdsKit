@@ -27,18 +27,14 @@ public class XSysUIGlobalActions {
             Packages.SYSTEM_UI + ".globalactions.presentation.features.GlobalActionFeatures";
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
-        try {
-            XposedHelpers.findAndHookMethod(GLOBAL_ACTION_FEATURES_CLASS,
-                    classLoader,
-                    "isDataModeSupported",
-                    new XC_MethodReplacement() {
-                        @Override
-                        protected Object replaceHookedMethod(MethodHookParam param) {
-                            prefs.reload();
-                            return prefs.getBoolean("enableDataModeSwitch", false);
-                        }
-                    });
 
+        try {
+            if (prefs.getBoolean("enableDataModeSwitch", false)) {
+                XposedHelpers.findAndHookMethod(GLOBAL_ACTION_FEATURES_CLASS,
+                        classLoader,
+                        "isDataModeSupported",
+                        XC_MethodReplacement.returnConstant(Boolean.TRUE));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -47,6 +47,10 @@ public class XSecSettingsPackage {
             makeOfficial();
         }
 
+        if (prefs.getBoolean("showNetworkSpeedMenu", false)) {
+            showNetworkSpeedMenu();
+        }
+
         try {
             XposedHelpers.findAndHookMethod(
                     Packages.SAMSUNG_SETTINGS + ".bluetooth.BluetoothScanDialog",
@@ -215,6 +219,38 @@ public class XSecSettingsPackage {
                     "isSupportRootBadge",
                     Context.class,
                     XC_MethodReplacement.returnConstant(Boolean.FALSE));
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
+    }
+
+    private static void showNetworkSpeedMenu() {
+        try {
+            XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".display.StatusBar",
+                    classLoader,
+                    "onCreate",
+                    Bundle.class,
+                    new XC_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param) {
+                            XposedHelpers.setStaticBooleanField(param.thisObject.getClass(),
+                                    "isSupportNetworkSpeedFeature",
+                                    true);
+                        }
+                    });
+
+            XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".display.StatusBar",
+                    classLoader,
+                    "onResume",
+                    new XC_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param) {
+                            XposedHelpers.setStaticBooleanField(param.thisObject.getClass(),
+                                    "isSupportNetworkSpeedFeature",
+                                    true);
+                        }
+                    });
+
         } catch (Throwable e) {
             XposedBridge.log(e);
         }

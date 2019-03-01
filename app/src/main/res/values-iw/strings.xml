@@ -365,4 +365,6 @@
     <string name="enable_data_mode_switch_title">מתג נתונים ניידים</string>
     <string name="quick_settings_data_usage_view_summary">הצגת שימוש בנתונים בשורת ההגדרות המהירות</string>
     <string name="quick_settings_data_usage_view_title">הצגת שימוש בנתונים</string>
+    <string name="network_speed_summary">הצגת תפריט מהירות רשת בשורת המשימות</string>
+    <string name="network_speed_title">תפריט מהירות רשת</string>
 </resources>

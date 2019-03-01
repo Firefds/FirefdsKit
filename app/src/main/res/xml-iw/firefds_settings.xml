@@ -28,6 +28,11 @@
                 android:summaryOff="@string/hide_nfc_icon_off"
                 android:summaryOn="@string/hide_nfc_icon_on"
                 android:title="@string/hide_nfc_icon" />
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="showNetworkSpeedMenu"
+                android:summary="@string/network_speed_summary"
+                android:title="@string/network_speed_title" />
             <de.robv.android.xposed.library.ui.IntegerListPreference
                 android:defaultValue="0"
                 android:entries="@array/data_icon_entries"
@@ -274,7 +279,7 @@
                 android:title="@string/auto_call_recording" />
             <SwitchPreference
                 android:defaultValue="false"
-                android:key="disableNumberFormating"
+                android:key="disableNumberFormatting"
                 android:summaryOff="@string/call_number_formatting_enabled"
                 android:summaryOn="@string/call_number_formatting_disabled"
                 android:title="@string/disable_call_number_formatting" />

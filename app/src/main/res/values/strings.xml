@@ -369,4 +369,6 @@
     <string name="enable_data_mode_switch_title">Data Mode Switch</string>
     <string name="quick_settings_data_usage_view_summary">Show data usage view in quick panel</string>
     <string name="quick_settings_data_usage_view_title">Data Usage View</string>
+    <string name="network_speed_summary">Show network speed in status bar menu option</string>
+    <string name="network_speed_title">Network Speed Menu</string>
 </resources>
