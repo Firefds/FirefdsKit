@@ -134,27 +134,6 @@ public class XCscFeaturesManager {
     private static ArrayList<FeatureDTO> getCscFeaturesList(SharedPreferences prefs) {
         ArrayList<FeatureDTO> featuresDTOList = new ArrayList<>();
 
-        // Call button
-        /*if (prefs.getBoolean("enableCallButtonLogs", false)) {
-            featuresDTOList.add(new FeatureDTO("CscFeature_VoiceCall_EnableCallButtonInFdnList",
-                    "TRUE"));
-            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_EnableCallButtonInList",
-                    "TRUE"));
-        } else {
-            featuresDTOList.add(new FeatureDTO("CscFeature_VoiceCall_EnableCallButtonInFdnList",
-                    "FALSE"));
-            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_EnableCallButtonInList",
-                    "FALSE"));
-        }*/
-
-        // Account icons
-        /*if (prefs.getBoolean("disableAccountIconsList", false))
-            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_DisableAccountIconsInContactList",
-                    "TRUE"));
-        else
-            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_DisableAccountIconsInContactList",
-                    "FALSE"));*/
-
         // Email App BG
         /*if (prefs.getBoolean("enableWhiteEmailBackgroung", true)) {
             featuresDTOList.add(new FeatureDTO("CscFeature_Email_UseFixedBgColorAsWhite",
@@ -175,14 +154,6 @@ public class XCscFeaturesManager {
         else
             featuresDTOList.add(new FeatureDTO("CscFeature_RIL_ForceConnectMMS",
                     "FALSE"));
-
-        if (prefs.getBoolean("enableSaveRestore", true))
-            featuresDTOList.add(new FeatureDTO("CscFeature_Message_EnableSaveRestoreSDCard",
-                    "TRUE"));
-        else
-            featuresDTOList.add(new FeatureDTO("CscFeature_Message_EnableSaveRestoreSDCard",
-                    "FALSE"));
-
         if (prefs.getBoolean("disableSmsToMmsConversion", false)) {
             featuresDTOList.add(new FeatureDTO("CscFeature_Message_DisableSmsToMmsConversionByTextInput",
                     "TRUE"));
@@ -211,21 +182,7 @@ public class XCscFeaturesManager {
                         "" + prefs.getInt("wifiAPClients", 4)));*/
 
         // Contacts
-        if (prefs.getBoolean("unlimittedContactsJoining", false))
-            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_SetLinkCountMaxAs",
-                    "999"));
-        else
-            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_SetLinkCountMaxAs",
-                    "5"));
-
-        if (prefs.getBoolean("useSeparateAddressField", false))
-            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_UseSeparateAddressField",
-                    "TRUE"));
-        else
-            featuresDTOList.add(new FeatureDTO("CscFeature_Contact_UseSeparateAddressField",
-                    "FALSE"));
-
-        if (prefs.getBoolean("disableNumberFormating", false))
+        if (prefs.getBoolean("disableNumberFormatting", false))
             featuresDTOList.add(new FeatureDTO("CscFeature_Common_DisablePhoneNumberFormatting",
                     "TRUE"));
         else
@@ -238,14 +195,6 @@ public class XCscFeaturesManager {
                     "TRUE"));
         else
             featuresDTOList.add(new FeatureDTO("CscFeature_LockScreen_DisableADBConnDuringSecuredLock",
-                    "FALSE"));*/
-
-        // Camera
-        /*if (prefs.getBoolean("enableCameraDuringCall", false))
-            featuresDTOList.add(new FeatureDTO("CscFeature_Camera_EnableCameraDuringCall",
-                    "TRUE"));
-        else
-            featuresDTOList.add(new FeatureDTO("CscFeature_Camera_EnableCameraDuringCall",
                     "FALSE"));*/
 
         return featuresDTOList;
