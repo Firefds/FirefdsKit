@@ -3,6 +3,7 @@ package sb.firefds.pie.firefdskit;
 import android.widget.TextView;
 
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
@@ -59,6 +60,22 @@ public class XSysUINotificationPanelPackage {
         dataIconBehavior = prefs.getInt("dataIconBehavior", 0);
         if (dataIconBehavior != 0) {
             changeDataIcon();
+        }
+
+        try {
+            XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".globalactions.presentation.features.GlobalActionFeatures",
+                    classLoader,
+                    "isDataModeSupported",
+                    new XC_MethodReplacement() {
+                        @Override
+                        protected Object replaceHookedMethod(MethodHookParam param) {
+                            prefs.reload();
+                            return prefs.getBoolean("enableDataModeSwitch", false);
+                        }
+                    });
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

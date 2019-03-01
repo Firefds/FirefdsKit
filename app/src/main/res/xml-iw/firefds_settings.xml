@@ -104,6 +104,11 @@
             <PreferenceCategory
                 android:key="powerMenuKey"
                 android:title="@string/advanced_power_menu">
+                <SwitchPreference
+                    android:defaultValue="false"
+                    android:key="enableDataModeSwitch"
+                    android:summary="@string/enable_data_mode_switch_summary"
+                    android:title="@string/enable_data_mode_switch_title" />
                 <!--<SwitchPreference
                     android:defaultValue="false"
                     android:key="enable4WayReboot"
