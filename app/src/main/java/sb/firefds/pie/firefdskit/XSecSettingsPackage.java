@@ -196,12 +196,7 @@ public class XSecSettingsPackage {
             XposedHelpers.findAndHookMethod(SYSCOPE_STATUS_PREFERENCE_CONTROLLER,
                     classLoader,
                     "getICDVerification",
-                    new XC_MethodHook() {
-                        @Override
-                        protected void afterHookedMethod(MethodHookParam param) {
-                            param.setResult(1);
-                        }
-                    });
+                    XC_MethodReplacement.returnConstant(1));
         } catch (Throwable e) {
             XposedBridge.log(e);
         }
@@ -210,12 +205,7 @@ public class XSecSettingsPackage {
             XposedHelpers.findAndHookMethod(SEC_DEVICE_INFO_UTILS,
                     classLoader,
                     "checkRootingCondition",
-                    new XC_MethodHook() {
-                        @Override
-                        protected void afterHookedMethod(MethodHookParam param) {
-                            param.setResult(Boolean.FALSE);
-                        }
-                    });
+                    XC_MethodReplacement.returnConstant(Boolean.FALSE));
         } catch (Throwable e) {
             XposedBridge.log(e);
         }
@@ -224,12 +214,7 @@ public class XSecSettingsPackage {
             XposedHelpers.findAndHookMethod(SEC_DEVICE_INFO_UTILS, classLoader,
                     "isSupportRootBadge",
                     Context.class,
-                    new XC_MethodHook() {
-                        @Override
-                        protected void afterHookedMethod(MethodHookParam param) {
-                            param.setResult(Boolean.FALSE);
-                        }
-                    });
+                    XC_MethodReplacement.returnConstant(Boolean.FALSE));
         } catch (Throwable e) {
             XposedBridge.log(e);
         }

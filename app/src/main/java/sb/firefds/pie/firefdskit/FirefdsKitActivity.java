@@ -54,7 +54,7 @@ import java.util.Map.Entry;
 import java.util.Objects;
 
 import de.robv.android.xposed.library.ui.TextViewPreference;
-import eu.chainfire.libsuperuser.Shell;
+import com.topjohnwu.superuser.Shell;
 import sb.firefds.pie.firefdskit.dialogs.CreditsDialog;
 import sb.firefds.pie.firefdskit.dialogs.RestoreDialog;
 import sb.firefds.pie.firefdskit.dialogs.RestoreDialog.RestoreDialogListener;
@@ -487,7 +487,7 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
 
             protected Void doInBackground(Void... params) {
                 try {
-                    suAvailable = Shell.SU.available();
+                    suAvailable = Shell.rootAccess();
 
                 } catch (Throwable e) {
                     e.printStackTrace();

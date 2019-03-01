@@ -16,36 +16,28 @@ package sb.firefds.pie.firefdskit.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.database.Cursor;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemProperties;
-import android.provider.MediaStore;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-import eu.chainfire.libsuperuser.Shell.SU;
+
+import com.topjohnwu.superuser.Shell;
 
 import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
@@ -60,11 +52,11 @@ public class Utils {
         CSC, OMC_CSC, OMC_OMC
     }
 
-    private static Boolean mIsExynosDevice = null;
+    //private static Boolean mIsExynosDevice = null;
     private static CscType mCscType = null;
 
     // GB Context
-    private static Context mGbContext;
+    //private static Context mGbContext;
 
     public static void closeStatusBar(Context context) throws Throwable {
         @SuppressLint("WrongConstant") Object sbservice = context.getSystemService(STATUSBAR_SERVICE);
@@ -114,7 +106,7 @@ public class Utils {
         }
     }
 
-    public static synchronized Context getGbContext(Context context) throws Throwable {
+    /*public static synchronized Context getGbContext(Context context) throws Throwable {
         if (mGbContext == null) {
             mGbContext = context.createPackageContext(Packages.FIREFDSKIT, Context.CONTEXT_IGNORE_SECURITY);
         }
@@ -127,7 +119,7 @@ public class Utils {
                     Context.CONTEXT_IGNORE_SECURITY);
         }
         return (config == null ? mGbContext : mGbContext.createConfigurationContext(config));
-    }
+    }*/
 
     public static void rebootEPM(String rebootType) {
         try {
@@ -142,14 +134,14 @@ public class Utils {
                 .execute("reboot " + rebootType), 1000);
     }
 
-    private static String getUriPath(Context context, Uri uri) {
+    /*private static String getUriPath(Context context, Uri uri) {
         String[] data = {MediaStore.Images.Media.DATA};
         CursorLoader loader = new CursorLoader(context, uri, data, null, null, null);
         Cursor cursor = loader.loadInBackground();
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
-    }
+    }*/
 
     public static void disableVolumeControlSounds(Context context) {
         if (new File("/system/media/audio/ui/TW_Volume_control.ogg").isFile()) {
@@ -175,7 +167,7 @@ public class Utils {
         }
     }
 
-    public static void hideViewBGContent(ViewGroup vg) {
+    /*public static void hideViewBGContent(ViewGroup vg) {
         try {
 
             vg.setBackgroundColor(Color.TRANSPARENT);
@@ -193,11 +185,10 @@ public class Utils {
         } catch (Throwable e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
-    @SuppressLint("SetWorldReadable")
     private static void executeScript(Context context, String name) {
-        File scriptFile = writeAssetToCacheFile(context, name);
+        /*File scriptFile = writeAssetToCacheFile(context, name);
         if (scriptFile == null)
             return;
 
@@ -205,14 +196,27 @@ public class Utils {
         scriptFile.setExecutable(true, false);
 
         new SuTask().execute("cd " + context.getCacheDir(), "./" + scriptFile.getName(),
-                "rm " + scriptFile.getName());
+                "rm " + scriptFile.getName());*/
+        try {
+            InputStream inputStream = context.getAssets().open(name);
+            ByteArrayOutputStream result = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = inputStream.read(buffer)) != -1) {
+                result.write(buffer, 0, length);
+            }
+            inputStream.close();
+            new SuTask().execute(result.toString(   "UTF-8"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static class SuTask extends AsyncTask<String, Void, Void> {
 
         protected Void doInBackground(String... params) {
             try {
-                SU.run(params);
+                Shell.su(params).exec();
             } catch (Throwable e) {
                 e.printStackTrace();
             }
@@ -221,11 +225,11 @@ public class Utils {
         }
     }
 
-    private static File writeAssetToCacheFile(Context context, String name) {
+    /*private static File writeAssetToCacheFile(Context context, String name) {
         return writeAssetToCacheFile(context, name, name);
-    }
+    }*/
 
-    private static File writeAssetToCacheFile(Context context, String assetName, String fileName) {
+    /*private static File writeAssetToCacheFile(Context context, String assetName, String fileName) {
         File file = null;
         try {
             InputStream in = context.getAssets().open(assetName);
@@ -247,7 +251,7 @@ public class Utils {
             }
             return null;
         }
-    }
+    }*/
 
     public static void setTypeface(SharedPreferences prefs, TextView tv) {
 
@@ -301,13 +305,13 @@ public class Utils {
         return false;
     }
 
-    public static boolean isExynosDevice() {
+    /*public static boolean isExynosDevice() {
         if (mIsExynosDevice != null)
             return mIsExynosDevice;
 
         mIsExynosDevice = Build.HARDWARE.toLowerCase(Locale.UK).contains("smdk");
         return mIsExynosDevice;
-    }
+    }*/
 
     public static CscType getCSCType() {
         if (mCscType != null)

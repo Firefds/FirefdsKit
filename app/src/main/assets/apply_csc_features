@@ -8,13 +8,13 @@ if [ ! -d /system/csc ]; then
 mkdir /system/csc
 fi
 
-chmod 0777 feature.xml
+chmod 0777 /data/data/sb.firefds.pie.firefdskit/cache/feature.xml
 chmod 0777 /system/csc
 chmod 0777 /system/csc/feature.xml
 
-cp -f feature.xml /system/csc/feature.xml
+cp -f /data/data/sb.firefds.pie.firefdskit/cache/feature.xml /system/csc/feature.xml
 
-rm -r feature.xml
+rm -r /data/data/sb.firefds.pie.firefdskit/cache/feature.xml
 
 chmod 0644 /system/csc/feature.xml
 chmod 0755 /system/csc
