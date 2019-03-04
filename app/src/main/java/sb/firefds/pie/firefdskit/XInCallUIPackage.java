@@ -42,7 +42,7 @@ public class XInCallUIPackage {
                         }
                     });
         } catch (Throwable e1) {
-            XposedBridge.log(e1.toString());
+            XposedBridge.log(e1);
         }
 
         try {
@@ -62,7 +62,7 @@ public class XInCallUIPackage {
                         }
                     });
         } catch (Throwable e1) {
-            XposedBridge.log(e1.toString());
+            XposedBridge.log(e1);
         }
 
         try {
@@ -82,7 +82,7 @@ public class XInCallUIPackage {
                         }
                     });
         } catch (Throwable e1) {
-            XposedBridge.log(e1.toString());
+            XposedBridge.log(e1);
         }
 
         try {

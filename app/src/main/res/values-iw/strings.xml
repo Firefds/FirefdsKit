@@ -225,7 +225,7 @@
     <string name="add_screenshot_to_power_menu">הוספת צילום מסך לתפריט כיבוי</string>
     <string name="screen_record">הקלטת מסך</string>
     <string name="add_screen_record_to_power_menu">הוספת הקלטת מסך לתפריט הכיבוי (יש לוודא כי תכונת הרחבת ההתראות פועלת וש Busybox מותקן!)</string>
-    <string name="enable4wayreboot">אפשר תפריט כיבוי מורחב</string>
+    <string name="advanced_power_menu_title">תפריט כיבוי מורחב</string>
     <string name="advanced_power_menu">תפריט כיבוי</string>
     <string name="enable_save_and_restore">הפעלת שמירה ושיחזור</string>
     <string name="enable_the_menu_to_save_and_restore_messages">הפעלת התפריט לשמירה ושיחזור של הודעות לכרטיס ה SD</string>
@@ -367,4 +367,5 @@
     <string name="quick_settings_data_usage_view_title">הצגת שימוש בנתונים</string>
     <string name="network_speed_summary">הצגת תפריט מהירות רשת בשורת המשימות</string>
     <string name="network_speed_title">תפריט מהירות רשת</string>
+    <string name="advanced_power_menu_summary">הוספת אפשרויות נוסופות לתפריט הכיבוי</string>
 </resources>

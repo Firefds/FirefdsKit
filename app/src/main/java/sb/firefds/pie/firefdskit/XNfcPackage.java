@@ -88,8 +88,7 @@ public class XNfcPackage {
                                             SCREEN_STATE_ON_UNLOCKED);
                                 }
                             } catch (Exception e) {
-                                XposedBridge.log("applyRouting beforeHookedMethod threw exception: " + e);
-                                e.printStackTrace();
+                                XposedBridge.log(e);
                             }
                         }
 

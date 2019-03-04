@@ -36,7 +36,6 @@ public class XSecCameraPackage {
                         new XC_MethodHook() {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                                super.beforeHookedMethod(param);
                                 XposedHelpers.setStaticBooleanField(cameraFeatureClass,
                                         "SUPPORT_THERMISTOR_TEMPERATURE", false);
                             }
@@ -53,7 +52,6 @@ public class XSecCameraPackage {
                     new XC_MethodHook() {
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                            super.beforeHookedMethod(param);
                             prefs.reload();
                             XposedHelpers.setStaticBooleanField(cameraFeatureClass,
                                     "ENABLE_SHUTTER_SOUND_MENU",

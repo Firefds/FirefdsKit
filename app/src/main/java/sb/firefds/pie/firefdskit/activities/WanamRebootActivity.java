@@ -43,8 +43,15 @@ public class WanamRebootActivity extends Activity {
                     break;
                 case 1:
                     softRebootDevice();
+                    break;
                 case 2:
                     softRebootOptions();
+                    break;
+                case 3:
+                    Utils.rebootEPM("recovery");
+                    break;
+                case 4:
+                    Utils.rebootEPM("download");
                     break;
             }
 

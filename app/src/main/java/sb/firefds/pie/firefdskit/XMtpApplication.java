@@ -18,7 +18,7 @@ public class XMtpApplication {
             try {
                 hideMTPNotification();
             } catch (Throwable e) {
-                XposedBridge.log(e.toString());
+                XposedBridge.log(e);
             }
         }
     }

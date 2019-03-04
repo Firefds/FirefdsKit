@@ -24,7 +24,7 @@ public class XSysUIPackage {
 		/*try {
 			XSysUIFeaturePackage.doHook(prefs, classLoader);
 		} catch (Throwable e) {
-			XposedBridge.log(e.toString());
+			XposedBridge.log(e);
 
 		}*/
 

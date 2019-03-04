@@ -79,7 +79,7 @@ public class XSysUIFeaturePackage {
                         }
                     });
         } catch (Throwable e1) {
-            XposedBridge.log(e1.getMessage());
+            XposedBridge.log(e1);
         }
     }
 }

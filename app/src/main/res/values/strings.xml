@@ -227,7 +227,7 @@
     <string name="add_screenshot_to_power_menu">Add Screenshot to power menu</string>
     <string name="screen_record">Screen Record</string>
     <string name="add_screen_record_to_power_menu">Add Screen Record to power menu (Make sure expanded notifications feature is enabled and Busybox installed!)</string>
-    <string name="enable4wayreboot">Enable advanced power menu</string>
+    <string name="advanced_power_menu_title">Advanced Power Menu</string>
     <string name="advanced_power_menu">Power menu</string>
     <string name="enable_save_and_restore">Enable save and restore</string>
     <string name="enable_the_menu_to_save_and_restore_messages">Enable the menu to save and restore messages from SdCard</string>
@@ -371,4 +371,5 @@
     <string name="quick_settings_data_usage_view_title">Data Usage View</string>
     <string name="network_speed_summary">Show network speed in status bar menu option</string>
     <string name="network_speed_title">Network Speed Menu</string>
+    <string name="advanced_power_menu_summary">Adds additional options to power menu</string>
 </resources>
