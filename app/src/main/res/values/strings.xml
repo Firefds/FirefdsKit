@@ -372,4 +372,14 @@
     <string name="network_speed_summary">Show network speed in status bar menu option</string>
     <string name="network_speed_title">Network Speed Menu</string>
     <string name="advanced_power_menu_summary">Adds additional options to power menu</string>
+    <string name="status_bar_double_tap_summary">Enable statusbar double tap to sleep</string>
+    <string name="status_bar_double_tap_title">Double Tap To Sleep</string>
+    <string name="disable_high_level_brightness_summary">Disable high level brightness popup</string>
+    <string name="disable_high_level_brightness_title">High Level Brightness</string>
+    <string name="disable_signature_check_title">Signature Check</string>
+    <string name="disable_flag_secure_title">Secure Flag</string>
+    <string name="disable_signature_check_on">Signature check enabled</string>
+    <string name="disable_signature_check_off">Signature check disabled</string>
+    <string name="disable_flag_secure_on">Secure flag enabled</string>
+    <string name="disable_flag_secure_off">Secure flag disabled</string>
 </resources>

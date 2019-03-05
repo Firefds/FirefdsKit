@@ -15,7 +15,6 @@
 
 package sb.firefds.pie.firefdskit;
 
-import android.content.Context;
 import android.media.AudioManager;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -31,51 +30,42 @@ public class XSysUIFeaturePackage {
 
 
         try {
-            final Class<?> systemUIRuneClass =
-                    XposedHelpers.findClass(Packages.SYSTEM_UI + ".Rune", classLoader);
+            if (prefs.getBoolean("isStatusBarDoubleTapEnabled", false)) {
+                XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".KnoxStateMonitor.CustomSdkMonitor",
+                        classLoader,
+                        "isStatusBarDoubleTapEnabled",
+                        XC_MethodReplacement.returnConstant(Boolean.TRUE));
+            }
 
-            XposedHelpers.findAndHookMethod(systemUIRuneClass,
-                    "shouldEnableKeyguardScreenRotation",
-                    Context.class,
-                    new XC_MethodHook() {
-                        @Override
-                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                            XposedBridge.log("Inside shouldEnableKeyguardScreenRotation");
-                            param.setResult(true);
-                        }
-                    });
+            if (prefs.getBoolean("setEyeStrainDialogEnabled", false)) {
+                XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".settings.ToggleSliderView",
+                        classLoader,
+                        "setEyeStrainDialogEnabled",
+                        int.class,
+                        new XC_MethodHook() {
+                            @Override
+                            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                                param.args[0] = 0;
+                            }
+                        });
+            }
 
-                    XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".KnoxStateMonitor.CustomSdkMonitor",
-                            classLoader,
-                            "isStatusBarDoubleTapEnabled",
-                            XC_MethodReplacement.returnConstant(Boolean.TRUE));
-
-            XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".settings.ToggleSliderView",
-                    classLoader,
-                    "setEyeStrainDialogEnabled",
-                    int.class,
-                    new XC_MethodHook() {
-                        @Override
-                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                            param.args[0] = 0;
-                        }
-                    });
-
-            XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".volume.VolumeDialogControllerImpl",
-                    classLoader,
-                    "onShowSafetyWarningW",
-                    int.class,
-                    new XC_MethodReplacement() {
-                        @Override
-                        protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
-                            AudioManager mAudio =
-                                    (AudioManager) XposedHelpers.getObjectField(param.thisObject,
-                                            "mAudio");
-                            XposedHelpers.callMethod(mAudio, "disableSafeMediaVolume");
-                            return null;
-                        }
-                    });
-
+            if (prefs.getBoolean("disableLoudVolumeWarning", false)) {
+                XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".volume.VolumeDialogControllerImpl",
+                        classLoader,
+                        "onShowSafetyWarningW",
+                        int.class,
+                        new XC_MethodReplacement() {
+                            @Override
+                            protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                                AudioManager mAudio =
+                                        (AudioManager) XposedHelpers.getObjectField(param.thisObject,
+                                                "mAudio");
+                                XposedHelpers.callMethod(mAudio, "disableSafeMediaVolume");
+                                return null;
+                            }
+                        });
+            }
         } catch (Throwable e1) {
             XposedBridge.log(e1);
         }

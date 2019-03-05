@@ -62,32 +62,32 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             }
         }
 
-        /*if (lpparam.packageName.equals(Packages.ANDROID)) {
-            *//*try {
+        if (lpparam.packageName.equals(Packages.ANDROID)) {
+            /*try {
                 XPM23.initZygote(lpparam.classLoader);
             } catch (Exception e1) {
                 XposedBridge.log(e1);
-            }*//*
+            }*/
 
-            *//*try {
+            /*try {
                 XSystemWide.doHook(prefs);
 
             } catch (Throwable e) {
                 XposedBridge.log(e);
-            }*//*
+            }*/
 
-            *//*try {
+            try {
                 XAndroidPackage.doHook(prefs, lpparam.classLoader);
             } catch (Throwable e) {
                 XposedBridge.log(e);
-            }*//*
+            }
 
-            *//*try {
+            /*try {
                 XFrameworkWidgetPackage.doHook(prefs);
             } catch (Throwable e) {
                 XposedBridge.log(e);
-            }*//*
-        }*/
+            }*/
+        }
 
         if (lpparam.packageName.equals(Packages.SAMSUNG_INCALLUI)) {
             try {

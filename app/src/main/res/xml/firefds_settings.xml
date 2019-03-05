@@ -13,13 +13,13 @@
         android:icon="@drawable/notification"
         android:key="statusbarKey"
         android:title="@string/statusbar">
-        <!--        <PreferenceCategory android:title="@string/statusbar">
-                    <SwitchPreference
-                        android:defaultValue="false"
-                        android:key="showWirelessChargerInfoPopUp"
-                        android:summary="@string/show_wireless_charger_information_popup"
-                        android:title="@string/show_wireless_charging_popup" />
-                </PreferenceCategory>-->
+        <PreferenceCategory android:title="@string/statusbar">
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="isStatusBarDoubleTapEnabled"
+                android:summary="@string/status_bar_double_tap_summary"
+                android:title="@string/status_bar_double_tap_title" />
+        </PreferenceCategory>
         <PreferenceCategory android:title="@string/status_icons">
             <SwitchPreference
                 android:defaultValue="false"
@@ -56,6 +56,11 @@
                 android:key="DataUsageView"
                 android:summary="@string/quick_settings_data_usage_view_summary"
                 android:title="@string/quick_settings_data_usage_view_title" />
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="setEyeStrainDialogEnabled"
+                android:summary="@string/disable_high_level_brightness_summary"
+                android:title="@string/disable_high_level_brightness_title" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/carrier_notification">
             <SwitchPreference
@@ -93,6 +98,12 @@
         android:key="soundKey"
         android:title="@string/sound">
         <PreferenceCategory android:title="@string/sound">
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="disableLoudVolumeWarning"
+                android:summaryOff="@string/disable_loud_volume_enabled"
+                android:summaryOn="@string/disable_loud_volume_disabled"
+                android:title="@string/disable_loud_volume" />
             <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableVolumeControlSound"
@@ -333,10 +344,22 @@
                 android:summaryOn="@string/status_official"
                 android:title="@string/fake_system_status" />
             <SwitchPreference
+                android:defaultValue="false"
+                android:key="disableSignatureCheck"
+                android:summaryOff="@string/disable_signature_check_on"
+                android:summaryOn="@string/disable_signature_check_off"
+                android:title="@string/disable_signature_check_title" />
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="disableFlagSecure"
+                android:summaryOff="@string/disable_flag_secure_on"
+                android:summaryOn="@string/disable_flag_secure_off"
+                android:title="@string/disable_flag_secure_title" />
+            <!--<SwitchPreference
                 android:defaultValue="true"
                 android:key="disableTIMA"
                 android:summary="@string/disable_seandroid_knox_notifications_msg"
-                android:title="@string/disable_knox_notifications" />
+                android:title="@string/disable_knox_notifications" />-->
         </PreferenceCategory>
     </PreferenceScreen>
 

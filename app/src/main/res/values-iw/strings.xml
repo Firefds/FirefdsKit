@@ -368,4 +368,14 @@
     <string name="network_speed_summary">הצגת תפריט מהירות רשת בשורת המשימות</string>
     <string name="network_speed_title">תפריט מהירות רשת</string>
     <string name="advanced_power_menu_summary">הוספת אפשרויות נוסופות לתפריט הכיבוי</string>
+    <string name="status_bar_double_tap_summary">הפעלת נגיעה כפולה על שורת המשימות לכיבוי מסך</string>
+    <string name="status_bar_double_tap_title">נגיעה כפולה לכיבוי מסך</string>
+    <string name="disable_high_level_brightness_summary">ביטול התראת רמת בהירות גבוהה</string>
+    <string name="disable_high_level_brightness_title">רמת בהירות גבוהה</string>
+    <string name="disable_signature_check_title">בדיקת חתימה</string>
+    <string name="disable_flag_secure_title">דגל אבטחה</string>
+    <string name="disable_signature_check_on">בדיקת חתימה פועלת</string>
+    <string name="disable_signature_check_off">בדיקת חתימה מבוטלת</string>
+    <string name="disable_flag_secure_on">דגל אבטחה פועל</string>
+    <string name="disable_flag_secure_off">דגל אבטחה מבוטל</string>
 </resources>

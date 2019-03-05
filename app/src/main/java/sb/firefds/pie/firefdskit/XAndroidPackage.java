@@ -14,42 +14,43 @@
  */
 package sb.firefds.pie.firefdskit;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.Signature;
 
 
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
-import sb.firefds.pie.firefdskit.utils.Packages;
 
 public class XAndroidPackage {
 
-    private static SharedPreferences prefs;
-    private static ClassLoader classLoader;
-    private static Context mContext = null;
-
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
-        XAndroidPackage.prefs = prefs;
-        XAndroidPackage.classLoader = classLoader;
 
-       /* Class<?> windowStateClass =
-                XposedHelpers.findClass(Packages.ANDROID + ".server.wm.WindowState", classLoader);
+        try {
+            if (prefs.getBoolean("disableFlagSecure", false)) {
+                Class<?> windowStateClass =
+                        XposedHelpers.findClass("android.server.wm.WindowState", classLoader);
 
-        XposedHelpers.findAndHookMethod(Packages.ANDROID + ".server.wm. WindowManagerService",
-                classLoader,
-                "isSecureLocked",
-                windowStateClass,
-                XC_MethodReplacement.returnConstant(Boolean.FALSE));
+                XposedHelpers.findAndHookMethod("android.server.wm. WindowManagerService",
+                        classLoader,
+                        "isSecureLocked",
+                        windowStateClass,
+                        XC_MethodReplacement.returnConstant(Boolean.FALSE));
+            }
 
-        XposedHelpers.findAndHookMethod(Packages.ANDROID + ".server.pm. PackageManagerServiceUtils",
-                classLoader,
-                "isSecureLocked",
-                Signature.class,
-                Signature.class,
-                XC_MethodReplacement.returnConstant(0));*/
+            if (prefs.getBoolean("disableSignatureCheck", false)) {
+                XposedHelpers.findAndHookMethod("android.server.pm. PackageManagerServiceUtils",
+                        classLoader,
+                        "compareSignatures",
+                        Signature[].class,
+                        Signature[].class,
+                        XC_MethodReplacement.returnConstant(0));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         /*if (prefs.getBoolean("disableTIMA", true))
             try {
                 disableTIMA();
@@ -72,13 +73,13 @@ public class XAndroidPackage {
         }*/
     }
 
-    private static void disableTIMA() {
+    /*private static void disableTIMA() {
         final Class<?> mTimaService = XposedHelpers.findClass("com.android.server.TimaService",
                 classLoader);
 
         XposedHelpers.findAndHookMethod(mTimaService, "checkEvent", int.class, int.class,
                 XC_MethodReplacement.returnConstant(null));
-    }
+    }*/
 
     /*private static void disableTwDvfs() {
 
