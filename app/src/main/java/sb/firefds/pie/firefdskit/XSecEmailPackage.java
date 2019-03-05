@@ -14,6 +14,8 @@
  */
 package sb.firefds.pie.firefdskit;
 
+import android.content.Context;
+
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -75,30 +77,26 @@ public class XSecEmailPackage {
 
         try {
             Class<?> policySet =
-                    XposedHelpers.findClass("com.android.emailcommon.service.PolicySet", classLoader);
+                    XposedHelpers.findClass("com.samsung.android.emailcommon.service.PolicySet", classLoader);
             XposedHelpers.findAndHookMethod(Packages.EMAIL + ".SecurityPolicy",
                     classLoader,
                     "isActive",
+                    Context.class,
                     policySet,
-                    new XC_MethodReplacement() {
+                    XC_MethodReplacement.returnConstant(Boolean.TRUE));
 
-                        @Override
-                        protected Object replaceHookedMethod(MethodHookParam param) {
-                            return Boolean.TRUE;
-                        }
-                    });
-
-            XposedHelpers.findAndHookMethod(Packages.EMAIL + ".Account",
+            XposedHelpers.findAndHookMethod("com.samsung.android.emailcommon.Account",
                     classLoader,
                     "setPolicySet",
-                    policySet, new XC_MethodHook() {
+                    policySet,
+                    new XC_MethodHook() {
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) {
                             setPolicySets(param);
                         }
                     });
 
-            XposedHelpers.findAndHookMethod(Packages.EMAIL + ".activity.setup.SetupData",
+            XposedHelpers.findAndHookMethod("com.samsung.android.email.ui.settings.setup.SetupData",
                     classLoader,
                     "setPolicySet",
                     policySet,
