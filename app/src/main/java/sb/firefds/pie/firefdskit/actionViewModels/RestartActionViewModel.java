@@ -1,4 +1,4 @@
-package sb.firefds.pie.firefdskit;
+package sb.firefds.pie.firefdskit.actionViewModels;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -21,6 +21,7 @@ import com.samsung.android.globalactions.util.ToastController;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class RestartActionViewModel implements ActionViewModel {
     private final String FIREFDS_PACKAGE = "sb.firefds.pie.firefdskit";
@@ -35,21 +36,17 @@ public class RestartActionViewModel implements ActionViewModel {
     private Context mContext;
     private int rebootOption;
 
-    public RestartActionViewModel(Context paramContext,
-                                  SecGlobalActions paramSecGlobalActions,
-                                  ConditionChecker paramConditionChecker,
-                                  FeatureFactory paramFeatureFactory,
-                                  ToastController paramToastController,
-                                  KeyGuardManagerWrapper paramKeyGuardManagerWrapper,
-                                  ResourcesWrapper paramResourcesWrapper,
+    public RestartActionViewModel(Map<String, Object> actionViewModelDefaults,
                                   int paramRebootOption) {
-        mGlobalActions = paramSecGlobalActions;
-        mConditionChecker = paramConditionChecker;
-        mFeatureFactory = paramFeatureFactory;
-        mToastController = paramToastController;
-        mKeyguardManagerWrapper = paramKeyGuardManagerWrapper;
-        mResourcesWrapper = paramResourcesWrapper;
-        mContext = paramContext;
+        mGlobalActions =
+                (SecGlobalActions) actionViewModelDefaults.get("mSecGlobalActionsPresenter");
+        mKeyguardManagerWrapper =
+                (KeyGuardManagerWrapper) actionViewModelDefaults.get("mKeyGuardManagerWrapper");
+        mConditionChecker = (ConditionChecker) actionViewModelDefaults.get("mConditionChecker");
+        mFeatureFactory = (FeatureFactory) actionViewModelDefaults.get("mFeatureFactory");
+        mToastController = (ToastController) actionViewModelDefaults.get("ToastController");
+        mResourcesWrapper = (ResourcesWrapper) actionViewModelDefaults.get("ResourcesWrapper");
+        mContext = (Context) actionViewModelDefaults.get("mContext");
         rebootOption = paramRebootOption;
     }
 

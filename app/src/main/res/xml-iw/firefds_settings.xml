@@ -23,7 +23,6 @@
         <PreferenceCategory android:title="@string/status_icons">
             <SwitchPreference
                 android:defaultValue="false"
-                android:disableDependentsState="true"
                 android:key="hideNfcIcon"
                 android:summaryOff="@string/hide_nfc_icon_off"
                 android:summaryOn="@string/hide_nfc_icon_on"
@@ -82,18 +81,6 @@
                 android:title="@string/carrier_size" />
         </PreferenceCategory>
     </PreferenceScreen>
-    <!--<PreferenceScreen
-        android:icon="@drawable/lockscreen"
-        android:key="lockscreenKey"
-        android:title="@string/lockscreen" >
-        <PreferenceCategory android:title="@string/pin_unlock" >
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="disableLockedAdb"
-                android:summary="@string/disable_adb_connection_during_secured_lockscreen"
-                android:title="@string/disable_adb_on_secured_lock" />
-        </PreferenceCategory>
-    </PreferenceScreen>-->
     <PreferenceScreen
         android:icon="@drawable/sound"
         android:key="soundKey"
@@ -130,17 +117,18 @@
                     android:key="enableAdvancedPowerMenu"
                     android:summary="@string/advanced_power_menu_summary"
                     android:title="@string/advanced_power_menu_title" />
-                <!-- <SwitchPreference
-                     android:defaultValue="false"
-                     android:dependency="enable4WayReboot"
-                     android:key="mRebootConfirmRequired"
-                     android:summary="@string/reboot_requires_confirmation"
-                     android:title="@string/reboot_confirmation" />
-                 <SwitchPreference
-                     android:defaultValue="false"
-                     android:key="disablePowerMenuLockscreen"
-                     android:summary="@string/disable_power_menu_lockscreen_summary"
-                     android:title="@string/disable_power_menu_lockscreen" />-->
+                <SwitchPreference
+                    android:defaultValue="false"
+                    android:dependency="enableAdvancedPowerMenu"
+                    android:key="enableDataMode"
+                    android:summary="@string/enable_data_mode_switch_summary"
+                    android:title="@string/enable_data_mode_switch_title" />
+                <SwitchPreference
+                    android:defaultValue="false"
+                    android:dependency="enableAdvancedPowerMenu"
+                    android:key="enableScreenshot"
+                    android:summary="@string/add_screenshot_to_power_menu"
+                    android:title="@string/screenshot" />
             </PreferenceCategory>
             <PreferenceScreen
                 android:key="screenTimeoutSettings"
@@ -173,27 +161,6 @@
                     android:summary="@string/screen_timeout_hours_summary"
                     android:title="@string/screen_timeout_hours" />
             </PreferenceScreen>
-            <!--<SwitchPreference
-                android:defaultValue="false"
-                android:key="disableScrollingCache"
-                android:summary="@string/disable_scrolling_cache_sum"
-                android:title="@string/disable_scrolling_cache" />-->
-            <!-- <SwitchPreference
-                 android:defaultValue="false"
-                 android:key="disableTetherProvisioning"
-                 android:summaryOff="@string/disable_tether_provisioning_off"
-                 android:summaryOn="@string/disable_tether_provisioning_on"
-                 android:title="@string/disable_tether_provisioning" />-->
-
-            <!--<de.robv.android.xposed.library.ui.ValueSeekBarPreference
-                displayFormat="%d לקוחות"
-                max="10"
-                min="1"
-                android:defaultValue="4"
-                android:key="wifiAPClients"
-                android:summary="@string/set_the_the_number_of_maximum_wifi_ap_clients"
-                android:title="@string/wifi_ap_clients_number" />-->
-
             <de.robv.android.xposed.library.ui.IntegerListPreference
                 android:defaultValue="0"
                 android:entries="@array/nfc_behavior_entries"
@@ -209,12 +176,6 @@
                 android:title="@string/hide_mtp_notification" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/camera_and_gallery">
-            <!--<SwitchPreference
-                android:defaultValue="false"
-                android:key="enableCameraDuringCall"
-                android:summaryOff="@string/camera_disabed_during_call"
-                android:summaryOn="@string/camera_enabled_during_call"
-                android:title="@string/enable_camera_during_call" />-->
             <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableTemperatureChecks"
@@ -225,38 +186,7 @@
                 android:key="enableCameraShutterMenu"
                 android:summary="@string/enable_camera_shutter_menu_summary"
                 android:title="@string/enable_camera_shutter_menu" />
-            <!--<SwitchPreference
-                android:defaultValue="false"
-                android:disableDependentsState="true"
-                android:key="disbaleLowBatteryCloseWarningLevel"
-                android:summaryOff="@string/camera_low_battery_warning_enabled"
-                android:summaryOn="@string/camera_low_battery_warning_disabled"
-                android:title="@string/disable_camera_low_battery_warning" />-->
-
-            <!--<de.robv.android.xposed.library.ui.ValueSeekBarPreference
-                displayFormat="%d%%"
-                max="100"
-                min="1"
-                android:defaultValue="5"
-                android:dependency="disbaleLowBatteryCloseWarningLevel"
-                android:key="configCriticalBatteryWarningLevel"
-                android:summary="@string/set_camera_critical_battery_level_warning"
-                android:title="@string/critical_battery_level" />-->
         </PreferenceCategory>
-        <!--<PreferenceCategory android:title="@string/touchwiz_dvfs" >
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:disableDependentsState="true"
-                android:key="disableDVFS"
-                android:summary="@string/disable_dynamic_voltage_and_frequency_scaling"
-                android:title="@string/disable_touchwiz_dvfs" />
-
-            <Preference
-                android:dependency="disableDVFS"
-                android:key="disableDVFSWhiteList"
-                android:summary="@string/select_applications_which_should_keep_dvfs_disabled"
-                android:title="@string/set_dvfs_diabler_blacklist" />
-        </PreferenceCategory>-->
     </PreferenceScreen>
     <PreferenceScreen
         android:icon="@drawable/phone"
@@ -289,17 +219,6 @@
                 android:summaryOff="@string/call_number_formatting_enabled"
                 android:summaryOn="@string/call_number_formatting_disabled"
                 android:title="@string/disable_call_number_formatting" />
-            <!--<SwitchPreference
-                android:defaultValue="false"
-                android:key="unlimittedContactsJoining"
-                android:summaryOff="@string/default_contacts_joining_limit"
-                android:summaryOn="@string/unlimited_contacts_accounts_joining"
-                android:title="@string/enable_unlimited_contacts_joining" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="useSeparateAddressField"
-                android:summary="@string/separate_address_field_used"
-                android:title="@string/use_separate_address_field" />-->
         </PreferenceCategory>
     </PreferenceScreen>
     <PreferenceScreen
@@ -307,11 +226,6 @@
         android:key="messagingKey"
         android:title="@string/messaging">
         <PreferenceCategory android:title="@string/messaging">
-            <!--<SwitchPreference
-                android:defaultValue="true"
-                android:key="enableSaveRestore"
-                android:summary="@string/enable_the_menu_to_save_and_restore_messages"
-                android:title="@string/enable_save_and_restore" />-->
             <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableSmsToMmsConversion"
@@ -356,12 +270,6 @@
                 android:summaryOff="@string/disable_flag_secure_on"
                 android:summaryOn="@string/disable_flag_secure_off"
                 android:title="@string/disable_flag_secure_title" />
-            <!--<SwitchPreference
-                 android:defaultValue="true"
-                 android:key="disableTIMA"
-                 android:summary="@string/disable_seandroid_knox_notifications_msg"
-                 android:title="@string/disable_knox_notifications" />-->
         </PreferenceCategory>
     </PreferenceScreen>
-
 </PreferenceScreen>

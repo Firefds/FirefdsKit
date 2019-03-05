@@ -230,7 +230,6 @@ public class XCscFeaturesManager {
 
         @Override
         protected void onPostExecute(Void result) {
-            Log.d("sb.firefds.pie.firefdskit", featureXML.toString());
             if (featureXML.isFile()) {
                 try {
                     Utils.applyCSCFeatues(MainApplication.getAppContext());

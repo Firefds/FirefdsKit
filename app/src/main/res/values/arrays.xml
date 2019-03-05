@@ -30,37 +30,12 @@
         <item name="larger">Larger</item>
         <item name="largest">Largest</item>
     </string-array>
-    <string-array name="categories_list">
-        <item>CscAudioManager</item>
-        <item>CscBrowser</item>
-        <item>CscCalendar</item>
-        <item>CscCamera</item>
-        <item>CscChameleon</item>
-        <item>CscChromeBrowser</item>
-        <item>CscCloud</item>
-        <item>CscConnection</item>
-        <item>CscContacts</item>
-        <item>CscContents</item>
-        <item>CscDRMVerifier</item>
-        <item>CscFota</item>
-        <item>CscGPS</item>
-        <item>CscHomescreen</item>
-        <item>CscNetwork</item>
-        <item>CscRingtoneManager</item>
-        <item>CscSamsungKeypad</item>
-        <item>CscSBrowser</item>
-        <item>CscSettings</item>
-        <item>CscSmsMms</item>
-        <item>CscVoiceMail</item>
-        <item>CscWbAmr</item>
-    </string-array>
     <string-array name="default_settings">
-        <item>enableCameraDuringCall</item>
+        <item>enableCameraShutterMenu</item>
         <item>disableNumberFormatting</item>
         <item>disableSmsToMmsConversion</item>
         <item>isFirefdsKitFirstLaunch</item>
         <item>makeMeTooLegit</item>
-        <item>disableTIMA</item>
     </string-array>
     <string-array name="lite_preferences">
         <item>isFirefdsKitFirstLaunch</item>
@@ -72,9 +47,6 @@
         <item>enableCallAdd</item>
         <item>enableCallRecordingMenu</item>
         <item>enableAutoCallRecording</item>
-        <item>enable4WayReboot</item>
-        <item>mRebootConfirmRequired</item>
-        <item>disablePowerMenuLockscreen</item>
         <item>disableBluetoothScanDialog</item>
         <item>enableCameraShutterMenu</item>
     </string-array>
