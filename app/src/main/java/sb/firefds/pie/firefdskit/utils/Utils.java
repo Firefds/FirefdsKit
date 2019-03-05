@@ -17,8 +17,6 @@ package sb.firefds.pie.firefdskit.utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -31,7 +29,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Objects;
 
 import de.robv.android.xposed.XposedBridge;
@@ -52,11 +49,7 @@ public class Utils {
         CSC, OMC_CSC, OMC_OMC
     }
 
-    //private static Boolean mIsExynosDevice = null;
     private static CscType mCscType = null;
-
-    // GB Context
-    //private static Context mGbContext;
 
     public static void closeStatusBar(Context context) throws Throwable {
         @SuppressLint("WrongConstant") Object sbservice = context.getSystemService(STATUSBAR_SERVICE);
@@ -106,21 +99,6 @@ public class Utils {
         }
     }
 
-    /*public static synchronized Context getGbContext(Context context) throws Throwable {
-        if (mGbContext == null) {
-            mGbContext = context.createPackageContext(Packages.FIREFDSKIT, Context.CONTEXT_IGNORE_SECURITY);
-        }
-        return mGbContext;
-    }
-
-    public static synchronized Context getGbContext(Context context, Configuration config) throws Throwable {
-        if (mGbContext == null) {
-            mGbContext = context.createPackageContext(Packages.FIREFDSKIT,
-                    Context.CONTEXT_IGNORE_SECURITY);
-        }
-        return (config == null ? mGbContext : mGbContext.createConfigurationContext(config));
-    }*/
-
     public static void rebootEPM(String rebootType) {
         try {
             rebootSystem(rebootType);
@@ -133,15 +111,6 @@ public class Utils {
         new Handler().postDelayed(() -> new SuTask()
                 .execute("reboot " + rebootType), 1000);
     }
-
-    /*private static String getUriPath(Context context, Uri uri) {
-        String[] data = {MediaStore.Images.Media.DATA};
-        CursorLoader loader = new CursorLoader(context, uri, data, null, null, null);
-        Cursor cursor = loader.loadInBackground();
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
-    }*/
 
     public static void disableVolumeControlSounds(Context context) {
         if (new File("/system/media/audio/ui/TW_Volume_control.ogg").isFile()) {
@@ -167,36 +136,7 @@ public class Utils {
         }
     }
 
-    /*public static void hideViewBGContent(ViewGroup vg) {
-        try {
-
-            vg.setBackgroundColor(Color.TRANSPARENT);
-            int childCount = vg.getChildCount();
-            if (childCount > 0) {
-                for (int i = 0; i < childCount; i++) {
-                    try {
-                        View v = vg.getChildAt(i);
-                        v.setBackgroundColor(Color.TRANSPARENT);
-                    } catch (Throwable e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-    }*/
-
     private static void executeScript(Context context, String name) {
-        /*File scriptFile = writeAssetToCacheFile(context, name);
-        if (scriptFile == null)
-            return;
-
-        scriptFile.setReadable(true, false);
-        scriptFile.setExecutable(true, false);
-
-        new SuTask().execute("cd " + context.getCacheDir(), "./" + scriptFile.getName(),
-                "rm " + scriptFile.getName());*/
         try {
             InputStream inputStream = context.getAssets().open(name);
             ByteArrayOutputStream result = new ByteArrayOutputStream();
@@ -206,7 +146,7 @@ public class Utils {
                 result.write(buffer, 0, length);
             }
             inputStream.close();
-            new SuTask().execute(result.toString(   "UTF-8"));
+            new SuTask().execute(result.toString("UTF-8"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -224,34 +164,6 @@ public class Utils {
             return null;
         }
     }
-
-    /*private static File writeAssetToCacheFile(Context context, String name) {
-        return writeAssetToCacheFile(context, name, name);
-    }*/
-
-    /*private static File writeAssetToCacheFile(Context context, String assetName, String fileName) {
-        File file = null;
-        try {
-            InputStream in = context.getAssets().open(assetName);
-            file = new File(context.getCacheDir(), fileName);
-            FileOutputStream out = new FileOutputStream(file);
-
-            byte[] buffer = new byte[1024];
-            int len;
-            while ((len = in.read(buffer)) > 0) {
-                out.write(buffer, 0, len);
-            }
-            in.close();
-            out.close();
-            return file;
-        } catch (Throwable e) {
-            e.printStackTrace();
-            if (file != null) {
-                file.delete();
-            }
-            return null;
-        }
-    }*/
 
     public static void setTypeface(SharedPreferences prefs, TextView tv) {
 
@@ -292,26 +204,6 @@ public class Utils {
     public static boolean isSamsungRom() {
         return new File("/system/framework/com.samsung.device.jar").isFile();
     }
-
-    public static boolean isPackageExisted(Context context, String targetPackage) {
-        List<ApplicationInfo> packages;
-        PackageManager pm;
-        pm = context.getPackageManager();
-        packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
-        for (ApplicationInfo packageInfo : packages) {
-            if (packageInfo.packageName.equals(targetPackage))
-                return true;
-        }
-        return false;
-    }
-
-    /*public static boolean isExynosDevice() {
-        if (mIsExynosDevice != null)
-            return mIsExynosDevice;
-
-        mIsExynosDevice = Build.HARDWARE.toLowerCase(Locale.UK).contains("smdk");
-        return mIsExynosDevice;
-    }*/
 
     public static CscType getCSCType() {
         if (mCscType != null)

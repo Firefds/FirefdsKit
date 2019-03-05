@@ -134,19 +134,6 @@ public class XCscFeaturesManager {
     private static ArrayList<FeatureDTO> getCscFeaturesList(SharedPreferences prefs) {
         ArrayList<FeatureDTO> featuresDTOList = new ArrayList<>();
 
-        // Email App BG
-        /*if (prefs.getBoolean("enableWhiteEmailBackgroung", true)) {
-            featuresDTOList.add(new FeatureDTO("CscFeature_Email_UseFixedBgColorAsWhite",
-                    "TRUE"));
-            featuresDTOList.add(new FeatureDTO("CscFeature_Email_BackgroundColorWhite",
-                    "TRUE"));
-        } else {
-            featuresDTOList.add(new FeatureDTO("CscFeature_Email_UseFixedBgColorAsWhite",
-                    "FALSE"));
-            featuresDTOList.add(new FeatureDTO("CscFeature_Email_BackgroundColorWhite",
-                    "FALSE"));
-        }*/
-
         // Messaging
         if (prefs.getBoolean("forceMMSConnect", false))
             featuresDTOList.add(new FeatureDTO("CscFeature_RIL_ForceConnectMMS",
@@ -168,19 +155,6 @@ public class XCscFeaturesManager {
         featuresDTOList.add(new FeatureDTO("CscFeature_Message_MaxRecipientLengthAs",
                 "999"));
 
-        // Browser Terminate button
-       /* if (prefs.getBoolean("addBrowserTerminateButton", false))
-            featuresDTOList.add(new FeatureDTO("CscFeature_Web_AddOptionToTerminate",
-                    "TRUE"));
-        else
-            featuresDTOList.add(new FeatureDTO("CscFeature_Web_AddOptionToTerminate",
-                    "FALSE"));*/
-
-        // Wifi AP Clients
-        /*featuresDTOList
-                .add(new FeatureDTO("CscFeature_Wifi_MaxClient4MobileAp",
-                        "" + prefs.getInt("wifiAPClients", 4)));*/
-
         // Contacts
         if (prefs.getBoolean("disableNumberFormatting", false))
             featuresDTOList.add(new FeatureDTO("CscFeature_Common_DisablePhoneNumberFormatting",
@@ -188,14 +162,6 @@ public class XCscFeaturesManager {
         else
             featuresDTOList.add(new FeatureDTO("CscFeature_Common_DisablePhoneNumberFormatting",
                     "FALSE"));
-
-        // Lockscreen
-        /*if (prefs.getBoolean("disableLockedAdb", false))
-            featuresDTOList.add(new FeatureDTO("CscFeature_LockScreen_DisableADBConnDuringSecuredLock",
-                    "TRUE"));
-        else
-            featuresDTOList.add(new FeatureDTO("CscFeature_LockScreen_DisableADBConnDuringSecuredLock",
-                    "FALSE"));*/
 
         return featuresDTOList;
     }

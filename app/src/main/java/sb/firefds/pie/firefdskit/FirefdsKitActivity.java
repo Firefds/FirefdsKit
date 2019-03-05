@@ -31,7 +31,6 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.SystemClock;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -97,7 +96,7 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
     @SuppressLint("SetWorldReadable")
     public static void fixPermissions(Context context) {
         File sharedPrefsFolder =
-                new File(String.format("%s/shared_prefs", context.getDataDir().getAbsolutePath()));
+                new File(context.getFilesDir().getParentFile(), "shared_prefs");
         if (sharedPrefsFolder.exists()) {
             sharedPrefsFolder.setExecutable(true, false);
             sharedPrefsFolder.setReadable(true, false);
@@ -112,8 +111,8 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
     }
 
     @SuppressLint("SetWorldReadable")
-    public static void fixAppPermissions() {
-        File appFolder = new File(Environment.getDataDirectory(), "data/" + BuildConfig.APPLICATION_ID);
+    public static void fixAppPermissions(Context context) {
+        File appFolder = context.getFilesDir().getParentFile();
         appFolder.setExecutable(true, false);
         appFolder.setReadable(true, false);
     }
@@ -122,7 +121,7 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        fixAppPermissions();
+        fixAppPermissions(this);
         verifyStoragePermissions(this);
 
         setContentView(R.layout.firefds_main);
@@ -406,11 +405,6 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
                     alertDialog.show();
                 }
 
-                /*findPreference("disableDVFSWhiteList").setOnPreferenceClickListener(preference -> {
-                    new DVFSBlackListDialog().show(getFragmentManager(), "DVFSWhiteList");
-                    return true;
-                });*/
-
                 TextViewPreference textViewInformationHeader;
                 PreferenceScreen ps = (PreferenceScreen) findPreference("prefsRoot");
                 textViewInformationHeader = (TextViewPreference) findPreference("fkHeader");
@@ -570,9 +564,9 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
 
         @Override
         public void onPause() {
-            super.onPause();
             unregisterPrefsReceiver();
             fixPermissions(mContext);
+            super.onPause();
         }
 
         private void registerPrefsReceiver() {

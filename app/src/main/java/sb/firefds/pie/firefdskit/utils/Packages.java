@@ -19,10 +19,8 @@ public class Packages {
     public static final String FIREFDSKIT = "sb.firefds.pie.firefdskit";
     public static final String ANDROID = "android";
     public static final String SYSTEM_UI = "com.android.systemui";
-    public static final String PHONE = "com.android.phone";
     public static final String INCALLUI = "com.android.incallui";
     public static final String SAMSUNG_INCALLUI = "com.samsung.android.incallui";
-    public static final String CONTACTS = "com.samsung.android.contacts";
     public static final String SETTINGS = "com.android.settings";
     public static final String SAMSUNG_SETTINGS = "com.samsung.android.settings";
     public static final String EMAIL = "com.samsung.android.email.provider";

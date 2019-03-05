@@ -33,8 +33,6 @@ public class Constants {
 
     public static final String SYSTEM_CSC_OTHER_XML = "/system/csc/others.xml";
     public static final String SYSTEM_OTHER_FEATURE_BKP = "/system/csc/others.xml.bak";
-    public static final String SYSTEM_CSC_FEATURE_DIR = Utils.getCSCType().equals(CscType.OMC_OMC) ?
-            Utils.getOMCPath() + "/" : "/system/csc/";
 
     public static final String FEATURES_LIST_HEADER1 = "<?xml  version=\"1.0\" encoding=\"UTF-8\" ?>\n" + "<SamsungMobileFeature>\n" + "\t<Version>";
     public static final String FEATURES_LIST_HEADER2 = "</Version>\n" + "\t<Country>";
