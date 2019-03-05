@@ -16,11 +16,13 @@ package sb.firefds.pie.firefdskit;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.Signature;
 
 
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
+import sb.firefds.pie.firefdskit.utils.Packages;
 
 public class XAndroidPackage {
 
@@ -33,6 +35,21 @@ public class XAndroidPackage {
         XAndroidPackage.prefs = prefs;
         XAndroidPackage.classLoader = classLoader;
 
+       /* Class<?> windowStateClass =
+                XposedHelpers.findClass(Packages.ANDROID + ".server.wm.WindowState", classLoader);
+
+        XposedHelpers.findAndHookMethod(Packages.ANDROID + ".server.wm. WindowManagerService",
+                classLoader,
+                "isSecureLocked",
+                windowStateClass,
+                XC_MethodReplacement.returnConstant(Boolean.FALSE));
+
+        XposedHelpers.findAndHookMethod(Packages.ANDROID + ".server.pm. PackageManagerServiceUtils",
+                classLoader,
+                "isSecureLocked",
+                Signature.class,
+                Signature.class,
+                XC_MethodReplacement.returnConstant(0));*/
         /*if (prefs.getBoolean("disableTIMA", true))
             try {
                 disableTIMA();

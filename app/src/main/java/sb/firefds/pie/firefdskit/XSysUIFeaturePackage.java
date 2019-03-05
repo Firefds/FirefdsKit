@@ -15,9 +15,11 @@
 
 package sb.firefds.pie.firefdskit;
 
-import android.graphics.Color;
+import android.content.Context;
+import android.media.AudioManager;
 
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
@@ -25,59 +27,55 @@ import sb.firefds.pie.firefdskit.utils.Packages;
 
 public class XSysUIFeaturePackage {
 
-    private static Object mVolumePanel;
-
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
 
         try {
-            Class<?> classVolumePanel =
-                    XposedHelpers.findClass(Packages.SYSTEM_UI + ".volume.SecVolumeDialogImpl", classLoader);
+            final Class<?> systemUIRuneClass =
+                    XposedHelpers.findClass(Packages.SYSTEM_UI + ".Rune", classLoader);
 
-            XposedBridge.hookAllConstructors(classVolumePanel, new XC_MethodHook() {
-                @Override
-                protected void afterHookedMethod(final MethodHookParam param) {
-                    mVolumePanel = param.thisObject;
-                }
-            });
-
-            XposedHelpers.findAndHookMethod(classVolumePanel,
-                    "updateTintColor",
+            XposedHelpers.findAndHookMethod(systemUIRuneClass,
+                    "shouldEnableKeyguardScreenRotation",
+                    Context.class,
                     new XC_MethodHook() {
                         @Override
-                        protected void afterHookedMethod(MethodHookParam param) {
-
-                            if (prefs.getBoolean("semiTransparentVolumePanel", false)) {
-                                XposedHelpers.setObjectField(
-                                        mVolumePanel,
-                                        "mVolumePanelBgColor",
-                                        XposedHelpers.callMethod(mVolumePanel,
-                                                "colorToColorStateList",
-                                                Color.parseColor("#55FF0000")));
-                                XposedBridge.log(Packages.FIREFDSKIT + "Color set to #55FF0000");
-                            }
+                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                            XposedBridge.log("Inside shouldEnableKeyguardScreenRotation");
+                            param.setResult(true);
                         }
                     });
 
-            XposedHelpers.findAndHookMethod(classVolumePanel,
-                    "updateDefaultTintColor",
+                    XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".KnoxStateMonitor.CustomSdkMonitor",
+                            classLoader,
+                            "isStatusBarDoubleTapEnabled",
+                            XC_MethodReplacement.returnConstant(Boolean.TRUE));
+
+            XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".settings.ToggleSliderView",
+                    classLoader,
+                    "setEyeStrainDialogEnabled",
+                    int.class,
                     new XC_MethodHook() {
                         @Override
-                        protected void afterHookedMethod(MethodHookParam param) {
-
-                            if (prefs.getBoolean("semiTransparentVolumePanel", false)) {
-                                XposedHelpers.setObjectField(
-                                        mVolumePanel,
-                                        "mVolumePanelBgDefaultColor",
-                                        XposedHelpers
-                                                .callMethod(mVolumePanel,
-                                                        "colorToColorStateList",
-                                                        Color.parseColor("#55FF0000")));
-                                XposedBridge
-                                        .log(Packages.FIREFDSKIT + "Color default set to #55FF0000");
-                            }
+                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                            param.args[0] = 0;
                         }
                     });
+
+            XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".volume.VolumeDialogControllerImpl",
+                    classLoader,
+                    "onShowSafetyWarningW",
+                    int.class,
+                    new XC_MethodReplacement() {
+                        @Override
+                        protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                            AudioManager mAudio =
+                                    (AudioManager) XposedHelpers.getObjectField(param.thisObject,
+                                            "mAudio");
+                            XposedHelpers.callMethod(mAudio, "disableSafeMediaVolume");
+                            return null;
+                        }
+                    });
+
         } catch (Throwable e1) {
             XposedBridge.log(e1);
         }
