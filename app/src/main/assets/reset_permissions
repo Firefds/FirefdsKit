@@ -1,6 +1,7 @@
 #!/system/bin/sh
 export PATH=/system/bin:$PATH
 
+
 OMC_PATH=`getprop persist.sys.omc_path`
 
 mount -o rw,remount /system

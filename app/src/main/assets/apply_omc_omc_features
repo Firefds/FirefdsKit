@@ -15,7 +15,6 @@ chmod 0777 $OMC_PATH
 chmod 0777 $OMC_PATH/cscfeature.xml
 
 cp -f /data/data/sb.firefds.pie.firefdskit/cache/cscfeature.xml $OMC_PATH/cscfeature.xml
-
 rm -r /data/data/sb.firefds.pie.firefdskit/cache/cscfeature.xml
 
 chmod 0644 $OMC_PATH/cscfeature.xml
