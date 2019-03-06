@@ -50,10 +50,13 @@ public class Utils {
     }
 
     private static CscType mCscType = null;
+    private static boolean omcEncryptedFlag;
 
     public static void closeStatusBar(Context context) throws Throwable {
-        @SuppressLint("WrongConstant") Object sbservice = context.getSystemService(STATUSBAR_SERVICE);
-        @SuppressLint("PrivateApi") Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
+        @SuppressLint("WrongConstant") Object sbservice =
+                context.getSystemService(STATUSBAR_SERVICE);
+        @SuppressLint("PrivateApi") Class<?> statusbarManager =
+                Class.forName("android.app.StatusBarManager");
         Method showsb = statusbarManager.getMethod("collapsePanels");
         showsb.invoke(sbservice);
     }
@@ -212,6 +215,15 @@ public class Utils {
         mCscType = SystemProperties.getBoolean(OMC_SUPPORT, false) ? CscType.OMC_OMC : CscType.OMC_CSC;
 
         return mCscType;
+    }
+
+    public static boolean isOmcEncryptedFlag() {
+        return omcEncryptedFlag;
+    }
+
+    public static void setOmcEncryptedFlag() {
+        Utils.omcEncryptedFlag = !SystemProperties.get("ro.omc.img_mount").isEmpty()
+                && !SystemProperties.get("persist.sys.omc_install").isEmpty();
     }
 
     static String getOMCPath() {

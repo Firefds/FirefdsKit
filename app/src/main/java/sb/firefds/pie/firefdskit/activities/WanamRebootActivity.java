@@ -63,7 +63,9 @@ public class WanamRebootActivity extends Activity {
     private void rebootDevice() throws Throwable {
         Utils.closeStatusBar(this);
         ProgressDialog.show(this, "", getString(R.string.rebooting));
-        XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
+        if (!Utils.isOmcEncryptedFlag()) {
+            XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
+        }
         Utils.reboot();
     }
 

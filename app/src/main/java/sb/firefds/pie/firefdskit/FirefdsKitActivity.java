@@ -32,9 +32,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.preference.SwitchPreference;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.view.Menu;
@@ -121,6 +123,7 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        Utils.setOmcEncryptedFlag();
         fixAppPermissions(this);
         verifyStoragePermissions(this);
 
@@ -153,9 +156,11 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
         protected Void doInBackground(Activity... params) {
 
             try {
-                mActivity = params[0];
+                if (!Utils.isOmcEncryptedFlag()) {
+                    mActivity = params[0];
 
-                XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
+                    XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
+                }
             } catch (Throwable e) {
                 e.printStackTrace();
             }
@@ -237,8 +242,9 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
 
         Toast.makeText(this, R.string.recommended_restored, Toast.LENGTH_SHORT).show();
 
-        XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
-
+        if (!Utils.isOmcEncryptedFlag()) {
+            XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
+        }
         RebootNotification.notify(this, 999, false);
 
         recreate();
@@ -260,7 +266,9 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
 
         fixPermissions(getApplicationContext());
 
-        XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
+        if (!Utils.isOmcEncryptedFlag()) {
+            XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
+        }
 
         recreate();
 
@@ -385,6 +393,20 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
                         = mContext.getSharedPreferences(PREFS, 0);
                 MainApplication.setSharedPreferences(sharedPreferences);
                 addPreferencesFromResource(R.xml.firefds_settings);
+
+                if (Utils.isOmcEncryptedFlag()) {
+                    PreferenceScreen rootScreen =
+                            (PreferenceScreen) findPreference("prefsRoot");
+                    PreferenceScreen messagingScreen =
+                            (PreferenceScreen) findPreference("messagingKey");
+                    PreferenceCategory phoneScreen =
+                            (PreferenceCategory) findPreference("phoneKeyCat");
+                    SwitchPreference disableNumberFormattingPreference =
+                            (SwitchPreference) findPreference("disableNumberFormatting");
+
+                    rootScreen.removePreference(messagingScreen);
+                    phoneScreen.removePreference(disableNumberFormattingPreference);
+                }
 
                 showDiag();
 
@@ -533,7 +555,9 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
 
             protected Void doInBackground(Context... params) {
                 try {
-                    XCscFeaturesManager.getDefaultCSCFeaturesFromFiles();
+                    if (!Utils.isOmcEncryptedFlag()) {
+                        XCscFeaturesManager.getDefaultCSCFeaturesFromFiles();
+                    }
                 } catch (Throwable e) {
                     e.printStackTrace();
                 }
@@ -543,7 +567,9 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
             @Override
             protected void onPostExecute(Void result) {
                 try {
-                    Utils.createCSCFiles(mContext);
+                    if (!Utils.isOmcEncryptedFlag()) {
+                        Utils.createCSCFiles(mContext);
+                    }
                     if (mDialog != null && mDialog.isShowing()) {
                         mDialog.dismiss();
                     }
