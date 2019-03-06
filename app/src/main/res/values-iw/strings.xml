@@ -27,7 +27,7 @@
     <string name="reboot_required_title">נדרשת הפעלה מחדש</string>
     <string name="reboot_required_message">Firefds Kit דורש הפעלה מחדש</string>
     <string name="rebooting">מפעיל מחדש…</string>
-    <string name="credit_details">"\nתודה ל Rovo89 על יצירת מסגרת ה Xposed.\n\nתודה ל C3C076, Romracer, Tungstwenty… על התרומה שלהם ליצירת Xposed ומודלים.\n\nמפתח: <a href="http://forum.xda-developers.com/member.php?u=3562083">Wanam @Xda-Developers</a>\n\nטוויטר: <a href="https://twitter.com/wanamxda">Mohamed Karami</a>\n\nהותאם לגלקסי S8 על ידי: <a href="http://forum.xda-developers.com/member.php?u=3844620">Firefds firefds@Xda-Developers</a>"</string>
+    <string name="credit_details">"\nתודה ל Rovo89 על יצירת מסגרת ה Xposed.\n\nתודה ל C3C076, RikkaW, solohsu, MlgmXyysd על התרומה שלהם ליצירת Xposed ומודלים.\n\nמפתח: <a href="http://forum.xda-developers.com/member.php?u=3844620">Firefds firefds@Xda-Developers</a>\n\nמבוסס על XTouchWiz של:\n\n<a href="http://forum.xda-developers.com/member.php?u=3562083">Wanam @Xda-Developers</a>"</string>
     <string name="restore">שיחזור גיבוי</string>
     <string name="save">שמירת גיבוי</string>
     <string name="restoring_backup">משחזר גיבוי</string>
@@ -62,11 +62,10 @@
     <string name="quick_settings_disable_bluetooth_scan_dialog">ביטול קפיצת חלון בהפעלת Bluetooth</string>
     <string name="quick_settings_disable_bluetooth_scan_dialog_sum">ביטול דיאלוג הסריקה אחרי הפעלת Bluetooth</string>
     <string name="camera_and_gallery">מצלמה וגלריה</string>
-    <string name="no_thanks">לא תודה</string>
     <string name="recommended_settings">הגדרות מומלצות</string>
     <string name="set_recommended_settings">להחיל הגדרות מומלצות?</string>
     <string name="recommended_restored">הגדרות מומלצות שוחזרו</string>
-    <string name="firefds_xposed_disclaimer">יישום זה נבדק על מכשירי גלקסי מסדרת S ו Note עם קושחות מקוריות ו WanamLite, חלק מהתכונות עלולות לא לעבוד כמו שצריך על מכשירים מדגמים אחרים\n\nאני לא לוקח שום אחריות על כל נזק שיגרם על ידי יישום זה, השימוש הוא על אחריותך!</string>
+    <string name="firefds_xposed_disclaimer">יישום זה נבדק על מכשיר גלקסי S8 עם קושחה מקורית. חלק מהתכונות עלולות לא לעבוד כמו שצריך על מכשירים מדגמים אחרים\n\nאני לא לוקח שום אחריות על כל נזק שיגרם על ידי יישום זה, השימוש הוא על אחריותך!</string>
     <string name="nfc_behavior_summary">זמן הקשבת NFC:\n%s</string>
     <string name="nfc_behavior">התנהגות NFC</string>
     <string name="unlocked">כאשר לא נעול (ברית מחדל)</string>
@@ -85,7 +84,7 @@
     <string name="force_mms_connect">דחיפת MMS בכוח</string>
     <string name="force_mms_connect_to_receive_mms">דחיפת MMS בכוח, על מנת לקבל הודעות MMS מבלי להתחבר ידנית לנתונים ניידים</string>
     <string name="disable_temperature_checks">ביטול בדיקות טמפרטורה</string>
-    <string name="disable_temparature_warnings_on_the_recording">ביטול התראות טמפרטורה בעת הקלטה ושימוש בהבזק. שימוש רק במקרה שצריך!</string>
+    <string name="disable_temperature_warnings_on_the_recording">ביטול התראות טמפרטורה בעת הקלטה ושימוש בהבזק. שימוש רק במקרה שצריך!</string>
     <string name="auto_call_recording">הקלטת שיחות אוטומטית</string>
     <string name="enable_automatic_call_recording">הפעלת הקלטת שיחות אוטומטית</string>
     <string name="firefds_kit_is_not_active">Firefds Kit לא פועל! יש לוודא:\n- ליישום זה דרושות השראות Root\n- מסגרת Xposed מתוקנת\n- מודל זה מופעל ב Xposed installer ואז הפעלה מחדש.</string>
@@ -114,8 +113,6 @@
     <string name="screen_timeout_minutes">הגדרת דקות לכיבוי מסך</string>
     <string name="screen_timeout_hours_summary">הגדרת השעות עד לכיבוי מסך אוטומטי</string>
     <string name="screen_timeout_hours">הגדרת שעות לכיבוי מסך</string>
-    <string name="select_all_none">"בחירת הכל/כלום"</string>
-    <string name="dvfs_black_list">רשימה שחורה של DVFS</string>
     <string name="quick_settings_disable_sync_dialog_sum">ביטול דיאלוג האישור אחרי הפעלת או ביטול סנכון</string>
     <string name="quick_settings_disable_sync_dialog">ביטול קפיצת חלון סנכרון</string>
     <string name="enable_camera_shutter_menu">הפעלת תפריט צליל צמצם</string>

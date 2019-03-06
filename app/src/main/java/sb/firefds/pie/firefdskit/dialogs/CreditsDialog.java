@@ -45,10 +45,10 @@ public class CreditsDialog extends DialogFragment {
         tv.setMovementMethod(LinkMovementMethod.getInstance());
         tv.setText(R.string.credit_details);
         tv.setPadding(16, 16, 16, 16);
-        builder.setCancelable(true).
-                setView(tv).
-                setTitle(getString(R.string.app_name) + " " + pkgVersion)
-                .setNeutralButton(R.string.no_thanks, (dialog, id) -> dialog.dismiss());
+        builder.setCancelable(true)
+                .setView(tv)
+                .setTitle(getString(R.string.app_name) + " " + pkgVersion)
+                .setNeutralButton(R.string.ok_btn, (dialog, id) -> dialog.dismiss());
         return builder.create();
     }
 }

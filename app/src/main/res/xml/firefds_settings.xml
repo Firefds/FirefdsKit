@@ -179,7 +179,7 @@
             <SwitchPreference
                 android:defaultValue="false"
                 android:key="disableTemperatureChecks"
-                android:summary="@string/disable_temparature_warnings_on_the_recording"
+                android:summary="@string/disable_temperature_warnings_on_the_recording"
                 android:title="@string/disable_temperature_checks" />
             <SwitchPreference
                 android:defaultValue="true"

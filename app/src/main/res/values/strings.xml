@@ -27,7 +27,7 @@
     <string name="reboot_required_title">Reboot requested</string>
     <string name="reboot_required_message">Firefds Kit requires a reboot to apply changes</string>
     <string name="rebooting">Rebooting now…</string>
-    <string name="credit_details">"\nThanks to Rovo89 for creating Xposed framework.\n\nThanks to C3C076, Romracer, Tungstwenty… for their contribution on Xposed framework and modules.\n\nDeveloper: <a href="http://forum.xda-developers.com/member.php?u=3562083">Wanam @Xda-Developers</a>\n\nTwitter: <a href="https://twitter.com/wanamxda">Mohamed Karami</a>\n\nModed for Galaxy S8 framework by: <a href="http://forum.xda-developers.com/member.php?u=3844620">Firefds firefds@Xda-Developers</a>"</string>
+    <string name="credit_details">\nThanks to Rovo89 for creating Xposed framework.\n\nThanks to C3C076, RikkaW, solohsu, MlgmXyysd for their contribution on Xposed framework and modules.\n\nDeveloper: <a href="http://forum.xda-developers.com/member.php?u=3844620">Firefds firefds@Xda-Developers</a>\n\nBased on XTouchWiz by:\n\<a href="http://forum.xda-developers.com/member.php?u=3562083">Wanam @Xda-Developers</a></string>
     <string name="restore">Restore a backup</string>
     <string name="save">Save a backup</string>
     <string name="restoring_backup">Restoring backup</string>
@@ -64,11 +64,10 @@
     <string name="quick_settings_disable_sync_dialog">Disable sync toggle popup</string>
     <string name="quick_settings_disable_sync_dialog_sum">Disable the confirmation dialog when toggling sync</string>
     <string name="camera_and_gallery">Camera and Gallery</string>
-    <string name="no_thanks">No Thanks</string>
     <string name="recommended_settings">Recommended settings</string>
     <string name="set_recommended_settings">Apply recommended settings?</string>
     <string name="recommended_restored">Recommended settings restored</string>
-    <string name="firefds_xposed_disclaimer">This application has been tested on the Samsung Galaxy S and Note series with WanamLite and stock firmwares, some features may not work properly on other device models\n\nI do NOT take any responsibility of any damage caused by this application, you are using it at your own risk!</string>
+    <string name="firefds_xposed_disclaimer">This application has been tested on the Samsung Galaxy S8 Exynos with stock firmware. some features may not work properly on other device models\n\nI do NOT take any responsibility of any damage caused by this application, you are using it at your own risk!</string>
     <string name="nfc_behavior_summary">NFC should listen:\n%s</string>
     <string name="nfc_behavior">NFC Behavior</string>
     <string name="unlocked">When unlocked (default)</string>
@@ -87,7 +86,7 @@
     <string name="force_mms_connect">Force MMS connect</string>
     <string name="force_mms_connect_to_receive_mms">Force MMS connect, to receive MMS without manually enabling mobile data</string>
     <string name="disable_temperature_checks">Disable Temperature checks</string>
-    <string name="disable_temparature_warnings_on_the_recording">Disable temparature warnings on the recording and flash use. Use it only if you need it!</string>
+    <string name="disable_temperature_warnings_on_the_recording">Disable temperature warnings on the recording and flash use. Use it only if you need it!</string>
     <string name="auto_call_recording">Auto call recording</string>
     <string name="enable_automatic_call_recording">Enable automatic call recording</string>
     <string name="firefds_kit_is_not_active">Firefds Kit is NOT active! Make sure:\n- This App has Root permissions\n- Xposed framework is installed\n- This module is enabled on Xposed installer then REBOOT.</string>
@@ -116,8 +115,6 @@
     <string name="screen_timeout_minutes">Screen Timeout Minutes</string>
     <string name="screen_timeout_hours_summary">Set the screen timeout hours</string>
     <string name="screen_timeout_hours">Screen Timeout Hours</string>
-    <string name="dvfs_black_list">DVFS blackList</string>
-    <string name="select_all_none">"Select All/None"</string>
     <string name="reboot_device_action" translatable="false">ma.wanam.xposed.action.REBOOT_DEVICE</string>
     <string name="soft_reboot_device_action" translatable="false">ma.wanam.xposed.action.SOFT_REBOOT_DEVICE</string>
     <string name="reboot_options_action" translatable="false">ma.wanam.xposed.action.REBOOT_OPTIONS</string>
