@@ -4,6 +4,8 @@ Xposed module for Samsung Pie devices.
 
 This application also uses Root access to apply some Samsung CSC features.
 
+XDA Discussion thread: https://forum.xda-developers.com/xposed/modules/xposed-firefds-kit-customization-t3908114
+
 ## Features
 The module has the following features:
 - Fake system status to Official
@@ -79,7 +81,7 @@ The project uses the following libraries:
 1. https://github.com/topjohnwu/libsu
 2. https://github.com/rovo89/XposedBridge
 3. https://github.com/rovo89/XposedMods/tree/master/XposedLibrary
-4. Samsung framework libraries which are used from compile only
+4. Samsung framework libraries which are used for compile only
 
 ## Credits
 This module wouldn't have been here without the following people:
