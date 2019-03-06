@@ -17,9 +17,9 @@ package sb.firefds.pie.firefdskit;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.SystemProperties;
-import android.util.Log;
 
 import com.samsung.android.feature.SemCscFeature;
+import com.topjohnwu.superuser.Shell;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import sb.firefds.pie.firefdskit.bean.FeatureDTO;
 import sb.firefds.pie.firefdskit.utils.Constants;
 import sb.firefds.pie.firefdskit.utils.Utils;
-import sb.firefds.pie.firefdskit.utils.Utils.SuTask;
 
 public class XCscFeaturesManager {
 
@@ -99,12 +98,12 @@ public class XCscFeaturesManager {
                     + (salesCode.isEmpty() ? "BTU" : salesCode)
                     + Constants.FEATURES_LIST_HEADER5
                     + features + Constants.FEATURES_LIST_FOOTER);
-            new SuTask().execute("echo " + (salesCode.isEmpty() ? "BTU" : salesCode) + " > "
-                    + SYSTEM_CSC_SALES_CODE_DAT);
+            Shell.su("echo " + (salesCode.isEmpty() ? "BTU" : salesCode) + " > "
+                    + SYSTEM_CSC_SALES_CODE_DAT).submit();
 
             String pda = SystemProperties.get(RO_BUILD_PDA);
             if (!pda.isEmpty() && !(new File(SYSTEM_CSC_VERSION_TXT).exists())) {
-                new SuTask().execute("echo " + pda + " > " + SYSTEM_CSC_VERSION_TXT);
+                Shell.su("echo " + pda + " > " + SYSTEM_CSC_VERSION_TXT).submit();
             }
 
         } catch (Throwable e) {

@@ -67,6 +67,11 @@ import static sb.firefds.pie.firefdskit.utils.Constants.PREFS;
 
 public class FirefdsKitActivity extends Activity implements RestoreDialogListener {
 
+    static {
+        Shell.Config.setFlags(Shell.FLAG_REDIRECT_STDERR);
+        Shell.Config.verboseLogging(BuildConfig.DEBUG);
+    }
+
     private static final String[] defaultSettings = MainApplication
             .getAppContext()
             .getResources()
@@ -156,9 +161,8 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
         protected Void doInBackground(Activity... params) {
 
             try {
+                mActivity = params[0];
                 if (!Utils.isOmcEncryptedFlag()) {
-                    mActivity = params[0];
-
                     XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
                 }
             } catch (Throwable e) {
@@ -590,9 +594,9 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
 
         @Override
         public void onPause() {
+            super.onPause();
             unregisterPrefsReceiver();
             fixPermissions(mContext);
-            super.onPause();
         }
 
         private void registerPrefsReceiver() {

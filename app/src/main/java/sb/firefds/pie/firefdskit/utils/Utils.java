@@ -18,21 +18,18 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemProperties;
 import android.widget.TextView;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
+import sb.firefds.pie.firefdskit.R;
 
 import com.topjohnwu.superuser.Shell;
 
@@ -62,19 +59,19 @@ public class Utils {
     }
 
     public static void resetPermissions(Context context) {
-        executeScript(context, "reset_permissions");
+        executeScript(context, R.raw.reset_permissions);
     }
 
     public static void createCSCFiles(Context context) {
         switch (getCSCType()) {
             case CSC:
-                executeScript(context, "create_csc_files");
+                executeScript(context, R.raw.create_csc_files);
                 break;
             case OMC_CSC:
-                executeScript(context, "create_omc_csc_files");
+                executeScript(context, R.raw.create_omc_csc_files);
                 break;
             case OMC_OMC:
-                executeScript(context, "create_omc_omc_files");
+                executeScript(context, R.raw.create_omc_omc_files);
                 break;
         }
     }
@@ -82,13 +79,13 @@ public class Utils {
     public static void applyCSCFeatues(Context context) {
         switch (getCSCType()) {
             case CSC:
-                executeScript(context, "apply_csc_features");
+                executeScript(context, R.raw.apply_csc_features);
                 break;
             case OMC_CSC:
-                executeScript(context, "apply_omc_csc_features");
+                executeScript(context, R.raw.apply_omc_csc_features);
                 break;
             case OMC_OMC:
-                executeScript(context, "apply_omc_omc_features");
+                executeScript(context, R.raw.apply_omc_omc_features);
                 break;
         }
     }
@@ -111,61 +108,35 @@ public class Utils {
     }
 
     private static void rebootSystem(final String rebootType) {
-        new Handler().postDelayed(() -> new SuTask()
-                .execute("reboot " + rebootType), 1000);
+        new Handler().postDelayed(() -> Shell.su("reboot " + rebootType).submit(), 1000);
     }
 
     public static void disableVolumeControlSounds(Context context) {
         if (new File("/system/media/audio/ui/TW_Volume_control.ogg").isFile()) {
-            executeScript(context, "disable_volume_sounds");
+            executeScript(context, R.raw.disable_volume_sounds);
         }
     }
 
     public static void enableVolumeControlSounds(Context context) {
         if (new File("/system/media/audio/ui/TW_Volume_control.ogg.bak").isFile()) {
-            executeScript(context, "enable_volume_sounds");
+            executeScript(context, R.raw.enable_volume_sounds);
         }
     }
 
     public static void disableLowBatterySounds(Context context) {
         if (new File("/system/media/audio/ui/LowBattery.ogg").isFile()) {
-            executeScript(context, "disable_low_battery_sounds");
+            executeScript(context, R.raw.disable_low_battery_sounds);
         }
     }
 
     public static void enableLowBatterySounds(Context context) {
         if (new File("/system/media/audio/ui/LowBattery.ogg.bak").isFile()) {
-            executeScript(context, "enable_low_battery_sounds");
+            executeScript(context, R.raw.enable_low_battery_sounds);
         }
     }
 
-    private static void executeScript(Context context, String name) {
-        try {
-            InputStream inputStream = context.getAssets().open(name);
-            ByteArrayOutputStream result = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = inputStream.read(buffer)) != -1) {
-                result.write(buffer, 0, length);
-            }
-            inputStream.close();
-            new SuTask().execute(result.toString("UTF-8"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static class SuTask extends AsyncTask<String, Void, Void> {
-
-        protected Void doInBackground(String... params) {
-            try {
-                Shell.su(params).exec();
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
+    private static void executeScript(Context context, int scriptId) {
+        Shell.su(context.getResources().openRawResource(scriptId)).submit();
     }
 
     public static void setTypeface(SharedPreferences prefs, TextView tv) {
@@ -212,7 +183,8 @@ public class Utils {
         if (mCscType != null)
             return mCscType;
 
-        mCscType = SystemProperties.getBoolean(OMC_SUPPORT, false) ? CscType.OMC_OMC : CscType.OMC_CSC;
+        mCscType = SystemProperties.getBoolean(OMC_SUPPORT, false) ?
+                CscType.OMC_OMC : CscType.OMC_CSC;
 
         return mCscType;
     }
