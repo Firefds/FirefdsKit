@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="sb.firefds.pie.firefdskit"
-    android:versionCode="0100"
-    android:versionName="0.1.0.0-beta-1">
+    android:versionCode="0102"
+    android:versionName="0.1.0.2-beta-1">
 
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
