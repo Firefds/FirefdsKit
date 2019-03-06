@@ -54,8 +54,8 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                     XposedHelpers.findAndHookMethod(Packages.FIREFDSKIT + ".XposedChecker",
                             lpparam.classLoader,
                             "isActive", XC_MethodReplacement.returnConstant(Boolean.TRUE));
-                } catch (Throwable t) {
-                    XposedBridge.log(t.toString());
+                } catch (Throwable e) {
+                    XposedBridge.log(e);
                 }
             } else {
                 XposedBridge.log("Xposed cannot read XTouchWiz preferences!");

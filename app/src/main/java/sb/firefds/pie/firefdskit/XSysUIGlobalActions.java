@@ -63,7 +63,7 @@ public class XSysUIGlobalActions {
                         "createDefaultActions",
                         new XC_MethodHook() {
                             @Override
-                            protected void afterHookedMethod(MethodHookParam param) {
+                            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                                 ActionViewModelFactory actionViewModelFactory =
                                         (ActionViewModelFactory) XposedHelpers
                                                 .getObjectField(param.thisObject,
@@ -100,7 +100,7 @@ public class XSysUIGlobalActions {
                         String.class,
                         new XC_MethodHook() {
                             @Override
-                            protected void beforeHookedMethod(MethodHookParam param) {
+                            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                                 setActionViewModelDefaults(param);
                                 RestartActionViewModel restartActionViewModel;
                                 switch ((String) param.args[1]) {
@@ -170,7 +170,7 @@ public class XSysUIGlobalActions {
         return screenShotActionViewModel;
     }
 
-    private static void setActionViewModelDefaults(XC_MethodHook.MethodHookParam param) {
+    private static void setActionViewModelDefaults(XC_MethodHook.MethodHookParam param) throws Throwable {
         Map<String, Object> actionViewModelDefaults = new HashMap<>();
 
         mUtilFactory = (UtilFactory) XposedHelpers.getObjectField(param.thisObject, "mUtilFactory");

@@ -234,13 +234,13 @@ public class Utils {
                     classSm, "getService", Context.POWER_SERVICE);
             Object ipm = XposedHelpers.callStaticMethod(classIpm, "asInterface", b);
             XposedHelpers.callMethod(ipm, "crash", "Hot reboot");
-        } catch (Throwable t) {
+        } catch (Throwable e1) {
             try {
                 SystemProp.set("ctl.restart", "surfaceflinger");
                 SystemProp.set("ctl.restart", "zygote");
-            } catch (Throwable t2) {
-                XposedBridge.log(t);
-                XposedBridge.log(t2);
+            } catch (Throwable e2) {
+                XposedBridge.log(e1);
+                XposedBridge.log(e2);
             }
         }
     }

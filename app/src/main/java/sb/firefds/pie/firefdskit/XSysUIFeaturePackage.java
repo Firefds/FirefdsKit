@@ -66,8 +66,8 @@ public class XSysUIFeaturePackage {
                             }
                         });
             }
-        } catch (Throwable e1) {
-            XposedBridge.log(e1);
+        } catch (Throwable e) {
+            XposedBridge.log(e);
         }
     }
 }

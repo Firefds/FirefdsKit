@@ -35,7 +35,7 @@ public class XNfcPackage {
                     boolean.class,
                     new XC_MethodHook() {
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) {
+                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 
                             if ((Boolean) XposedHelpers.callMethod(param.thisObject,
                                     "isNfcEnabled")) {
@@ -56,7 +56,7 @@ public class XNfcPackage {
                     boolean.class,
                     new XC_MethodHook() {
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) {
+                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                             behavior = prefs.getInt("nfcBehavior", 0);
                             if (behavior == 0) {
                                 return;
@@ -93,7 +93,7 @@ public class XNfcPackage {
                         }
 
                         @Override
-                        protected void afterHookedMethod(MethodHookParam param) {
+                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                             if (behavior == 0) {
                                 return;
                             }

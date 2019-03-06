@@ -30,7 +30,7 @@ public class XMtpApplication {
                     "showDiaglog",
                     new XC_MethodHook() {
                         @Override
-                        protected void afterHookedMethod(final MethodHookParam param) {
+                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                             Object mReceiver = XposedHelpers.getObjectField(param.thisObject, "mReceiver");
                             XposedHelpers.callMethod(mReceiver, "changeMtpMode");
                             XposedHelpers.callMethod(param.thisObject, "finish");

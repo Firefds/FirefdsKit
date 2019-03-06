@@ -32,7 +32,7 @@ public class XSysUINotificationPanelPackage {
                     "updateCarrierText",
                     new XC_MethodHook() {
                         @Override
-                        protected void afterHookedMethod(MethodHookParam param) {
+                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                             TextView tvCarrier = (TextView) param.thisObject;
 
                             prefs.reload();
@@ -87,7 +87,7 @@ public class XSysUINotificationPanelPackage {
                         "onAttachedToWindow",
                         new XC_MethodHook() {
                             @Override
-                            protected void beforeHookedMethod(MethodHookParam param) {
+                            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                                 XposedHelpers.setStaticBooleanField(systemUIRuneClass,
                                         "STATBAR_SUPPORT_REAL_TIME_NETWORK_SPEED",
                                         true);
@@ -107,7 +107,7 @@ public class XSysUINotificationPanelPackage {
 
             XC_MethodHook mobileSignalMethodHook = new XC_MethodHook() {
                 @Override
-                protected void afterHookedMethod(MethodHookParam param) {
+                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     switch (dataIconBehavior) {
                         case 1:
                             XposedHelpers.setStaticBooleanField(aClass,

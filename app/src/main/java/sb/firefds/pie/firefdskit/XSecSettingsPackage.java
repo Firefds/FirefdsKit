@@ -50,7 +50,7 @@ public class XSecSettingsPackage {
                     Bundle.class,
                     new XC_MethodHook() {
                         @Override
-                        protected void afterHookedMethod(MethodHookParam param) {
+                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                             prefs.reload();
                             if (prefs.getBoolean("disableBluetoothScanDialog", false))
                                 ((android.app.Activity) param.thisObject).finish();
@@ -68,7 +68,7 @@ public class XSecSettingsPackage {
                     boolean.class,
                     new XC_MethodHook() {
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) {
+                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                             if (prefs.getBoolean("disableSyncDialog", false)) {
                                 ContentResolver.setMasterSyncAutomatically((Boolean) param.args[0]);
                                 param.setResult(null);
@@ -123,7 +123,7 @@ public class XSecSettingsPackage {
                     Bundle.class,
                     new XC_MethodHook() {
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) {
+                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                             XposedHelpers.setStaticBooleanField(param.thisObject.getClass(),
                                     "isSupportNetworkSpeedFeature",
                                     true);
@@ -135,7 +135,7 @@ public class XSecSettingsPackage {
                     "onResume",
                     new XC_MethodHook() {
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) {
+                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                             XposedHelpers.setStaticBooleanField(param.thisObject.getClass(),
                                     "isSupportNetworkSpeedFeature",
                                     true);

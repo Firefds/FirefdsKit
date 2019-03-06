@@ -91,7 +91,7 @@ public class XSecEmailPackage {
                     policySet,
                     new XC_MethodHook() {
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) {
+                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                             setPolicySets(param);
                         }
                     });
@@ -102,14 +102,14 @@ public class XSecEmailPackage {
                     policySet,
                     new XC_MethodHook() {
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) {
+                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                             setPolicySets(param);
                         }
                     });
 
             XposedBridge.hookAllConstructors(policySet, new XC_MethodHook() {
                 @Override
-                protected void afterHookedMethod(MethodHookParam param) {
+                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     disableAdmin(param.thisObject);
                 }
             });

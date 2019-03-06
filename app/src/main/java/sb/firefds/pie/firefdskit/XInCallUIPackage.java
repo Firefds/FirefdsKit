@@ -31,7 +31,7 @@ public class XInCallUIPackage {
                     "isSupportVoiceRecording",
                     new XC_MethodReplacement() {
                         @Override
-                        protected Object replaceHookedMethod(MethodHookParam param) {
+                        protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
                             prefs.reload();
                             if (prefs.getBoolean("enableCallAdd", false)
                                     && !prefs.getBoolean("enableAutoCallRecording", false)) {
@@ -41,8 +41,8 @@ public class XInCallUIPackage {
                             }
                         }
                     });
-        } catch (Throwable e1) {
-            XposedBridge.log(e1);
+        } catch (Throwable e) {
+            XposedBridge.log(e);
         }
 
         try {
@@ -52,7 +52,7 @@ public class XInCallUIPackage {
                     "isSupportVoiceRecording",
                     new XC_MethodReplacement() {
                         @Override
-                        protected Object replaceHookedMethod(MethodHookParam param) {
+                        protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
                             prefs.reload();
                             if (prefs.getBoolean("enableCallRecordingMenu", false)) {
                                 return Boolean.TRUE;
@@ -61,8 +61,8 @@ public class XInCallUIPackage {
                             }
                         }
                     });
-        } catch (Throwable e1) {
-            XposedBridge.log(e1);
+        } catch (Throwable e) {
+            XposedBridge.log(e);
         }
 
         try {
@@ -72,7 +72,7 @@ public class XInCallUIPackage {
                     "isSupportVoiceRecording",
                     new XC_MethodReplacement() {
                         @Override
-                        protected Object replaceHookedMethod(MethodHookParam param) {
+                        protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
                             prefs.reload();
                             if (prefs.getBoolean("enableCallAdd", false)) {
                                 return Boolean.FALSE;
@@ -81,8 +81,8 @@ public class XInCallUIPackage {
                             }
                         }
                     });
-        } catch (Throwable e1) {
-            XposedBridge.log(e1);
+        } catch (Throwable e) {
+            XposedBridge.log(e);
         }
 
         try {
@@ -92,7 +92,7 @@ public class XInCallUIPackage {
                     "isForcedToAutoRecord",
                     new XC_MethodReplacement() {
                         @Override
-                        protected Object replaceHookedMethod(MethodHookParam param) {
+                        protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
                             prefs.reload();
                             if (prefs.getBoolean("enableAutoCallRecording", false)) {
                                 return Boolean.TRUE;
@@ -101,8 +101,8 @@ public class XInCallUIPackage {
                             }
                         }
                     });
-        } catch (Throwable e1) {
-            XposedBridge.log(e1.toString());
+        } catch (Throwable e) {
+            XposedBridge.log(e);
         }
     }
 }
