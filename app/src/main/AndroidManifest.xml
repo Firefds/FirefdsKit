@@ -41,7 +41,7 @@
             android:value="90+" />
         <meta-data
             android:name="xposeddescription"
-            android:value="Made for Samsung S8 TouchWiz Android 9.0+ Roms by Wanam. Moded by Firefds" />
+            android:value="Made for stock Samsung S8 and above supporting Android 9.0+ Roms by Firefds. Based on XTouchWiz by Wanam" />
 
         <receiver
             android:name="sb.firefds.pie.firefdskit.receivers.WanamRebootReceiver"
