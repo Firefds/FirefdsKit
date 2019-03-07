@@ -66,6 +66,25 @@ public class XSysUIFeaturePackage {
                             }
                         });
             }
+            if (prefs.getBoolean("enableFingerprintUnlock", false)) {
+                XposedHelpers.findAndHookMethod("com.android.keyguard.KeyguardUpdateMonitor",
+                        classLoader,
+                        "isUnlockingWithFingerprintAllowed",
+                        XC_MethodReplacement.returnConstant(Boolean.TRUE));
+            }
+
+            if (prefs.getBoolean("enableBiometricsUnlock", false)) {
+                XposedHelpers.findAndHookMethod("com.android.keyguard.KeyguardUpdateMonitor",
+                        classLoader,
+                        "isUnlockCompleted",
+                        XC_MethodReplacement.returnConstant(Boolean.TRUE));
+
+                XposedHelpers.findAndHookMethod("com.android.keyguard.KeyguardUpdateMonitor",
+                        classLoader,
+                        "isUnlockingWithBiometricAllowed",
+                        XC_MethodReplacement.returnConstant(Boolean.TRUE));
+            }
+
         } catch (Throwable e) {
             XposedBridge.log(e);
         }

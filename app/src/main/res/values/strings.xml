@@ -17,6 +17,7 @@
     <string name="quick_settings">Quick settings</string>
     <string name="sound">Sound</string>
     <string name="security">Security hacks</string>
+    <string name="lockscreen">Lockscreen</string>
     <string name="messaging">Messaging</string>
     <string name="apply">Apply</string>
     <string name="mms_sms_mms_conversion_on">Conversion disabled</string>
@@ -143,4 +144,9 @@
     <string name="disable_signature_check_off">Signature check disabled</string>
     <string name="disable_flag_secure_on">Secure flag enabled</string>
     <string name="disable_flag_secure_off">Secure flag disabled</string>
+    <string name="screen_unlock">Screen Unlock</string>
+    <string name="enable_fingerprint_unlock_summary">Enable fingerprint unlock on reboot</string>
+    <string name="enable_fingerprint_unlock_title">Fingerprint Unlock on Reboot</string>
+    <string name="enable_biometrics_unlock_summary">Enable biometrics unlock on reboot</string>
+    <string name="enable_biometrics_unlock_title">Enable Biometrics Unlock on Reboot</string>
 </resources>
