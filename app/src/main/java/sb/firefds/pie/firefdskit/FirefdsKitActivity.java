@@ -18,7 +18,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,6 +40,9 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -52,10 +54,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 
 import de.robv.android.xposed.library.ui.TextViewPreference;
+
 import com.topjohnwu.superuser.Shell;
+
 import sb.firefds.pie.firefdskit.dialogs.CreditsDialog;
 import sb.firefds.pie.firefdskit.dialogs.RestoreDialog;
 import sb.firefds.pie.firefdskit.dialogs.RestoreDialog.RestoreDialogListener;
@@ -66,6 +69,9 @@ import sb.firefds.pie.firefdskit.utils.Utils;
 import static sb.firefds.pie.firefdskit.utils.Constants.PREFS;
 
 public class FirefdsKitActivity extends Activity implements RestoreDialogListener {
+
+    private static RelativeLayout mLayout;
+    private static TextView progressBarText;
 
     static {
         Shell.Config.setFlags(Shell.FLAG_REDIRECT_STDERR);
@@ -133,6 +139,8 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
         verifyStoragePermissions(this);
 
         setContentView(R.layout.firefds_main);
+        mLayout = findViewById(R.id.mainLayout);
+        progressBarText = findViewById(R.id.progressBarText);
 
         try {
 
@@ -286,7 +294,6 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
 
     class RestoreBackupTask extends AsyncTask<Void, Void, Void> {
 
-        private ProgressDialog progressDialog;
         private File backup;
 
         RestoreBackupTask(File backup) {
@@ -296,10 +303,8 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(FirefdsKitActivity.this);
-            progressDialog.setIndeterminate(true);
-            progressDialog.setMessage(getString(R.string.restoring_backup));
-            progressDialog.show();
+            progressBarText.setText(getString(R.string.restoring_backup));
+            mLayout.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -350,7 +355,7 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            progressDialog.dismiss();
+            mLayout.setVisibility(View.INVISIBLE);
             Toast.makeText(FirefdsKitActivity.this, R.string.backup_restored, Toast.LENGTH_SHORT).show();
             RebootNotification.notify(FirefdsKitActivity.this, 999, false);
         }
@@ -364,22 +369,18 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
         private List<String> changesMade;
         private static Resources res;
         private AlertDialog alertDialog;
-        private static ProgressDialog mDialog;
 
         private static Runnable delayedRoot = new Runnable() {
 
             @Override
             public void run() {
                 try {
-                    if (mDialog != null) {
-                        mDialog.dismiss();
-                        Toast.makeText(mContext, R.string.root_info, Toast.LENGTH_LONG).show();
-                    }
+                    mLayout.setVisibility(View.INVISIBLE);
+                    Toast.makeText(mContext, R.string.root_info, Toast.LENGTH_LONG).show();
 
                 } catch (Throwable e) {
                     e.printStackTrace();
                 }
-
             }
         };
 
@@ -412,7 +413,7 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
                     phoneScreen.removePreference(disableNumberFormattingPreference);
                 }
 
-                showDiag();
+                showProgressBar();
 
                 MainApplication.getSharedPreferences().edit()
                         .putInt("notificationSize", MainApplication.getWindowsSize().x).apply();
@@ -455,11 +456,9 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
             if (mContext != null) {
                 try {
 
-                    if (mDialog != null) {
-                        mDialog.dismiss();
-                    }
+                    mLayout.setVisibility(View.INVISIBLE);
 
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
 
                     alertDialogBuilder.setTitle(R.string.app_name);
 
@@ -476,11 +475,9 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
             }
         }
 
-        private void showDiag() {
-            mDialog = new ProgressDialog(getActivity());
-            mDialog.setMessage(getString(R.string.checking_root_access));
-            mDialog.setCancelable(false);
-            mDialog.show();
+        private void showProgressBar() {
+            progressBarText.setText(res.getString(R.string.checking_root_access));
+            mLayout.setVisibility(View.VISIBLE);
             showDelayedRootMsg();
         }
 
@@ -493,8 +490,8 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
         @Override
         public void onDestroy() {
             try {
-                if (mDialog != null && mDialog.isShowing()) {
-                    mDialog.cancel();
+                if (mLayout.getVisibility() == View.VISIBLE) {
+                    mLayout.setVisibility(View.INVISIBLE);
                 }
             } catch (Throwable e) {
                 e.printStackTrace();
@@ -519,17 +516,14 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
 
                 try {
                     MainApplication.getHandler().removeCallbacks(delayedRoot);
-                    if (mDialog != null) {
-                        mDialog.dismiss();
-                    }
+                    mLayout.setVisibility(View.INVISIBLE);
                     // Check for root access
                     if (!suAvailable) {
                         showRootDisclaimer();
                     } else {
-                        Objects.requireNonNull(mDialog)
-                                .setMessage(res.getString(R.string.loading_application_preferences_));
-                        if (!mDialog.isShowing()) {
-                            mDialog.show();
+                        progressBarText.setText(res.getString(R.string.loading_application_preferences_));
+                        if (mLayout.getVisibility() == View.INVISIBLE) {
+                            mLayout.setVisibility(View.VISIBLE);
                         }
                         new CopyCSCTask().execute(mContext);
 
@@ -574,8 +568,8 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
                     if (!Utils.isOmcEncryptedFlag()) {
                         Utils.createCSCFiles(mContext);
                     }
-                    if (mDialog != null && mDialog.isShowing()) {
-                        mDialog.dismiss();
+                    if (mLayout.getVisibility() == View.VISIBLE) {
+                        mLayout.setVisibility(View.INVISIBLE);
                     }
 
                 } catch (Throwable e) {
