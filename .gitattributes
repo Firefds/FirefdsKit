@@ -1,0 +1,5 @@
+*.sh	filter=eol
+
+[filter "eol"]
+	clean
+	smudge = text eol=lf
