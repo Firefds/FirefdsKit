@@ -2,4 +2,4 @@
 
 [filter "eol"]
 	clean
-	smudge = text eol=lf
+	smudge = text -crlf
