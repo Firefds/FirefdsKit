@@ -1,4 +1,1 @@
-*.sh	filter=eol
-
-[filter "eol"]
-	smudge = text -crlf
+*.sh		text eol=lf
