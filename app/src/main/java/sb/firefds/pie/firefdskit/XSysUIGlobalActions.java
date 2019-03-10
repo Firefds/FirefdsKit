@@ -16,10 +16,16 @@
 package sb.firefds.pie.firefdskit;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.samsung.android.globalactions.presentation.SecGlobalActions;
 import com.samsung.android.globalactions.presentation.SecGlobalActionsPresenter;
+import com.samsung.android.globalactions.presentation.view.ResourceFactory;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionInfo;
+import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModel;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModelFactory;
 import com.samsung.android.globalactions.presentation.viewmodel.ViewType;
 import com.samsung.android.globalactions.util.KeyGuardManagerWrapper;
@@ -37,6 +43,7 @@ import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.actionViewModels.RestartActionViewModel;
 import sb.firefds.pie.firefdskit.actionViewModels.ScreenShotActionViewModel;
 import sb.firefds.pie.firefdskit.utils.Packages;
+import sb.firefds.pie.firefdskit.utils.Utils;
 
 public class XSysUIGlobalActions {
 
@@ -47,17 +54,55 @@ public class XSysUIGlobalActions {
             GLOBAL_ACTIONS_PACKAGE + ".presentation.SecGlobalActionsPresenter";
     private static final String DEFAULT_ACTION_VIEW_MODEL_FACTORY =
             GLOBAL_ACTIONS_PACKAGE + ".presentation.viewmodel.DefaultActionViewModelFactory";
+    private static final String GLOBAL_ACTIONS_FEATURE_FACTORY =
+            Packages.SYSTEM_UI + ".globalactions.presentation.features.GlobalActionsFeatureFactory";
+    private static final String GLOBAL_ACTION_ITEM_VIEW =
+            GLOBAL_ACTIONS_PACKAGE + ".presentation.view.GlobalActionItemView";
     private static SecGlobalActionsPresenter mSecGlobalActionsPresenter;
-    private static UtilFactory mUtilFactory;
     private static Map<String, Object> actionViewModelDefaults;
-    private static XSharedPreferences prefs;
+    private static String mRecoveryStr;
+    private static String mDownloadStr;
+    private static String mScreenshotStr;
+    private static Drawable mRecoveryIcon;
+    private static Drawable mDownloadIcon;
+    private static Drawable mScreenshotIcon;
+    private static String mRebootConfirmRecoveryStr;
+    private static String mRebootConfirmDownloadStr;
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
-        XSysUIGlobalActions.prefs = prefs;
+        final Class<?> globalActionsFeatureFactoryClass =
+                XposedHelpers.findClass(GLOBAL_ACTIONS_FEATURE_FACTORY, classLoader);
 
         if (prefs.getBoolean("enableAdvancedPowerMenu", false)) {
             try {
+                XposedBridge.hookAllConstructors(globalActionsFeatureFactoryClass,
+                        new XC_MethodHook() {
+                            @Override
+                            protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+                                Context ctx = (Context) param.args[0];
+                                Resources res = ctx.getResources();
+                                Context gbContext = Utils.getGbContext(ctx, res.getConfiguration());
+
+                                mRecoveryStr = gbContext.getString(R.string.reboot_recovery);
+                                mDownloadStr = gbContext.getString(R.string.reboot_download);
+                                mScreenshotStr = gbContext.getString(R.string.screenshot);
+
+                                mRecoveryIcon = gbContext
+                                        .getDrawable(R.drawable.tw_ic_do_recovery_stock);
+                                mDownloadIcon = gbContext
+                                        .getDrawable(R.drawable.tw_ic_do_download_stock);
+                                mScreenshotIcon = gbContext
+                                        .getDrawable(R.drawable.tw_ic_do_screenshot_stock);
+
+                                mRebootConfirmRecoveryStr = gbContext
+                                        .getString(R.string.reboot_confirm_recovery);
+                                mRebootConfirmDownloadStr = gbContext
+                                        .getString(R.string.reboot_confirm_download);
+
+                            }
+                        });
+
                 XposedHelpers.findAndHookMethod(SEC_GLOBAL_ACTIONS_PRESENTER,
                         classLoader,
                         "createDefaultActions",
@@ -106,28 +151,51 @@ public class XSysUIGlobalActions {
                                 switch ((String) param.args[1]) {
                                     case ("recovery"):
                                         restartActionViewModel = setRestartActionViewModel("recovery",
-                                                "Recovery",
-                                                "Reboot to recovery mode",
-                                                RECOVERY_RESTART_ACTION,
-                                                getIdentifier(mUtilFactory,
-                                                        "stat_notify_lockscreen_setting",
-                                                        "drawable"));
+                                                mRecoveryStr,
+                                                mRebootConfirmRecoveryStr,
+                                                RECOVERY_RESTART_ACTION);
                                         param.setResult(restartActionViewModel);
                                         break;
                                     case ("download"):
                                         restartActionViewModel = setRestartActionViewModel("download",
-                                                "Download",
-                                                "Reboot to download mode",
-                                                DOWNLOAD_RESTART_ACTION,
-                                                getIdentifier(mUtilFactory,
-                                                        "stat_notify_safe_mode",
-                                                        "drawable"));
+                                                mDownloadStr,
+                                                mRebootConfirmDownloadStr,
+                                                DOWNLOAD_RESTART_ACTION);
                                         param.setResult(restartActionViewModel);
                                         break;
                                     case ("screenshot"):
                                         ScreenShotActionViewModel screenShotActionView =
                                                 setScreenShotActionViewModel();
                                         param.setResult(screenShotActionView);
+                                        break;
+                                }
+                            }
+                        });
+
+                XposedHelpers.findAndHookMethod(GLOBAL_ACTION_ITEM_VIEW,
+                        classLoader,
+                        "setViewAttrs",
+                        View.class,
+                        boolean.class,
+                        new XC_MethodHook() {
+                            @Override
+                            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                                ActionViewModel actionViewModel = (ActionViewModel) XposedHelpers.
+                                        getObjectField(param.thisObject, "mViewModel");
+                                ResourceFactory resourceFactory = (ResourceFactory) XposedHelpers
+                                        .getObjectField(param.thisObject, "mResourceFactory");
+                                ImageView localImageView = ((View) param.args[0])
+                                        .findViewById(resourceFactory
+                                                .getResourceID("sec_global_actions_icon"));
+                                switch (actionViewModel.getActionInfo().getName()) {
+                                    case "recovery":
+                                        localImageView.setImageDrawable(mRecoveryIcon);
+                                        break;
+                                    case "download":
+                                        localImageView.setImageDrawable(mDownloadIcon);
+                                        break;
+                                    case "screenshot":
+                                        localImageView.setImageDrawable(mScreenshotIcon);
                                         break;
                                 }
                             }
@@ -142,15 +210,13 @@ public class XSysUIGlobalActions {
     private static RestartActionViewModel setRestartActionViewModel(String actionName,
                                                                     String actionLabel,
                                                                     String actionDescription,
-                                                                    int rebootAction,
-                                                                    int actionIcon) {
+                                                                    int rebootAction) {
 
         RestartActionViewModel restartActionViewModel =
                 new RestartActionViewModel(actionViewModelDefaults, rebootAction);
         ActionInfo actionInfo = setActionInfo(actionName,
                 actionLabel,
-                actionDescription,
-                actionIcon);
+                actionDescription);
         XposedHelpers.callMethod(restartActionViewModel,
                 "setActionInfo",
                 actionInfo);
@@ -161,11 +227,8 @@ public class XSysUIGlobalActions {
         ScreenShotActionViewModel screenShotActionViewModel =
                 new ScreenShotActionViewModel(actionViewModelDefaults);
         ActionInfo actionInfo = setActionInfo("screenshot",
-                "Screenshot",
-                null,
-                getIdentifier(mUtilFactory,
-                        "stat_notify_image",
-                        "drawable"));
+                mScreenshotStr,
+                null);
         screenShotActionViewModel.setActionInfo(actionInfo);
         return screenShotActionViewModel;
     }
@@ -173,7 +236,7 @@ public class XSysUIGlobalActions {
     private static void setActionViewModelDefaults(XC_MethodHook.MethodHookParam param) throws Throwable {
         Map<String, Object> actionViewModelDefaults = new HashMap<>();
 
-        mUtilFactory = (UtilFactory) XposedHelpers.getObjectField(param.thisObject, "mUtilFactory");
+        UtilFactory mUtilFactory = (UtilFactory) XposedHelpers.getObjectField(param.thisObject, "mUtilFactory");
         KeyGuardManagerWrapper mKeyGuardManagerWrapper =
                 (KeyGuardManagerWrapper) XposedHelpers.callMethod(mUtilFactory,
                         "get",
@@ -201,21 +264,12 @@ public class XSysUIGlobalActions {
 
     private static ActionInfo setActionInfo(String actionName,
                                             String actionLabel,
-                                            String actionDescription,
-                                            int actionIcon) {
+                                            String actionDescription) {
         ActionInfo actionInfo = new ActionInfo();
         actionInfo.setName(actionName);
         actionInfo.setLabel(actionLabel);
         actionInfo.setDescription(actionDescription);
-        actionInfo.setIcon(actionIcon);
         actionInfo.setViewType(ViewType.CENTER_ICON_3P_VIEW);
         return actionInfo;
-    }
-
-    private static int getIdentifier(UtilFactory utilFactory, String name, String defType) {
-        return (utilFactory
-                .get(Context.class))
-                .getResources()
-                .getIdentifier(name, defType, Packages.SYSTEM_UI);
     }
 }

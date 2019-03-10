@@ -149,4 +149,6 @@
     <string name="enable_fingerprint_unlock_title">Fingerprint Unlock on Reboot</string>
     <string name="enable_biometrics_unlock_summary">Enable biometrics unlock on reboot</string>
     <string name="enable_biometrics_unlock_title">Enable Biometrics Unlock on Reboot</string>
+    <string name="reboot_confirm_recovery">Reboot to Recovery mode</string>
+    <string name="reboot_confirm_download">Reboot to Download mode</string>
 </resources>

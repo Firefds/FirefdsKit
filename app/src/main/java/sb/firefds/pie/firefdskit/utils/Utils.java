@@ -17,6 +17,7 @@ package sb.firefds.pie.firefdskit.utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.IBinder;
@@ -48,6 +49,7 @@ public class Utils {
 
     private static CscType mCscType = null;
     private static boolean omcEncryptedFlag;
+    private static Context mGbContext;
 
     public static void closeStatusBar(Context context) throws Throwable {
         @SuppressLint("WrongConstant") Object sbservice =
@@ -133,6 +135,21 @@ public class Utils {
         if (new File("/system/media/audio/ui/LowBattery.ogg.bak").isFile()) {
             executeScript(context, R.raw.enable_low_battery_sounds);
         }
+    }
+
+    public static synchronized Context getGbContext(Context context) throws Throwable {
+        if (mGbContext == null) {
+            mGbContext = context.createPackageContext(Packages.FIREFDSKIT, Context.CONTEXT_IGNORE_SECURITY);
+        }
+        return mGbContext;
+    }
+
+    public static synchronized Context getGbContext(Context context, Configuration config) throws Throwable {
+        if (mGbContext == null) {
+            mGbContext = context.createPackageContext(Packages.FIREFDSKIT,
+                    Context.CONTEXT_IGNORE_SECURITY);
+        }
+        return (config == null ? mGbContext : mGbContext.createConfigurationContext(config));
     }
 
     private static void executeScript(Context context, int scriptId) {
