@@ -40,6 +40,13 @@
                 android:summary="@string/data_icon_behavior_summary"
                 android:title="@string/data_icon_behavior_title" />
         </PreferenceCategory>
+        <PreferenceCategory android:title="@string/clock">
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="showClockDate"
+                android:summary="@string/date_on_clock_summary"
+                android:title="@string/date_on_clock_title" />
+        </PreferenceCategory>
         <PreferenceCategory android:title="@string/quick_settings">
             <SwitchPreference
                 android:defaultValue="false"

@@ -15,7 +15,14 @@
 
 package sb.firefds.pie.firefdskit;
 
+import android.annotation.SuppressLint;
 import android.media.AudioManager;
+import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -83,6 +90,35 @@ public class XSysUIFeaturePackage {
                         classLoader,
                         "isUnlockingWithBiometricAllowed",
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
+            }
+
+            if (prefs.getBoolean("showClockDate", false)) {
+                XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".statusbar.policy.QSClock",
+                        classLoader,
+                        "notifyTimeChanged",
+                        String.class,
+                        String.class,
+                        boolean.class,
+                        String.class,
+                        new XC_MethodHook() {
+                            @SuppressLint("SetTextI18n")
+                            @Override
+                            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                                String tag =
+                                        (String) (XposedHelpers.callMethod(param.thisObject, "getTag"));
+                                if (tag.equals("status_bar_clock")) {
+                                    Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+                                    CharSequence date;
+                                    TextView tv = (TextView) param.thisObject;
+                                    SimpleDateFormat df = (SimpleDateFormat) SimpleDateFormat
+                                            .getDateInstance(SimpleDateFormat.SHORT);
+                                    String pattern = df.toLocalizedPattern().replaceAll(".?[Yy].?", "");
+                                    date = new SimpleDateFormat(pattern,
+                                            Locale.getDefault()).format(calendar.getTime()) + " ";
+                                    tv.setText(date + tv.getText().toString());
+                                }
+                            }
+                        });
             }
 
         } catch (Throwable e) {

@@ -151,4 +151,7 @@
     <string name="enable_biometrics_unlock_title">Enable Biometrics Unlock on Reboot</string>
     <string name="reboot_confirm_recovery">Reboot to Recovery mode</string>
     <string name="reboot_confirm_download">Reboot to Download mode</string>
+    <string name="clock">Clock</string>
+    <string name="date_on_clock_summary">Add date to clock in the status bar</string>
+    <string name="date_on_clock_title">Date on Clock</string>
 </resources>

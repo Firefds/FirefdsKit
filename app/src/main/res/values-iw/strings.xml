@@ -148,4 +148,7 @@
     <string name="enable_biometrics_unlock_title">ביומטרי אחרי הפעלה מחדש</string>
     <string name="reboot_confirm_recovery">הפעלה מחדש למצב Recovery</string>
     <string name="reboot_confirm_download">הפעלה מחדש למצב Download</string>
+    <string name="clock">שעון</string>
+    <string name="date_on_clock_summary">הוספת תאריך לצד השעון בשורת המצב</string>
+    <string name="date_on_clock_title">תאריך ליד השעון</string>
 </resources>
