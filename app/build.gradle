@@ -5,14 +5,14 @@ ext {
 }
 
 android {
-    /*signingConfigs {
+    signingConfigs {
         release {
             storeFile file(STORE_FILE)
             storePassword STORE_PASSWORD
             keyAlias KEY_ALIAS
             keyPassword KEY_PASSWORD
         }
-    }*/
+    }
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
     defaultConfig {
@@ -23,16 +23,10 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
-            useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-//            signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
         }
         debug {
-            minifyEnabled false
-            useProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'),
-                    'proguard-rules.pro'
         }
     }
     productFlavors {
