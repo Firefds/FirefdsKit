@@ -67,6 +67,7 @@ import sb.firefds.pie.firefdskit.notifications.RebootNotification;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
 import static sb.firefds.pie.firefdskit.utils.Constants.PREFS;
+import static sb.firefds.pie.firefdskit.utils.Preferences.*;
 
 public class FirefdsKitActivity extends Activity implements RestoreDialogListener {
 
@@ -248,7 +249,7 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
             editor.putBoolean(defaultSetting, true).apply();
         }
 
-        editor.putInt("notificationSize", MainApplication.getWindowsSize().x).apply();
+        editor.putInt(PREF_NOTIFICATION_SIZE, MainApplication.getWindowsSize().x).apply();
 
         fixPermissions(getApplicationContext());
 
@@ -273,7 +274,7 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
 
         MainApplication.getSharedPreferences()
                 .edit()
-                .putInt("notificationSize", MainApplication.getWindowsSize().x)
+                .putInt(PREF_NOTIFICATION_SIZE, MainApplication.getWindowsSize().x)
                 .apply();
 
         fixPermissions(getApplicationContext());
@@ -401,13 +402,13 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
 
                 if (Utils.isOmcEncryptedFlag()) {
                     PreferenceScreen rootScreen =
-                            (PreferenceScreen) findPreference("prefsRoot");
+                            (PreferenceScreen) findPreference(PREF_ROOT);
                     PreferenceScreen messagingScreen =
-                            (PreferenceScreen) findPreference("messagingKey");
+                            (PreferenceScreen) findPreference(PREF_MESSAGING_KEY);
                     PreferenceCategory phoneScreen =
-                            (PreferenceCategory) findPreference("phoneKeyCat");
+                            (PreferenceCategory) findPreference(PREF_PHONE_KEY_CAT);
                     SwitchPreference disableNumberFormattingPreference =
-                            (SwitchPreference) findPreference("disableNumberFormatting");
+                            (SwitchPreference) findPreference(PREF_DISABLE_NUMBER_FORMATTING);
 
                     rootScreen.removePreference(messagingScreen);
                     phoneScreen.removePreference(disableNumberFormattingPreference);
@@ -416,7 +417,7 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
                 showProgressBar();
 
                 MainApplication.getSharedPreferences().edit()
-                        .putInt("notificationSize", MainApplication.getWindowsSize().x).apply();
+                        .putInt(PREF_NOTIFICATION_SIZE, MainApplication.getWindowsSize().x).apply();
                 fixPermissions(mContext);
 
 
@@ -433,14 +434,14 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
                 }
 
                 TextViewPreference textViewInformationHeader;
-                PreferenceScreen ps = (PreferenceScreen) findPreference("prefsRoot");
-                textViewInformationHeader = (TextViewPreference) findPreference("fkHeader");
+                PreferenceScreen ps = (PreferenceScreen) findPreference(PREF_ROOT);
+                textViewInformationHeader = (TextViewPreference) findPreference(PREF__FAKE_HEADER);
                 textViewInformationHeader.setTitle("");
 
                 if (!XposedChecker.isActive()) {
                     textViewInformationHeader.setTitle(R.string.firefds_kit_is_not_active);
                     textViewInformationHeader.getTextView().setTextColor(Color.RED);
-                    ps.findPreference("fkHeader").setEnabled(false);
+                    ps.findPreference(PREF__FAKE_HEADER).setEnabled(false);
                 } else {
                     ps.removePreference(textViewInformationHeader);
                 }
@@ -528,7 +529,7 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
                         new CopyCSCTask().execute(mContext);
 
                         if (!MainApplication.getSharedPreferences()
-                                .getBoolean("isFirefdsKitFirstLaunch", false)) {
+                                .getBoolean(PREF_IS_FIREFDS_KIT_FIRST_LAUNCH, false)) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                             builder.setCancelable(true)
                                     .setTitle(R.string.app_name)
@@ -539,7 +540,7 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
                                     .show();
                             MainApplication.getSharedPreferences()
                                     .edit()
-                                    .putBoolean("isFirefdsKitFirstLaunch", true)
+                                    .putBoolean(PREF_IS_FIREFDS_KIT_FIRST_LAUNCH, true)
                                     .apply();
                         }
                     }
@@ -631,21 +632,19 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
 
         private void setTimeoutPrefs(SharedPreferences sharedPreferences, String key) {
 
-            String[] timeoutPrefs =
-                    mContext.getResources().getStringArray(R.array.timeout_preferences);
             int timeoutML = 0;
 
-            if (key.equalsIgnoreCase(timeoutPrefs[0])) {
+            if (key.equalsIgnoreCase(PREF_SCREEN_TIMEOUT_SECONDS)) {
                 timeoutML += sharedPreferences.getInt(key, 30) * 1000;
                 Settings.System.putInt(getActivity().getContentResolver(),
                         Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
             }
-            if (key.equalsIgnoreCase(timeoutPrefs[1])) {
+            if (key.equalsIgnoreCase(PREF_SCREEN_TIMEOUT_MINUTES)) {
                 timeoutML += sharedPreferences.getInt(key, 0) * 60000;
                 Settings.System.putInt(getActivity().getContentResolver(),
                         Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
             }
-            if (key.equalsIgnoreCase(timeoutPrefs[2])) {
+            if (key.equalsIgnoreCase(PREF_SCREEN_TIMEOUT_HOURS)) {
                 timeoutML += sharedPreferences.getInt(key, 0) * 3600000;
                 Settings.System.putInt(getActivity().getContentResolver(),
                         Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);

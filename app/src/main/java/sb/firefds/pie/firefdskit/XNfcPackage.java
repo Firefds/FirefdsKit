@@ -20,28 +20,32 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.utils.Packages;
 
+import static sb.firefds.pie.firefdskit.utils.Preferences.*;
+
 public class XNfcPackage {
 
     private static final int SCREEN_STATE_ON_LOCKED = 4;
     private static final int SCREEN_STATE_ON_UNLOCKED = 8;
     private static int behavior;
 
+    private static final String NFC_SERVICE = Packages.NFC + ".NfcService";
+
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
         try {
-            XposedHelpers.findAndHookMethod(Packages.NFC + ".NfcService",
+            XposedHelpers.findAndHookMethod(NFC_SERVICE,
                     classLoader,
                     "showIcon",
                     boolean.class,
                     new XC_MethodHook() {
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        protected void beforeHookedMethod(MethodHookParam param) {
 
                             if ((Boolean) XposedHelpers.callMethod(param.thisObject,
                                     "isNfcEnabled")) {
                                 prefs.reload();
                                 param.args[0] =
-                                        !prefs.getBoolean("hideNfcIcon", false);
+                                        !prefs.getBoolean(PREF_HIDE_NFC_ICON, false);
                             }
                         }
                     });
@@ -50,14 +54,14 @@ public class XNfcPackage {
         }
 
         try {
-            XposedHelpers.findAndHookMethod(Packages.NFC + ".NfcService",
+            XposedHelpers.findAndHookMethod(NFC_SERVICE,
                     classLoader,
                     "applyRouting",
                     boolean.class,
                     new XC_MethodHook() {
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                            behavior = prefs.getInt("nfcBehavior", 0);
+                        protected void beforeHookedMethod(MethodHookParam param) {
+                            behavior = prefs.getInt(PREF_NFC_BEHAVIOR, 0);
                             if (behavior == 0) {
                                 return;
                             }
@@ -93,7 +97,7 @@ public class XNfcPackage {
                         }
 
                         @Override
-                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        protected void afterHookedMethod(MethodHookParam param) {
                             if (behavior == 0) {
                                 return;
                             }

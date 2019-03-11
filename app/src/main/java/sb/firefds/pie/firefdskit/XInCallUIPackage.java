@@ -20,21 +20,31 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.utils.Packages;
 
+import static sb.firefds.pie.firefdskit.utils.Preferences.*;
+
 public class XInCallUIPackage {
+
+    private static final String VOICE_RECORDING_FEATURE_IMPL =
+            Packages.INCALLUI + ".modelimpl.feature.function.VoiceRecordingFeatureImpl";
+    private static final String VOICE_RECORDING_BY_MENU_FEATURE_IMPL =
+            Packages.INCALLUI + ".modelimpl.feature.function.VoiceRecordingByMenuFeatureImpl";
+    private static final String VOICE_RECORDING_BY_BUTTON_FEATURE_IMPL =
+            Packages.INCALLUI + ".modelimpl.feature.function.VoiceRecordingByButtonFeatureImpl";
+    private static final String VOICE_RECORDING_CONTEXT_IMPL =
+            Packages.INCALLUI + ".modelimpl.callcontext.VoiceRecordingContextImpl";
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
         try {
-            XposedHelpers.findAndHookMethod(
-                    Packages.INCALLUI + ".modelimpl.feature.function.VoiceRecordingFeatureImpl",
+            XposedHelpers.findAndHookMethod(VOICE_RECORDING_FEATURE_IMPL,
                     classLoader,
                     "isSupportVoiceRecording",
                     new XC_MethodReplacement() {
                         @Override
-                        protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                        protected Object replaceHookedMethod(MethodHookParam param) {
                             prefs.reload();
-                            if (prefs.getBoolean("enableCallAdd", false)
-                                    && !prefs.getBoolean("enableAutoCallRecording", false)) {
+                            if (prefs.getBoolean(PREF_ENABLE_CALL_ADD, false)
+                                    && !prefs.getBoolean(PREF_ENABLE_AUTO_CALL_RECORDING, false)) {
                                 return Boolean.FALSE;
                             } else {
                                 return Boolean.TRUE;
@@ -46,15 +56,14 @@ public class XInCallUIPackage {
         }
 
         try {
-            XposedHelpers.findAndHookMethod(
-                    Packages.INCALLUI + ".modelimpl.feature.function.VoiceRecordingByMenuFeatureImpl",
+            XposedHelpers.findAndHookMethod(VOICE_RECORDING_BY_MENU_FEATURE_IMPL,
                     classLoader,
                     "isSupportVoiceRecording",
                     new XC_MethodReplacement() {
                         @Override
-                        protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                        protected Object replaceHookedMethod(MethodHookParam param) {
                             prefs.reload();
-                            if (prefs.getBoolean("enableCallRecordingMenu", false)) {
+                            if (prefs.getBoolean(PREF_ENABLE_CALL_RECORDING_MENU, false)) {
                                 return Boolean.TRUE;
                             } else {
                                 return Boolean.FALSE;
@@ -66,15 +75,14 @@ public class XInCallUIPackage {
         }
 
         try {
-            XposedHelpers.findAndHookMethod(
-                    Packages.INCALLUI + ".modelimpl.feature.function.VoiceRecordingByButtonFeatureImpl",
+            XposedHelpers.findAndHookMethod(VOICE_RECORDING_BY_BUTTON_FEATURE_IMPL,
                     classLoader,
                     "isSupportVoiceRecording",
                     new XC_MethodReplacement() {
                         @Override
-                        protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                        protected Object replaceHookedMethod(MethodHookParam param) {
                             prefs.reload();
-                            if (prefs.getBoolean("enableCallAdd", false)) {
+                            if (prefs.getBoolean(PREF_ENABLE_CALL_ADD, false)) {
                                 return Boolean.FALSE;
                             } else {
                                 return Boolean.TRUE;
@@ -86,15 +94,14 @@ public class XInCallUIPackage {
         }
 
         try {
-            XposedHelpers.findAndHookMethod(
-                    Packages.INCALLUI + ".modelimpl.callcontext.VoiceRecordingContextImpl",
+            XposedHelpers.findAndHookMethod(VOICE_RECORDING_CONTEXT_IMPL,
                     classLoader,
                     "isForcedToAutoRecord",
                     new XC_MethodReplacement() {
                         @Override
-                        protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                        protected Object replaceHookedMethod(MethodHookParam param) {
                             prefs.reload();
-                            if (prefs.getBoolean("enableAutoCallRecording", false)) {
+                            if (prefs.getBoolean(PREF_ENABLE_AUTO_CALL_RECORDING, false)) {
                                 return Boolean.TRUE;
                             } else {
                                 return Boolean.FALSE;

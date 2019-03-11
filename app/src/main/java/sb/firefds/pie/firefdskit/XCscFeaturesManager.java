@@ -37,6 +37,9 @@ import sb.firefds.pie.firefdskit.bean.FeatureDTO;
 import sb.firefds.pie.firefdskit.utils.Constants;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
+import static sb.firefds.pie.firefdskit.utils.Constants.*;
+import static sb.firefds.pie.firefdskit.utils.Preferences.*;
+
 public class XCscFeaturesManager {
 
     private static final String RO_BUILD_PDA = "ro.build.PDA";
@@ -112,7 +115,7 @@ public class XCscFeaturesManager {
     }
 
     private static void setVolumeControlSounds(SharedPreferences prefs) {
-        if (prefs.getBoolean("disableVolumeControlSound", false)) {
+        if (prefs.getBoolean(PREF_DISABLE_VOLUME_CONTROL_SOUND, false)) {
             Utils.disableVolumeControlSounds(MainApplication.getAppContext());
         } else {
             Utils.enableVolumeControlSounds(MainApplication.getAppContext());
@@ -120,7 +123,7 @@ public class XCscFeaturesManager {
     }
 
     private static void setLowBatterySounds(SharedPreferences prefs) {
-        if (prefs.getBoolean("disableLowBatterySound", false)) {
+        if (prefs.getBoolean(PREF_DISABLE_LOW_BATTERY_SOUND, false)) {
             Utils.disableLowBatterySounds(MainApplication.getAppContext());
         } else {
             Utils.enableLowBatterySounds(MainApplication.getAppContext());
@@ -134,33 +137,24 @@ public class XCscFeaturesManager {
         ArrayList<FeatureDTO> featuresDTOList = new ArrayList<>();
 
         // Messaging
-        if (prefs.getBoolean("forceMMSConnect", false))
-            featuresDTOList.add(new FeatureDTO("CscFeature_RIL_ForceConnectMMS",
-                    "TRUE"));
+        if (prefs.getBoolean(PREF_FORCE_MMS_CONNECT, false))
+            featuresDTOList.add(new FeatureDTO(FORCE_CONNECT_MMS, TRUE));
         else
-            featuresDTOList.add(new FeatureDTO("CscFeature_RIL_ForceConnectMMS",
-                    "FALSE"));
-        if (prefs.getBoolean("disableSmsToMmsConversion", false)) {
-            featuresDTOList.add(new FeatureDTO("CscFeature_Message_DisableSmsToMmsConversionByTextInput",
-                    "TRUE"));
-            featuresDTOList.add(new FeatureDTO("CscFeature_Message_SmsMaxByte",
-                    "999"));
+            featuresDTOList.add(new FeatureDTO(FORCE_CONNECT_MMS, FALSE));
+        if (prefs.getBoolean(PREF_DISABLE_SMS_TO_MMS, false)) {
+            featuresDTOList.add(new FeatureDTO(DISABLE_SMS_TO_MMS_CONVERSION_BY_TEXT_INPUT, TRUE));
+            featuresDTOList.add(new FeatureDTO(SMS_MAX_BYTE, "999"));
         } else {
-            featuresDTOList.add(new FeatureDTO("CscFeature_Message_DisableSmsToMmsConversionByTextInput",
-                    "FALSE"));
-            featuresDTOList.add(new FeatureDTO("CscFeature_Message_SmsMaxByte",
-                    "140"));
+            featuresDTOList.add(new FeatureDTO(DISABLE_SMS_TO_MMS_CONVERSION_BY_TEXT_INPUT, FALSE));
+            featuresDTOList.add(new FeatureDTO(SMS_MAX_BYTE, "140"));
         }
-        featuresDTOList.add(new FeatureDTO("CscFeature_Message_MaxRecipientLengthAs",
-                "999"));
+        featuresDTOList.add(new FeatureDTO(MAX_RECIPIENT_LENGTH_AS, "999"));
 
         // Contacts
-        if (prefs.getBoolean("disableNumberFormatting", false))
-            featuresDTOList.add(new FeatureDTO("CscFeature_Common_DisablePhoneNumberFormatting",
-                    "TRUE"));
+        if (prefs.getBoolean(PREF_DISABLE_NUMBER_FORMATTING, false))
+            featuresDTOList.add(new FeatureDTO(DISABLE_PHONE_NUMBER_FORMATTING, TRUE));
         else
-            featuresDTOList.add(new FeatureDTO("CscFeature_Common_DisablePhoneNumberFormatting",
-                    "FALSE"));
+            featuresDTOList.add(new FeatureDTO(DISABLE_PHONE_NUMBER_FORMATTING, FALSE));
 
         return featuresDTOList;
     }

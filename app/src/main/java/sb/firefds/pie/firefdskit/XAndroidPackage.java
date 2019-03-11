@@ -21,25 +21,32 @@ import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
 
+import static sb.firefds.pie.firefdskit.utils.Preferences.*;
+
 public class XAndroidPackage {
+
+    private static final String WINDOW_STATE_CLASS = "android.server.wm.WindowState";
+    private static final String WINDOW_MANAGER_SERVICE_CLASS =
+            "android.server.wm.WindowManagerService";
+    private static final String PACKAGE_MANAGER_SERVICE_UTILS_CLASS =
+            "android.server.pm.PackageManagerServiceUtils";
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
 
         try {
-            if (prefs.getBoolean("disableFlagSecure", false)) {
-                Class<?> windowStateClass =
-                        XposedHelpers.findClass("android.server.wm.WindowState", classLoader);
+            if (prefs.getBoolean(PREF_DISABLE_SECURE_FLAG, false)) {
+                Class<?> windowStateClass = XposedHelpers.findClass(WINDOW_STATE_CLASS, classLoader);
 
-                XposedHelpers.findAndHookMethod("android.server.wm. WindowManagerService",
+                XposedHelpers.findAndHookMethod(WINDOW_MANAGER_SERVICE_CLASS,
                         classLoader,
                         "isSecureLocked",
                         windowStateClass,
                         XC_MethodReplacement.returnConstant(Boolean.FALSE));
             }
 
-            if (prefs.getBoolean("disableSignatureCheck", false)) {
-                XposedHelpers.findAndHookMethod("android.server.pm. PackageManagerServiceUtils",
+            if (prefs.getBoolean(PREF_DISABLE_SIGNATURE_CHECK, false)) {
+                XposedHelpers.findAndHookMethod(PACKAGE_MANAGER_SERVICE_UTILS_CLASS,
                         classLoader,
                         "compareSignatures",
                         Signature[].class,

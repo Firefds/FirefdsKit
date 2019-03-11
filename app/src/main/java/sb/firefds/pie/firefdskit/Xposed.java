@@ -26,7 +26,6 @@ import sb.firefds.pie.firefdskit.utils.Utils;
 
 public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
-    private static String MODULE_PATH = null;
     private static XSharedPreferences prefs;
 
     @Override
@@ -35,8 +34,6 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         // Do not load if Not a Touchwiz Rom
         if (!Utils.isSamsungRom())
             return;
-
-        MODULE_PATH = startupParam.modulePath;
 
         getModuleSharedPreferences();
     }
@@ -128,23 +125,12 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         }
     }
 
-    private static XSharedPreferences getModuleSharedPreferences() {
+    private static void getModuleSharedPreferences() {
         if (prefs == null) {
             prefs = new XSharedPreferences(BuildConfig.APPLICATION_ID);
             prefs.makeWorldReadable();
         } else {
             prefs.reload();
         }
-        return prefs;
     }
-
-    /*@Override
-    public void handleInitPackageResources(InitPackageResourcesParam resparam) throws Throwable {
-
-        // Do not load if Not a Touchwiz Rom
-        if (!Utils.isSamsungRom())
-            return;
-
-    }*/
-
 }

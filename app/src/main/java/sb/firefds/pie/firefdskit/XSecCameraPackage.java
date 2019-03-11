@@ -20,22 +20,29 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.utils.Packages;
 
+import static sb.firefds.pie.firefdskit.utils.Preferences.*;
+
 public class XSecCameraPackage {
 
+    private static final String FEATURE = Packages.SAMSUNG_CAMERA + ".feature.Feature";
+    private static final String CAMERA_TEMPERATURE_MANAGER =
+            Packages.CAMERA + ".provider.CameraTemperatureManager";
+    private static final String PREFERENCE_SETTING_FRAGMENT =
+            Packages.CAMERA + ".setting.PreferenceSettingFragment";
 
     public static void doHook(final XSharedPreferences prefs, ClassLoader classLoader) {
 
         final Class<?> cameraFeatureClass
-                = XposedHelpers.findClass(Packages.SAMSUNG_CAMERA + ".feature.Feature", classLoader);
+                = XposedHelpers.findClass(FEATURE, classLoader);
 
-        if (prefs.getBoolean("disableTemperatureChecks", false)) {
+        if (prefs.getBoolean(PREF_DISABLE_TEMPERATURE_CHECKS, false)) {
             try {
-                XposedHelpers.findAndHookMethod(Packages.CAMERA + ".provider.CameraTemperatureManager",
+                XposedHelpers.findAndHookMethod(CAMERA_TEMPERATURE_MANAGER,
                         classLoader,
                         "start",
                         new XC_MethodHook() {
                             @Override
-                            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                            protected void beforeHookedMethod(MethodHookParam param) {
                                 XposedHelpers.setStaticBooleanField(cameraFeatureClass,
                                         "SUPPORT_THERMISTOR_TEMPERATURE", false);
                             }
@@ -46,16 +53,16 @@ public class XSecCameraPackage {
         }
 
         try {
-            XposedHelpers.findAndHookMethod(Packages.CAMERA + ".setting.PreferenceSettingFragment",
+            XposedHelpers.findAndHookMethod(PREFERENCE_SETTING_FRAGMENT,
                     classLoader,
                     "updateFeaturedPreference",
                     new XC_MethodHook() {
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        protected void beforeHookedMethod(MethodHookParam param) {
                             prefs.reload();
                             XposedHelpers.setStaticBooleanField(cameraFeatureClass,
                                     "ENABLE_SHUTTER_SOUND_MENU",
-                                    prefs.getBoolean("enableCameraShutterMenu", false));
+                                    prefs.getBoolean(PREF_ENABLE_CAMERA_SHUTTER_MENU, false));
                         }
                     });
         } catch (Throwable e) {

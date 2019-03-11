@@ -10,38 +10,49 @@ import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.utils.Packages;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
+import static sb.firefds.pie.firefdskit.utils.Preferences.*;
+
 public class XSysUINotificationPanelPackage {
 
-    private static String LTE_INSTEAD_OF_4G = "STATBAR_DISPLAY_LTE_INSTEAD_OF_4G_ICON";
-    private static String FOUR_G_PLUS_INSTEAD_OF_4G = "STATBAR_DISPLAY_4G_PLUS_INSTEAD_OF_4G_ICON";
-    private static String FOUR_G_INSTEAD_OF_4G_PLUS = "STATBAR_DISPLAY_4G_INSTEAD_OF_4G_PLUS_ICON";
-    private static String FOUR_HALF_G_INSTEAD_OF_4G_PLUS =
+    private static final String LTE_INSTEAD_OF_4G = "STATBAR_DISPLAY_LTE_INSTEAD_OF_4G_ICON";
+    private static final String FOUR_G_PLUS_INSTEAD_OF_4G =
+            "STATBAR_DISPLAY_4G_PLUS_INSTEAD_OF_4G_ICON";
+    private static final String FOUR_G_INSTEAD_OF_4G_PLUS =
+            "STATBAR_DISPLAY_4G_INSTEAD_OF_4G_PLUS_ICON";
+    private static final String FOUR_HALF_G_INSTEAD_OF_4G_PLUS =
             "STATBAR_DISPLAY_4_HALF_G_INSTEAD_OF_4G_PLUS_ICON";
+    private static final String RUNE = Packages.SYSTEM_UI + ".Rune";
+    private static final String CARRIER_TEXT = "com.android.keyguard.CarrierText";
+    private static final String DATA_USAGE_BAR = Packages.SYSTEM_UI + ".bar.DataUsageBar";
+    private static final String NETSPEED_VIEW =
+            Packages.SYSTEM_UI + ".statusbar.policy.NetspeedView";
+    private static final String MOBILE_SIGNAL_CONTROLLER_CLASS =
+            Packages.SYSTEM_UI + ".statusbar.policy.MobileSignalController";
+
     private static int dataIconBehavior;
     private static ClassLoader classLoader;
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
         XSysUINotificationPanelPackage.classLoader = classLoader;
-        final Class<?> systemUIRuneClass =
-                XposedHelpers.findClass(Packages.SYSTEM_UI + ".Rune", classLoader);
+        final Class<?> systemUIRuneClass = XposedHelpers.findClass(RUNE, classLoader);
 
         try {
-            XposedHelpers.findAndHookMethod("com.android.keyguard.CarrierText",
+            XposedHelpers.findAndHookMethod(CARRIER_TEXT,
                     classLoader,
                     "updateCarrierText",
                     new XC_MethodHook() {
                         @Override
-                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        protected void afterHookedMethod(MethodHookParam param) {
                             TextView tvCarrier = (TextView) param.thisObject;
 
                             prefs.reload();
-                            if (prefs.getBoolean("hideCarrierLabel", false)) {
+                            if (prefs.getBoolean(PREF_HIDE_CARRIER_LABEL, false)) {
                                 tvCarrier.setText(" ");
                             }
 
                             int textSize = 14;
-                            String tsPrefVal = prefs.getString("carrierSize", "Small");
+                            String tsPrefVal = prefs.getString(PREF_CARRIER_SIZE, "Small");
                             if (tsPrefVal.equalsIgnoreCase("Medium")) {
                                 textSize = 16;
                             } else if (tsPrefVal.equalsIgnoreCase("Large")) {
@@ -59,20 +70,20 @@ public class XSysUINotificationPanelPackage {
             XposedBridge.log(e);
         }
 
-        dataIconBehavior = prefs.getInt("dataIconBehavior", 0);
+        dataIconBehavior = prefs.getInt(PREF_DATA_ICON_BEHAVIOR, 0);
         if (dataIconBehavior != 0) {
             changeDataIcon(systemUIRuneClass);
         }
 
         try {
-            XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".bar.DataUsageBar",
+            XposedHelpers.findAndHookMethod(DATA_USAGE_BAR,
                     classLoader,
                     "isAvailable",
                     new XC_MethodReplacement() {
                         @Override
                         protected Object replaceHookedMethod(MethodHookParam param) {
                             prefs.reload();
-                            return prefs.getBoolean("DataUsageView", false);
+                            return prefs.getBoolean(PREF_DATA_USAGE_VIEW, false);
                         }
                     });
 
@@ -80,14 +91,14 @@ public class XSysUINotificationPanelPackage {
             e.printStackTrace();
         }
 
-        if (prefs.getBoolean("showNetworkSpeedMenu", false)) {
+        if (prefs.getBoolean(PREF_SHOW_NETWORK_SPEED_MENU, false)) {
             try {
-                XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".statusbar.policy.NetspeedView",
+                XposedHelpers.findAndHookMethod(NETSPEED_VIEW,
                         classLoader,
                         "onAttachedToWindow",
                         new XC_MethodHook() {
                             @Override
-                            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                            protected void beforeHookedMethod(MethodHookParam param) {
                                 XposedHelpers.setStaticBooleanField(systemUIRuneClass,
                                         "STATBAR_SUPPORT_REAL_TIME_NETWORK_SPEED",
                                         true);
@@ -102,12 +113,9 @@ public class XSysUINotificationPanelPackage {
 
     private static void changeDataIcon(Class<?> aClass) {
         try {
-            String MOBILE_SIGNAL_CONTROLLER_CLASS =
-                    Packages.SYSTEM_UI + ".statusbar.policy.MobileSignalController";
-
             XC_MethodHook mobileSignalMethodHook = new XC_MethodHook() {
                 @Override
-                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                protected void afterHookedMethod(MethodHookParam param) {
                     switch (dataIconBehavior) {
                         case 1:
                             XposedHelpers.setStaticBooleanField(aClass,

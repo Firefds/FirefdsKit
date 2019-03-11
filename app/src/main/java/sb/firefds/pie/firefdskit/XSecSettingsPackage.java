@@ -26,7 +26,19 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.utils.Packages;
 
+import static sb.firefds.pie.firefdskit.utils.Preferences.*;
+
 public class XSecSettingsPackage {
+
+    private static final String BLUETOOTH_SCAN_DIALOG =
+            Packages.SAMSUNG_SETTINGS + ".bluetooth.BluetoothScanDialog";
+    private static final String SEC_ACCOUNT_TILES =
+            Packages.SAMSUNG_SETTINGS + ".qstile.SecAccountTiles";
+    private static final String SYSCOPE_STATUS_PREFERENCE_CONTROLLER =
+            Packages.SAMSUNG_SETTINGS + ".deviceinfo.status.SyscopeStatusPreferenceController";
+    private static final String SEC_DEVICE_INFO_UTILS =
+            Packages.SAMSUNG_SETTINGS + ".deviceinfo.SecDeviceInfoUtils";
+    private static final String STATUS_BAR = Packages.SAMSUNG_SETTINGS + ".display.StatusBar";
 
     private static ClassLoader classLoader;
 
@@ -34,25 +46,25 @@ public class XSecSettingsPackage {
 
         XSecSettingsPackage.classLoader = classLoader;
 
-        if (prefs.getBoolean("makeMeTooLegit", true)) {
+        if (prefs.getBoolean(PREF_MAKE_OFFICIAL, true)) {
             makeOfficial();
         }
 
-        if (prefs.getBoolean("showNetworkSpeedMenu", false)) {
+        if (prefs.getBoolean(PREF_SHOW_NETWORK_SPEED_MENU, false)) {
             showNetworkSpeedMenu();
         }
 
         try {
             XposedHelpers.findAndHookMethod(
-                    Packages.SAMSUNG_SETTINGS + ".bluetooth.BluetoothScanDialog",
+                    BLUETOOTH_SCAN_DIALOG,
                     classLoader,
                     "onCreate",
                     Bundle.class,
                     new XC_MethodHook() {
                         @Override
-                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        protected void afterHookedMethod(MethodHookParam param) {
                             prefs.reload();
-                            if (prefs.getBoolean("disableBluetoothScanDialog", false))
+                            if (prefs.getBoolean(PREF_DISABLE_BLUETOOTH_DIALOG, false))
                                 ((android.app.Activity) param.thisObject).finish();
                         }
                     });
@@ -62,14 +74,14 @@ public class XSecSettingsPackage {
         }
 
         try {
-            XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".qstile.SecAccountTiles",
+            XposedHelpers.findAndHookMethod(SEC_ACCOUNT_TILES,
                     classLoader,
                     "showConfirmPopup",
                     boolean.class,
                     new XC_MethodHook() {
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                            if (prefs.getBoolean("disableSyncDialog", false)) {
+                        protected void beforeHookedMethod(MethodHookParam param) {
+                            if (prefs.getBoolean(PREF_DISABLE_SYNC_DIALOG, false)) {
                                 ContentResolver.setMasterSyncAutomatically((Boolean) param.args[0]);
                                 param.setResult(null);
                             }
@@ -82,11 +94,6 @@ public class XSecSettingsPackage {
     }
 
     private static void makeOfficial() {
-        String SYSCOPE_STATUS_PREFERENCE_CONTROLLER =
-                Packages.SAMSUNG_SETTINGS + ".deviceinfo.status.SyscopeStatusPreferenceController";
-        String SEC_DEVICE_INFO_UTILS =
-                Packages.SAMSUNG_SETTINGS + ".deviceinfo.SecDeviceInfoUtils";
-
         try {
             XposedHelpers.findAndHookMethod(SYSCOPE_STATUS_PREFERENCE_CONTROLLER,
                     classLoader,
@@ -117,25 +124,25 @@ public class XSecSettingsPackage {
 
     private static void showNetworkSpeedMenu() {
         try {
-            XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".display.StatusBar",
+            XposedHelpers.findAndHookMethod(STATUS_BAR,
                     classLoader,
                     "onCreate",
                     Bundle.class,
                     new XC_MethodHook() {
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        protected void beforeHookedMethod(MethodHookParam param) {
                             XposedHelpers.setStaticBooleanField(param.thisObject.getClass(),
                                     "isSupportNetworkSpeedFeature",
                                     true);
                         }
                     });
 
-            XposedHelpers.findAndHookMethod(Packages.SAMSUNG_SETTINGS + ".display.StatusBar",
+            XposedHelpers.findAndHookMethod(STATUS_BAR,
                     classLoader,
                     "onResume",
                     new XC_MethodHook() {
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        protected void beforeHookedMethod(MethodHookParam param) {
                             XposedHelpers.setStaticBooleanField(param.thisObject.getClass(),
                                     "isSupportNetworkSpeedFeature",
                                     true);

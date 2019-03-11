@@ -24,7 +24,14 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.utils.Packages;
 
+import static sb.firefds.pie.firefdskit.utils.Preferences.*;
+
 public class XSecEmailPackage {
+
+    private static final String POLICY_SET = "com.samsung.android.emailcommon.service.PolicySet";
+    private static final String SECURITY_POLICY = Packages.EMAIL + ".SecurityPolicy";
+    private static final String ACCOUNT = "com.samsung.android.emailcommon.Account";
+    private static final String SETUP_DATA = "com.samsung.android.email.ui.settings.setup.SetupData";
 
     private static ClassLoader classLoader;
 
@@ -32,7 +39,7 @@ public class XSecEmailPackage {
 
         XSecEmailPackage.classLoader = classLoader;
 
-        if (prefs.getBoolean("disableExchangeLockSecurity", false)) {
+        if (prefs.getBoolean(PREF_DISABLE_EXCHANGE_SECURITY, false)) {
             try {
                 disableExchangeLockSecurity();
             } catch (Throwable e) {
@@ -76,40 +83,39 @@ public class XSecEmailPackage {
     private static void disableExchangeLockSecurity() {
 
         try {
-            Class<?> policySet =
-                    XposedHelpers.findClass("com.samsung.android.emailcommon.service.PolicySet", classLoader);
-            XposedHelpers.findAndHookMethod(Packages.EMAIL + ".SecurityPolicy",
+            Class<?> policySet = XposedHelpers.findClass(POLICY_SET, classLoader);
+            XposedHelpers.findAndHookMethod(SECURITY_POLICY,
                     classLoader,
                     "isActive",
                     Context.class,
                     policySet,
                     XC_MethodReplacement.returnConstant(Boolean.TRUE));
 
-            XposedHelpers.findAndHookMethod("com.samsung.android.emailcommon.Account",
+            XposedHelpers.findAndHookMethod(ACCOUNT,
                     classLoader,
                     "setPolicySet",
                     policySet,
                     new XC_MethodHook() {
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        protected void beforeHookedMethod(MethodHookParam param) {
                             setPolicySets(param);
                         }
                     });
 
-            XposedHelpers.findAndHookMethod("com.samsung.android.email.ui.settings.setup.SetupData",
+            XposedHelpers.findAndHookMethod(SETUP_DATA,
                     classLoader,
                     "setPolicySet",
                     policySet,
                     new XC_MethodHook() {
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        protected void beforeHookedMethod(MethodHookParam param) {
                             setPolicySets(param);
                         }
                     });
 
             XposedBridge.hookAllConstructors(policySet, new XC_MethodHook() {
                 @Override
-                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                protected void afterHookedMethod(MethodHookParam param) {
                     disableAdmin(param.thisObject);
                 }
             });

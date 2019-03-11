@@ -44,6 +44,8 @@ import sb.firefds.pie.firefdskit.actionViewModels.RestartActionViewModel;
 import sb.firefds.pie.firefdskit.actionViewModels.ScreenShotActionViewModel;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
+import static sb.firefds.pie.firefdskit.utils.Preferences.*;
+
 public class XSysUIGlobalActions {
 
     private static final int RECOVERY_RESTART_ACTION = 3;
@@ -74,7 +76,7 @@ public class XSysUIGlobalActions {
         final Class<?> secGlobalActionsDialogBaseClass =
                 XposedHelpers.findClass(SEC_GLOBAL_ACTIONS_DIALOG_BASE, classLoader);
 
-        if (prefs.getBoolean("enableAdvancedPowerMenu", false)) {
+        if (prefs.getBoolean(PREF_ENABLE_ADVANCED_POWER_MENU, false)) {
             try {
                 XposedBridge.hookAllConstructors(secGlobalActionsDialogBaseClass,
                         new XC_MethodHook() {
@@ -108,7 +110,7 @@ public class XSysUIGlobalActions {
                         "createDefaultActions",
                         new XC_MethodHook() {
                             @Override
-                            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                            protected void afterHookedMethod(MethodHookParam param) {
                                 ActionViewModelFactory actionViewModelFactory =
                                         (ActionViewModelFactory) XposedHelpers
                                                 .getObjectField(param.thisObject,
@@ -123,13 +125,13 @@ public class XSysUIGlobalActions {
                                         .addAction(actionViewModelFactory.createActionViewModel(
                                                 (SecGlobalActionsPresenter) param.thisObject,
                                                 "download"));
-                                if (prefs.getBoolean("enableDataMode", false)) {
+                                if (prefs.getBoolean(PREF_ENABLE_DATA_MODE, false)) {
                                     mSecGlobalActionsPresenter
                                             .addAction(actionViewModelFactory.createActionViewModel(
                                                     (SecGlobalActionsPresenter) param.thisObject,
                                                     "data_mode"));
                                 }
-                                if (prefs.getBoolean("enableScreenshot", false)) {
+                                if (prefs.getBoolean(PREF_ENABLE_SCREENSHOT, false)) {
                                     mSecGlobalActionsPresenter
                                             .addAction(actionViewModelFactory.createActionViewModel(
                                                     (SecGlobalActionsPresenter) param.thisObject,
@@ -145,7 +147,7 @@ public class XSysUIGlobalActions {
                         String.class,
                         new XC_MethodHook() {
                             @Override
-                            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                            protected void beforeHookedMethod(MethodHookParam param) {
                                 setActionViewModelDefaults(param);
                                 RestartActionViewModel restartActionViewModel;
                                 switch ((String) param.args[1]) {
@@ -179,7 +181,7 @@ public class XSysUIGlobalActions {
                         boolean.class,
                         new XC_MethodHook() {
                             @Override
-                            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                            protected void afterHookedMethod(MethodHookParam param) {
                                 ActionViewModel actionViewModel = (ActionViewModel) XposedHelpers.
                                         getObjectField(param.thisObject, "mViewModel");
                                 ResourceFactory resourceFactory = (ResourceFactory) XposedHelpers
@@ -233,7 +235,7 @@ public class XSysUIGlobalActions {
         return screenShotActionViewModel;
     }
 
-    private static void setActionViewModelDefaults(XC_MethodHook.MethodHookParam param) throws Throwable {
+    private static void setActionViewModelDefaults(XC_MethodHook.MethodHookParam param) {
         Map<String, Object> actionViewModelDefaults = new HashMap<>();
 
         UtilFactory mUtilFactory = (UtilFactory) XposedHelpers.getObjectField(param.thisObject, "mUtilFactory");

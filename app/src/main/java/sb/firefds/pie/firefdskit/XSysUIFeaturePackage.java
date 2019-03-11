@@ -31,7 +31,19 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.utils.Packages;
 
+import static sb.firefds.pie.firefdskit.utils.Preferences.*;
+
 public class XSysUIFeaturePackage {
+
+    private static final String CUSTOM_SDK_MONITOR =
+            Packages.SYSTEM_UI + ".KnoxStateMonitor.CustomSdkMonitor";
+    private static final String TOGGLE_SLIDER_VIEW =
+            Packages.SYSTEM_UI + ".settings.ToggleSliderView";
+    private static final String VOLUME_DIALOG_CONTROLLER_IMPL =
+            Packages.SYSTEM_UI + ".volume.VolumeDialogControllerImpl";
+    private static final String KEYGUARD_UPDATE_MONITOR =
+            "com.android.keyguard.KeyguardUpdateMonitor";
+    private static final String QS_CLOCK = Packages.SYSTEM_UI + ".statusbar.policy.QSClock";
 
     private static String showClockDate;
 
@@ -39,34 +51,34 @@ public class XSysUIFeaturePackage {
 
 
         try {
-            if (prefs.getBoolean("isStatusBarDoubleTapEnabled", false)) {
-                XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".KnoxStateMonitor.CustomSdkMonitor",
+            if (prefs.getBoolean(PREF_STATUSBAR_DOUBLE_TAP, false)) {
+                XposedHelpers.findAndHookMethod(CUSTOM_SDK_MONITOR,
                         classLoader,
                         "isStatusBarDoubleTapEnabled",
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
             }
 
-            if (prefs.getBoolean("setEyeStrainDialogEnabled", false)) {
-                XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".settings.ToggleSliderView",
+            if (prefs.getBoolean(PREF_DISABLE_EYE_STRAIN_DIALOG, false)) {
+                XposedHelpers.findAndHookMethod(TOGGLE_SLIDER_VIEW,
                         classLoader,
                         "setEyeStrainDialogEnabled",
                         int.class,
                         new XC_MethodHook() {
                             @Override
-                            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                            protected void beforeHookedMethod(MethodHookParam param) {
                                 param.args[0] = 0;
                             }
                         });
             }
 
-            if (prefs.getBoolean("disableLoudVolumeWarning", false)) {
-                XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".volume.VolumeDialogControllerImpl",
+            if (prefs.getBoolean(PREF_DISABLE_VOLUME_WARNING, false)) {
+                XposedHelpers.findAndHookMethod(VOLUME_DIALOG_CONTROLLER_IMPL,
                         classLoader,
                         "onShowSafetyWarningW",
                         int.class,
                         new XC_MethodReplacement() {
                             @Override
-                            protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                            protected Object replaceHookedMethod(MethodHookParam param) {
                                 AudioManager mAudio =
                                         (AudioManager) XposedHelpers.getObjectField(param.thisObject,
                                                 "mAudio");
@@ -75,28 +87,28 @@ public class XSysUIFeaturePackage {
                             }
                         });
             }
-            if (prefs.getBoolean("enableFingerprintUnlock", false)) {
-                XposedHelpers.findAndHookMethod("com.android.keyguard.KeyguardUpdateMonitor",
+            if (prefs.getBoolean(PREF_ENABLE_FINGERPRINT_UNLOCK, false)) {
+                XposedHelpers.findAndHookMethod(KEYGUARD_UPDATE_MONITOR,
                         classLoader,
                         "isUnlockingWithFingerprintAllowed",
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
             }
 
-            if (prefs.getBoolean("enableBiometricsUnlock", false)) {
-                XposedHelpers.findAndHookMethod("com.android.keyguard.KeyguardUpdateMonitor",
+            if (prefs.getBoolean(PREF_ENABLE_BIOMETRICS_UNLOCK, false)) {
+                XposedHelpers.findAndHookMethod(KEYGUARD_UPDATE_MONITOR,
                         classLoader,
                         "isUnlockCompleted",
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
 
-                XposedHelpers.findAndHookMethod("com.android.keyguard.KeyguardUpdateMonitor",
+                XposedHelpers.findAndHookMethod(KEYGUARD_UPDATE_MONITOR,
                         classLoader,
                         "isUnlockingWithBiometricAllowed",
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
             }
 
-            showClockDate = prefs.getString("clock_date_preference", "disabled");
+            showClockDate = prefs.getString(PREF_CLOCK_DATE_PREFERENCE, "disabled");
             if (!showClockDate.equals("disabled")) {
-                XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".statusbar.policy.QSClock",
+                XposedHelpers.findAndHookMethod(QS_CLOCK,
                         classLoader,
                         "notifyTimeChanged",
                         String.class,
@@ -106,7 +118,7 @@ public class XSysUIFeaturePackage {
                         new XC_MethodHook() {
                             @SuppressLint("SetTextI18n")
                             @Override
-                            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                            protected void afterHookedMethod(MethodHookParam param) {
                                 String tag =
                                         (String) (XposedHelpers.callMethod(param.thisObject, "getTag"));
                                 if (tag.equals("status_bar_clock")) {

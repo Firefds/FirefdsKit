@@ -50,11 +50,6 @@
         <item>disableBluetoothScanDialog</item>
         <item>enableCameraShutterMenu</item>
     </string-array>
-    <string-array name="timeout_preferences">
-        <item>screenTimeoutSeconds</item>
-        <item>screenTimeoutMinutes</item>
-        <item>screenTimeoutHours</item>
-    </string-array>
     <string-array name="data_icon_entries">
         <item name="Default">Default</item>
         <item name="LTE">@string/lte_4g</item>
