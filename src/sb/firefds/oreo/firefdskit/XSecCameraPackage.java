@@ -36,6 +36,15 @@ public class XSecCameraPackage {
 
 			}
 		}
+
+		if (prefs.getBoolean("disableShutterSound", false)) {
+			try {
+				disableShutterSound();
+			} catch (Throwable e) {
+				XposedBridge.log(e.toString());
+
+			}
+		}
 	}
 
 	private static void disableTemperatureChecks() {
@@ -59,6 +68,18 @@ public class XSecCameraPackage {
 		try {
 			XposedHelpers.findAndHookMethod(Packages.CAMERA + ".CameraSettings", classLoader,
 					"isTemperatureHighToRecord", XC_MethodReplacement.returnConstant(false));
+		} catch (Throwable e) {
+			XposedBridge.log(e.toString());
+
+		}
+	}
+
+	private static void disableShutterSound() {
+
+		try {
+			XposedHelpers.findAndHookMethod(Packages.CAMERA + ".Camera", classLoader,
+					"playCameraSound", "com.sec.android.app.camera.interfaces.CameraContext.SoundId",
+					int.class, XC_MethodReplacement.DO_NOTHING);
 		} catch (Throwable e) {
 			XposedBridge.log(e.toString());
 
