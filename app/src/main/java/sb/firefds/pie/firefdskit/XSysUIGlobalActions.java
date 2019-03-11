@@ -42,22 +42,22 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.actionViewModels.RestartActionViewModel;
 import sb.firefds.pie.firefdskit.actionViewModels.ScreenShotActionViewModel;
-import sb.firefds.pie.firefdskit.utils.Packages;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
 public class XSysUIGlobalActions {
 
     private static final int RECOVERY_RESTART_ACTION = 3;
     private static final int DOWNLOAD_RESTART_ACTION = 4;
-    private static final String GLOBAL_ACTIONS_PACKAGE = "com.samsung.android.globalactions";
+    private static final String GLOBAL_ACTIONS_PACKAGE =
+            "com.samsung.android.globalactions.presentation";
     private static final String SEC_GLOBAL_ACTIONS_PRESENTER =
-            GLOBAL_ACTIONS_PACKAGE + ".presentation.SecGlobalActionsPresenter";
+            GLOBAL_ACTIONS_PACKAGE + ".SecGlobalActionsPresenter";
     private static final String DEFAULT_ACTION_VIEW_MODEL_FACTORY =
-            GLOBAL_ACTIONS_PACKAGE + ".presentation.viewmodel.DefaultActionViewModelFactory";
-    private static final String GLOBAL_ACTIONS_FEATURE_FACTORY =
-            Packages.SYSTEM_UI + ".globalactions.presentation.features.GlobalActionsFeatureFactory";
+            GLOBAL_ACTIONS_PACKAGE + ".viewmodel.DefaultActionViewModelFactory";
+    private static final String SEC_GLOBAL_ACTIONS_DIALOG_BASE =
+            GLOBAL_ACTIONS_PACKAGE + ".view.SecGlobalActionsDialogBase";
     private static final String GLOBAL_ACTION_ITEM_VIEW =
-            GLOBAL_ACTIONS_PACKAGE + ".presentation.view.GlobalActionItemView";
+            GLOBAL_ACTIONS_PACKAGE + ".view.GlobalActionItemView";
     private static SecGlobalActionsPresenter mSecGlobalActionsPresenter;
     private static Map<String, Object> actionViewModelDefaults;
     private static String mRecoveryStr;
@@ -71,12 +71,12 @@ public class XSysUIGlobalActions {
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
-        final Class<?> globalActionsFeatureFactoryClass =
-                XposedHelpers.findClass(GLOBAL_ACTIONS_FEATURE_FACTORY, classLoader);
+        final Class<?> secGlobalActionsDialogBaseClass =
+                XposedHelpers.findClass(SEC_GLOBAL_ACTIONS_DIALOG_BASE, classLoader);
 
         if (prefs.getBoolean("enableAdvancedPowerMenu", false)) {
             try {
-                XposedBridge.hookAllConstructors(globalActionsFeatureFactoryClass,
+                XposedBridge.hookAllConstructors(secGlobalActionsDialogBaseClass,
                         new XC_MethodHook() {
                             @Override
                             protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
