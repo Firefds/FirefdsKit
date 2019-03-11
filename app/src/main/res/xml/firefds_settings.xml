@@ -41,9 +41,11 @@
                 android:title="@string/data_icon_behavior_title" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/clock">
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="showClockDate"
+            <ListPreference
+                android:defaultValue="disabled"
+                android:entries="@array/clock_date_entries"
+                android:entryValues="@array/clock_date_values"
+                android:key="clock_date_preference"
                 android:summary="@string/date_on_clock_summary"
                 android:title="@string/date_on_clock_title" />
         </PreferenceCategory>
@@ -91,8 +93,8 @@
     <PreferenceScreen
         android:icon="@drawable/lockscreen"
         android:key="lockscreenKey"
-        android:title="@string/lockscreen" >
-        <PreferenceCategory android:title="@string/screen_unlock" >
+        android:title="@string/lockscreen">
+        <PreferenceCategory android:title="@string/screen_unlock">
             <SwitchPreference
                 android:defaultValue="false"
                 android:key="enableFingerprintUnlock"

@@ -151,4 +151,11 @@
     <string name="clock">שעון</string>
     <string name="date_on_clock_summary">הוספת תאריך לצד השעון בשורת המצב</string>
     <string name="date_on_clock_title">תאריך ליד השעון</string>
+    <string name="clock_date_disabled">כבוי</string>
+    <string name="clock_date_localized">מבוסס על אזור המכשיר</string>
+    <string name="clock_date_format_1">תבנית תאריך: dd/MM</string>
+    <string name="clock_date_format_2">תבנית תאריך: MM/dd</string>
+    <string name="clock_date_format_3">תבנית תאריך: d MMM</string>
+    <string name="clock_date_format_4">תבנית תאריך: MMM d</string>
+    <string name="clock_date_format_5">תבנית תאריך: d</string>
 </resources>

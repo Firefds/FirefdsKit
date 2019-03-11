@@ -69,4 +69,22 @@
         <item name="4G">3</item>
         <item name="4.5G">4</item>
     </string-array>
+    <string-array name="clock_date_entries">
+        <item>@string/clock_date_disabled</item>
+        <item>@string/clock_date_localized</item>
+        <item>@string/clock_date_format_1</item>
+        <item>@string/clock_date_format_2</item>
+        <item>@string/clock_date_format_3</item>
+        <item>@string/clock_date_format_4</item>
+        <item>@string/clock_date_format_5</item>
+    </string-array>
+    <string-array name="clock_date_values">
+        <item>disabled</item>
+        <item>localized</item>
+        <item>dd/MM</item>
+        <item>MM/dd</item>
+        <item>d MMM</item>
+        <item>MMM d</item>
+        <item>d</item>
+    </string-array>
 </resources>

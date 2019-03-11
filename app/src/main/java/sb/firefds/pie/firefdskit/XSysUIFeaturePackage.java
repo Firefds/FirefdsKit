@@ -33,6 +33,8 @@ import sb.firefds.pie.firefdskit.utils.Packages;
 
 public class XSysUIFeaturePackage {
 
+    private static String showClockDate;
+
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
 
@@ -92,7 +94,8 @@ public class XSysUIFeaturePackage {
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
             }
 
-            if (prefs.getBoolean("showClockDate", false)) {
+            showClockDate = prefs.getString("clock_date_preference", "disabled");
+            if (!showClockDate.equals("disabled")) {
                 XposedHelpers.findAndHookMethod(Packages.SYSTEM_UI + ".statusbar.policy.QSClock",
                         classLoader,
                         "notifyTimeChanged",
@@ -112,7 +115,8 @@ public class XSysUIFeaturePackage {
                                     TextView tv = (TextView) param.thisObject;
                                     SimpleDateFormat df = (SimpleDateFormat) SimpleDateFormat
                                             .getDateInstance(SimpleDateFormat.SHORT);
-                                    String pattern = df.toLocalizedPattern().replaceAll(".?[Yy].?", "");
+                                    String pattern = showClockDate.equals("localized") ?
+                                            df.toLocalizedPattern().replaceAll(".?[Yy].?", "") : showClockDate;
                                     date = new SimpleDateFormat(pattern,
                                             Locale.getDefault()).format(calendar.getTime()) + " ";
                                     tv.setText(date + tv.getText().toString());

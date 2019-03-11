@@ -154,4 +154,11 @@
     <string name="clock">Clock</string>
     <string name="date_on_clock_summary">Add date to clock in the status bar</string>
     <string name="date_on_clock_title">Date on Clock</string>
+    <string name="clock_date_disabled">Disabled</string>
+    <string name="clock_date_localized">Date format based on locale</string>
+    <string name="clock_date_format_1">Date format: dd/MM</string>
+    <string name="clock_date_format_2">Date format: MM/dd</string>
+    <string name="clock_date_format_3">Date format: d MMM</string>
+    <string name="clock_date_format_4">Date format: MMM d</string>
+    <string name="clock_date_format_5">Date format: d</string>
 </resources>
