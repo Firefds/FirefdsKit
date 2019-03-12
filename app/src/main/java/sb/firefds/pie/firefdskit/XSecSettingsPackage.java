@@ -113,7 +113,8 @@ public class XSecSettingsPackage {
         }
 
         try {
-            XposedHelpers.findAndHookMethod(SEC_DEVICE_INFO_UTILS, classLoader,
+            XposedHelpers.findAndHookMethod(SEC_DEVICE_INFO_UTILS,
+                    classLoader,
                     "isSupportRootBadge",
                     Context.class,
                     XC_MethodReplacement.returnConstant(Boolean.FALSE));
