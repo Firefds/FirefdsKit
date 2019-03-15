@@ -54,6 +54,7 @@ public class XSysUIFeaturePackage {
     private static SimpleDateFormat mSecondsFormat;
     private static Handler mSecondsHandler;
     private static Class<?> qsClock;
+    private static Method updateClock;
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
@@ -167,6 +168,7 @@ public class XSysUIFeaturePackage {
         if (mClock == null) return;
 
         if (mClock.getDisplay() != null) {
+            updateClock = XposedHelpers.findMethodExact(qsClock, "updateClock");
             mSecondsHandler = new Handler();
             if (mClock.getDisplay().getState() == Display.STATE_ON) {
                 mSecondsHandler.postAtTime(mSecondTick,
@@ -192,7 +194,6 @@ public class XSysUIFeaturePackage {
     private static void updateClock() {
         try {
             if (mClock != null) {
-                Method updateClock = XposedHelpers.findMethodExact(qsClock, "updateClock");
                 updateClock.invoke(mClock);
             }
         } catch (Throwable e) {
