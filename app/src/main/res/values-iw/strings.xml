@@ -158,4 +158,6 @@
     <string name="clock_date_format_3">תבנית תאריך: d MMM</string>
     <string name="clock_date_format_4">תבנית תאריך: MMM d</string>
     <string name="clock_date_format_5">תבנית תאריך: d</string>
+    <string name="seconds_on_clock_summary">הצגת שניות בשעון שורת המצב</string>
+    <string name="seconds_on_clock_title">שניות בשעון</string>
 </resources>

@@ -17,8 +17,13 @@ package sb.firefds.pie.firefdskit;
 
 import android.annotation.SuppressLint;
 import android.media.AudioManager;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.text.format.DateFormat;
+import android.view.Display;
 import android.widget.TextView;
 
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -45,7 +50,10 @@ public class XSysUIFeaturePackage {
             "com.android.keyguard.KeyguardUpdateMonitor";
     private static final String QS_CLOCK = Packages.SYSTEM_UI + ".statusbar.policy.QSClock";
 
-    private static String showClockDate;
+    private static TextView mClock;
+    private static SimpleDateFormat mSecondsFormat;
+    private static Handler mSecondsHandler;
+    private static Class<?> qsClock;
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
@@ -106,37 +114,87 @@ public class XSysUIFeaturePackage {
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
             }
 
-            showClockDate = prefs.getString(PREF_CLOCK_DATE_PREFERENCE, "disabled");
-            if (!showClockDate.equals("disabled")) {
-                XposedHelpers.findAndHookMethod(QS_CLOCK,
-                        classLoader,
-                        "notifyTimeChanged",
-                        String.class,
-                        String.class,
-                        boolean.class,
-                        String.class,
-                        new XC_MethodHook() {
-                            @SuppressLint("SetTextI18n")
-                            @Override
-                            protected void afterHookedMethod(MethodHookParam param) {
-                                String tag =
-                                        (String) (XposedHelpers.callMethod(param.thisObject, "getTag"));
-                                if (tag.equals("status_bar_clock")) {
-                                    Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+            qsClock = XposedHelpers.findClass(QS_CLOCK, classLoader);
+            XposedHelpers.findAndHookMethod(qsClock,
+                    "notifyTimeChanged",
+                    String.class,
+                    String.class,
+                    boolean.class,
+                    String.class,
+                    new XC_MethodHook() {
+                        @SuppressLint({"SetTextI18n", "SimpleDateFormat"})
+                        @Override
+                        protected void afterHookedMethod(MethodHookParam param) {
+                            String tag =
+                                    (String) (XposedHelpers.callMethod(param.thisObject, "getTag"));
+                            if (tag.equals("status_bar_clock")) {
+                                mClock = (TextView) param.thisObject;
+                                Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+                                if (prefs.getBoolean(PREF_SHOW_CLOCK_SECONDS, false)) {
+                                    if (mSecondsHandler == null) {
+                                        updateSecondsHandler();
+                                    }
+                                    boolean is24 = DateFormat.is24HourFormat(mClock.getContext());
+                                    if (mSecondsFormat == null) {
+                                        mSecondsFormat = new SimpleDateFormat(
+                                                DateFormat.getBestDateTimePattern(
+                                                        Locale.getDefault(), is24 ? "Hms" : "hms"));
+                                    }
+                                    mClock.setText(mSecondsFormat.format(calendar.getTime()));
+                                }
+                                String showClockDate =
+                                        prefs.getString(PREF_CLOCK_DATE_PREFERENCE, "disabled");
+                                if (!showClockDate.equals("disabled")) {
                                     CharSequence date;
-                                    TextView tv = (TextView) param.thisObject;
                                     SimpleDateFormat df = (SimpleDateFormat) SimpleDateFormat
                                             .getDateInstance(SimpleDateFormat.SHORT);
                                     String pattern = showClockDate.equals("localized") ?
                                             df.toLocalizedPattern().replaceAll(".?[Yy].?", "") : showClockDate;
                                     date = new SimpleDateFormat(pattern,
                                             Locale.getDefault()).format(calendar.getTime()) + " ";
-                                    tv.setText(date + tv.getText().toString());
+                                    mClock.setText(date + mClock.getText().toString());
                                 }
                             }
-                        });
-            }
+                        }
+                    });
 
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
+    }
+
+    private static void updateSecondsHandler() {
+        if (mClock == null) return;
+
+        if (mClock.getDisplay() != null) {
+            mSecondsHandler = new Handler();
+            if (mClock.getDisplay().getState() == Display.STATE_ON) {
+                mSecondsHandler.postAtTime(mSecondTick,
+                        SystemClock.uptimeMillis() / 1000 * 1000 + 1000);
+            }
+        } else if (mSecondsHandler != null) {
+            mSecondsHandler.removeCallbacks(mSecondTick);
+            mSecondsHandler = null;
+            updateClock();
+        }
+    }
+
+    private static final Runnable mSecondTick = new Runnable() {
+        @Override
+        public void run() {
+            updateClock();
+            if (mSecondsHandler != null) {
+                mSecondsHandler.postAtTime(this, SystemClock.uptimeMillis() / 1000 * 1000 + 1000);
+            }
+        }
+    };
+
+    private static void updateClock() {
+        try {
+            if (mClock != null) {
+                Method updateClock = XposedHelpers.findMethodExact(qsClock, "updateClock");
+                updateClock.invoke(mClock);
+            }
         } catch (Throwable e) {
             XposedBridge.log(e);
         }

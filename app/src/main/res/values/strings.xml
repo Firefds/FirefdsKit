@@ -161,4 +161,6 @@
     <string name="clock_date_format_3">Date format: d MMM</string>
     <string name="clock_date_format_4">Date format: MMM d</string>
     <string name="clock_date_format_5">Date format: d</string>
+    <string name="seconds_on_clock_summary">Show seconds on status bar clock</string>
+    <string name="seconds_on_clock_title">Seconds on Clock</string>
 </resources>
