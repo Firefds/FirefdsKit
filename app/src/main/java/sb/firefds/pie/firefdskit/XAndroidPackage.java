@@ -15,8 +15,10 @@
 package sb.firefds.pie.firefdskit;
 
 import android.content.pm.Signature;
+import android.os.UserManager;
 
 
+import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedHelpers;
@@ -52,6 +54,24 @@ public class XAndroidPackage {
                         Signature[].class,
                         Signature[].class,
                         XC_MethodReplacement.returnConstant(0));
+            }
+
+            if (prefs.getBoolean(PREF_SUPPORTS_MULTIPLE_USERS, false)) {
+                XposedHelpers.findAndHookMethod(UserManager.class, "supportsMultipleUsers",
+                        new XC_MethodHook() {
+                            @Override
+                            protected void afterHookedMethod(MethodHookParam param) {
+                                param.setResult(true);
+                            }
+                        });
+
+                XposedHelpers.findAndHookMethod(UserManager.class, "getMaxSupportedUsers",
+                        new XC_MethodHook() {
+                            @Override
+                            protected void afterHookedMethod(MethodHookParam param) {
+                                param.setResult(prefs.getInt(PREF_MAX_SUPPORTED_USERS, 3));
+                            }
+                        });
             }
 
         } catch (Exception e) {

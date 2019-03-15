@@ -19,6 +19,7 @@ import android.annotation.SuppressLint;
 import android.media.AudioManager;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.os.UserManager;
 import android.text.format.DateFormat;
 import android.view.Display;
 import android.widget.TextView;
@@ -114,50 +115,72 @@ public class XSysUIFeaturePackage {
                         "isUnlockingWithBiometricAllowed",
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
             }
-
-            qsClock = XposedHelpers.findClass(QS_CLOCK, classLoader);
-            XposedHelpers.findAndHookMethod(qsClock,
-                    "notifyTimeChanged",
-                    String.class,
-                    String.class,
-                    boolean.class,
-                    String.class,
-                    new XC_MethodHook() {
-                        @SuppressLint({"SetTextI18n", "SimpleDateFormat"})
-                        @Override
-                        protected void afterHookedMethod(MethodHookParam param) {
-                            String tag =
-                                    (String) (XposedHelpers.callMethod(param.thisObject, "getTag"));
-                            if (tag.equals("status_bar_clock")) {
-                                mClock = (TextView) param.thisObject;
-                                Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
-                                if (prefs.getBoolean(PREF_SHOW_CLOCK_SECONDS, false)) {
-                                    if (mSecondsHandler == null) {
-                                        updateSecondsHandler();
+            if (prefs.getBoolean(PREF_SHOW_CLOCK_SECONDS, false) ||
+                    !prefs.getString(PREF_CLOCK_DATE_PREFERENCE, "disabled").equals("disabled")) {
+                qsClock = XposedHelpers.findClass(QS_CLOCK, classLoader);
+                XposedHelpers.findAndHookMethod(qsClock,
+                        "notifyTimeChanged",
+                        String.class,
+                        String.class,
+                        boolean.class,
+                        String.class,
+                        new XC_MethodHook() {
+                            @SuppressLint({"SetTextI18n", "SimpleDateFormat"})
+                            @Override
+                            protected void afterHookedMethod(MethodHookParam param) {
+                                String tag =
+                                        (String) (XposedHelpers.callMethod(param.thisObject, "getTag"));
+                                if (tag.equals("status_bar_clock")) {
+                                    mClock = (TextView) param.thisObject;
+                                    Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+                                    if (prefs.getBoolean(PREF_SHOW_CLOCK_SECONDS, false)) {
+                                        if (mSecondsHandler == null) {
+                                            updateSecondsHandler();
+                                        }
+                                        boolean is24 = DateFormat.is24HourFormat(mClock.getContext());
+                                        if (mSecondsFormat == null) {
+                                            mSecondsFormat = new SimpleDateFormat(
+                                                    DateFormat.getBestDateTimePattern(
+                                                            Locale.getDefault(), is24 ? "Hms" : "hms"));
+                                        }
+                                        mClock.setText(mSecondsFormat.format(calendar.getTime()));
                                     }
-                                    boolean is24 = DateFormat.is24HourFormat(mClock.getContext());
-                                    if (mSecondsFormat == null) {
-                                        mSecondsFormat = new SimpleDateFormat(
-                                                DateFormat.getBestDateTimePattern(
-                                                        Locale.getDefault(), is24 ? "Hms" : "hms"));
+                                    String showClockDate =
+                                            prefs.getString(PREF_CLOCK_DATE_PREFERENCE, "disabled");
+                                    if (!showClockDate.equals("disabled")) {
+                                        CharSequence date;
+                                        SimpleDateFormat df = (SimpleDateFormat) SimpleDateFormat
+                                                .getDateInstance(SimpleDateFormat.SHORT);
+                                        String pattern = showClockDate.equals("localized") ?
+                                                df.toLocalizedPattern()
+                                                        .replaceAll(".?[Yy].?", "") : showClockDate;
+                                        date = new SimpleDateFormat(pattern,
+                                                Locale.getDefault())
+                                                .format(calendar.getTime()) + " ";
+                                        mClock.setText(date + mClock.getText().toString());
                                     }
-                                    mClock.setText(mSecondsFormat.format(calendar.getTime()));
-                                }
-                                String showClockDate =
-                                        prefs.getString(PREF_CLOCK_DATE_PREFERENCE, "disabled");
-                                if (!showClockDate.equals("disabled")) {
-                                    CharSequence date;
-                                    SimpleDateFormat df = (SimpleDateFormat) SimpleDateFormat
-                                            .getDateInstance(SimpleDateFormat.SHORT);
-                                    String pattern = showClockDate.equals("localized") ?
-                                            df.toLocalizedPattern().replaceAll(".?[Yy].?", "") : showClockDate;
-                                    date = new SimpleDateFormat(pattern,
-                                            Locale.getDefault()).format(calendar.getTime()) + " ";
-                                    mClock.setText(date + mClock.getText().toString());
                                 }
                             }
-                        }
-                    });
+                        });
+            }
+
+            if (prefs.getBoolean(PREF_SUPPORTS_MULTIPLE_USERS, false)) {
+                XposedHelpers.findAndHookMethod(UserManager.class, "supportsMultipleUsers",
+                        new XC_MethodHook() {
+                            @Override
+                            protected void afterHookedMethod(MethodHookParam param) {
+                                param.setResult(true);
+                            }
+                        });
+
+                XposedHelpers.findAndHookMethod(UserManager.class, "getMaxSupportedUsers",
+                        new XC_MethodHook() {
+                            @Override
+                            protected void afterHookedMethod(MethodHookParam param) {
+                                param.setResult(prefs.getInt(PREF_MAX_SUPPORTED_USERS, 3));
+                            }
+                        });
+            }
 
         } catch (Throwable e) {
             XposedBridge.log(e);

@@ -163,4 +163,8 @@
     <string name="clock_date_format_5">Date format: d</string>
     <string name="seconds_on_clock_summary">Show seconds on status bar clock</string>
     <string name="seconds_on_clock_title">Seconds on Clock</string>
+    <string name="allow_multi_user_summary">Enable multi user support</string>
+    <string name="allow_multi_user_title">Multi User Support</string>
+    <string name="max_supported_users_summary">Set max users</string>
+    <string name="max_supported_users_title">Max users</string>
 </resources>

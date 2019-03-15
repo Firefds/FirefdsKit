@@ -161,6 +161,21 @@
                 android:title="@string/screenshot" />
         </PreferenceCategory>
         <PreferenceCategory android:title="@string/system">
+            <SwitchPreference
+                android:defaultValue="false"
+                android:key="supportsMultipleUsers"
+                android:summary="@string/allow_multi_user_summary"
+                android:title="@string/allow_multi_user_title" />
+            <de.robv.android.xposed.library.ui.ValueSeekBarPreference
+                displayFormat="%d users"
+                max="10"
+                min="2"
+                step="1"
+                android:defaultValue="3"
+                android:dependency="supportsMultipleUsers"
+                android:key="maxSupportedUsers"
+                android:summary="@string/max_supported_users_summary"
+                android:title="@string/max_supported_users_title" />
             <PreferenceScreen
                 android:key="screenTimeoutSettings"
                 android:title="@string/screen_timeout_title">

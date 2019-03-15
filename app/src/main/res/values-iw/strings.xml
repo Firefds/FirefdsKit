@@ -160,4 +160,8 @@
     <string name="clock_date_format_5">תבנית תאריך: d</string>
     <string name="seconds_on_clock_summary">הצגת שניות בשעון שורת המצב</string>
     <string name="seconds_on_clock_title">שניות בשעון</string>
+    <string name="allow_multi_user_summary">הפעלת תמיכת משתמשים מרובים</string>
+    <string name="allow_multi_user_title">תמיכת משתמשים מרובים</string>
+    <string name="max_supported_users_summary">קביעת מספר מקסימום משתמשים</string>
+    <string name="max_supported_users_title">מקסימום משתמשים</string>
 </resources>

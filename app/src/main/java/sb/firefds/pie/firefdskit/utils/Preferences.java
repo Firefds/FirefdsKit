@@ -30,6 +30,8 @@ public class Preferences {
     public static final String PREF_ENABLE_ADVANCED_POWER_MENU = "enableAdvancedPowerMenu";
     public static final String PREF_ENABLE_DATA_MODE = "enableDataMode";
     public static final String PREF_ENABLE_SCREENSHOT = "enableScreenshot";
+    public static final String PREF_SUPPORTS_MULTIPLE_USERS = "supportsMultipleUsers";
+    public static final String PREF_MAX_SUPPORTED_USERS = "maxSupportedUsers";
     public static final String PREF_SCREEN_TIMEOUT_SECONDS = "screenTimeoutSeconds";
     public static final String PREF_SCREEN_TIMEOUT_MINUTES = "screenTimeoutMinutes";
     public static final String PREF_SCREEN_TIMEOUT_HOURS = "screenTimeoutHours";

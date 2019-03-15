@@ -18,6 +18,7 @@ package sb.firefds.pie.firefdskit;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.UserManager;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -87,6 +88,24 @@ public class XSecSettingsPackage {
                             }
                         }
                     });
+
+            if (prefs.getBoolean(PREF_SUPPORTS_MULTIPLE_USERS, false)) {
+                XposedHelpers.findAndHookMethod(UserManager.class, "supportsMultipleUsers",
+                        new XC_MethodHook() {
+                            @Override
+                            protected void afterHookedMethod(MethodHookParam param) {
+                                param.setResult(true);
+                            }
+                        });
+
+                XposedHelpers.findAndHookMethod(UserManager.class, "getMaxSupportedUsers",
+                        new XC_MethodHook() {
+                            @Override
+                            protected void afterHookedMethod(MethodHookParam param) {
+                                param.setResult(prefs.getInt(PREF_MAX_SUPPORTED_USERS, 3));
+                            }
+                        });
+            }
 
         } catch (Throwable e) {
             XposedBridge.log(e);
