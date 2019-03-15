@@ -18,12 +18,15 @@ The module has the following features:
 - Replace add call button instead of call recording
 - Enable call recording from menu
 - Auto call recording
+- Add date to status bar clock options
+- Enable fingerprint unlock on reboot toggle
+- Enable biometrics unlock on reboot toggle
 - Add network speed menu to show network speed in the status bar
 - Data icon symbol selection (4G, LTE, 4G+, 4.5G)
-- Show Data usasge view in quick panel
+- Show Data usage view in quick panel
 - Double tap for sleep
 - Hide NFC icon
-- Disble Bluetooth toggle popup
+- Disable Bluetooth toggle popup
 - Disable sync toggle popup
 - Disable high level brightness poup
 - Hide carrier label
@@ -31,7 +34,7 @@ The module has the following features:
 - Disable loud volume warning
 - Disable volume control sound
 - Disable low battery sound
-- Screen timout settings
+- Screen timeout settings
 - NFC behavior settings
 - Auto MTP
 - Disable camera temperature check
@@ -45,7 +48,11 @@ The module has the following features:
 
 ## Attention
 This was built and tested on the Samsung Galaxy S8 G950F (Exynos) varient.
-I don't know how it will perform and work on other Samsung Pie devices.
+Confirmed working on:
+- Galaxy S8
+- Galaxy S8+
+- Galaxy S9
+- Note 9
 
 For Galaxy S9 and above which use encrypted CSC files - I have disabled a few CSC features because I can't test thier implementation.
 
@@ -56,7 +63,7 @@ I've been working with both solohsu and C3C0 on testing EdXposed on Samsung devi
 ## Major Update
 
 In the Pie version of FirefdsKit, I have updates the project in the following aspects:
-1. Moved project from Eclipse to Android Stuido
+1. Moved project from Eclipse to Android Studio
 2. Updated compile SDK version to use latest SDK (28)
 3. Updated dependencies to use online sources
 4. Switched from Chainfire's SU library to topjohnwu's (Magisk) SU library
@@ -72,8 +79,8 @@ To install this module you need the following apps and modules installed on your
 
 ## Known Issues
 
-- EdXposed still doesn't support resource hooking, which means any additional icon, string, layout, etc. need to be hardcoded into the code. Therefore the icons for the advanced power menu are using Samsung framework based icons, which don't match the original power menu icons.
-- Some features are removed on purpose. Since GravityBox has been working on Samsung Oreo devices without much issues, I only implemented features that need special Samsung coding. Once GravityBox for Pie is released, you could use it for additional features.
+- Some features are removed on purpose. Since GravityBox has been working on Samsung Oreo devices without much issues, I only implemented features that need special Samsung coding. You can check [GravityBox for Pie](https://forum.xda-developers.com/xposed/modules/app-gravitybox-v9-0-0-beta-1-android-9-t3908768) for additional features.
+- It could take some time to popup the root request, just wait a few minutes until it pops up, usually not much after the xposed installer recognized the module.
 
 ## External Libraries
 
