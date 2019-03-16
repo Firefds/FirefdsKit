@@ -168,4 +168,5 @@
     <string name="clock_date_on_right_on_summary">תאריך ממוקם בצד ימין של השעון</string>
     <string name="clock_date_on_right_off_summary">תאריך ממוקדם בצד שמאל של השעון</string>
     <string name="multiUser">משתמשים מרובים</string>
+    <string name="switchUser">החלפת משתמש</string>
 </resources>

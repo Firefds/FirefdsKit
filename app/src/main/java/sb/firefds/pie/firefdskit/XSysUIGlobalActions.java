@@ -42,6 +42,7 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.actionViewModels.RestartActionViewModel;
 import sb.firefds.pie.firefdskit.actionViewModels.ScreenShotActionViewModel;
+import sb.firefds.pie.firefdskit.actionViewModels.UserSwitchActionViewModel;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
 import static sb.firefds.pie.firefdskit.utils.Preferences.*;
@@ -65,9 +66,11 @@ public class XSysUIGlobalActions {
     private static String mRecoveryStr;
     private static String mDownloadStr;
     private static String mScreenshotStr;
+    private static String mSwitchUserStr;
     private static Drawable mRecoveryIcon;
     private static Drawable mDownloadIcon;
     private static Drawable mScreenshotIcon;
+    private static Drawable mSwitchUserIcon;
     private static String mRebootConfirmRecoveryStr;
     private static String mRebootConfirmDownloadStr;
 
@@ -89,6 +92,7 @@ public class XSysUIGlobalActions {
                                 mRecoveryStr = gbContext.getString(R.string.reboot_recovery);
                                 mDownloadStr = gbContext.getString(R.string.reboot_download);
                                 mScreenshotStr = gbContext.getString(R.string.screenshot);
+                                mSwitchUserStr = gbContext.getString(R.string.switchUser);
 
                                 mRecoveryIcon = gbContext
                                         .getDrawable(R.drawable.tw_ic_do_recovery_stock);
@@ -96,6 +100,8 @@ public class XSysUIGlobalActions {
                                         .getDrawable(R.drawable.tw_ic_do_download_stock);
                                 mScreenshotIcon = gbContext
                                         .getDrawable(R.drawable.tw_ic_do_screenshot_stock);
+                                mSwitchUserIcon = gbContext
+                                        .getDrawable(R.drawable.tw_ic_do_users_stock);
 
                                 mRebootConfirmRecoveryStr = gbContext
                                         .getString(R.string.reboot_confirm_recovery);
@@ -137,6 +143,12 @@ public class XSysUIGlobalActions {
                                                     (SecGlobalActionsPresenter) param.thisObject,
                                                     "screenshot"));
                                 }
+                                if (prefs.getBoolean(PREF_SUPPORTS_MULTIPLE_USERS, false)) {
+                                    mSecGlobalActionsPresenter
+                                            .addAction(actionViewModelFactory.createActionViewModel(
+                                                    (SecGlobalActionsPresenter) param.thisObject,
+                                                    "multiuser"));
+                                }
                             }
                         });
 
@@ -170,6 +182,11 @@ public class XSysUIGlobalActions {
                                                 setScreenShotActionViewModel();
                                         param.setResult(screenShotActionView);
                                         break;
+                                    case ("multiuser"):
+                                        UserSwitchActionViewModel userSwitchActionViewModel =
+                                                setUserSwitchActionViewMidel();
+                                        param.setResult(userSwitchActionViewModel);
+                                        break;
                                 }
                             }
                         });
@@ -198,6 +215,9 @@ public class XSysUIGlobalActions {
                                         break;
                                     case "screenshot":
                                         localImageView.setImageDrawable(mScreenshotIcon);
+                                        break;
+                                    case "multiuser":
+                                        localImageView.setImageDrawable(mSwitchUserIcon);
                                         break;
                                 }
                             }
@@ -233,6 +253,16 @@ public class XSysUIGlobalActions {
                 null);
         screenShotActionViewModel.setActionInfo(actionInfo);
         return screenShotActionViewModel;
+    }
+
+    private static UserSwitchActionViewModel setUserSwitchActionViewMidel() {
+        UserSwitchActionViewModel userSwitchActionViewModel =
+                new UserSwitchActionViewModel(actionViewModelDefaults);
+        ActionInfo actionInfo = setActionInfo("multiuser",
+                mSwitchUserStr,
+                null);
+        userSwitchActionViewModel.setActionInfo(actionInfo);
+        return userSwitchActionViewModel;
     }
 
     private static void setActionViewModelDefaults(XC_MethodHook.MethodHookParam param) {
