@@ -164,4 +164,8 @@
     <string name="allow_multi_user_title">תמיכת משתמשים מרובים</string>
     <string name="max_supported_users_summary">קביעת מספר מקסימום משתמשים</string>
     <string name="max_supported_users_title">מקסימום משתמשים</string>
+    <string name="clock_date_on_right_title">תאריך בצד ימין השעון</string>
+    <string name="clock_date_on_right_on_summary">תאריך ממוקם בצד ימין של השעון</string>
+    <string name="clock_date_on_right_off_summary">תאריך ממוקדם בצד שמאל של השעון</string>
+    <string name="multiUser">משתמשים מרובים</string>
 </resources>

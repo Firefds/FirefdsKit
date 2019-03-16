@@ -31,6 +31,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.preference.ListPreference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -413,6 +414,20 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
                     rootScreen.removePreference(messagingScreen);
                     phoneScreen.removePreference(disableNumberFormattingPreference);
                 }
+
+                ListPreference clock_date_preference =
+                        (ListPreference) findPreference(PREF_CLOCK_DATE_PREFERENCE);
+                SwitchPreference clockDateOnRight =
+                        (SwitchPreference) findPreference(PREF_CLOCK_DATE_ON_RIGHT);
+                clockDateOnRight.setEnabled(!clock_date_preference.getValue().equals("disabled"));
+                clock_date_preference.setOnPreferenceChangeListener((preference, o) -> {
+                    if (!o.toString().equals("disabled")) {
+                        clockDateOnRight.setEnabled(true);
+                    } else {
+                        clockDateOnRight.setEnabled(false);
+                    }
+                    return true;
+                });
 
                 showProgressBar();
 

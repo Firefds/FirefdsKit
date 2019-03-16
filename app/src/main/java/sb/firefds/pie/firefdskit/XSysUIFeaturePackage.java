@@ -156,8 +156,13 @@ public class XSysUIFeaturePackage {
                                                         .replaceAll(".?[Yy].?", "") : showClockDate;
                                         date = new SimpleDateFormat(pattern,
                                                 Locale.getDefault())
-                                                .format(calendar.getTime()) + " ";
-                                        mClock.setText(date + mClock.getText().toString());
+                                                .format(calendar.getTime());
+                                        if (prefs.getBoolean(PREF_CLOCK_DATE_ON_RIGHT, false)) {
+                                            mClock.setText(mClock.getText().toString() + " " + date);
+                                        } else {
+                                            mClock.setText(date + " " + mClock.getText().toString());
+                                        }
+
                                     }
                                 }
                             }

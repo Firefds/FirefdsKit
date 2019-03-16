@@ -167,4 +167,8 @@
     <string name="allow_multi_user_title">Multi User Support</string>
     <string name="max_supported_users_summary">Set max users</string>
     <string name="max_supported_users_title">Max users</string>
+    <string name="clock_date_on_right_off_summary">Date attached to the left of the clock</string>
+    <string name="clock_date_on_right_on_summary">Date attached to the right of the clock</string>
+    <string name="clock_date_on_right_title">Clock Date on Right</string>
+    <string name="multiUser">Multi User</string>
 </resources>

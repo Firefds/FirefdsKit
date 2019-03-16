@@ -50,6 +50,13 @@
                 android:title="@string/date_on_clock_title" />
             <SwitchPreference
                 android:defaultValue="false"
+                android:enabled="false"
+                android:key="clockDateOnRight"
+                android:summaryOff="@string/clock_date_on_right_off_summary"
+                android:summaryOn="@string/clock_date_on_right_on_summary"
+                android:title="@string/clock_date_on_right_title" />
+            <SwitchPreference
+                android:defaultValue="false"
                 android:key="showClockSeconds"
                 android:summary="@string/seconds_on_clock_summary"
                 android:title="@string/seconds_on_clock_title" />
@@ -160,7 +167,7 @@
                 android:summary="@string/add_screenshot_to_power_menu"
                 android:title="@string/screenshot" />
         </PreferenceCategory>
-        <PreferenceCategory android:title="@string/system">
+        <PreferenceCategory android:title="@string/multiUser">
             <SwitchPreference
                 android:defaultValue="false"
                 android:key="supportsMultipleUsers"
@@ -176,6 +183,8 @@
                 android:key="maxSupportedUsers"
                 android:summary="@string/max_supported_users_summary"
                 android:title="@string/max_supported_users_title" />
+        </PreferenceCategory>
+        <PreferenceCategory android:title="@string/system">
             <PreferenceScreen
                 android:key="screenTimeoutSettings"
                 android:title="@string/screen_timeout_title">
