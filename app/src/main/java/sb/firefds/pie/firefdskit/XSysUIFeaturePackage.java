@@ -133,17 +133,28 @@ public class XSysUIFeaturePackage {
                                 if (tag.equals("status_bar_clock")) {
                                     mClock = (TextView) param.thisObject;
                                     Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+                                    boolean is24 = DateFormat.is24HourFormat(mClock.getContext());
                                     if (prefs.getBoolean(PREF_SHOW_CLOCK_SECONDS, false)) {
                                         if (mSecondsHandler == null) {
                                             updateSecondsHandler();
                                         }
-                                        boolean is24 = DateFormat.is24HourFormat(mClock.getContext());
                                         if (mSecondsFormat == null) {
                                             mSecondsFormat = new SimpleDateFormat(
                                                     DateFormat.getBestDateTimePattern(
                                                             Locale.getDefault(), is24 ? "Hms" : "hms"));
                                         }
                                         mClock.setText(mSecondsFormat.format(calendar.getTime()));
+                                    }
+                                    String amPm = calendar.getDisplayName(
+                                            Calendar.AM_PM, Calendar.SHORT, Locale.getDefault());
+                                    int amPmIndex = mClock.getText().toString().indexOf(amPm);
+                                    if (!is24 && amPmIndex == -1) {
+                                        // insert AM/PM if missing
+                                        if (Locale.getDefault().equals(Locale.TAIWAN) || Locale.getDefault().equals(Locale.CHINA)) {
+                                            mClock.setText(amPm + " " + mClock.getText());
+                                        } else {
+                                            mClock.setText(mClock.getText() + " " + amPm);
+                                        }
                                     }
                                     String showClockDate =
                                             prefs.getString(PREF_CLOCK_DATE_PREFERENCE, "disabled");
