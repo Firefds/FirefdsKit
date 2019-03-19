@@ -28,4 +28,5 @@ public class Packages {
     public static final String SAMSUNG_CAMERA = "com.samsung.android.camera";
     public static final String NFC = "com.android.nfc";
     public static final String MTP_APPLICATION = "com.samsung.android.MtpApplication";
+    public static final String FOTA_AGENT = "com.wssyncmldm";
 }
