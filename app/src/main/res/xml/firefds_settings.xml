@@ -1,330 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:key="prefsRoot">
 
-    <de.robv.android.xposed.library.ui.TextViewPreference
+    <!--<de.robv.android.xposed.library.ui.TextViewPreference
         android:key="fkHeader"
         android:selectable="false"
-        android:title="" />
+        android:title="" />-->
 
-    <de.robv.android.xposed.library.ui.SeparatorPreference height="3" />
+    <Preference
+
+        android:enabled="true"
+        android:key="fkHeader"
+        android:selectable="false"
+        android:summary="anything_you_want"
+        android:title="example_title" />
+    <!--<de.robv.android.xposed.library.ui.SeparatorPreference height="3" />-->
 
     <PreferenceScreen
         android:icon="@drawable/notification"
         android:key="statusbarKey"
-        android:title="@string/statusbar">
-        <PreferenceCategory android:title="@string/statusbar">
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="isStatusBarDoubleTapEnabled"
-                android:summary="@string/status_bar_double_tap_summary"
-                android:title="@string/status_bar_double_tap_title" />
-        </PreferenceCategory>
-        <PreferenceCategory android:title="@string/status_icons">
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="hideNfcIcon"
-                android:summaryOff="@string/hide_nfc_icon_off"
-                android:summaryOn="@string/hide_nfc_icon_on"
-                android:title="@string/hide_nfc_icon" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="showNetworkSpeedMenu"
-                android:summary="@string/network_speed_summary"
-                android:title="@string/network_speed_title" />
-            <de.robv.android.xposed.library.ui.IntegerListPreference
-                android:defaultValue="0"
-                android:entries="@array/data_icon_entries"
-                android:entryValues="@array/data_icon_values"
-                android:key="dataIconBehavior"
-                android:summary="@string/data_icon_behavior_summary"
-                android:title="@string/data_icon_behavior_title" />
-        </PreferenceCategory>
-        <PreferenceCategory android:title="@string/clock">
-            <ListPreference
-                android:defaultValue="disabled"
-                android:entries="@array/clock_date_entries"
-                android:entryValues="@array/clock_date_values"
-                android:key="clock_date_preference"
-                android:summary="@string/date_on_clock_summary"
-                android:title="@string/date_on_clock_title" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:enabled="false"
-                android:key="clockDateOnRight"
-                android:summaryOff="@string/clock_date_on_right_off_summary"
-                android:summaryOn="@string/clock_date_on_right_on_summary"
-                android:title="@string/clock_date_on_right_title" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="showClockSeconds"
-                android:summary="@string/seconds_on_clock_summary"
-                android:title="@string/seconds_on_clock_title" />
-        </PreferenceCategory>
-        <PreferenceCategory android:title="@string/quick_settings">
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="disableBluetoothScanDialog"
-                android:summary="@string/quick_settings_disable_bluetooth_scan_dialog_sum"
-                android:title="@string/quick_settings_disable_bluetooth_scan_dialog" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="disableSyncDialog"
-                android:summary="@string/quick_settings_disable_sync_dialog_sum"
-                android:title="@string/quick_settings_disable_sync_dialog" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="DataUsageView"
-                android:summary="@string/quick_settings_data_usage_view_summary"
-                android:title="@string/quick_settings_data_usage_view_title" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="setEyeStrainDialogEnabled"
-                android:summary="@string/disable_high_level_brightness_summary"
-                android:title="@string/disable_high_level_brightness_title" />
-        </PreferenceCategory>
-        <PreferenceCategory android:title="@string/carrier_notification">
-            <SwitchPreference
-                android:defaultValue="false"
-                android:disableDependentsState="true"
-                android:key="hideCarrierLabel"
-                android:summaryOff="@string/hide_carrier_label_shown"
-                android:summaryOn="@string/hide_carrier_label_hidden"
-                android:title="@string/hide_carrier_label" />
-
-            <de.robv.android.xposed.library.ui.ListPreferenceFixedSummary
-                android:defaultValue="Small"
-                android:dependency="hideCarrierLabel"
-                android:entries="@array/clock_size_entries"
-                android:entryValues="@array/clock_size_values"
-                android:key="carrierSize"
-                android:summary="@string/carrier_size_summary"
-                android:title="@string/carrier_size" />
-        </PreferenceCategory>
-    </PreferenceScreen>
+        android:title="@string/statusbar"
+        app:fragment="sb.firefds.pie.firefdskit.FirefdsKitActivity$NotificationSettingsFragment" />
     <PreferenceScreen
         android:icon="@drawable/lockscreen"
         android:key="lockscreenKey"
-        android:title="@string/lockscreen">
-        <PreferenceCategory android:title="@string/screen_unlock">
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="enableFingerprintUnlock"
-                android:summary="@string/enable_fingerprint_unlock_summary"
-                android:title="@string/enable_fingerprint_unlock_title" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="enableBiometricsUnlock"
-                android:summary="@string/enable_biometrics_unlock_summary"
-                android:title="@string/enable_biometrics_unlock_title" />
-        </PreferenceCategory>
-    </PreferenceScreen>
+        android:title="@string/lockscreen"
+        app:fragment="sb.firefds.pie.firefdskit.FirefdsKitActivity$LockscreenSettingsFragment" />
     <PreferenceScreen
         android:icon="@drawable/sound"
         android:key="soundKey"
-        android:title="@string/sound">
-        <PreferenceCategory android:title="@string/sound">
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="disableLoudVolumeWarning"
-                android:summaryOff="@string/disable_loud_volume_enabled"
-                android:summaryOn="@string/disable_loud_volume_disabled"
-                android:title="@string/disable_loud_volume" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="disableVolumeControlSound"
-                android:summary="@string/disable_volume_control_sound_while_changing_sounds"
-                android:title="@string/disable_volume_control_sound" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="disableLowBatterySound"
-                android:summary="@string/disable_low_battery_sound"
-                android:title="@string/disable_low_battery_sound" />
-        </PreferenceCategory>
-    </PreferenceScreen>
+        android:title="@string/sound"
+        app:fragment="sb.firefds.pie.firefdskit.FirefdsKitActivity$SoundSettingsFragment" />
     <PreferenceScreen
         android:icon="@drawable/system"
         android:key="systemKey"
-        android:title="@string/system">
-        <PreferenceCategory
-            android:key="powerMenuKey"
-            android:title="@string/advanced_power_menu">
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="enableAdvancedPowerMenu"
-                android:summary="@string/advanced_power_menu_summary"
-                android:title="@string/advanced_power_menu_title" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:dependency="enableAdvancedPowerMenu"
-                android:key="enableDataMode"
-                android:summary="@string/enable_data_mode_switch_summary"
-                android:title="@string/enable_data_mode_switch_title" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:dependency="enableAdvancedPowerMenu"
-                android:key="enableScreenshot"
-                android:summary="@string/add_screenshot_to_power_menu"
-                android:title="@string/screenshot" />
-        </PreferenceCategory>
-        <PreferenceCategory android:title="@string/multiUser">
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="supportsMultipleUsers"
-                android:summary="@string/allow_multi_user_summary"
-                android:title="@string/allow_multi_user_title" />
-            <de.robv.android.xposed.library.ui.ValueSeekBarPreference
-                displayFormat="%d users"
-                max="10"
-                min="2"
-                step="1"
-                android:defaultValue="3"
-                android:dependency="supportsMultipleUsers"
-                android:key="maxSupportedUsers"
-                android:summary="@string/max_supported_users_summary"
-                android:title="@string/max_supported_users_title" />
-        </PreferenceCategory>
-        <PreferenceCategory android:title="@string/system">
-            <PreferenceScreen
-                android:key="screenTimeoutSettings"
-                android:title="@string/screen_timeout_title">
-                <de.robv.android.xposed.library.ui.ValueSeekBarPreference
-                    displayFormat="%d seconds"
-                    max="59"
-                    min="0"
-                    step="1"
-                    android:defaultValue="30"
-                    android:key="screenTimeoutSeconds"
-                    android:summary="@string/screen_timeout_seconds_summary"
-                    android:title="@string/screen_timeout_seconds" />
-                <de.robv.android.xposed.library.ui.ValueSeekBarPreference
-                    displayFormat="%d minutes"
-                    max="59"
-                    min="0"
-                    step="1"
-                    android:defaultValue="0"
-                    android:key="screenTimeoutMinutes"
-                    android:summary="@string/screen_timeout_minutes_summary"
-                    android:title="@string/screen_timeout_minutes" />
-                <de.robv.android.xposed.library.ui.ValueSeekBarPreference
-                    displayFormat="%d hours"
-                    max="24"
-                    min="0"
-                    step="1"
-                    android:defaultValue="0"
-                    android:key="screenTimeoutHours"
-                    android:summary="@string/screen_timeout_hours_summary"
-                    android:title="@string/screen_timeout_hours" />
-            </PreferenceScreen>
-            <de.robv.android.xposed.library.ui.IntegerListPreference
-                android:defaultValue="0"
-                android:entries="@array/nfc_behavior_entries"
-                android:entryValues="@array/nfc_behavior_values"
-                android:key="nfcBehavior"
-                android:summary="@string/nfc_behavior_summary"
-                android:title="@string/nfc_behavior" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="hideMTPNotification"
-                android:summaryOff="@string/hide_mtp_notification_off"
-                android:summaryOn="@string/hide_mtp_notification_on"
-                android:title="@string/hide_mtp_notification" />
-        </PreferenceCategory>
-        <PreferenceCategory android:title="@string/camera_and_gallery">
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="disableTemperatureChecks"
-                android:summary="@string/disable_temperature_warnings_on_the_recording"
-                android:title="@string/disable_temperature_checks" />
-            <SwitchPreference
-                android:defaultValue="true"
-                android:key="enableCameraShutterMenu"
-                android:summary="@string/enable_camera_shutter_menu_summary"
-                android:title="@string/enable_camera_shutter_menu" />
-        </PreferenceCategory>
-    </PreferenceScreen>
+        android:title="@string/system"
+        app:fragment="sb.firefds.pie.firefdskit.FirefdsKitActivity$SystemSettingsFragment" />
     <PreferenceScreen
         android:icon="@drawable/phone"
         android:key="phoneKey"
-        android:title="@string/phone">
-        <PreferenceCategory
-            android:key="phoneKeyCat"
-            android:title="@string/phone">
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="enableCallAdd"
-                android:summaryOff="@string/enable_call_add_off"
-                android:summaryOn="@string/enable_call_add_on"
-                android:title="@string/enable_call_add" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:dependency="enableCallAdd"
-                android:key="enableCallRecordingMenu"
-                android:summaryOff="@string/call_recording_menu_disabled"
-                android:summaryOn="@string/call_recording_menu_enabled"
-                android:title="@string/enable_call_recording_menu" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="enableAutoCallRecording"
-                android:summary="@string/enable_automatic_call_recording"
-                android:title="@string/auto_call_recording" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="disableNumberFormatting"
-                android:summaryOff="@string/call_number_formatting_enabled"
-                android:summaryOn="@string/call_number_formatting_disabled"
-                android:title="@string/disable_call_number_formatting" />
-        </PreferenceCategory>
-    </PreferenceScreen>
+        android:title="@string/phone"
+        app:fragment="sb.firefds.pie.firefdskit.FirefdsKitActivity$PhoneSettingsFragment" />
     <PreferenceScreen
         android:icon="@drawable/sms"
         android:key="messagingKey"
-        android:title="@string/messaging">
-        <PreferenceCategory android:title="@string/messaging">
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="disableSmsToMmsConversion"
-                android:summaryOff="@string/mms_sms_mms_conversion_off"
-                android:summaryOn="@string/mms_sms_mms_conversion_on"
-                android:title="@string/mms_sms_mms_conversion" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="forceMMSConnect"
-                android:summary="@string/force_mms_connect_to_receive_mms"
-                android:title="@string/force_mms_connect" />
-        </PreferenceCategory>
-    </PreferenceScreen>
+        android:title="@string/messaging"
+        app:fragment="sb.firefds.pie.firefdskit.FirefdsKitActivity$MessagingSettingsFragment" />
     <PreferenceScreen
         android:icon="@drawable/security"
         android:key="securityHacks"
-        android:title="@string/security">
-        <PreferenceCategory android:title="@string/email">
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="disableExchangeLockSecurity"
-                android:summaryOff="@string/bypass_exchange_security_off"
-                android:summaryOn="@string/bypass_exchange_security_on"
-                android:title="@string/bypass_exchange_security" />
-        </PreferenceCategory>
-        <PreferenceCategory android:title="@string/system">
-            <SwitchPreference
-                android:defaultValue="true"
-                android:key="makeMeTooLegit"
-                android:summaryOff="@string/status_custom"
-                android:summaryOn="@string/status_official"
-                android:title="@string/fake_system_status" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="disableSignatureCheck"
-                android:summaryOff="@string/disable_signature_check_on"
-                android:summaryOn="@string/disable_signature_check_off"
-                android:title="@string/disable_signature_check_title" />
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="disableFlagSecure"
-                android:summaryOff="@string/disable_flag_secure_on"
-                android:summaryOn="@string/disable_flag_secure_off"
-                android:title="@string/disable_flag_secure_title" />
-        </PreferenceCategory>
-    </PreferenceScreen>
+        android:title="@string/security"
+        app:fragment="sb.firefds.pie.firefdskit.FirefdsKitActivity$SecuritySettingsFragment" />
 </PreferenceScreen>

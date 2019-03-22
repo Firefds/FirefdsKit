@@ -2,8 +2,9 @@ package de.robv.android.xposed.library.ui;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.ListPreference;
 import android.util.AttributeSet;
+
+import androidx.preference.ListPreference;
 
 public class IntegerListPreference extends ListPreference {
     public IntegerListPreference(Context context) {

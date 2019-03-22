@@ -2,11 +2,13 @@ package de.robv.android.xposed.library.ui;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.preference.Preference;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.preference.Preference;
+import androidx.preference.PreferenceViewHolder;
 
 public class TextViewPreference extends Preference {
     private TextView textView = null;
@@ -32,11 +34,6 @@ public class TextViewPreference extends Preference {
 
     public TextViewPreference(Context context) {
         this(context, null);
-    }
-
-    @Override
-    protected View onCreateView(ViewGroup parent) {
-        return getTextView();
     }
 
     public TextView getTextView() {

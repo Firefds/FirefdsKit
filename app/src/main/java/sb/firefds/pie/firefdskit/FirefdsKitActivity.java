@@ -31,14 +31,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.preference.ListPreference;
-import android.preference.PreferenceCategory;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
-import android.preference.SwitchPreference;
 import android.provider.Settings;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -55,7 +52,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 import de.robv.android.xposed.library.ui.TextViewPreference;
 
 import com.topjohnwu.superuser.Shell;
@@ -70,7 +73,7 @@ import sb.firefds.pie.firefdskit.utils.Utils;
 import static sb.firefds.pie.firefdskit.utils.Constants.PREFS;
 import static sb.firefds.pie.firefdskit.utils.Preferences.*;
 
-public class FirefdsKitActivity extends Activity implements RestoreDialogListener {
+public class FirefdsKitActivity extends AppCompatActivity implements RestoreDialogListener, PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
     private static RelativeLayout mLayout;
     private static TextView progressBarText;
@@ -150,7 +153,7 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
             getWindowManager().getDefaultDisplay().getSize(MainApplication.getWindowsSize());
 
             if (savedInstanceState == null)
-                getFragmentManager().beginTransaction().replace(android.R.id.content,
+                getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
                         new SettingsFragment()).commit();
 
 
@@ -162,7 +165,27 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
 
     @Override
     public void onBackPressed() {
-        new QuitTask().execute(this);
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            new QuitTask().execute(this);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
+        final Bundle args = pref.getExtras();
+        final Fragment fragment = getSupportFragmentManager().getFragmentFactory().instantiate(
+                getClassLoader(),
+                pref.getFragment(),
+                args);
+        fragment.setArguments(args);
+        fragment.setTargetFragment(caller, 0);
+        getSupportFragmentManager().beginTransaction()
+                .replace(android.R.id.content, fragment)
+                .addToBackStack(null)
+                .commit();
+        return true;
     }
 
     private static class QuitTask extends AsyncTask<Activity, Void, Void> {
@@ -363,7 +386,63 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
         }
     }
 
-    public static class SettingsFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener {
+    public static class NotificationSettingsFragment extends PreferenceFragmentCompat {
+
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.notification_settings, rootKey);
+        }
+    }
+
+    public static class LockscreenSettingsFragment extends PreferenceFragmentCompat {
+
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.lockscreen_settings, rootKey);
+        }
+    }
+
+    public static class MessagingSettingsFragment extends PreferenceFragmentCompat {
+
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.messaging_settings, rootKey);
+        }
+    }
+
+    public static class PhoneSettingsFragment extends PreferenceFragmentCompat {
+
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.phone_settings, rootKey);
+        }
+    }
+
+    public static class SecuritySettingsFragment extends PreferenceFragmentCompat {
+
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.security_settings, rootKey);
+        }
+    }
+
+    public static class SoundSettingsFragment extends PreferenceFragmentCompat {
+
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.sound_settings, rootKey);
+        }
+    }
+
+    public static class SystemSettingsFragment extends PreferenceFragmentCompat {
+
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.system_settings, rootKey);
+        }
+    }
+
+    public static class SettingsFragment extends PreferenceFragmentCompat implements OnSharedPreferenceChangeListener {
 
         private static Context mContext;
 
@@ -392,42 +471,60 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
 
             try {
                 changesMade = new ArrayList<>();
-                mContext = getActivity().getBaseContext();
+                mContext = Objects.requireNonNull(getActivity()).getBaseContext();
 
                 res = getResources();
 
                 SharedPreferences sharedPreferences
                         = mContext.getSharedPreferences(PREFS, 0);
                 MainApplication.setSharedPreferences(sharedPreferences);
-                addPreferencesFromResource(R.xml.firefds_settings);
+                //addPreferencesFromResource(R.xml.firefds_settings);
 
                 if (Utils.isOmcEncryptedFlag()) {
-                    PreferenceScreen rootScreen =
-                            (PreferenceScreen) findPreference(PREF_ROOT);
-                    PreferenceScreen messagingScreen =
-                            (PreferenceScreen) findPreference(PREF_MESSAGING_KEY);
-                    PreferenceCategory phoneScreen =
-                            (PreferenceCategory) findPreference(PREF_PHONE_KEY_CAT);
-                    SwitchPreference disableNumberFormattingPreference =
-                            (SwitchPreference) findPreference(PREF_DISABLE_NUMBER_FORMATTING);
+                    androidx.preference.PreferenceScreen rootScreen =
+                            findPreference(PREF_ROOT);
+                    androidx.preference.PreferenceScreen messagingScreen =
+                            findPreference(PREF_MESSAGING_KEY);
+                    androidx.preference.PreferenceCategory phoneScreen =
+                            findPreference(PREF_PHONE_KEY_CAT);
+                    androidx.preference.SwitchPreference disableNumberFormattingPreference =
+                            findPreference(PREF_DISABLE_NUMBER_FORMATTING);
 
-                    rootScreen.removePreference(messagingScreen);
-                    phoneScreen.removePreference(disableNumberFormattingPreference);
+                    if (rootScreen != null) {
+                        if (messagingScreen != null) {
+                            rootScreen.removePreference(messagingScreen);
+                        }
+                    }
+                    if (phoneScreen != null) {
+                        if (disableNumberFormattingPreference != null) {
+                            phoneScreen.removePreference(disableNumberFormattingPreference);
+                        }
+                    }
                 }
 
-                ListPreference clock_date_preference =
-                        (ListPreference) findPreference(PREF_CLOCK_DATE_PREFERENCE);
-                SwitchPreference clockDateOnRight =
-                        (SwitchPreference) findPreference(PREF_CLOCK_DATE_ON_RIGHT);
-                clockDateOnRight.setEnabled(!clock_date_preference.getValue().equals("disabled"));
-                clock_date_preference.setOnPreferenceChangeListener((preference, o) -> {
-                    if (!o.toString().equals("disabled")) {
-                        clockDateOnRight.setEnabled(true);
-                    } else {
-                        clockDateOnRight.setEnabled(false);
+                androidx.preference.ListPreference clock_date_preference =
+                        findPreference(PREF_CLOCK_DATE_PREFERENCE);
+                androidx.preference.SwitchPreference clockDateOnRight =
+                        findPreference(PREF_CLOCK_DATE_ON_RIGHT);
+                if (clockDateOnRight != null) {
+                    if (clock_date_preference != null) {
+                        clockDateOnRight.setEnabled(!clock_date_preference.getValue().equals("disabled"));
                     }
-                    return true;
-                });
+                }
+                if (clock_date_preference != null) {
+                    clock_date_preference.setOnPreferenceChangeListener((preference, o) -> {
+                        if (!o.toString().equals("disabled")) {
+                            if (clockDateOnRight != null) {
+                                clockDateOnRight.setEnabled(true);
+                            }
+                        } else {
+                            if (clockDateOnRight != null) {
+                                clockDateOnRight.setEnabled(false);
+                            }
+                        }
+                        return true;
+                    });
+                }
 
                 showProgressBar();
 
@@ -448,17 +545,27 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
                     alertDialog.show();
                 }
 
-                TextViewPreference textViewInformationHeader;
-                PreferenceScreen ps = (PreferenceScreen) findPreference(PREF_ROOT);
-                textViewInformationHeader = (TextViewPreference) findPreference(PREF__FAKE_HEADER);
-                textViewInformationHeader.setTitle("");
+                //TextViewPreference textViewInformationHeader;
+                androidx.preference.PreferenceScreen ps = findPreference(PREF_ROOT);
+                Preference textViewInformationHeader = findPreference(PREF__FAKE_HEADER);
+                if (textViewInformationHeader != null) {
+                    textViewInformationHeader.setTitle("");
+                }
 
                 if (!XposedChecker.isActive()) {
-                    textViewInformationHeader.setTitle(R.string.firefds_kit_is_not_active);
-                    textViewInformationHeader.getTextView().setTextColor(Color.RED);
-                    ps.findPreference(PREF__FAKE_HEADER).setEnabled(false);
+                    if (textViewInformationHeader != null) {
+                        textViewInformationHeader.setTitle(R.string.firefds_kit_is_not_active);
+                    }
+                    //textViewInformationHeader.getTextView().setTextColor(Color.RED);
+                    if (textViewInformationHeader != null) {
+                        textViewInformationHeader.setEnabled(false);
+                    }
                 } else {
-                    ps.removePreference(textViewInformationHeader);
+                    if (ps != null) {
+                        if (textViewInformationHeader != null) {
+                            ps.removePreference(textViewInformationHeader);
+                        }
+                    }
                 }
 
                 new CheckRootTask().execute();
@@ -466,6 +573,11 @@ public class FirefdsKitActivity extends Activity implements RestoreDialogListene
             } catch (Throwable e) {
                 e.printStackTrace();
             }
+        }
+
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            addPreferencesFromResource(R.xml.firefds_settings);
         }
 
         private void showRootDisclaimer() {

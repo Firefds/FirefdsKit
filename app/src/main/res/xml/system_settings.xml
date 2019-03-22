@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="powerMenuKey"
+        android:title="@string/advanced_power_menu">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="enableAdvancedPowerMenu"
+            android:summary="@string/advanced_power_menu_summary"
+            android:title="@string/advanced_power_menu_title" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:dependency="enableAdvancedPowerMenu"
+            android:key="enableDataMode"
+            android:summary="@string/enable_data_mode_switch_summary"
+            android:title="@string/enable_data_mode_switch_title" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:dependency="enableAdvancedPowerMenu"
+            android:key="enableScreenshot"
+            android:summary="@string/add_screenshot_to_power_menu"
+            android:title="@string/screenshot" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/multiUser">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="supportsMultipleUsers"
+            android:summary="@string/allow_multi_user_summary"
+            android:title="@string/allow_multi_user_title" />
+        <SeekBarPreference
+            android:defaultValue="3"
+            android:dependency="supportsMultipleUsers"
+            android:key="maxSupportedUsers"
+            android:max="10"
+            android:min="2"
+            android:summary="@string/max_supported_users_summary"
+            android:title="@string/max_supported_users_title" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/system">
+        <PreferenceScreen
+            android:key="screenTimeoutSettings"
+            android:title="@string/screen_timeout_title">
+            <SeekBarPreference
+                android:defaultValue="30"
+                android:key="screenTimeoutSeconds"
+                android:max="59"
+                android:min="0"
+                android:summary="@string/screen_timeout_seconds_summary"
+                android:title="@string/screen_timeout_seconds" />
+            <SeekBarPreference
+                android:defaultValue="0"
+                android:key="screenTimeoutMinutes"
+                android:max="59"
+                android:min="0"
+                android:summary="@string/screen_timeout_minutes_summary"
+                android:title="@string/screen_timeout_minutes" />
+            <SeekBarPreference
+                android:defaultValue="0"
+                android:key="screenTimeoutHours"
+                android:max="24"
+                android:min="0"
+                android:summary="@string/screen_timeout_hours_summary"
+                android:title="@string/screen_timeout_hours" />
+        </PreferenceScreen>
+        <de.robv.android.xposed.library.ui.IntegerListPreference
+            android:defaultValue="0"
+            android:entries="@array/nfc_behavior_entries"
+            android:entryValues="@array/nfc_behavior_values"
+            android:key="nfcBehavior"
+            android:summary="@string/nfc_behavior_summary"
+            android:title="@string/nfc_behavior" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="hideMTPNotification"
+            android:summaryOff="@string/hide_mtp_notification_off"
+            android:summaryOn="@string/hide_mtp_notification_on"
+            android:title="@string/hide_mtp_notification" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/camera_and_gallery">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="disableTemperatureChecks"
+            android:summary="@string/disable_temperature_warnings_on_the_recording"
+            android:title="@string/disable_temperature_checks" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="enableCameraShutterMenu"
+            android:summary="@string/enable_camera_shutter_menu_summary"
+            android:title="@string/enable_camera_shutter_menu" />
+    </PreferenceCategory>
+</PreferenceScreen>

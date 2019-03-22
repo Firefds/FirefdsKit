@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/statusbar">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="isStatusBarDoubleTapEnabled"
+            android:summary="@string/status_bar_double_tap_summary"
+            android:title="@string/status_bar_double_tap_title" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/status_icons">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="hideNfcIcon"
+            android:summaryOff="@string/hide_nfc_icon_off"
+            android:summaryOn="@string/hide_nfc_icon_on"
+            android:title="@string/hide_nfc_icon" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="showNetworkSpeedMenu"
+            android:summary="@string/network_speed_summary"
+            android:title="@string/network_speed_title" />
+        <de.robv.android.xposed.library.ui.IntegerListPreference
+            android:defaultValue="0"
+            android:entries="@array/data_icon_entries"
+            android:entryValues="@array/data_icon_values"
+            android:key="dataIconBehavior"
+            android:summary="@string/data_icon_behavior_summary"
+            android:title="@string/data_icon_behavior_title" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/clock">
+        <ListPreference
+            android:defaultValue="disabled"
+            android:entries="@array/clock_date_entries"
+            android:entryValues="@array/clock_date_values"
+            android:key="clock_date_preference"
+            android:summary="@string/date_on_clock_summary"
+            android:title="@string/date_on_clock_title" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:enabled="false"
+            android:key="clockDateOnRight"
+            android:summaryOff="@string/clock_date_on_right_off_summary"
+            android:summaryOn="@string/clock_date_on_right_on_summary"
+            android:title="@string/clock_date_on_right_title" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="showClockSeconds"
+            android:summary="@string/seconds_on_clock_summary"
+            android:title="@string/seconds_on_clock_title" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/quick_settings">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="disableBluetoothScanDialog"
+            android:summary="@string/quick_settings_disable_bluetooth_scan_dialog_sum"
+            android:title="@string/quick_settings_disable_bluetooth_scan_dialog" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="disableSyncDialog"
+            android:summary="@string/quick_settings_disable_sync_dialog_sum"
+            android:title="@string/quick_settings_disable_sync_dialog" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="DataUsageView"
+            android:summary="@string/quick_settings_data_usage_view_summary"
+            android:title="@string/quick_settings_data_usage_view_title" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="setEyeStrainDialogEnabled"
+            android:summary="@string/disable_high_level_brightness_summary"
+            android:title="@string/disable_high_level_brightness_title" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/carrier_notification">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:disableDependentsState="true"
+            android:key="hideCarrierLabel"
+            android:summaryOff="@string/hide_carrier_label_shown"
+            android:summaryOn="@string/hide_carrier_label_hidden"
+            android:title="@string/hide_carrier_label" />
+
+        <de.robv.android.xposed.library.ui.ListPreferenceFixedSummary
+            android:defaultValue="Small"
+            android:dependency="hideCarrierLabel"
+            android:entries="@array/clock_size_entries"
+            android:entryValues="@array/clock_size_values"
+            android:key="carrierSize"
+            android:summary="@string/carrier_size_summary"
+            android:title="@string/carrier_size" />
+    </PreferenceCategory>
+</PreferenceScreen>

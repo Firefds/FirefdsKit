@@ -2,13 +2,13 @@ package de.robv.android.xposed.library.ui;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.preference.Preference;
 import android.util.AttributeSet;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.ImageView;
+
+import androidx.preference.Preference;
+import androidx.preference.PreferenceViewHolder;
 
 public class SeparatorPreference extends Preference {
     int color = Color.GRAY;
@@ -40,10 +40,11 @@ public class SeparatorPreference extends Preference {
     }
 
     @Override
-    protected View onCreateView(ViewGroup parent) {
+    public void onBindViewHolder(PreferenceViewHolder holder) {
+        super.onBindViewHolder(holder);
         ImageView iview = new ImageView(getContext());
         iview.setBackgroundColor(color);
         iview.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, height));
-        return iview;
+        holder.setDividerAllowedBelow(true);
     }
 }
