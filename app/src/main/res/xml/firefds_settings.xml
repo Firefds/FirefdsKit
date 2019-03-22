@@ -3,19 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:key="prefsRoot">
 
-    <!--<de.robv.android.xposed.library.ui.TextViewPreference
-        android:key="fkHeader"
-        android:selectable="false"
-        android:title="" />-->
-
     <Preference
-
         android:enabled="true"
         android:key="fkHeader"
         android:selectable="false"
-        android:summary="anything_you_want"
-        android:title="example_title" />
-    <!--<de.robv.android.xposed.library.ui.SeparatorPreference height="3" />-->
+        android:title="example_title"
+        app:iconSpaceReserved="false" />
 
     <PreferenceScreen
         android:icon="@drawable/notification"

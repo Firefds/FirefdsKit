@@ -26,7 +26,7 @@ public class XNfcPackage {
 
     private static final int SCREEN_STATE_ON_LOCKED = 4;
     private static final int SCREEN_STATE_ON_UNLOCKED = 8;
-    private static int behavior;
+    private static String behavior;
 
     private static final String NFC_SERVICE = Packages.NFC + ".NfcService";
 
@@ -61,8 +61,8 @@ public class XNfcPackage {
                     new XC_MethodHook() {
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) {
-                            behavior = prefs.getInt(PREF_NFC_BEHAVIOR, 0);
-                            if (behavior == 0) {
+                            behavior = prefs.getString(PREF_NFC_BEHAVIOR, "0");
+                            if (behavior.equals(0)) {
                                 return;
                             }
                             try {
@@ -75,7 +75,7 @@ public class XNfcPackage {
                                     currScreenState = (Integer) XposedHelpers.callMethod(param.thisObject, "checkScreenState");
                                 }
                                 if ((currScreenState == SCREEN_STATE_ON_UNLOCKED)
-                                        || (behavior == 1 && currScreenState != SCREEN_STATE_ON_LOCKED)) {
+                                        || (behavior.equals("1") && currScreenState != SCREEN_STATE_ON_LOCKED)) {
                                     XposedHelpers.setAdditionalInstanceField(param.thisObject,
                                             "mOrigScreenState",
                                             -1);
@@ -98,7 +98,7 @@ public class XNfcPackage {
 
                         @Override
                         protected void afterHookedMethod(MethodHookParam param) {
-                            if (behavior == 0) {
+                            if (behavior.equals(0)) {
                                 return;
                             }
 

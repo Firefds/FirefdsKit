@@ -1,31 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory
         android:key="phoneKeyCat"
-        android:title="@string/phone">
+        android:title="@string/phone"
+        app:iconSpaceReserved="false">
         <SwitchPreference
             android:defaultValue="false"
             android:key="enableCallAdd"
             android:summaryOff="@string/enable_call_add_off"
             android:summaryOn="@string/enable_call_add_on"
-            android:title="@string/enable_call_add" />
+            android:title="@string/enable_call_add"
+            app:iconSpaceReserved="false" />
         <SwitchPreference
             android:defaultValue="false"
             android:dependency="enableCallAdd"
             android:key="enableCallRecordingMenu"
             android:summaryOff="@string/call_recording_menu_disabled"
             android:summaryOn="@string/call_recording_menu_enabled"
-            android:title="@string/enable_call_recording_menu" />
+            android:title="@string/enable_call_recording_menu"
+            app:iconSpaceReserved="false" />
         <SwitchPreference
             android:defaultValue="false"
             android:key="enableAutoCallRecording"
             android:summary="@string/enable_automatic_call_recording"
-            android:title="@string/auto_call_recording" />
+            android:title="@string/auto_call_recording"
+            app:iconSpaceReserved="false" />
         <SwitchPreference
             android:defaultValue="false"
             android:key="disableNumberFormatting"
             android:summaryOff="@string/call_number_formatting_enabled"
             android:summaryOn="@string/call_number_formatting_disabled"
-            android:title="@string/disable_call_number_formatting" />
+            android:title="@string/disable_call_number_formatting"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
 </PreferenceScreen>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <SeekBarPreference
+        android:defaultValue="30"
+        android:key="screenTimeoutSeconds"
+        android:max="59"
+        android:min="0"
+        android:title="@string/screen_timeout_seconds"
+        app:iconSpaceReserved="false"
+        app:showSeekBarValue="true" />
+    <SeekBarPreference
+        android:defaultValue="0"
+        android:key="screenTimeoutMinutes"
+        android:max="59"
+        android:min="0"
+        android:title="@string/screen_timeout_minutes"
+        app:iconSpaceReserved="false"
+        app:showSeekBarValue="true" />
+    <SeekBarPreference
+        android:defaultValue="0"
+        android:key="screenTimeoutHours"
+        android:max="24"
+        android:min="0"
+        android:title="@string/screen_timeout_hours"
+        app:iconSpaceReserved="false"
+        app:showSeekBarValue="true" />
+</PreferenceScreen>

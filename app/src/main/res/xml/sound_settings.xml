@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/sound">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:title="@string/sound"
+        app:iconSpaceReserved="false">
         <SwitchPreference
             android:defaultValue="false"
             android:key="disableLoudVolumeWarning"
             android:summaryOff="@string/disable_loud_volume_enabled"
             android:summaryOn="@string/disable_loud_volume_disabled"
-            android:title="@string/disable_loud_volume" />
+            android:title="@string/disable_loud_volume"
+            app:iconSpaceReserved="false" />
         <SwitchPreference
             android:defaultValue="false"
             android:key="disableVolumeControlSound"
             android:summary="@string/disable_volume_control_sound_while_changing_sounds"
-            android:title="@string/disable_volume_control_sound" />
+            android:title="@string/disable_volume_control_sound"
+            app:iconSpaceReserved="false" />
         <SwitchPreference
             android:defaultValue="false"
             android:key="disableLowBatterySound"
             android:summary="@string/disable_low_battery_sound"
-            android:title="@string/disable_low_battery_sound" />
+            android:title="@string/disable_low_battery_sound"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
 </PreferenceScreen>

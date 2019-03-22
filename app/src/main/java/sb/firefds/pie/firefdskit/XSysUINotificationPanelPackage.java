@@ -29,7 +29,7 @@ public class XSysUINotificationPanelPackage {
     private static final String MOBILE_SIGNAL_CONTROLLER_CLASS =
             Packages.SYSTEM_UI + ".statusbar.policy.MobileSignalController";
 
-    private static int dataIconBehavior;
+    private static String dataIconBehavior;
     private static ClassLoader classLoader;
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
@@ -70,8 +70,8 @@ public class XSysUINotificationPanelPackage {
             XposedBridge.log(e);
         }
 
-        dataIconBehavior = prefs.getInt(PREF_DATA_ICON_BEHAVIOR, 0);
-        if (dataIconBehavior != 0) {
+        dataIconBehavior = prefs.getString(PREF_DATA_ICON_BEHAVIOR, "0");
+        if (!dataIconBehavior.equals("0")) {
             changeDataIcon(systemUIRuneClass);
         }
 
@@ -117,22 +117,22 @@ public class XSysUINotificationPanelPackage {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) {
                     switch (dataIconBehavior) {
-                        case 1:
+                        case "1":
                             XposedHelpers.setStaticBooleanField(aClass,
                                     LTE_INSTEAD_OF_4G,
                                     true);
                             break;
-                        case 2:
+                        case "2":
                             XposedHelpers.setStaticBooleanField(aClass,
                                     FOUR_G_PLUS_INSTEAD_OF_4G,
                                     true);
                             break;
-                        case 3:
+                        case "3":
                             XposedHelpers.setStaticBooleanField(aClass,
                                     FOUR_G_INSTEAD_OF_4G_PLUS,
                                     true);
                             break;
-                        case 4:
+                        case "4":
                             XposedHelpers.setStaticBooleanField(aClass,
                                     FOUR_HALF_G_INSTEAD_OF_4G_PLUS,
                                     true);

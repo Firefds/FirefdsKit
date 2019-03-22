@@ -1,31 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/email">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:title="@string/email"
+        app:iconSpaceReserved="false">
         <SwitchPreference
             android:defaultValue="false"
             android:key="disableExchangeLockSecurity"
             android:summaryOff="@string/bypass_exchange_security_off"
             android:summaryOn="@string/bypass_exchange_security_on"
-            android:title="@string/bypass_exchange_security" />
+            android:title="@string/bypass_exchange_security"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/system">
+    <PreferenceCategory
+        android:title="@string/system"
+        app:iconSpaceReserved="false">
         <SwitchPreference
             android:defaultValue="true"
             android:key="makeMeTooLegit"
             android:summaryOff="@string/status_custom"
             android:summaryOn="@string/status_official"
-            android:title="@string/fake_system_status" />
+            android:title="@string/fake_system_status"
+            app:iconSpaceReserved="false" />
         <SwitchPreference
             android:defaultValue="false"
             android:key="disableSignatureCheck"
             android:summaryOff="@string/disable_signature_check_on"
             android:summaryOn="@string/disable_signature_check_off"
-            android:title="@string/disable_signature_check_title" />
+            android:title="@string/disable_signature_check_title"
+            app:iconSpaceReserved="false" />
         <SwitchPreference
             android:defaultValue="false"
             android:key="disableFlagSecure"
             android:summaryOff="@string/disable_flag_secure_on"
             android:summaryOn="@string/disable_flag_secure_off"
-            android:title="@string/disable_flag_secure_title" />
+            android:title="@string/disable_flag_secure_title"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
 </PreferenceScreen>
