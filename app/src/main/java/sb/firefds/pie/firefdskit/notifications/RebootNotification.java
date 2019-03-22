@@ -32,7 +32,7 @@ import sb.firefds.pie.firefdskit.R;
 import sb.firefds.pie.firefdskit.FirefdsKitActivity;
 import sb.firefds.pie.firefdskit.receivers.WanamRebootReceiver;
 
-import static android.support.v4.content.ContextCompat.getSystemService;
+import static androidx.core.content.ContextCompat.getSystemService;
 
 public class RebootNotification {
 
