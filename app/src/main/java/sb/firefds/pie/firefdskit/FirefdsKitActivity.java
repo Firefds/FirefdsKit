@@ -87,8 +87,12 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.*;
 
 public class FirefdsKitActivity extends AppCompatActivity implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
+    @SuppressLint("StaticFieldLeak")
     private static RelativeLayout mLayout;
+    @SuppressLint("StaticFieldLeak")
     private static TextView progressBarText;
+    /*@SuppressLint("StaticFieldLeak")
+    private static Context thisContext;*/
     private AlertDialog dialog;
     private File dir;
     private File[] backups;
@@ -120,6 +124,8 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
         setContentView(R.layout.firefds_main);
         mLayout = findViewById(R.id.mainLayout);
         progressBarText = findViewById(R.id.progressBarText);
+//        thisContext = getApplicationContext();
+        setDefaultPreferences();
 
         try {
             MainApplication.setWindowsSize(new Point());
@@ -400,10 +406,21 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
         listView.setAdapter(adapter);
     }
 
+    private void setDefaultPreferences() {
+        PreferenceManager.setDefaultValues(this, R.xml.lockscreen_settings, true);
+        PreferenceManager.setDefaultValues(this, R.xml.messaging_settings, true);
+        PreferenceManager.setDefaultValues(this, R.xml.notification_settings, true);
+        PreferenceManager.setDefaultValues(this, R.xml.phone_settings, true);
+        PreferenceManager.setDefaultValues(this, R.xml.screen_timeout_settings, true);
+        PreferenceManager.setDefaultValues(this, R.xml.security_settings, true);
+        PreferenceManager.setDefaultValues(this, R.xml.sound_settings, true);
+        PreferenceManager.setDefaultValues(this, R.xml.system_settings, true);
+    }
+
     private void restoreRecommendedSettings() {
 
         MainApplication.getSharedPreferences().edit().clear().apply();
-        PreferenceManager.setDefaultValues(this, R.xml.firefds_settings, false);
+        setDefaultPreferences();
 
         Editor editor = MainApplication.getSharedPreferences().edit();
 
@@ -429,7 +446,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
     private void onRestoreDefaults() {
 
         MainApplication.getSharedPreferences().edit().clear().apply();
-        PreferenceManager.setDefaultValues(this, R.xml.firefds_settings, false);
+        setDefaultPreferences();
 
         Toast.makeText(this, R.string.defaults_restored, Toast.LENGTH_SHORT).show();
 
@@ -496,7 +513,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
 
     }
 
-    class RestoreBackupTask extends AsyncTask<Void, Void, Void> {
+    private static class RestoreBackupTask extends AsyncTask<Void, Void, Void> {
 
         private File backup;
 
@@ -507,7 +524,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressBarText.setText(getString(R.string.restoring_backup));
+            progressBarText.setText(MainApplication.getAppContext().getString(R.string.restoring_backup));
             mLayout.setVisibility(View.VISIBLE);
         }
 
@@ -536,7 +553,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
                         prefEdit.putString(key, ((String) v));
                 }
                 prefEdit.apply();
-                fixPermissions(getApplicationContext());
+                fixPermissions(MainApplication.getAppContext());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -560,8 +577,8 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             mLayout.setVisibility(View.INVISIBLE);
-            Toast.makeText(FirefdsKitActivity.this, R.string.backup_restored, Toast.LENGTH_SHORT).show();
-            RebootNotification.notify(FirefdsKitActivity.this, 999, false);
+            Toast.makeText(MainApplication.getAppContext(), R.string.backup_restored, Toast.LENGTH_SHORT).show();
+            RebootNotification.notify(MainApplication.getAppContext(), 999, false);
         }
     }
 
@@ -675,15 +692,15 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
     public static class SettingsFragment extends FirefdsPreferenceFragment {
 
         private static Resources res;
-        private AlertDialog alertDialog;
+        private static AlertDialog alertDialog;
 
-        private Runnable delayedRoot = new Runnable() {
+        private static Runnable delayedRoot = new Runnable() {
 
             @Override
             public void run() {
                 try {
                     mLayout.setVisibility(View.INVISIBLE);
-                    Toast.makeText(getmContext(), R.string.root_info, Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainApplication.getAppContext(), R.string.root_info, Toast.LENGTH_LONG).show();
 
                 } catch (Throwable e) {
                     e.printStackTrace();
@@ -699,7 +716,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
                 res = getResources();
 
                 SharedPreferences sharedPreferences
-                        = getmContext().getSharedPreferences(PREFS, 0);
+                        = MainApplication.getAppContext().getSharedPreferences(PREFS, 0);
                 MainApplication.setSharedPreferences(sharedPreferences);
 
                 if (Utils.isOmcEncryptedFlag()) {
@@ -717,7 +734,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
 
                 MainApplication.getSharedPreferences().edit()
                         .putInt(PREF_NOTIFICATION_SIZE, MainApplication.getWindowsSize().x).apply();
-                fixPermissions(getmContext());
+                fixPermissions(MainApplication.getAppContext());
 
 
                 if (!Utils.isSamsungRom()) {
@@ -732,7 +749,6 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
                     alertDialog.show();
                 }
 
-                //TextViewPreference textViewInformationHeader;
                 PreferenceScreen ps = findPreference(PREF_ROOT);
                 Preference textViewInformationHeader = findPreference(PREF__FAKE_HEADER);
                 if (textViewInformationHeader != null) {
@@ -743,7 +759,6 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
                     if (textViewInformationHeader != null) {
                         textViewInformationHeader.setTitle(R.string.firefds_kit_is_not_active);
                     }
-                    //textViewInformationHeader.getTextView().setTextColor(Color.RED);
                     if (textViewInformationHeader != null) {
                         textViewInformationHeader.setEnabled(false);
                     }
@@ -767,13 +782,25 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
             setPreferencesFromResource(R.xml.firefds_settings, rootKey);
         }
 
-        private void showRootDisclaimer() {
-            if (getmContext() != null) {
+        @Override
+        public void onDestroy() {
+            try {
+                if (mLayout.getVisibility() == View.VISIBLE) {
+                    mLayout.setVisibility(View.INVISIBLE);
+                }
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+            super.onDestroy();
+        }
+
+        private static void showRootDisclaimer() {
+            if (MainApplication.getAppContext() != null) {
                 try {
 
                     mLayout.setVisibility(View.INVISIBLE);
 
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainApplication.getAppContext());
 
                     alertDialogBuilder.setTitle(R.string.app_name);
 
@@ -802,19 +829,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
 
         }
 
-        @Override
-        public void onDestroy() {
-            try {
-                if (mLayout.getVisibility() == View.VISIBLE) {
-                    mLayout.setVisibility(View.INVISIBLE);
-                }
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-            super.onDestroy();
-        }
-
-        private class CheckRootTask extends AsyncTask<Void, Void, Void> {
+        private static class CheckRootTask extends AsyncTask<Void, Void, Void> {
             private boolean suAvailable = false;
 
             protected Void doInBackground(Void... params) {
@@ -840,11 +855,11 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
                         if (mLayout.getVisibility() == View.INVISIBLE) {
                             mLayout.setVisibility(View.VISIBLE);
                         }
-                        new CopyCSCTask().execute(getmContext());
+                        new CopyCSCTask().execute(MainApplication.getAppContext());
 
                         if (!MainApplication.getSharedPreferences()
                                 .getBoolean(PREF_IS_FIREFDS_KIT_FIRST_LAUNCH, false)) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                            AlertDialog.Builder builder = new AlertDialog.Builder(MainApplication.getAppContext());
                             builder.setCancelable(true)
                                     .setTitle(R.string.app_name)
                                     .setMessage(R.string.firefds_xposed_disclaimer)
@@ -864,7 +879,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
             }
         }
 
-        private class CopyCSCTask extends AsyncTask<Context, Void, Void> {
+        private static class CopyCSCTask extends AsyncTask<Context, Void, Void> {
 
             protected Void doInBackground(Context... params) {
                 try {
@@ -881,7 +896,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
             protected void onPostExecute(Void result) {
                 try {
                     if (!Utils.isOmcEncryptedFlag()) {
-                        Utils.createCSCFiles(getmContext());
+                        Utils.createCSCFiles(MainApplication.getAppContext());
                     }
                     if (mLayout.getVisibility() == View.VISIBLE) {
                         mLayout.setVisibility(View.INVISIBLE);

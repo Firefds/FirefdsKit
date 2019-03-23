@@ -1,6 +1,5 @@
 package sb.firefds.pie.firefdskit;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -19,19 +18,13 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_SE
 
 public class FirefdsPreferenceFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private Context mContext;
     private List<String> changesMade;
-
-    public Context getmContext() {
-        return mContext;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         changesMade = new ArrayList<>();
-        mContext = Objects.requireNonNull(getActivity()).getBaseContext();
     }
 
     @Override
@@ -40,13 +33,13 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat implemen
         try {
             // No reboot notification required
             String[] litePrefs =
-                    mContext.getResources().getStringArray(R.array.lite_preferences);
+                    MainApplication.getAppContext().getResources().getStringArray(R.array.lite_preferences);
 
             setTimeoutPrefs(sharedPreferences, key);
 
             for (String string : litePrefs) {
                 if (key.equalsIgnoreCase(string)) {
-                    fixPermissions(mContext);
+                    fixPermissions(MainApplication.getAppContext());
                     return;
                 }
             }
@@ -55,31 +48,10 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat implemen
             if (!changesMade.contains(key)) {
                 changesMade.add(key);
             }
-            fixPermissions(mContext);
+            fixPermissions(MainApplication.getAppContext());
             RebootNotification.notify(Objects.requireNonNull(getActivity()), changesMade.size(), false);
         } catch (Throwable e) {
             e.printStackTrace();
-        }
-    }
-
-    private void setTimeoutPrefs(SharedPreferences sharedPreferences, String key) {
-
-        int timeoutML = 0;
-
-        if (key.equalsIgnoreCase(PREF_SCREEN_TIMEOUT_SECONDS)) {
-            timeoutML += sharedPreferences.getInt(key, 30) * 1000;
-            Settings.System.putInt(getActivity().getContentResolver(),
-                    Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
-        }
-        if (key.equalsIgnoreCase(PREF_SCREEN_TIMEOUT_MINUTES)) {
-            timeoutML += sharedPreferences.getInt(key, 0) * 60000;
-            Settings.System.putInt(getActivity().getContentResolver(),
-                    Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
-        }
-        if (key.equalsIgnoreCase(PREF_SCREEN_TIMEOUT_HOURS)) {
-            timeoutML += sharedPreferences.getInt(key, 0) * 3600000;
-            Settings.System.putInt(getActivity().getContentResolver(),
-                    Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
         }
     }
 
@@ -92,14 +64,35 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat implemen
     public void onResume() {
         super.onResume();
         registerPrefsReceiver();
-        fixPermissions(getmContext());
+        fixPermissions(MainApplication.getAppContext());
     }
 
     @Override
     public void onPause() {
         super.onPause();
         unregisterPrefsReceiver();
-        fixPermissions(getmContext());
+        fixPermissions(MainApplication.getAppContext());
+    }
+
+    private void setTimeoutPrefs(SharedPreferences sharedPreferences, String key) {
+
+        int timeoutML = 0;
+
+        if (key.equalsIgnoreCase(PREF_SCREEN_TIMEOUT_SECONDS)) {
+            timeoutML += sharedPreferences.getInt(key, 30) * 1000;
+            Settings.System.putInt(MainApplication.getAppContext().getContentResolver(),
+                    Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
+        }
+        if (key.equalsIgnoreCase(PREF_SCREEN_TIMEOUT_MINUTES)) {
+            timeoutML += sharedPreferences.getInt(key, 0) * 60000;
+            Settings.System.putInt(MainApplication.getAppContext().getContentResolver(),
+                    Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
+        }
+        if (key.equalsIgnoreCase(PREF_SCREEN_TIMEOUT_HOURS)) {
+            timeoutML += sharedPreferences.getInt(key, 0) * 3600000;
+            Settings.System.putInt(MainApplication.getAppContext().getContentResolver(),
+                    Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
+        }
     }
 
     private void registerPrefsReceiver() {

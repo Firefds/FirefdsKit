@@ -14,6 +14,7 @@
  */
 package sb.firefds.pie.firefdskit;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -24,6 +25,7 @@ import android.os.Looper;
 
 public class MainApplication extends Application {
 
+    @SuppressLint("StaticFieldLeak")
     private static Context mContext;
     private static Point windowsSize;
     private static Handler mHandler;
