@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <PreferenceCategory
+    <androidx.preference.PreferenceCategory
         android:key="powerMenuKey"
         android:title="@string/advanced_power_menu"
         app:iconSpaceReserved="false">
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="enableAdvancedPowerMenu"
             android:summary="@string/advanced_power_menu_summary"
             android:title="@string/advanced_power_menu_title"
             app:iconSpaceReserved="false" />
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:dependency="enableAdvancedPowerMenu"
             android:key="enableDataMode"
             android:summary="@string/enable_data_mode_switch_summary"
             android:title="@string/enable_data_mode_switch_title"
             app:iconSpaceReserved="false" />
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:dependency="enableAdvancedPowerMenu"
             android:key="enableScreenshot"
             android:summary="@string/add_screenshot_to_power_menu"
             android:title="@string/screenshot"
             app:iconSpaceReserved="false" />
-    </PreferenceCategory>
-    <PreferenceCategory
+    </androidx.preference.PreferenceCategory>
+    <androidx.preference.PreferenceCategory
         android:title="@string/multiUser"
         app:iconSpaceReserved="false">
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="supportsMultipleUsers"
             android:summary="@string/allow_multi_user_summary"
             android:title="@string/allow_multi_user_title"
             app:iconSpaceReserved="false" />
-        <SeekBarPreference
+        <androidx.preference.SeekBarPreference
             android:defaultValue="3"
             android:dependency="supportsMultipleUsers"
             android:key="maxSupportedUsers"
@@ -44,45 +44,45 @@
             android:title="@string/max_supported_users_title"
             app:iconSpaceReserved="false"
             app:showSeekBarValue="true" />
-    </PreferenceCategory>
-    <PreferenceCategory
+    </androidx.preference.PreferenceCategory>
+    <androidx.preference.PreferenceCategory
         android:title="@string/system"
         app:iconSpaceReserved="false">
-        <PreferenceScreen
+        <androidx.preference.PreferenceScreen
             android:key="screenTimeoutSettings"
             android:title="@string/screen_timeout_title"
             app:fragment="sb.firefds.pie.firefdskit.FirefdsKitActivity$ScreenTimeoutSettingsFragment"
-            app:iconSpaceReserved="false" />
-        <ListPreference
+            app:iconSpaceReserved="false"></androidx.preference.PreferenceScreen>
+        <androidx.preference.ListPreference
             android:defaultValue="0"
             android:entries="@array/nfc_behavior_entries"
             android:entryValues="@array/nfc_behavior_values"
             android:key="nfcBehavior"
-            android:summary="@string/nfc_behavior_summary"
             android:title="@string/nfc_behavior"
-            app:iconSpaceReserved="false" />
-        <SwitchPreference
+            app:iconSpaceReserved="false"
+            app:useSimpleSummaryProvider="true" />
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="hideMTPNotification"
             android:summaryOff="@string/hide_mtp_notification_off"
             android:summaryOn="@string/hide_mtp_notification_on"
             android:title="@string/hide_mtp_notification"
             app:iconSpaceReserved="false" />
-    </PreferenceCategory>
-    <PreferenceCategory
+    </androidx.preference.PreferenceCategory>
+    <androidx.preference.PreferenceCategory
         android:title="@string/camera_and_gallery"
         app:iconSpaceReserved="false">
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="disableTemperatureChecks"
             android:summary="@string/disable_temperature_warnings_on_the_recording"
             android:title="@string/disable_temperature_checks"
             app:iconSpaceReserved="false" />
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="enableCameraShutterMenu"
             android:summary="@string/enable_camera_shutter_menu_summary"
             android:title="@string/enable_camera_shutter_menu"
             app:iconSpaceReserved="false" />
-    </PreferenceCategory>
-</PreferenceScreen>
+    </androidx.preference.PreferenceCategory>
+</androidx.preference.PreferenceScreen>

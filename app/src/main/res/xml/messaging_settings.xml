@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <PreferenceCategory
+    <androidx.preference.PreferenceCategory
         android:title="@string/messaging"
         app:iconSpaceReserved="false">
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="disableSmsToMmsConversion"
             android:summaryOff="@string/mms_sms_mms_conversion_off"
             android:summaryOn="@string/mms_sms_mms_conversion_on"
             android:title="@string/mms_sms_mms_conversion"
             app:iconSpaceReserved="false" />
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="forceMMSConnect"
             android:summary="@string/force_mms_connect_to_receive_mms"
             android:title="@string/force_mms_connect"
             app:iconSpaceReserved="false" />
-    </PreferenceCategory>
-</PreferenceScreen>
+    </androidx.preference.PreferenceCategory>
+</androidx.preference.PreferenceScreen>

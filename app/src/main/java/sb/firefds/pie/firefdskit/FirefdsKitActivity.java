@@ -35,6 +35,7 @@ import android.os.SystemClock;
 import android.provider.Settings;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 
 import android.text.Editable;
@@ -49,9 +50,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -63,6 +62,7 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -75,7 +75,7 @@ import androidx.preference.PreferenceScreen;
 
 import com.topjohnwu.superuser.Shell;
 
-import androidx.preference.SwitchPreference;
+import androidx.preference.SwitchPreferenceCompat;
 import de.robv.android.xposed.XposedBridge;
 import sb.firefds.pie.firefdskit.adapters.BackupAdapter;
 import sb.firefds.pie.firefdskit.notifications.RebootNotification;
@@ -85,14 +85,13 @@ import sb.firefds.pie.firefdskit.utils.Utils;
 import static sb.firefds.pie.firefdskit.utils.Constants.PREFS;
 import static sb.firefds.pie.firefdskit.utils.Preferences.*;
 
-public class FirefdsKitActivity extends AppCompatActivity implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+public class FirefdsKitActivity extends AppCompatActivity
+        implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
     @SuppressLint("StaticFieldLeak")
-    private static RelativeLayout mLayout;
+    private static ConstraintLayout mLayout;
     @SuppressLint("StaticFieldLeak")
     private static TextView progressBarText;
-    /*@SuppressLint("StaticFieldLeak")
-    private static Context thisContext;*/
     private AlertDialog dialog;
     private File dir;
     private File[] backups;
@@ -124,7 +123,6 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
         setContentView(R.layout.firefds_main);
         mLayout = findViewById(R.id.mainLayout);
         progressBarText = findViewById(R.id.progressBarText);
-//        thisContext = getApplicationContext();
         setDefaultPreferences();
 
         try {
@@ -144,9 +142,13 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
     public void onBackPressed() {
         if (!(getVisibleFragment() instanceof SettingsFragment)) {
             if (getSupportActionBar() != null) {
-                getSupportActionBar().setHomeButtonEnabled(false);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-                getSupportActionBar().setTitle(R.string.app_name);
+                if (getVisibleFragment() instanceof ScreenTimeoutSettingsFragment) {
+                    getSupportActionBar().setTitle(R.string.system);
+                } else {
+                    getSupportActionBar().setHomeButtonEnabled(false);
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                    getSupportActionBar().setTitle(R.string.app_name);
+                }
             }
             super.onBackPressed();
         } else {
@@ -181,6 +183,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
         return true;
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -189,7 +192,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
                 showCreditsDialog();
                 break;
             case R.id.recommended_settings:
-                showRecommendedSettingsDiaglog();
+                showRecommendedSettingsDialog();
                 break;
             case R.id.action_save:
                 showSaveDialog();
@@ -199,6 +202,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
                 break;
             case android.R.id.home:
                 onBackPressed();
+                break;
             default:
                 break;
         }
@@ -224,6 +228,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
         }
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("SetWorldReadable")
     public static void fixPermissions(Context context) {
         File sharedPrefsFolder =
@@ -241,6 +246,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
         }
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("SetWorldReadable")
     public static void fixAppPermissions(Context context) {
         File appFolder = context.getFilesDir().getParentFile();
@@ -270,7 +276,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
                 .show();
     }
 
-    private void showRecommendedSettingsDiaglog() {
+    private void showRecommendedSettingsDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true)
                 .setTitle(R.string.app_name)
@@ -307,11 +313,13 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
         dialog = builder.setCancelable(true).setTitle(R.string.save).setView(editText)
                 .setPositiveButton(R.string.save, (dialog, which) -> {
                     if (savePreferencesToSdCard(editText.getText().toString())) {
-                        Toast.makeText(this, R.string.save_successful, Toast.LENGTH_SHORT)
-                                .show();
+                        Utils.createSnackbar(findViewById(android.R.id.content),
+                                R.string.save_successful,
+                                this).show();
                     } else {
-                        Toast.makeText(this, R.string.save_unsuccessful, Toast.LENGTH_SHORT)
-                                .show();
+                        Utils.createSnackbar(findViewById(android.R.id.content),
+                                R.string.save_unsuccessful,
+                                this).show();
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
@@ -320,6 +328,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
         dialog.getButton(Dialog.BUTTON_POSITIVE).setEnabled(false);
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private boolean savePreferencesToSdCard(String string) {
         String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator
                 + Constants.BACKUP_DIR;
@@ -352,6 +361,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
         return res;
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void showRestoreDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String path = Environment.getExternalStorageDirectory()
@@ -432,7 +442,9 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
 
         fixPermissions(getApplicationContext());
 
-        Toast.makeText(this, R.string.recommended_restored, Toast.LENGTH_SHORT).show();
+        Utils.createSnackbar(findViewById(android.R.id.content),
+                R.string.recommended_restored,
+                this).show();
 
         if (!Utils.isOmcEncryptedFlag()) {
             XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
@@ -448,7 +460,9 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
         MainApplication.getSharedPreferences().edit().clear().apply();
         setDefaultPreferences();
 
-        Toast.makeText(this, R.string.defaults_restored, Toast.LENGTH_SHORT).show();
+        Utils.createSnackbar(findViewById(android.R.id.content),
+                R.string.defaults_restored,
+                this).show();
 
         MainApplication.getSharedPreferences()
                 .edit()
@@ -481,6 +495,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
     }
 
     private static class QuitTask extends AsyncTask<Activity, Void, Void> {
+        @SuppressLint("StaticFieldLeak")
         private Activity mActivity = null;
 
         protected Void doInBackground(Activity... params) {
@@ -513,7 +528,8 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
 
     }
 
-    private static class RestoreBackupTask extends AsyncTask<Void, Void, Void> {
+    @SuppressLint("StaticFieldLeak")
+    private class RestoreBackupTask extends AsyncTask<Void, Void, Void> {
 
         private File backup;
 
@@ -524,7 +540,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressBarText.setText(MainApplication.getAppContext().getString(R.string.restoring_backup));
+            progressBarText.setText(getString(R.string.restoring_backup));
             mLayout.setVisibility(View.VISIBLE);
         }
 
@@ -553,7 +569,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
                         prefEdit.putString(key, ((String) v));
                 }
                 prefEdit.apply();
-                fixPermissions(MainApplication.getAppContext());
+                fixPermissions(getApplicationContext());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -577,8 +593,10 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             mLayout.setVisibility(View.INVISIBLE);
-            Toast.makeText(MainApplication.getAppContext(), R.string.backup_restored, Toast.LENGTH_SHORT).show();
-            RebootNotification.notify(MainApplication.getAppContext(), 999, false);
+            Utils.createSnackbar(findViewById(android.R.id.content),
+                    R.string.backup_restored,
+                    FirefdsKitActivity.this).show();
+            RebootNotification.notify(FirefdsKitActivity.this, 999, false);
         }
     }
 
@@ -594,7 +612,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
             super.onCreate(savedInstanceState);
 
             ListPreference clock_date_preference = findPreference(PREF_CLOCK_DATE_PREFERENCE);
-            SwitchPreference clockDateOnRight = findPreference(PREF_CLOCK_DATE_ON_RIGHT);
+            SwitchPreferenceCompat clockDateOnRight = findPreference(PREF_CLOCK_DATE_ON_RIGHT);
             if (clockDateOnRight != null) {
                 if (clock_date_preference != null) {
                     clockDateOnRight.setEnabled(!clock_date_preference.getValue().equals("disabled"));
@@ -645,7 +663,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
             super.onCreate(savedInstanceState);
             if (Utils.isOmcEncryptedFlag()) {
                 PreferenceCategory phoneScreen = findPreference(PREF_PHONE_KEY_CAT);
-                SwitchPreference disableNumberFormattingPreference =
+                SwitchPreferenceCompat disableNumberFormattingPreference =
                         findPreference(PREF_DISABLE_NUMBER_FORMATTING);
 
                 if (phoneScreen != null) {
@@ -692,15 +710,17 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
     public static class SettingsFragment extends FirefdsPreferenceFragment {
 
         private static Resources res;
-        private static AlertDialog alertDialog;
+        private AlertDialog alertDialog;
 
-        private static Runnable delayedRoot = new Runnable() {
+        private Runnable delayedRoot = new Runnable() {
 
             @Override
             public void run() {
                 try {
                     mLayout.setVisibility(View.INVISIBLE);
-                    Toast.makeText(MainApplication.getAppContext(), R.string.root_info, Toast.LENGTH_LONG).show();
+                    Utils.createSnackbar(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content),
+                            R.string.root_info_short,
+                            getActivity()).show();
 
                 } catch (Throwable e) {
                     e.printStackTrace();
@@ -714,9 +734,8 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
 
             try {
                 res = getResources();
-
                 SharedPreferences sharedPreferences
-                        = MainApplication.getAppContext().getSharedPreferences(PREFS, 0);
+                        = getFragmentContext().getSharedPreferences(PREFS, 0);
                 MainApplication.setSharedPreferences(sharedPreferences);
 
                 if (Utils.isOmcEncryptedFlag()) {
@@ -734,7 +753,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
 
                 MainApplication.getSharedPreferences().edit()
                         .putInt(PREF_NOTIFICATION_SIZE, MainApplication.getWindowsSize().x).apply();
-                fixPermissions(MainApplication.getAppContext());
+                fixPermissions(getFragmentContext());
 
 
                 if (!Utils.isSamsungRom()) {
@@ -794,13 +813,13 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
             super.onDestroy();
         }
 
-        private static void showRootDisclaimer() {
+        private void showRootDisclaimer() {
             if (MainApplication.getAppContext() != null) {
                 try {
 
                     mLayout.setVisibility(View.INVISIBLE);
 
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainApplication.getAppContext());
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
 
                     alertDialogBuilder.setTitle(R.string.app_name);
 
@@ -829,7 +848,8 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
 
         }
 
-        private static class CheckRootTask extends AsyncTask<Void, Void, Void> {
+        @SuppressLint("StaticFieldLeak")
+        private class CheckRootTask extends AsyncTask<Void, Void, Void> {
             private boolean suAvailable = false;
 
             protected Void doInBackground(Void... params) {
@@ -855,11 +875,11 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
                         if (mLayout.getVisibility() == View.INVISIBLE) {
                             mLayout.setVisibility(View.VISIBLE);
                         }
-                        new CopyCSCTask().execute(MainApplication.getAppContext());
+                        new CopyCSCTask().execute(getFragmentContext());
 
                         if (!MainApplication.getSharedPreferences()
                                 .getBoolean(PREF_IS_FIREFDS_KIT_FIRST_LAUNCH, false)) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(MainApplication.getAppContext());
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                             builder.setCancelable(true)
                                     .setTitle(R.string.app_name)
                                     .setMessage(R.string.firefds_xposed_disclaimer)
@@ -879,7 +899,8 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
             }
         }
 
-        private static class CopyCSCTask extends AsyncTask<Context, Void, Void> {
+        @SuppressLint("StaticFieldLeak")
+        private class CopyCSCTask extends AsyncTask<Context, Void, Void> {
 
             protected Void doInBackground(Context... params) {
                 try {
@@ -896,7 +917,7 @@ public class FirefdsKitActivity extends AppCompatActivity implements PreferenceF
             protected void onPostExecute(Void result) {
                 try {
                     if (!Utils.isOmcEncryptedFlag()) {
-                        Utils.createCSCFiles(MainApplication.getAppContext());
+                        Utils.createCSCFiles(getFragmentContext());
                     }
                     if (mLayout.getVisibility() == View.VISIBLE) {
                         mLayout.setVisibility(View.INVISIBLE);

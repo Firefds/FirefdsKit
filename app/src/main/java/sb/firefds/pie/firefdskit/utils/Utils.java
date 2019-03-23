@@ -22,16 +22,19 @@ import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemProperties;
+import android.view.View;
 import android.widget.TextView;
 
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
+import androidx.core.content.ContextCompat;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.R;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.topjohnwu.superuser.Shell;
 
 import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
@@ -244,6 +247,14 @@ public class Utils {
                 XposedBridge.log(e2);
             }
         }
+    }
+
+    public static Snackbar createSnackbar(View view, int stringId, Context context) {
+        Snackbar snackbar = Snackbar
+                .make(view, stringId, Snackbar.LENGTH_LONG)
+                .setActionTextColor(ContextCompat.getColor(context, android.R.color.white));
+        snackbar.getView().setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
+        return snackbar;
     }
 
     static class SystemProp extends Utils {

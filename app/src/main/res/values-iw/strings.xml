@@ -66,7 +66,6 @@
     <string name="set_recommended_settings">להחיל הגדרות מומלצות?</string>
     <string name="recommended_restored">הגדרות מומלצות שוחזרו</string>
     <string name="firefds_xposed_disclaimer">יישום זה נבדק על מכשיר גלקסי S8 עם קושחה מקורית. חלק מהתכונות עלולות לא לעבוד כמו שצריך על מכשירים מדגמים אחרים\n\nאני לא לוקח שום אחריות על כל נזק שיגרם על ידי יישום זה, השימוש הוא על אחריותך!</string>
-    <string name="nfc_behavior_summary">זמן הקשבת NFC:\n%s</string>
     <string name="nfc_behavior">התנהגות NFC</string>
     <string name="unlocked">כאשר לא נעול (ברית מחדל)</string>
     <string name="screen_on">כאשר המסך דלוק ונעול</string>
@@ -101,23 +100,18 @@
     <string name="hide_carrier_label">הסתרת טקסט מפעיל סלולרי</string>
     <string name="hide_carrier_label_shown">טקסט מפעיל סלולרי מוצג</string>
     <string name="hide_carrier_label_hidden">טקסט מפעיל סלולרי מוסתר</string>
-    <string name="carrier_size_summary">הגדרת גודל טקסט מפעיל סלולרי</string>
     <string name="carrier_size">גודל טקסט מפעיל סלולרי</string>
     <string name="hide_mtp_notification">אוטומטי MTP</string>
     <string name="hide_mtp_notification_off">אישור או דחייה ידנית של MTP</string>
     <string name="hide_mtp_notification_on">אישור אוטומטי של MTP והסתרת ההתראה</string>
     <string name="screen_timeout_title">הגדרות כיבוי מסך אוטומטי</string>
-    <string name="screen_timeout_seconds_summary">הגדרת השניות עד לכיבוי מסך אוטומטי</string>
     <string name="screen_timeout_seconds">הגדרת שניות לכיבוי מסך</string>
-    <string name="screen_timeout_minutes_summary">הגדרת הדקות עד לכיבוי מסך אוטומטי</string>
     <string name="screen_timeout_minutes">הגדרת דקות לכיבוי מסך</string>
-    <string name="screen_timeout_hours_summary">הגדרת השעות עד לכיבוי מסך אוטומטי</string>
     <string name="screen_timeout_hours">הגדרת שעות לכיבוי מסך</string>
     <string name="quick_settings_disable_sync_dialog_sum">ביטול דיאלוג האישור אחרי הפעלת או ביטול סנכון</string>
     <string name="quick_settings_disable_sync_dialog">ביטול קפיצת חלון סנכרון</string>
     <string name="enable_camera_shutter_menu">הפעלת תפריט צליל צמצם</string>
     <string name="enable_camera_shutter_menu_summary">הפעלת תפריט צליל צמצם באפליקציית המצלמה</string>
-    <string name="data_icon_behavior_summary">בחירת סמל חיבור נתונים ניידים</string>
     <string name="data_icon_behavior_title">סמל חיבור נתונים ניידים</string>
     <string name="lte_4g">LTE במקום 4G</string>
     <string name="four_g_plus_4g">4G Plus במקום 4G</string>
@@ -149,7 +143,6 @@
     <string name="reboot_confirm_recovery">הפעלה מחדש למצב Recovery</string>
     <string name="reboot_confirm_download">הפעלה מחדש למצב Download</string>
     <string name="clock">שעון</string>
-    <string name="date_on_clock_summary">הוספת תאריך לצד השעון בשורת המצב</string>
     <string name="date_on_clock_title">תאריך ליד השעון</string>
     <string name="clock_date_disabled">כבוי</string>
     <string name="clock_date_localized">מבוסס על אזור המכשיר</string>
@@ -162,11 +155,11 @@
     <string name="seconds_on_clock_title">שניות בשעון</string>
     <string name="allow_multi_user_summary">הפעלת תמיכת משתמשים מרובים</string>
     <string name="allow_multi_user_title">תמיכת משתמשים מרובים</string>
-    <string name="max_supported_users_summary">קביעת מספר מקסימום משתמשים</string>
     <string name="max_supported_users_title">מקסימום משתמשים</string>
     <string name="clock_date_on_right_title">תאריך בצד ימין השעון</string>
     <string name="clock_date_on_right_on_summary">תאריך ממוקם בצד ימין של השעון</string>
     <string name="clock_date_on_right_off_summary">תאריך ממוקדם בצד שמאל של השעון</string>
     <string name="multiUser">משתמשים מרובים</string>
     <string name="switchUser">החלפת משתמש</string>
+    <string name="root_info_short">אין גישת Root!</string>
 </resources>

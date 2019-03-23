@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <PreferenceCategory
+    <androidx.preference.PreferenceCategory
         android:title="@string/screen_unlock"
         app:iconSpaceReserved="false">
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="enableFingerprintUnlock"
             android:summary="@string/enable_fingerprint_unlock_summary"
             android:title="@string/enable_fingerprint_unlock_title"
             app:iconSpaceReserved="false" />
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="enableBiometricsUnlock"
             android:summary="@string/enable_biometrics_unlock_summary"
             android:title="@string/enable_biometrics_unlock_title"
             app:iconSpaceReserved="false" />
-    </PreferenceCategory>
-</PreferenceScreen>
+    </androidx.preference.PreferenceCategory>
+</androidx.preference.PreferenceScreen>

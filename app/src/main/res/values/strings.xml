@@ -49,6 +49,7 @@
     <string name="enable_call_add_off">Call Record button enabled instead of Add call button</string>
     <string name="phone">Phone</string>
     <string name="root_info">Root access NOT granted!\n\nSome features requires Root access to work properly.</string>
+    <string name="root_info_short">Root access NOT granted!</string>
     <string name="ok_btn">OK</string>
     <string name="call_number_formatting_enabled">Call number formatting enabled</string>
     <string name="call_number_formatting_disabled">Call number formatting disabled</string>
@@ -69,7 +70,6 @@
     <string name="set_recommended_settings">Apply recommended settings?</string>
     <string name="recommended_restored">Recommended settings restored</string>
     <string name="firefds_xposed_disclaimer">This application has been tested on the Samsung Galaxy S8 Exynos with stock firmware. some features may not work properly on other device models\n\nI do NOT take any responsibility of any damage caused by this application, you are using it at your own risk!</string>
-    <string name="nfc_behavior_summary">NFC should listen:\n%s</string>
     <string name="nfc_behavior">NFC Behavior</string>
     <string name="unlocked">When unlocked (default)</string>
     <string name="screen_on">When screen on and locked</string>
@@ -104,24 +104,19 @@
     <string name="hide_carrier_label">Hide carrier label</string>
     <string name="hide_carrier_label_shown">Carrier label shown</string>
     <string name="hide_carrier_label_hidden">Carrier label hidden</string>
-    <string name="carrier_size_summary">Set the status bar carrier text size</string>
     <string name="carrier_size">Carrier label size</string>
     <string name="hide_mtp_notification">Auto MTP</string>
     <string name="hide_mtp_notification_off">Manually allow or deny MTP access</string>
     <string name="hide_mtp_notification_on">Auto allows MTP and hides the notification</string>
     <string name="screen_timeout_title">Screen Timeout Settings</string>
-    <string name="screen_timeout_seconds_summary">Set the screen timeout seconds</string>
     <string name="screen_timeout_seconds">Screen Timeout Seconds</string>
-    <string name="screen_timeout_minutes_summary">Set the screen timeout minutes</string>
     <string name="screen_timeout_minutes">Screen Timeout Minutes</string>
-    <string name="screen_timeout_hours_summary">Set the screen timeout hours</string>
     <string name="screen_timeout_hours">Screen Timeout Hours</string>
     <string name="reboot_device_action" translatable="false">ma.wanam.xposed.action.REBOOT_DEVICE</string>
     <string name="soft_reboot_device_action" translatable="false">ma.wanam.xposed.action.SOFT_REBOOT_DEVICE</string>
     <string name="reboot_options_action" translatable="false">ma.wanam.xposed.action.REBOOT_OPTIONS</string>
     <string name="enable_camera_shutter_menu">Enable Shutter Sound Menu</string>
     <string name="enable_camera_shutter_menu_summary">Enable shutter sound menu in camera app</string>
-    <string name="data_icon_behavior_summary">Select data icon symbol</string>
     <string name="data_icon_behavior_title">Data Icon Symbol</string>
     <string name="lte_4g">LTE instead of 4G</string>
     <string name="four_g_plus_4g">4G Plus instead of 4G</string>
@@ -152,7 +147,6 @@
     <string name="reboot_confirm_recovery">Reboot to Recovery mode</string>
     <string name="reboot_confirm_download">Reboot to Download mode</string>
     <string name="clock">Clock</string>
-    <string name="date_on_clock_summary">Add date to clock in the status bar</string>
     <string name="date_on_clock_title">Date on Clock</string>
     <string name="clock_date_disabled">Disabled</string>
     <string name="clock_date_localized">Date format based on locale</string>
@@ -165,7 +159,6 @@
     <string name="seconds_on_clock_title">Seconds on Clock</string>
     <string name="allow_multi_user_summary">Enable multi user support</string>
     <string name="allow_multi_user_title">Multi User Support</string>
-    <string name="max_supported_users_summary">Set max users</string>
     <string name="max_supported_users_title">Max users</string>
     <string name="clock_date_on_right_off_summary">Date attached to the left of the clock</string>
     <string name="clock_date_on_right_on_summary">Date attached to the right of the clock</string>

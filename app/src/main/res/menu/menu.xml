@@ -5,20 +5,16 @@
     <item
         android:id="@+id/action_credits"
         android:icon="@android:drawable/ic_menu_info_details"
-        app:showAsAction="ifRoom"
-        android:title="@string/app_name">
-    </item>
+        android:title="@string/app_name"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/recommended_settings"
-        android:title="@string/recommended_settings">
-    </item>
+        android:title="@string/recommended_settings" />
     <item
         android:id="@+id/action_save"
-        android:title="@string/save">
-    </item>
+        android:title="@string/save" />
     <item
         android:id="@+id/action_restore"
-        android:title="@string/restore">
-    </item>
+        android:title="@string/restore" />
 
 </menu>

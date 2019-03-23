@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:key="prefsRoot">
 
-    <Preference
+    <androidx.preference.Preference
         android:enabled="true"
         android:key="fkHeader"
         android:selectable="false"
         android:title="example_title"
         app:iconSpaceReserved="false" />
 
-    <PreferenceScreen
+    <androidx.preference.PreferenceScreen
         android:icon="@drawable/notification"
         android:key="statusbarKey"
         android:title="@string/statusbar"
         app:fragment="sb.firefds.pie.firefdskit.FirefdsKitActivity$NotificationSettingsFragment" />
-    <PreferenceScreen
+    <androidx.preference.PreferenceScreen
         android:icon="@drawable/lockscreen"
         android:key="lockscreenKey"
         android:title="@string/lockscreen"
         app:fragment="sb.firefds.pie.firefdskit.FirefdsKitActivity$LockscreenSettingsFragment" />
-    <PreferenceScreen
+    <androidx.preference.PreferenceScreen
         android:icon="@drawable/sound"
         android:key="soundKey"
         android:title="@string/sound"
         app:fragment="sb.firefds.pie.firefdskit.FirefdsKitActivity$SoundSettingsFragment" />
-    <PreferenceScreen
+    <androidx.preference.PreferenceScreen
         android:icon="@drawable/system"
         android:key="systemKey"
         android:title="@string/system"
         app:fragment="sb.firefds.pie.firefdskit.FirefdsKitActivity$SystemSettingsFragment" />
-    <PreferenceScreen
+    <androidx.preference.PreferenceScreen
         android:icon="@drawable/phone"
         android:key="phoneKey"
         android:title="@string/phone"
         app:fragment="sb.firefds.pie.firefdskit.FirefdsKitActivity$PhoneSettingsFragment" />
-    <PreferenceScreen
+    <androidx.preference.PreferenceScreen
         android:icon="@drawable/sms"
         android:key="messagingKey"
         android:title="@string/messaging"
         app:fragment="sb.firefds.pie.firefdskit.FirefdsKitActivity$MessagingSettingsFragment" />
-    <PreferenceScreen
+    <androidx.preference.PreferenceScreen
         android:icon="@drawable/security"
         android:key="securityHacks"
         android:title="@string/security"
         app:fragment="sb.firefds.pie.firefdskit.FirefdsKitActivity$SecuritySettingsFragment" />
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

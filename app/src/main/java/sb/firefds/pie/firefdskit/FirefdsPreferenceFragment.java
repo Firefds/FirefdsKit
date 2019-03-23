@@ -1,5 +1,7 @@
 package sb.firefds.pie.firefdskit;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -18,6 +20,8 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_SE
 
 public class FirefdsPreferenceFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    @SuppressLint("StaticFieldLeak")
+    private static Context fragmentContext;
     private List<String> changesMade;
 
     @Override
@@ -25,6 +29,7 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat implemen
         super.onCreate(savedInstanceState);
 
         changesMade = new ArrayList<>();
+        fragmentContext = Objects.requireNonNull(getActivity()).getBaseContext();
     }
 
     @Override
@@ -33,13 +38,13 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat implemen
         try {
             // No reboot notification required
             String[] litePrefs =
-                    MainApplication.getAppContext().getResources().getStringArray(R.array.lite_preferences);
+                    fragmentContext.getResources().getStringArray(R.array.lite_preferences);
 
             setTimeoutPrefs(sharedPreferences, key);
 
             for (String string : litePrefs) {
                 if (key.equalsIgnoreCase(string)) {
-                    fixPermissions(MainApplication.getAppContext());
+                    fixPermissions(fragmentContext);
                     return;
                 }
             }
@@ -48,7 +53,7 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat implemen
             if (!changesMade.contains(key)) {
                 changesMade.add(key);
             }
-            fixPermissions(MainApplication.getAppContext());
+            fixPermissions(fragmentContext);
             RebootNotification.notify(Objects.requireNonNull(getActivity()), changesMade.size(), false);
         } catch (Throwable e) {
             e.printStackTrace();
@@ -64,14 +69,18 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat implemen
     public void onResume() {
         super.onResume();
         registerPrefsReceiver();
-        fixPermissions(MainApplication.getAppContext());
+        fixPermissions(getFragmentContext());
     }
 
     @Override
     public void onPause() {
         super.onPause();
         unregisterPrefsReceiver();
-        fixPermissions(MainApplication.getAppContext());
+        fixPermissions(getFragmentContext());
+    }
+
+    public static Context getFragmentContext() {
+        return fragmentContext;
     }
 
     private void setTimeoutPrefs(SharedPreferences sharedPreferences, String key) {
@@ -80,17 +89,17 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat implemen
 
         if (key.equalsIgnoreCase(PREF_SCREEN_TIMEOUT_SECONDS)) {
             timeoutML += sharedPreferences.getInt(key, 30) * 1000;
-            Settings.System.putInt(MainApplication.getAppContext().getContentResolver(),
+            Settings.System.putInt(getFragmentContext().getContentResolver(),
                     Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
         }
         if (key.equalsIgnoreCase(PREF_SCREEN_TIMEOUT_MINUTES)) {
             timeoutML += sharedPreferences.getInt(key, 0) * 60000;
-            Settings.System.putInt(MainApplication.getAppContext().getContentResolver(),
+            Settings.System.putInt(getFragmentContext().getContentResolver(),
                     Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
         }
         if (key.equalsIgnoreCase(PREF_SCREEN_TIMEOUT_HOURS)) {
             timeoutML += sharedPreferences.getInt(key, 0) * 3600000;
-            Settings.System.putInt(MainApplication.getAppContext().getContentResolver(),
+            Settings.System.putInt(getFragmentContext().getContentResolver(),
                     Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
         }
     }
