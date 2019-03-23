@@ -18,19 +18,16 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.SystemClock;
 import android.provider.Settings;
 
@@ -38,27 +35,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.text.method.LinkMovementMethod;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -76,26 +62,23 @@ import androidx.preference.PreferenceScreen;
 import com.topjohnwu.superuser.Shell;
 
 import androidx.preference.SwitchPreferenceCompat;
-import de.robv.android.xposed.XposedBridge;
-import sb.firefds.pie.firefdskit.adapters.BackupAdapter;
+import sb.firefds.pie.firefdskit.dialogs.CreditDialog;
+import sb.firefds.pie.firefdskit.dialogs.RestoreDialog;
+import sb.firefds.pie.firefdskit.dialogs.SaveDialog;
 import sb.firefds.pie.firefdskit.notifications.RebootNotification;
-import sb.firefds.pie.firefdskit.utils.Constants;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
 import static sb.firefds.pie.firefdskit.utils.Constants.PREFS;
 import static sb.firefds.pie.firefdskit.utils.Preferences.*;
 
 public class FirefdsKitActivity extends AppCompatActivity
-        implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+        implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback,
+        RestoreDialog.RestoreDialogListener {
 
     @SuppressLint("StaticFieldLeak")
     private static ConstraintLayout mLayout;
     @SuppressLint("StaticFieldLeak")
     private static TextView progressBarText;
-    private AlertDialog dialog;
-    private File dir;
-    private File[] backups;
-    private ListView listView;
 
     static {
         Shell.Config.setFlags(Shell.FLAG_REDIRECT_STDERR);
@@ -210,6 +193,37 @@ public class FirefdsKitActivity extends AppCompatActivity
 
     }
 
+    @Override
+    public void onRestoreDefaults() {
+
+        MainApplication.getSharedPreferences().edit().clear().apply();
+        setDefaultPreferences();
+
+        Utils.createSnackbar(findViewById(android.R.id.content),
+                R.string.defaults_restored,
+                this).show();
+
+        MainApplication.getSharedPreferences()
+                .edit()
+                .putInt(PREF_NOTIFICATION_SIZE, MainApplication.getWindowsSize().x)
+                .apply();
+
+        fixPermissions(getApplicationContext());
+
+        if (!Utils.isOmcEncryptedFlag()) {
+            XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
+        }
+
+        recreate();
+
+        RebootNotification.notify(this, 999, false);
+    }
+
+    @Override
+    public void onRestoreBackup(final File backup) {
+        new RestoreBackupTask(backup).execute();
+    }
+
     public static void verifyStoragePermissions(Activity activity) {
         // Check if we have write permission
         int permission = ActivityCompat.checkSelfPermission(activity,
@@ -255,25 +269,9 @@ public class FirefdsKitActivity extends AppCompatActivity
     }
 
     private void showCreditsDialog() {
-        PackageInfo pInfo;
-        String pkgVersion = "";
-        try {
-            pInfo = this
-                    .getPackageManager()
-                    .getPackageInfo(this.getPackageName(), 0);
-            pkgVersion = pInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            XposedBridge.log(e);
-        }
-        TextView tv = new TextView(this);
-        tv.setMovementMethod(LinkMovementMethod.getInstance());
-        tv.setText(R.string.credit_details);
-        tv.setPadding(16, 16, 16, 16);
-        new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.app_name) + " " + pkgVersion)
-                .setView(tv)
-                .setNeutralButton(R.string.ok_btn, (dialog, id) -> dialog.dismiss())
-                .show();
+
+        CreditDialog creditDialog = new CreditDialog();
+        creditDialog.getDialog(this).show();
     }
 
     private void showRecommendedSettingsDialog() {
@@ -288,143 +286,13 @@ public class FirefdsKitActivity extends AppCompatActivity
     }
 
     private void showSaveDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final EditText editText = new EditText(this);
-        editText.setHint(R.string.backup_name);
-        editText.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (count == 0) {
-                    dialog.getButton(Dialog.BUTTON_POSITIVE).setEnabled(false);
-                } else {
-                    dialog.getButton(Dialog.BUTTON_POSITIVE).setEnabled(true);
-                }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        dialog = builder.setCancelable(true).setTitle(R.string.save).setView(editText)
-                .setPositiveButton(R.string.save, (dialog, which) -> {
-                    if (savePreferencesToSdCard(editText.getText().toString())) {
-                        Utils.createSnackbar(findViewById(android.R.id.content),
-                                R.string.save_successful,
-                                this).show();
-                    } else {
-                        Utils.createSnackbar(findViewById(android.R.id.content),
-                                R.string.save_unsuccessful,
-                                this).show();
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
-                .create();
-        dialog.show();
-        dialog.getButton(Dialog.BUTTON_POSITIVE).setEnabled(false);
+        SaveDialog saveDialog = new SaveDialog();
+        saveDialog.showDialog(this, findViewById(android.R.id.content));
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    private boolean savePreferencesToSdCard(String string) {
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator
-                + Constants.BACKUP_DIR;
-        File dir = new File(path);
-        dir.mkdirs();
-
-        File file = new File(dir, string + ".xt");
-
-        boolean res = false;
-        ObjectOutputStream output = null;
-        try {
-            output = new ObjectOutputStream(new FileOutputStream(file));
-            output.writeObject(MainApplication.getSharedPreferences().getAll());
-
-            res = true;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (output != null) {
-                    output.flush();
-                    output.close();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return res;
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void showRestoreDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String path = Environment.getExternalStorageDirectory()
-                .getAbsolutePath() + File.separator + Constants.BACKUP_DIR;
-        LinearLayout linearLayout = new LinearLayout(this);
-        listView = new ListView(this);
-        linearLayout.addView(listView);
-        TextView emptyView = new TextView(this, null, android.R.layout.simple_list_item_1);
-        emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                (int) (Resources.getSystem().getDisplayMetrics().density * 48)));
-        emptyView.setGravity(Gravity.CENTER);
-        linearLayout.addView(emptyView);
-        emptyView.setText(R.string.no_backups);
-        listView.setEmptyView(emptyView);
-        dir = new File(path);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-
-        setupData();
-
-        listView.setOnItemClickListener((arg0, arg1, arg2, arg3) -> {
-            onRestoreBackup(backups[arg2]);
-            dialog.dismiss();
-        });
-        listView.setOnItemLongClickListener((arg0, arg1, arg2, arg3) -> {
-            PopupMenu menu = new PopupMenu(this, arg1);
-            menu.inflate(R.menu.backup_item);
-            menu.setOnMenuItemClickListener(item1 -> {
-                if (item1.getItemId() == R.id.action_delete) {
-                    backups[arg2].delete();
-                    setupData();
-                }
-                return true;
-            });
-            menu.show();
-            return true;
-        });
-        dialog = builder.setCancelable(true).setTitle(R.string.restore).setView(linearLayout)
-                .setPositiveButton(R.string.defaults, (dialog, which) -> onRestoreDefaults())
-                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
-                .create();
-        dialog.show();
-    }
-
-    private void setupData() {
-        backups = dir.listFiles();
-        if (backups == null || backups.length == 0) {
-            return;
-        }
-        BackupAdapter adapter = new BackupAdapter(this, backups);
-        listView.setAdapter(adapter);
-    }
-
-    private void setDefaultPreferences() {
-        PreferenceManager.setDefaultValues(this, R.xml.lockscreen_settings, true);
-        PreferenceManager.setDefaultValues(this, R.xml.messaging_settings, true);
-        PreferenceManager.setDefaultValues(this, R.xml.notification_settings, true);
-        PreferenceManager.setDefaultValues(this, R.xml.phone_settings, true);
-        PreferenceManager.setDefaultValues(this, R.xml.screen_timeout_settings, true);
-        PreferenceManager.setDefaultValues(this, R.xml.security_settings, true);
-        PreferenceManager.setDefaultValues(this, R.xml.sound_settings, true);
-        PreferenceManager.setDefaultValues(this, R.xml.system_settings, true);
+        RestoreDialog restoreDialog = new RestoreDialog(this);
+        restoreDialog.showDialog(this);
     }
 
     private void restoreRecommendedSettings() {
@@ -455,33 +323,16 @@ public class FirefdsKitActivity extends AppCompatActivity
 
     }
 
-    private void onRestoreDefaults() {
-
-        MainApplication.getSharedPreferences().edit().clear().apply();
-        setDefaultPreferences();
-
-        Utils.createSnackbar(findViewById(android.R.id.content),
-                R.string.defaults_restored,
-                this).show();
-
-        MainApplication.getSharedPreferences()
-                .edit()
-                .putInt(PREF_NOTIFICATION_SIZE, MainApplication.getWindowsSize().x)
-                .apply();
-
-        fixPermissions(getApplicationContext());
-
-        if (!Utils.isOmcEncryptedFlag()) {
-            XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
-        }
-
-        recreate();
-
-        RebootNotification.notify(this, 999, false);
-    }
-
-    private void onRestoreBackup(final File backup) {
-        new RestoreBackupTask(backup).execute();
+    private void setDefaultPreferences() {
+        PreferenceManager.setDefaultValues(this, R.xml.lockscreen_settings, true);
+        PreferenceManager.setDefaultValues(this, R.xml.messaging_settings, true);
+        PreferenceManager.setDefaultValues(this, R.xml.notification_settings, true);
+        PreferenceManager.setDefaultValues(this, R.xml.phone_settings, true);
+        PreferenceManager.setDefaultValues(this, R.xml.screen_timeout_settings, true);
+        PreferenceManager.setDefaultValues(this, R.xml.security_settings, true);
+        PreferenceManager.setDefaultValues(this, R.xml.sound_settings, true);
+        PreferenceManager.setDefaultValues(this, R.xml.system_settings, true);
+        fixPermissions(this);
     }
 
     private Fragment getVisibleFragment() {
