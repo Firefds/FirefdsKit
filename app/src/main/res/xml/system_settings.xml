@@ -27,6 +27,15 @@
             app:iconSpaceReserved="false" />
     </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory
+        android:title="Navigation Bar"
+        app:iconSpaceReserved="false">
+        <androidx.preference.PreferenceScreen
+            android:key="navigationBarSettings"
+            android:title="Navigation Bar"
+            app:fragment="sb.firefds.pie.firefdskit.FirefdsKitActivity$NavigationBarSettingsFragment"
+            app:iconSpaceReserved="false" />
+    </androidx.preference.PreferenceCategory>
+    <androidx.preference.PreferenceCategory
         android:title="@string/multiUser"
         app:iconSpaceReserved="false">
         <SwitchPreferenceCompat
@@ -52,7 +61,7 @@
             android:key="screenTimeoutSettings"
             android:title="@string/screen_timeout_title"
             app:fragment="sb.firefds.pie.firefdskit.FirefdsKitActivity$ScreenTimeoutSettingsFragment"
-            app:iconSpaceReserved="false"></androidx.preference.PreferenceScreen>
+            app:iconSpaceReserved="false" />
         <androidx.preference.ListPreference
             android:defaultValue="0"
             android:entries="@array/nfc_behavior_entries"

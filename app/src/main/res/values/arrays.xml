@@ -90,6 +90,6 @@
         <item>@color/navigationbar_default_color_5</item>
         <item>@color/navigationbar_default_color_6</item>
         <item>@color/navigationbar_default_color_7</item>
-        <item>@color/selector</item>
+        <item />
     </array>
 </resources>

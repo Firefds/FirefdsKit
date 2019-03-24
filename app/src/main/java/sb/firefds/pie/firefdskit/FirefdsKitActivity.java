@@ -62,6 +62,7 @@ import androidx.preference.PreferenceScreen;
 import com.topjohnwu.superuser.Shell;
 
 import androidx.preference.SwitchPreferenceCompat;
+import de.robv.android.xposed.XposedBridge;
 import sb.firefds.pie.firefdskit.dialogs.CreditDialog;
 import sb.firefds.pie.firefdskit.dialogs.RestoreDialog;
 import sb.firefds.pie.firefdskit.dialogs.SaveDialog;
@@ -125,7 +126,8 @@ public class FirefdsKitActivity extends AppCompatActivity
     public void onBackPressed() {
         if (!(getVisibleFragment() instanceof SettingsFragment)) {
             if (getSupportActionBar() != null) {
-                if (getVisibleFragment() instanceof ScreenTimeoutSettingsFragment) {
+                if (getVisibleFragment() instanceof ScreenTimeoutSettingsFragment ||
+                        getVisibleFragment() instanceof NavigationBarSettingsFragment) {
                     getSupportActionBar().setTitle(R.string.system);
                 } else {
                     getSupportActionBar().setHomeButtonEnabled(false);
@@ -207,6 +209,18 @@ public class FirefdsKitActivity extends AppCompatActivity
                 .edit()
                 .putInt(PREF_NOTIFICATION_SIZE, MainApplication.getWindowsSize().x)
                 .apply();
+
+        Editor editor = MainApplication.getSharedPreferences().edit();
+        try {
+            editor.putInt(PREF_SCREEN_TIMEOUT_MINUTES, 0).apply();
+            editor.putInt(PREF_SCREEN_TIMEOUT_SECONDS, 30).apply();
+            editor.putInt(PREF_SCREEN_TIMEOUT_HOURS, 0).apply();
+
+            editor.putInt(PREF_NAVIGATION_BAR_COLOR, getResources().getIntArray(R.array.navigationbar_color_values)[1])
+                    .apply();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
 
         fixPermissions(getApplicationContext());
 
@@ -308,6 +322,17 @@ public class FirefdsKitActivity extends AppCompatActivity
 
         editor.putInt(PREF_NOTIFICATION_SIZE, MainApplication.getWindowsSize().x).apply();
 
+        try {
+            editor.putInt(PREF_SCREEN_TIMEOUT_MINUTES, 0).apply();
+            editor.putInt(PREF_SCREEN_TIMEOUT_SECONDS, 30).apply();
+            editor.putInt(PREF_SCREEN_TIMEOUT_HOURS, 0).apply();
+
+            editor.putInt(PREF_NAVIGATION_BAR_COLOR, getResources().getIntArray(R.array.navigationbar_color_values)[1])
+                    .apply();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
         fixPermissions(getApplicationContext());
 
         Utils.createSnackbar(findViewById(android.R.id.content),
@@ -332,6 +357,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         PreferenceManager.setDefaultValues(this, R.xml.security_settings, true);
         PreferenceManager.setDefaultValues(this, R.xml.sound_settings, true);
         PreferenceManager.setDefaultValues(this, R.xml.system_settings, true);
+        PreferenceManager.setDefaultValues(this, R.xml.navigation_bar_settings, true);
         fixPermissions(this);
     }
 
@@ -558,6 +584,14 @@ public class FirefdsKitActivity extends AppCompatActivity
         }
     }
 
+    public static class NavigationBarSettingsFragment extends FirefdsPreferenceFragment {
+
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.navigation_bar_settings, rootKey);
+        }
+    }
+
     public static class SettingsFragment extends FirefdsPreferenceFragment {
 
         private static Resources res;
@@ -604,6 +638,22 @@ public class FirefdsKitActivity extends AppCompatActivity
 
                 MainApplication.getSharedPreferences().edit()
                         .putInt(PREF_NOTIFICATION_SIZE, MainApplication.getWindowsSize().x).apply();
+                Editor editor = MainApplication.getSharedPreferences().edit();
+                try {
+                    int systemScreenTimeout = Settings.System.getInt(MainApplication.getAppContext().getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT);
+                    if (systemScreenTimeout > 60000) {
+                        XposedBridge.log("Screen timeout: " + systemScreenTimeout);
+                        editor.putInt(PREF_SCREEN_TIMEOUT_MINUTES, systemScreenTimeout / 60000)
+                                .apply();
+                    } else {
+                        editor.putInt(PREF_SCREEN_TIMEOUT_SECONDS, systemScreenTimeout / 1000)
+                                .apply();
+                    }
+                    editor.putInt(PREF_NAVIGATION_BAR_COLOR, Settings.Global.getInt(MainApplication.getAppContext().getContentResolver(), "navigationbar_color"))
+                            .apply();
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
                 fixPermissions(getFragmentContext());
 
 
