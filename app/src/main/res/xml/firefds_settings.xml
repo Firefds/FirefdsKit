@@ -3,11 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:key="prefsRoot">
 
-    <androidx.preference.Preference
+    <sb.firefds.pie.firefdskit.TextViewPreference
         android:enabled="true"
         android:key="fkHeader"
         android:selectable="false"
-        android:title="example_title"
         app:iconSpaceReserved="false" />
 
     <androidx.preference.PreferenceScreen
