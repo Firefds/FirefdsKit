@@ -17,8 +17,11 @@ package sb.firefds.pie.firefdskit;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.UserManager;
+import android.util.AttributeSet;
+import android.util.Xml;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -26,6 +29,11 @@ import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.utils.Packages;
+import sb.firefds.pie.firefdskit.utils.Utils;
+
+import org.xmlpull.v1.XmlPullParser;
+
+import java.lang.reflect.Constructor;
 
 import static sb.firefds.pie.firefdskit.utils.Preferences.*;
 
@@ -42,10 +50,60 @@ public class XSecSettingsPackage {
     private static final String STATUS_BAR = Packages.SAMSUNG_SETTINGS + ".display.StatusBar";
 
     private static ClassLoader classLoader;
+    private static Context mContext;
+    private static int[] colorArray;
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
         XSecSettingsPackage.classLoader = classLoader;
+
+        try {
+            Class<?> NavigationBarSettings = XposedHelpers.findClass("com.samsung.android.settings.navigationbar.NavigationBarSettings",
+                    classLoader);
+            Class<?> NavigationBarColorPreference = XposedHelpers.findClass("com.samsung.android.settings.navigationbar.NavigationbarColorPreference",
+                    classLoader);
+
+            XposedHelpers.findAndHookMethod(NavigationBarSettings,
+                    "initUI",
+                    new XC_MethodHook() {
+                        @Override
+                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                            Context ctx = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
+                            Resources res = ctx.getResources();
+                            Context gbContext = Utils.getGbContext(ctx, res.getConfiguration());
+                            Constructor constructor = NavigationBarColorPreference.getDeclaredConstructor(Context.class, AttributeSet.class);
+
+                            XmlPullParser parser = gbContext.getResources().getXml(R.xml.navigationbar_color_preference);
+                            try {
+                                parser.next();
+                                parser.nextTag();
+                            } catch (Exception e) {
+                                XposedBridge.log(e);
+                            }
+
+                            AttributeSet attr = Xml.asAttributeSet(parser);
+                            Object navigationColorPreference = constructor.newInstance(ctx, attr);
+                            Object preferenceScreen = XposedHelpers.callMethod(param.thisObject, "getPreferenceScreen");
+                            XposedHelpers.callMethod(preferenceScreen, "addPreference", navigationColorPreference);
+                            XposedBridge.log("Preference screen: " + XposedHelpers.callMethod(preferenceScreen, "getPreferenceCount"));
+                        }
+                    });
+
+            XposedBridge.hookAllConstructors(NavigationBarColorPreference, new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                    mContext = (Context) param.args[0];
+                    Context gbContext = mContext.createPackageContext(Packages.FIREFDSKIT,
+                            Context.CONTEXT_IGNORE_SECURITY);
+                    Resources gbRes = gbContext.getResources();
+                    colorArray = gbRes.getIntArray(R.array.navigationbar_color_values);
+                    XposedHelpers.setObjectField(param.thisObject, "color_value", colorArray);
+                }
+            });
+
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
 
         if (prefs.getBoolean(PREF_MAKE_OFFICIAL, true)) {
             makeOfficial();

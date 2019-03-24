@@ -82,4 +82,14 @@
         <item>MMM d</item>
         <item>d</item>
     </string-array>
+    <array name="navigationbar_color_values">
+        <item>@color/navigationbar_default_color_1</item>
+        <item>@color/navigationbar_default_color_2</item>
+        <item>@color/navigationbar_default_color_3</item>
+        <item>@color/navigationbar_default_color_4</item>
+        <item>@color/navigationbar_default_color_5</item>
+        <item>@color/navigationbar_default_color_6</item>
+        <item>@color/navigationbar_default_color_7</item>
+        <item>@color/selector</item>
+    </array>
 </resources>
