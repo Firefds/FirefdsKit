@@ -53,6 +53,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -591,6 +592,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         private static Resources res;
         private AlertDialog alertDialog;
         private Context mContext;
+        private FragmentActivity activityCompat;
 
         private Runnable delayedRoot = new Runnable() {
 
@@ -598,9 +600,9 @@ public class FirefdsKitActivity extends AppCompatActivity
             public void run() {
                 try {
                     mLayout.setVisibility(View.INVISIBLE);
-                    Utils.createSnackbar(Objects.requireNonNull(getActivity()).findViewById(android.R.id.content),
+                    Utils.createSnackbar(activityCompat.findViewById(android.R.id.content),
                             R.string.root_info_short,
-                            getActivity()).show();
+                            activityCompat).show();
 
                 } catch (Throwable e) {
                     e.printStackTrace();
@@ -614,6 +616,7 @@ public class FirefdsKitActivity extends AppCompatActivity
 
             try {
                 mContext = getContext();
+                activityCompat = getActivity();
                 res = getResources();
                 SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREFS, 0);
                 MainApplication.setSharedPreferences(sharedPreferences);
@@ -664,7 +667,7 @@ public class FirefdsKitActivity extends AppCompatActivity
 
                 if (!Utils.isSamsungRom()) {
                     AlertDialog.Builder alertDialogBuilder =
-                            new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
+                            new AlertDialog.Builder(activityCompat);
                     alertDialogBuilder.setTitle(res.getString(R.string.samsung_rom_warning));
 
                     alertDialogBuilder.setMessage(res.getString(R.string.samsung_rom_warning_msg))
@@ -727,7 +730,7 @@ public class FirefdsKitActivity extends AppCompatActivity
                     mLayout.setVisibility(View.INVISIBLE);
 
                     AlertDialog.Builder alertDialogBuilder =
-                            new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
+                            new AlertDialog.Builder(activityCompat);
 
                     alertDialogBuilder.setTitle(R.string.app_name);
 
@@ -788,7 +791,7 @@ public class FirefdsKitActivity extends AppCompatActivity
                         if (!MainApplication.getSharedPreferences()
                                 .getBoolean(PREF_IS_FIREFDS_KIT_FIRST_LAUNCH, false)) {
                             AlertDialog.Builder builder =
-                                    new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
+                                    new AlertDialog.Builder(activityCompat);
                             builder.setCancelable(true)
                                     .setTitle(R.string.app_name)
                                     .setMessage(R.string.firefds_xposed_disclaimer)
