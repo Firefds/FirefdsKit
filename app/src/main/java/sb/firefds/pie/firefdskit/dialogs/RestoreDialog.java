@@ -1,7 +1,5 @@
 package sb.firefds.pie.firefdskit.dialogs;
 
-import android.app.Activity;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Environment;
@@ -15,6 +13,7 @@ import android.widget.TextView;
 import java.io.File;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import sb.firefds.pie.firefdskit.R;
 import sb.firefds.pie.firefdskit.adapters.BackupAdapter;
 import sb.firefds.pie.firefdskit.utils.Constants;
@@ -27,7 +26,7 @@ public class RestoreDialog {
     private ListView listView;
     private RestoreDialogListener listener;
 
-    public RestoreDialog(Activity activity) {
+    public RestoreDialog(AppCompatActivity activity) {
         this.listener = (RestoreDialogListener) activity;
     }
 

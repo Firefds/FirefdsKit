@@ -14,13 +14,13 @@
  */
 package sb.firefds.pie.firefdskit.activities;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import java.util.Objects;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import sb.firefds.pie.firefdskit.MainApplication;
 import sb.firefds.pie.firefdskit.R;
 import sb.firefds.pie.firefdskit.XCscFeaturesManager;
@@ -29,7 +29,7 @@ import sb.firefds.pie.firefdskit.utils.Utils;
 import static sb.firefds.pie.firefdskit.utils.Constants.REBOOT_DEVICE;
 
 @SuppressWarnings("deprecation")
-public class WanamRebootActivity extends Activity {
+public class WanamRebootActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

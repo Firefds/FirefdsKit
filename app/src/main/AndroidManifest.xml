@@ -51,7 +51,7 @@
             android:name=".activities.WanamRebootActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:label="@string/rebooting_"
-            android:theme="@android:style/Theme.DeviceDefault.Dialog" />
+            android:theme="@style/Theme.AppCompat.Dialog" />
     </application>
 
 </manifest>
