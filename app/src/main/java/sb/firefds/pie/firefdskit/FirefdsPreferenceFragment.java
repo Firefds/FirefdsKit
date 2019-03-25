@@ -85,20 +85,14 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat implemen
 
     private void setTimeoutPrefs(SharedPreferences sharedPreferences, String key) {
 
-        int timeoutML = 0;
+        if (key.equals(PREF_SCREEN_TIMEOUT_SECONDS) ||
+                key.equals(PREF_SCREEN_TIMEOUT_MINUTES) ||
+                key.equals(PREF_SCREEN_TIMEOUT_HOURS)) {
 
-        if (key.equalsIgnoreCase(PREF_SCREEN_TIMEOUT_SECONDS)) {
-            timeoutML += sharedPreferences.getInt(key, 30) * 1000;
-            Settings.System.putInt(getFragmentContext().getContentResolver(),
-                    Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
-        }
-        if (key.equalsIgnoreCase(PREF_SCREEN_TIMEOUT_MINUTES)) {
-            timeoutML += sharedPreferences.getInt(key, 0) * 60000;
-            Settings.System.putInt(getFragmentContext().getContentResolver(),
-                    Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
-        }
-        if (key.equalsIgnoreCase(PREF_SCREEN_TIMEOUT_HOURS)) {
-            timeoutML += sharedPreferences.getInt(key, 0) * 3600000;
+            int hour = sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_HOURS, 0) * 3600000;
+            int min = sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_MINUTES, 0) * 60000;
+            int sec = sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_SECONDS, 30) * 1000;
+            int timeoutML = hour + min + sec;
             Settings.System.putInt(getFragmentContext().getContentResolver(),
                     Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
         }

@@ -18,6 +18,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,6 +40,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -62,7 +64,6 @@ import androidx.preference.PreferenceScreen;
 import com.topjohnwu.superuser.Shell;
 
 import androidx.preference.SwitchPreferenceCompat;
-import de.robv.android.xposed.XposedBridge;
 import sb.firefds.pie.firefdskit.dialogs.CreditDialog;
 import sb.firefds.pie.firefdskit.dialogs.RestoreDialog;
 import sb.firefds.pie.firefdskit.dialogs.SaveDialog;
@@ -86,11 +87,6 @@ public class FirefdsKitActivity extends AppCompatActivity
         Shell.Config.verboseLogging(BuildConfig.DEBUG);
     }
 
-    private static final String[] defaultSettings = MainApplication
-            .getAppContext()
-            .getResources()
-            .getStringArray(R.array.default_settings);
-
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -107,7 +103,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         setContentView(R.layout.firefds_main);
         mLayout = findViewById(R.id.mainLayout);
         progressBarText = findViewById(R.id.progressBarText);
-        setDefaultPreferences();
+        setDefaultPreferences(false);
 
         try {
             MainApplication.setWindowsSize(new Point());
@@ -199,37 +195,14 @@ public class FirefdsKitActivity extends AppCompatActivity
     public void onRestoreDefaults() {
 
         MainApplication.getSharedPreferences().edit().clear().apply();
-        setDefaultPreferences();
-
-        Utils.createSnackbar(findViewById(android.R.id.content),
-                R.string.defaults_restored,
-                this).show();
-
-        MainApplication.getSharedPreferences()
-                .edit()
-                .putInt(PREF_NOTIFICATION_SIZE, MainApplication.getWindowsSize().x)
-                .apply();
-
-        Editor editor = MainApplication.getSharedPreferences().edit();
-        try {
-            editor.putInt(PREF_SCREEN_TIMEOUT_MINUTES, 0).apply();
-            editor.putInt(PREF_SCREEN_TIMEOUT_SECONDS, 30).apply();
-            editor.putInt(PREF_SCREEN_TIMEOUT_HOURS, 0).apply();
-
-            editor.putInt(PREF_NAVIGATION_BAR_COLOR, getResources().getIntArray(R.array.navigationbar_color_values)[1])
-                    .apply();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        fixPermissions(getApplicationContext());
+        setDefaultPreferences(true);
 
         if (!Utils.isOmcEncryptedFlag()) {
             XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
         }
 
         recreate();
-
+        Toast.makeText(this, R.string.defaults_restored, Toast.LENGTH_LONG).show();
         RebootNotification.notify(this, 999, false);
     }
 
@@ -312,52 +285,37 @@ public class FirefdsKitActivity extends AppCompatActivity
     private void restoreRecommendedSettings() {
 
         MainApplication.getSharedPreferences().edit().clear().apply();
-        setDefaultPreferences();
-
-        Editor editor = MainApplication.getSharedPreferences().edit();
-
-        for (String defaultSetting : defaultSettings) {
-            editor.putBoolean(defaultSetting, true).apply();
-        }
-
-        editor.putInt(PREF_NOTIFICATION_SIZE, MainApplication.getWindowsSize().x).apply();
-
-        try {
-            editor.putInt(PREF_SCREEN_TIMEOUT_MINUTES, 0).apply();
-            editor.putInt(PREF_SCREEN_TIMEOUT_SECONDS, 30).apply();
-            editor.putInt(PREF_SCREEN_TIMEOUT_HOURS, 0).apply();
-
-            editor.putInt(PREF_NAVIGATION_BAR_COLOR, getResources().getIntArray(R.array.navigationbar_color_values)[1])
-                    .apply();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        fixPermissions(getApplicationContext());
-
-        Utils.createSnackbar(findViewById(android.R.id.content),
-                R.string.recommended_restored,
-                this).show();
+        setDefaultPreferences(true);
 
         if (!Utils.isOmcEncryptedFlag()) {
             XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
         }
-        RebootNotification.notify(this, 999, false);
 
         recreate();
-
+        Toast.makeText(this, R.string.recommended_restored, Toast.LENGTH_LONG).show();
+        RebootNotification.notify(this, 999, false);
     }
 
-    private void setDefaultPreferences() {
+    private void setDefaultPreferences(boolean forceDefault) {
         PreferenceManager.setDefaultValues(this, R.xml.lockscreen_settings, true);
         PreferenceManager.setDefaultValues(this, R.xml.messaging_settings, true);
         PreferenceManager.setDefaultValues(this, R.xml.notification_settings, true);
         PreferenceManager.setDefaultValues(this, R.xml.phone_settings, true);
-        PreferenceManager.setDefaultValues(this, R.xml.screen_timeout_settings, true);
         PreferenceManager.setDefaultValues(this, R.xml.security_settings, true);
         PreferenceManager.setDefaultValues(this, R.xml.sound_settings, true);
         PreferenceManager.setDefaultValues(this, R.xml.system_settings, true);
-        PreferenceManager.setDefaultValues(this, R.xml.navigation_bar_settings, true);
+        if (forceDefault) {
+            Editor editor = MainApplication.getSharedPreferences().edit();
+
+            editor.putInt(PREF_NOTIFICATION_SIZE, MainApplication.getWindowsSize().x);
+
+            editor.putInt(PREF_SCREEN_TIMEOUT_SECONDS, 30).apply();
+            editor.putInt(PREF_SCREEN_TIMEOUT_MINUTES, 0).apply();
+            editor.putInt(PREF_SCREEN_TIMEOUT_HOURS, 0).apply();
+
+            editor.putInt(PREF_NAVIGATION_BAR_COLOR, getResources().getIntArray(R.array.navigationbar_color_values)[1])
+                    .apply();
+        }
         fixPermissions(this);
     }
 
@@ -636,26 +594,34 @@ public class FirefdsKitActivity extends AppCompatActivity
 
                 showProgressBar();
 
-                MainApplication.getSharedPreferences().edit()
-                        .putInt(PREF_NOTIFICATION_SIZE, MainApplication.getWindowsSize().x).apply();
-                Editor editor = MainApplication.getSharedPreferences().edit();
-                try {
-                    int systemScreenTimeout = Settings.System.getInt(MainApplication.getAppContext().getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT);
-                    if (systemScreenTimeout > 60000) {
-                        XposedBridge.log("Screen timeout: " + systemScreenTimeout);
-                        editor.putInt(PREF_SCREEN_TIMEOUT_MINUTES, systemScreenTimeout / 60000)
-                                .apply();
-                    } else {
-                        editor.putInt(PREF_SCREEN_TIMEOUT_SECONDS, systemScreenTimeout / 1000)
-                                .apply();
-                    }
-                    editor.putInt(PREF_NAVIGATION_BAR_COLOR, Settings.Global.getInt(MainApplication.getAppContext().getContentResolver(), "navigationbar_color"))
-                            .apply();
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                }
-                fixPermissions(getFragmentContext());
+                Editor editor = sharedPreferences.edit();
+                editor.putInt(PREF_NOTIFICATION_SIZE, MainApplication.getWindowsSize().x).apply();
+                ContentResolver contentResolver = MainApplication.getAppContext().getContentResolver();
 
+                if (sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_HOURS, 0) == 0 &&
+                        sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_MINUTES, 0) == 0 &&
+                        sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_SECONDS, 0) == 0) {
+
+                    int screenTimeout = Settings.System.getInt(contentResolver, Settings.System.SCREEN_OFF_TIMEOUT);
+                    int hour = screenTimeout / 3600000;
+                    int min = (screenTimeout % 3600000) / 60000;
+                    int seconds = ((screenTimeout % 3600000) % 60000) / 1000;
+                    editor.putInt(PREF_SCREEN_TIMEOUT_HOURS, hour).apply();
+                    editor.putInt(PREF_SCREEN_TIMEOUT_MINUTES, min).apply();
+                    editor.putInt(PREF_SCREEN_TIMEOUT_SECONDS, seconds).apply();
+                }
+
+                if (sharedPreferences.getInt(PREF_NAVIGATION_BAR_COLOR, 0) == 0) {
+                    try {
+                        editor.putInt(PREF_NAVIGATION_BAR_COLOR,
+                                Settings.Global.getInt(contentResolver, "navigationbar_color"))
+                                .apply();
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                fixPermissions(getFragmentContext());
 
                 if (!Utils.isSamsungRom()) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
