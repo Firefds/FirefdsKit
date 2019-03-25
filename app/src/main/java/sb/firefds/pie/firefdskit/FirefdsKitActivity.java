@@ -70,10 +70,12 @@ import sb.firefds.pie.firefdskit.utils.Utils;
 import static sb.firefds.pie.firefdskit.utils.Constants.PREFS;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CLOCK_DATE_ON_RIGHT;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CLOCK_DATE_PREFERENCE;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DATA_ICON_BEHAVIOR;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_NUMBER_FORMATTING;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_IS_FIREFDS_KIT_FIRST_LAUNCH;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_MESSAGING_KEY;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_NAVIGATION_BAR_COLOR;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_NFC_BEHAVIOR;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_NOTIFICATION_SIZE;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_PHONE_KEY_CAT;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ROOT;
@@ -112,7 +114,6 @@ public class FirefdsKitActivity extends AppCompatActivity
         setContentView(R.layout.firefds_main);
         mLayout = findViewById(R.id.mainLayout);
         progressBarText = findViewById(R.id.progressBarText);
-        setDefaultPreferences(false);
 
         try {
             MainApplication.setWindowsSize(new Point());
@@ -203,7 +204,7 @@ public class FirefdsKitActivity extends AppCompatActivity
     public void onRestoreDefaults() {
 
         MainApplication.getSharedPreferences().edit().clear().apply();
-        setDefaultPreferences(true);
+        setDefaultPreferences(this, true);
 
         if (!Utils.isOmcEncryptedFlag()) {
             XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
@@ -293,7 +294,7 @@ public class FirefdsKitActivity extends AppCompatActivity
     private void restoreRecommendedSettings() {
 
         MainApplication.getSharedPreferences().edit().clear().apply();
-        setDefaultPreferences(true);
+        setDefaultPreferences(this, true);
 
         if (!Utils.isOmcEncryptedFlag()) {
             XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
@@ -304,14 +305,15 @@ public class FirefdsKitActivity extends AppCompatActivity
         RebootNotification.notify(this, 999, false);
     }
 
-    private void setDefaultPreferences(boolean forceDefault) {
-        PreferenceManager.setDefaultValues(this, R.xml.lockscreen_settings, true);
-        PreferenceManager.setDefaultValues(this, R.xml.messaging_settings, true);
-        PreferenceManager.setDefaultValues(this, R.xml.notification_settings, true);
-        PreferenceManager.setDefaultValues(this, R.xml.phone_settings, true);
-        PreferenceManager.setDefaultValues(this, R.xml.security_settings, true);
-        PreferenceManager.setDefaultValues(this, R.xml.sound_settings, true);
-        PreferenceManager.setDefaultValues(this, R.xml.system_settings, true);
+    private static void setDefaultPreferences(Context context, boolean forceDefault) {
+        upgradePreferences();
+        PreferenceManager.setDefaultValues(context, R.xml.lockscreen_settings, true);
+        PreferenceManager.setDefaultValues(context, R.xml.messaging_settings, true);
+        PreferenceManager.setDefaultValues(context, R.xml.notification_settings, true);
+        PreferenceManager.setDefaultValues(context, R.xml.phone_settings, true);
+        PreferenceManager.setDefaultValues(context, R.xml.security_settings, true);
+        PreferenceManager.setDefaultValues(context, R.xml.sound_settings, true);
+        PreferenceManager.setDefaultValues(context, R.xml.system_settings, true);
         if (forceDefault) {
             Editor editor = MainApplication.getSharedPreferences().edit();
 
@@ -321,10 +323,27 @@ public class FirefdsKitActivity extends AppCompatActivity
             editor.putInt(PREF_SCREEN_TIMEOUT_MINUTES, 0).apply();
             editor.putInt(PREF_SCREEN_TIMEOUT_HOURS, 0).apply();
 
-            editor.putInt(PREF_NAVIGATION_BAR_COLOR, getResources().getIntArray(R.array.navigationbar_color_values)[1])
-                    .apply();
+            editor.putInt(PREF_NAVIGATION_BAR_COLOR,
+                    context.getResources()
+                            .getIntArray(R.array.navigationbar_color_values)[1]).apply();
         }
-        fixPermissions(this);
+        fixPermissions(context);
+    }
+
+    private static void upgradePreferences() {
+        SharedPreferences preferences = MainApplication.getSharedPreferences();
+        try {
+            preferences.getString(PREF_DATA_ICON_BEHAVIOR, "0");
+        } catch (ClassCastException e) {
+            String uid = String.valueOf(preferences.getInt(PREF_DATA_ICON_BEHAVIOR, 0));
+            preferences.edit().putString(PREF_DATA_ICON_BEHAVIOR, uid).apply();
+        }
+        try {
+            preferences.getString(PREF_NFC_BEHAVIOR, "0");
+        } catch (ClassCastException e) {
+            String uid = String.valueOf(preferences.getInt(PREF_NFC_BEHAVIOR, 0));
+            preferences.edit().putString(PREF_NFC_BEHAVIOR, uid).apply();
+        }
     }
 
     private Fragment getVisibleFragment() {
@@ -571,6 +590,7 @@ public class FirefdsKitActivity extends AppCompatActivity
 
         private static Resources res;
         private AlertDialog alertDialog;
+        private Context mContext;
 
         private Runnable delayedRoot = new Runnable() {
 
@@ -593,10 +613,11 @@ public class FirefdsKitActivity extends AppCompatActivity
             super.onCreate(savedInstanceState);
 
             try {
+                mContext = getContext();
                 res = getResources();
-                SharedPreferences sharedPreferences
-                        = getFragmentContext().getSharedPreferences(PREFS, 0);
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREFS, 0);
                 MainApplication.setSharedPreferences(sharedPreferences);
+                setDefaultPreferences(mContext, false);
 
                 if (Utils.isOmcEncryptedFlag()) {
                     PreferenceScreen rootScreen = findPreference(PREF_ROOT);
@@ -619,7 +640,8 @@ public class FirefdsKitActivity extends AppCompatActivity
                         sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_MINUTES, 0) == 0 &&
                         sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_SECONDS, 0) == 0) {
 
-                    int screenTimeout = Settings.System.getInt(contentResolver, Settings.System.SCREEN_OFF_TIMEOUT);
+                    int screenTimeout = Settings.System
+                            .getInt(contentResolver, Settings.System.SCREEN_OFF_TIMEOUT);
                     int hour = screenTimeout / 3600000;
                     int min = (screenTimeout % 3600000) / 60000;
                     int seconds = ((screenTimeout % 3600000) % 60000) / 1000;
