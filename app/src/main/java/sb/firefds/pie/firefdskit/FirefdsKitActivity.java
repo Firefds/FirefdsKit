@@ -740,7 +740,7 @@ public class FirefdsKitActivity extends AppCompatActivity
 
             protected Void doInBackground(Void... params) {
                 try {
-                    suAvailable = Shell.rootAccess();
+                    suAvailable = Shell.getShell().isRoot();
 
                 } catch (Throwable e) {
                     e.printStackTrace();

@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 ext {
-    VERSION_DATE = '19/03/19'
+    VERSION_DATE = '25/03/19'
 }
 
 android {
