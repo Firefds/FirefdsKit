@@ -30,13 +30,6 @@
         <item name="larger">Larger</item>
         <item name="largest">Largest</item>
     </string-array>
-    <string-array name="default_settings">
-        <item>enableCameraShutterMenu</item>
-        <item>disableNumberFormatting</item>
-        <item>disableSmsToMmsConversion</item>
-        <item>isFirefdsKitFirstLaunch</item>
-        <item>makeMeTooLegit</item>
-    </string-array>
     <string-array name="lite_preferences">
         <item>isFirefdsKitFirstLaunch</item>
         <item>screenTimeoutSeconds</item>

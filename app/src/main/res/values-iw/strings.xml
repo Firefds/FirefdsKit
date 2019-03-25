@@ -162,4 +162,10 @@
     <string name="multiUser">משתמשים מרובים</string>
     <string name="switchUser">החלפת משתמש</string>
     <string name="root_info_short">אין גישת Root!</string>
+    <string name="navigation_bar_color_title">צבע שורת ניווט מותאם אישית</string>
+    <string name="navigation_bar_color_summary">צבע בהתאמה אישית של שורת הניווט</string>
+    <string name="navigation_bar">שורת הניווט</string>
+    <string name="navigation_bar_color_dialog_title">מה השלב הבא?</string>
+    <string name="navigation_bar_color_dialog_message">- הפעלה מחדש של המכשיר\n- כניסה להגדרות > תצוגה > שורת הניווט\n- בחירת הצבע המותאם אישית</string>
+    <string name="color_dialog_title">בחירת צבע</string>
 </resources>

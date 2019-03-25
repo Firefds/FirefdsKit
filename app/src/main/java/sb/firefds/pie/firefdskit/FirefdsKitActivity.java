@@ -17,7 +17,6 @@ package sb.firefds.pie.firefdskit;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -32,10 +31,21 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.Settings;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.preference.SwitchPreferenceCompat;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
+import androidx.preference.PreferenceScreen;
 
+import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,18 +62,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.preference.ListPreference;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceCategory;
-import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
-import androidx.preference.PreferenceScreen;
-
 import com.topjohnwu.superuser.Shell;
 
-import androidx.preference.SwitchPreferenceCompat;
 import sb.firefds.pie.firefdskit.dialogs.CreditDialog;
 import sb.firefds.pie.firefdskit.dialogs.RestoreDialog;
 import sb.firefds.pie.firefdskit.dialogs.SaveDialog;
@@ -122,8 +122,7 @@ public class FirefdsKitActivity extends AppCompatActivity
     public void onBackPressed() {
         if (!(getVisibleFragment() instanceof SettingsFragment)) {
             if (getSupportActionBar() != null) {
-                if (getVisibleFragment() instanceof ScreenTimeoutSettingsFragment ||
-                        getVisibleFragment() instanceof NavigationBarSettingsFragment) {
+                if (getVisibleFragment() instanceof ScreenTimeoutSettingsFragment) {
                     getSupportActionBar().setTitle(R.string.system);
                 } else {
                     getSupportActionBar().setHomeButtonEnabled(false);
@@ -532,6 +531,20 @@ public class FirefdsKitActivity extends AppCompatActivity
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.system_settings, rootKey);
         }
+
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            super.onSharedPreferenceChanged(sharedPreferences, key);
+            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
+            TextView tv = new TextView(getContext());
+            tv.setMovementMethod(LinkMovementMethod.getInstance());
+            tv.setText(R.string.navigation_bar_color_dialog_message);
+            tv.setPadding(16, 16, 16, 16);
+            builder.setTitle(R.string.navigation_bar_color_dialog_title)
+                    .setView(tv)
+                    .setNeutralButton("OK", (dialog, id) -> dialog.dismiss())
+                    .show();
+        }
     }
 
     public static class ScreenTimeoutSettingsFragment extends FirefdsPreferenceFragment {
@@ -539,14 +552,6 @@ public class FirefdsKitActivity extends AppCompatActivity
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.screen_timeout_settings, rootKey);
-        }
-    }
-
-    public static class NavigationBarSettingsFragment extends FirefdsPreferenceFragment {
-
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.navigation_bar_settings, rootKey);
         }
     }
 
@@ -624,7 +629,8 @@ public class FirefdsKitActivity extends AppCompatActivity
                 fixPermissions(getFragmentContext());
 
                 if (!Utils.isSamsungRom()) {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                    AlertDialog.Builder alertDialogBuilder =
+                            new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
                     alertDialogBuilder.setTitle(res.getString(R.string.samsung_rom_warning));
 
                     alertDialogBuilder.setMessage(res.getString(R.string.samsung_rom_warning_msg))
@@ -686,7 +692,8 @@ public class FirefdsKitActivity extends AppCompatActivity
 
                     mLayout.setVisibility(View.INVISIBLE);
 
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                    AlertDialog.Builder alertDialogBuilder =
+                            new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
 
                     alertDialogBuilder.setTitle(R.string.app_name);
 
@@ -746,7 +753,8 @@ public class FirefdsKitActivity extends AppCompatActivity
 
                         if (!MainApplication.getSharedPreferences()
                                 .getBoolean(PREF_IS_FIREFDS_KIT_FIRST_LAUNCH, false)) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                            AlertDialog.Builder builder =
+                                    new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
                             builder.setCancelable(true)
                                     .setTitle(R.string.app_name)
                                     .setMessage(R.string.firefds_xposed_disclaimer)
