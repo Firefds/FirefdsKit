@@ -1,7 +1,8 @@
 apply plugin: 'com.android.application'
 
 ext {
-    VERSION_DATE = '25/03/19'
+    VERSION_CODE = "0110"
+    VERSION_NAME = "0.1.1.0-beta-5"
 }
 
 android {
@@ -19,7 +20,8 @@ android {
         applicationId 'sb.firefds.pie.firefdskit'
         minSdkVersion 28
         targetSdkVersion 28
-        project.ext.set("archivesBaseName", "FirefdsKit_" + VERSION_DATE.replaceAll("/", "_"))
+        project.ext.set("archivesBaseName", "FirefdsKit_" + VERSION_NAME)
+        manifestPlaceholders = [versionCode: VERSION_CODE, versionName: VERSION_NAME]
     }
     buildTypes {
         release {
