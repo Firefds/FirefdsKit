@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/statusbarKey"
+            android:icon="@drawable/ic_menu_notification"
+            android:title="@string/statusbar" />
+        <item
+            android:id="@+id/lockscreenKey"
+            android:icon="@drawable/ic_menu_lockscreen"
+            android:title="@string/lockscreen" />
+        <item
+            android:id="@+id/soundKey"
+            android:icon="@drawable/ic_menu_sound"
+            android:title="@string/sound" />
+        <item
+            android:id="@+id/systemKey"
+            android:icon="@drawable/ic_menu_system"
+            android:title="@string/system" />
+        <item
+            android:id="@+id/phoneKey"
+            android:icon="@drawable/ic_menu_phone"
+            android:title="@string/phone" />
+        <item
+            android:id="@+id/messagingKey"
+            android:icon="@drawable/ic_menu_messaging"
+            android:title="@string/messaging" />
+        <item
+            android:id="@+id/securityKey"
+            android:icon="@drawable/ic_menu_security"
+            android:title="@string/security" />
+    </group>
+</menu>

@@ -2,10 +2,7 @@ package sb.firefds.pie.firefdskit.utils;
 
 public class Preferences {
 
-    public static final String PREF_ROOT = "prefsRoot";
-    public static final String PREF__FAKE_HEADER = "fkHeader";
-    public static final String PREF_NOTIFICATION_SIZE = "notificationSize";
-    public static final String PREF_IS_FIREFDS_KIT_FIRST_LAUNCH = "isFirefdsKitFirstLaunch";
+    public static final String PREF_FIRST_LAUNCH = "isFirefdsKitFirstLaunch";
 
     public static final String PREF_STATUSBAR_DOUBLE_TAP = "isStatusBarDoubleTapEnabled";
     public static final String PREF_HIDE_NFC_ICON = "hideNfcIcon";
@@ -48,7 +45,7 @@ public class Preferences {
     public static final String PREF_ENABLE_AUTO_CALL_RECORDING = "enableAutoCallRecording";
     public static final String PREF_DISABLE_NUMBER_FORMATTING = "disableNumberFormatting";
 
-    public static final String PREF_MESSAGING_KEY = "messagingKey";
+    public static final int PREF_MESSAGING_KEY_INDEX = 5;
     public static final String PREF_DISABLE_SMS_TO_MMS = "disableSmsToMmsConversion";
     public static final String PREF_FORCE_MMS_CONNECT = "forceMMSConnect";
 

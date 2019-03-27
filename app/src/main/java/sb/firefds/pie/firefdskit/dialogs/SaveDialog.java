@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 import androidx.appcompat.app.AlertDialog;
-import sb.firefds.pie.firefdskit.MainApplication;
+import sb.firefds.pie.firefdskit.FirefdsKitActivity;
 import sb.firefds.pie.firefdskit.R;
 import sb.firefds.pie.firefdskit.utils.Constants;
 import sb.firefds.pie.firefdskit.utils.Utils;
@@ -81,7 +81,7 @@ public class SaveDialog {
         ObjectOutputStream output = null;
         try {
             output = new ObjectOutputStream(new FileOutputStream(file));
-            output.writeObject(MainApplication.getSharedPreferences().getAll());
+            output.writeObject(FirefdsKitActivity.getSharedPreferences().getAll());
 
             res = true;
         } catch (FileNotFoundException e) {

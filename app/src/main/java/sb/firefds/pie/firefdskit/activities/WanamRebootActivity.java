@@ -21,7 +21,7 @@ import java.util.Objects;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import sb.firefds.pie.firefdskit.MainApplication;
+import sb.firefds.pie.firefdskit.FirefdsKitActivity;
 import sb.firefds.pie.firefdskit.R;
 import sb.firefds.pie.firefdskit.XCscFeaturesManager;
 import sb.firefds.pie.firefdskit.utils.Utils;
@@ -64,7 +64,7 @@ public class WanamRebootActivity extends AppCompatActivity {
         Utils.closeStatusBar(this);
         ProgressDialog.show(this, "", getString(R.string.rebooting));
         if (!Utils.isOmcEncryptedFlag()) {
-            XCscFeaturesManager.applyCscFeatures(MainApplication.getSharedPreferences());
+            XCscFeaturesManager.applyCscFeatures(FirefdsKitActivity.getSharedPreferences());
         }
         Utils.reboot();
     }

@@ -6,7 +6,7 @@
     <string name="disable_loud_volume_enabled">Loud volume warning is enabled</string>
     <string name="disable_loud_volume_disabled">Loud volume warning is disabled (listening at loud volumes may damage your ears, use caution)</string>
     <string name="disable_loud_volume">Disable loud volume warning</string>
-    <string name="statusbar">Notifications panel</string>
+    <string name="statusbar">Notifications Panel</string>
     <string name="system">System</string>
     <string name="reboot">Restart</string>
     <string name="cancel">Cancel</string>
@@ -16,7 +16,7 @@
     <string name="reboot_download">Download</string>
     <string name="quick_settings">Quick settings</string>
     <string name="sound">Sound</string>
-    <string name="security">Security hacks</string>
+    <string name="security">Security Hacks</string>
     <string name="lockscreen">Lockscreen</string>
     <string name="messaging">Messaging</string>
     <string name="apply">Apply</string>
@@ -171,4 +171,9 @@
     <string name="navigation_bar_color_dialog_message">- Reboot the device\n- Go to Settings > Display > Navigation Bar\n- Select your custom color</string>
     <string name="navigation_bar_color_dialog_title">What to do next?</string>
     <string name="color_dialog_title">Select a Color</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

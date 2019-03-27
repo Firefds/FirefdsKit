@@ -37,6 +37,7 @@ import sb.firefds.pie.firefdskit.bean.FeatureDTO;
 import sb.firefds.pie.firefdskit.utils.Constants;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
+import static sb.firefds.pie.firefdskit.FirefdsKitActivity.getActivity;
 import static sb.firefds.pie.firefdskit.utils.Constants.*;
 import static sb.firefds.pie.firefdskit.utils.Preferences.*;
 
@@ -116,17 +117,17 @@ public class XCscFeaturesManager {
 
     private static void setVolumeControlSounds(SharedPreferences prefs) {
         if (prefs.getBoolean(PREF_DISABLE_VOLUME_CONTROL_SOUND, false)) {
-            Utils.disableVolumeControlSounds(MainApplication.getAppContext());
+            Utils.disableVolumeControlSounds(getActivity());
         } else {
-            Utils.enableVolumeControlSounds(MainApplication.getAppContext());
+            Utils.enableVolumeControlSounds(getActivity());
         }
     }
 
     private static void setLowBatterySounds(SharedPreferences prefs) {
         if (prefs.getBoolean(PREF_DISABLE_LOW_BATTERY_SOUND, false)) {
-            Utils.disableLowBatterySounds(MainApplication.getAppContext());
+            Utils.disableLowBatterySounds(getActivity());
         } else {
-            Utils.enableLowBatterySounds(MainApplication.getAppContext());
+            Utils.enableLowBatterySounds(getActivity());
         }
     }
 
@@ -165,7 +166,7 @@ public class XCscFeaturesManager {
 
     private static class CSCFeaturesTask extends AsyncTask<String, Void, Void> {
         private OutputStream out = null;
-        private File featureXML = new File(MainApplication.getAppContext().getCacheDir(),
+        private File featureXML = new File(getActivity().getCacheDir(),
                 Constants.FEATURE_XML);
 
         protected Void doInBackground(String... params) {
@@ -191,7 +192,7 @@ public class XCscFeaturesManager {
         protected void onPostExecute(Void result) {
             if (featureXML.isFile()) {
                 try {
-                    Utils.applyCSCFeatues(MainApplication.getAppContext());
+                    Utils.applyCSCFeatues(getActivity());
                 } catch (Throwable e) {
                     e.printStackTrace();
                 }
