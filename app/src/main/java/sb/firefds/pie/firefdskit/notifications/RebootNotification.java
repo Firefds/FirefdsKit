@@ -57,7 +57,7 @@ public class RebootNotification {
         Objects.requireNonNull(mNotificationManager).createNotificationChannel(mChannel);
 
         final Notification.Builder builder = new Notification.Builder(context, "Reboot_ID")
-                .setSmallIcon(android.R.drawable.ic_menu_rotate)
+                .setSmallIcon(R.drawable.ic_restart_notification)
                 .setContentTitle(title)
                 .setContentText(text)
                 .setLargeIcon(picture)
@@ -77,7 +77,7 @@ public class RebootNotification {
         Intent rebootIntent = new Intent(context, WanamRebootReceiver.class)
                 .setAction(context.getResources().getString(R.string.reboot_device_action));
         builder.addAction(new Notification.Action.Builder(
-                Icon.createWithResource(context, android.R.drawable.ic_menu_rotate),
+                Icon.createWithResource(context, R.drawable.ic_restart_notification),
                 res.getString(R.string.reboot),
                 PendingIntent.getBroadcast(context,
                         1337,
@@ -89,7 +89,7 @@ public class RebootNotification {
             Intent SoftRebootIntent = new Intent(context, WanamRebootReceiver.class)
                     .setAction(context.getResources().getString(R.string.soft_reboot_device_action));
             builder.addAction(new Notification.Action.Builder(
-                    Icon.createWithResource(context, android.R.drawable.ic_menu_rotate),
+                    Icon.createWithResource(context, R.drawable.ic_restart_notification),
                     res.getString(R.string.soft_reboot),
                     PendingIntent.getBroadcast(context,
                             1337,

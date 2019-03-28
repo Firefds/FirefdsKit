@@ -218,8 +218,8 @@ public class FirefdsKitActivity extends AppCompatActivity
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setTitle(R.string.system);
                 toggle = menuToggle;
-                toggle.setDrawerIndicatorEnabled(true);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                toggle.setDrawerIndicatorEnabled(true);
             }
             super.onBackPressed();
         } else {
