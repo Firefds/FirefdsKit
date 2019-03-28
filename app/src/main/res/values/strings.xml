@@ -48,7 +48,7 @@
     <string name="enable_call_add_off">Call Record button enabled instead of Add call button</string>
     <string name="phone">Phone</string>
     <string name="root_info">Root access NOT granted!\n\nSome features require Root access to work properly.</string>
-    <string name="root_granted">Root access granted</string>
+    <string name="root_granted">Firefds Kit Root features activated</string>
     <string name="ok_btn">OK</string>
     <string name="call_number_formatting_enabled">Call number formatting enabled</string>
     <string name="call_number_formatting_disabled">Call number formatting disabled</string>
@@ -174,5 +174,5 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="status_icon">status icon</string>
-    <string name="xposed_status">Firefds kit activated</string>
+    <string name="xposed_status">Firefds Kit Xposed features activated</string>
 </resources>

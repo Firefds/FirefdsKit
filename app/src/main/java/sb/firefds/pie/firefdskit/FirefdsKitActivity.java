@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -435,7 +436,11 @@ public class FirefdsKitActivity extends AppCompatActivity
         statusContainerLayout.setBackgroundColor(activity.getColor(statusColorId));
         statusIcon.setImageDrawable(activity.getDrawable(statusIconId));
         statusText.setText(statusTextId);
-        statusText.setTextColor(activity.getColor(statusColorId));
+        if (statusColorId == R.color.active || statusColorId == R.color.error) {
+            statusText.setTextColor(Color.WHITE);
+        } else {
+            statusText.setTextColor(activity.getColor(statusColorId));
+        }
     }
 
     private static void verifyStoragePermissions(AppCompatActivity activity) {

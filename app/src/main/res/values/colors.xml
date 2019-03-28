@@ -1,12 +1,14 @@
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="ic_launcher_startColor">#0F94B4</color>
-    <color name="ic_launcher_centerColor">#48A3B4</color>
-    <color name="ic_launcher_endColor">#8DB5B4</color>
-    <color name="active">#4CAF50</color>
-    <color name="error">#F44336</color>
-    <color name="warning">#FFC107</color>
+    <color name="colorPrimary">#0f94b4</color>
+    <color name="colorPrimaryDark">#006684</color>
+    <color name="colorAccent">#5bc5e6</color>
+    <color name="ic_launcher_startColor">@color/colorAccent</color>
+    <color name="ic_launcher_centerColor">@color/colorPrimary</color>
+    <color name="ic_launcher_endColor">@color/colorPrimaryDark</color>
+    <color name="active">@color/colorPrimaryDark</color>
+    <color name="error">#ba000d</color>
+    <color name="warning">#c79100</color>
+    <color name="warning_light">#fec143</color>
     <color name="navigationbar_default_color_1">#fff0f0f0</color>
     <color name="navigationbar_default_color_2">#ffe6e6e6</color>
     <color name="navigationbar_default_color_3">#ffe6e6f0</color>

@@ -37,18 +37,18 @@
                     android:id="@+id/root_status_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/holo_orange_light"
+                    android:background="@color/warning"
                     android:foregroundGravity="center"
                     android:orientation="vertical">
 
                     <ProgressBar
                         android:id="@+id/root_progressBar"
                         style="?android:attr/progressBarStyle"
-                        android:layout_width="200dp"
+                        android:layout_width="100dp"
                         android:layout_height="200dp"
                         android:layout_gravity="center"
                         android:indeterminate="true"
-                        android:indeterminateTint="@android:color/holo_orange_dark"
+                        android:indeterminateTint="@color/warning_light"
                         android:max="100" />
 
                     <ImageView
@@ -69,7 +69,7 @@
                     android:gravity="start"
                     android:padding="6dp"
                     android:text="@string/checking_root_access"
-                    android:textColor="@android:color/holo_orange_dark"
+                    android:textColor="@color/warning_light"
                     android:textStyle="bold" />
             </LinearLayout>
 
