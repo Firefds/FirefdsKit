@@ -14,7 +14,6 @@
  */
 package sb.firefds.pie.firefdskit.activities;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import java.util.Objects;
@@ -28,7 +27,6 @@ import sb.firefds.pie.firefdskit.utils.Utils;
 
 import static sb.firefds.pie.firefdskit.utils.Constants.REBOOT_DEVICE;
 
-@SuppressWarnings("deprecation")
 public class WanamRebootActivity extends AppCompatActivity {
 
     @Override
@@ -62,7 +60,7 @@ public class WanamRebootActivity extends AppCompatActivity {
 
     private void rebootDevice() throws Throwable {
         Utils.closeStatusBar(this);
-        ProgressDialog.show(this, "", getString(R.string.rebooting));
+        showRebootDialog();
         if (!Utils.isOmcEncryptedFlag()) {
             XCscFeaturesManager.applyCscFeatures(FirefdsKitActivity.getSharedPreferences());
         }
@@ -71,7 +69,7 @@ public class WanamRebootActivity extends AppCompatActivity {
 
     private void softRebootDevice() throws Throwable {
         Utils.closeStatusBar(this);
-        ProgressDialog.show(this, "", getString(R.string.rebooting));
+        showRebootDialog();
         Utils.performSoftReboot();
     }
 
@@ -100,5 +98,10 @@ public class WanamRebootActivity extends AppCompatActivity {
 
         alertDialog = rebootOptionsDiag.create();
         alertDialog.show();
+    }
+
+    private void showRebootDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(R.layout.progress_dialog).create().show();
     }
 }
