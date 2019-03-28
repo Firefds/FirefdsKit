@@ -171,5 +171,5 @@
     <string name="navigation_drawer_close">סגירת מגירת ניווט</string>
     <string name="nav_header_desc">לוגו Firefds Kit</string>
     <string name="status_icon">אייקון מצב</string>
-    <string name="xposed_status">מסגרת Xposed לא פעילה</string>
+    <string name="xposed_status">Firefds Kit מופעל</string>
 </resources>
