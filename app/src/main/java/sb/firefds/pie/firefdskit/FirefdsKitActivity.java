@@ -436,11 +436,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         statusContainerLayout.setBackgroundColor(activity.getColor(statusColorId));
         statusIcon.setImageDrawable(activity.getDrawable(statusIconId));
         statusText.setText(statusTextId);
-        if (statusColorId == R.color.active || statusColorId == R.color.error) {
-            statusText.setTextColor(Color.WHITE);
-        } else {
-            statusText.setTextColor(activity.getColor(statusColorId));
-        }
+        statusText.setTextColor(Color.WHITE);
     }
 
     private static void verifyStoragePermissions(AppCompatActivity activity) {
