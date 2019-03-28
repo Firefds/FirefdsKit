@@ -52,6 +52,7 @@ public class Utils {
 
     private static CscType mCscType = null;
     private static boolean omcEncryptedFlag;
+    @SuppressLint("StaticFieldLeak")
     private static Context mGbContext;
 
     public static void closeStatusBar(Context context) throws Throwable {
@@ -195,8 +196,8 @@ public class Utils {
 
     }
 
-    public static boolean isSamsungRom() {
-        return new File("/system/framework/com.samsung.device.jar").isFile();
+    public static boolean isNotSamsungRom() {
+        return !new File("/system/framework/com.samsung.device.jar").isFile();
     }
 
     public static CscType getCSCType() {
@@ -220,14 +221,6 @@ public class Utils {
 
     static String getOMCPath() {
         return SystemProperties.get(OMC_PATH);
-    }
-
-    public static boolean contains(final int[] array, final int v) {
-        for (final int e : array)
-            if (e == v)
-                return true;
-
-        return false;
     }
 
     public static void performSoftReboot() {

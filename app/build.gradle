@@ -50,4 +50,5 @@ dependencies {
     compileOnly 'de.robv.android.xposed:api:82:sources'
     compileOnly files('libs/framework2-dex2jar.jar')
     compileOnly files('libs/framework3-dex2jar.jar')
+    implementation 'androidx.cardview:cardview:1.0.0'
 }

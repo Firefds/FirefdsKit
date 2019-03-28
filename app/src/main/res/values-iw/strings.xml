@@ -30,7 +30,6 @@
     <string name="credit_details">"\nתודה ל Rovo89 על יצירת מסגרת ה Xposed.\n\nתודה ל C3C076, RikkaW, solohsu, MlgmXyysd על התרומה שלהם ליצירת Xposed ומודלים.\n\nמפתח: <a href="http://forum.xda-developers.com/member.php?u=3844620">Firefds firefds@Xda-Developers</a>\n\nמבוסס על XTouchWiz של:\n\n<a href="http://forum.xda-developers.com/member.php?u=3562083">Wanam @Xda-Developers</a>"</string>
     <string name="restore">שיחזור גיבוי</string>
     <string name="save">שמירת גיבוי</string>
-    <string name="restoring_backup">משחזר גיבוי</string>
     <string name="backup_name">שם גיבוי</string>
     <string name="save_successful">נשמר בהצלחה</string>
     <string name="save_unsuccessful">שמירה נכשלה</string>
@@ -77,7 +76,6 @@
     <string name="disable_volume_control_sound">ביטול צליל שליטה בעוצמת שמע</string>
     <string name="disable_volume_control_sound_while_changing_sounds">ביטול צליל שינוי עוצמת השמע בעת שינוי העוצמה</string>
     <string name="disable_low_battery_sound">ביטול צליל סוללה נמוכה</string>
-    <string name="loading_application_preferences_">טוען העדפות יישום…</string>
     <string name="rebooting_">מפעיל מחדש…</string>
     <string name="pending_changes">שינויים ממתינים</string>
     <string name="force_mms_connect">דחיפת MMS בכוח</string>
@@ -161,11 +159,17 @@
     <string name="clock_date_on_right_off_summary">תאריך ממוקדם בצד שמאל של השעון</string>
     <string name="multiUser">משתמשים מרובים</string>
     <string name="switchUser">החלפת משתמש</string>
-    <string name="root_info_short">אין גישת Root!</string>
+    <string name="root_granted">גישת Root הושגה</string>
     <string name="navigation_bar_color_title">צבע שורת ניווט מותאם אישית</string>
     <string name="navigation_bar_color_summary">צבע בהתאמה אישית של שורת הניווט</string>
     <string name="navigation_bar">שורת הניווט</string>
     <string name="navigation_bar_color_dialog_title">מה השלב הבא?</string>
     <string name="navigation_bar_color_dialog_message">- הפעלה מחדש של המכשיר\n- כניסה להגדרות > תצוגה > שורת הניווט\n- בחירת הצבע המותאם אישית</string>
     <string name="color_dialog_title">בחירת צבע</string>
+    <string name="nav_header_subtitle">התאמה אישית של מכשיר ה Samsung שלך</string>
+    <string name="navigation_drawer_open">פתיחת מגירת ניווט</string>
+    <string name="navigation_drawer_close">סגירת מגירת ניווט</string>
+    <string name="nav_header_desc">לוגו Firefds Kit</string>
+    <string name="status_icon">אייקון מצב</string>
+    <string name="xposed_status">מסגרת Xposed לא פעילה</string>
 </resources>

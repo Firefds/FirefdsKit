@@ -51,6 +51,7 @@ public class XSysUIFeaturePackage {
             "com.android.keyguard.KeyguardUpdateMonitor";
     private static final String QS_CLOCK = Packages.SYSTEM_UI + ".statusbar.policy.QSClock";
 
+    @SuppressLint("StaticFieldLeak")
     private static TextView mClock;
     private static SimpleDateFormat mSecondsFormat;
     private static Handler mSecondsHandler;

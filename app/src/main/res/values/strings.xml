@@ -31,7 +31,6 @@
     <string name="credit_details">\nThanks to Rovo89 for creating Xposed framework.\n\nThanks to C3C076, RikkaW, solohsu, MlgmXyysd for their contribution on Xposed framework and modules.\n\nDeveloper: <a href="http://forum.xda-developers.com/member.php?u=3844620">Firefds firefds@Xda-Developers</a>\n\nBased on XTouchWiz by:\n\<a href="http://forum.xda-developers.com/member.php?u=3562083">Wanam @Xda-Developers</a></string>
     <string name="restore">Restore a backup</string>
     <string name="save">Save a backup</string>
-    <string name="restoring_backup">Restoring backup</string>
     <string name="backup_name">Backup name</string>
     <string name="save_successful">Save successful</string>
     <string name="save_unsuccessful">Save unsuccessful</string>
@@ -48,8 +47,8 @@
     <string name="enable_call_add_on">Add call button enabled instead of Record button</string>
     <string name="enable_call_add_off">Call Record button enabled instead of Add call button</string>
     <string name="phone">Phone</string>
-    <string name="root_info">Root access NOT granted!\n\nSome features requires Root access to work properly.</string>
-    <string name="root_info_short">Root access NOT granted!</string>
+    <string name="root_info">Root access NOT granted!\n\nSome features require Root access to work properly.</string>
+    <string name="root_granted">Root access is granted</string>
     <string name="ok_btn">OK</string>
     <string name="call_number_formatting_enabled">Call number formatting enabled</string>
     <string name="call_number_formatting_disabled">Call number formatting disabled</string>
@@ -81,7 +80,6 @@
     <string name="disable_volume_control_sound">Disable volume control sound</string>
     <string name="disable_volume_control_sound_while_changing_sounds">Disable volume control sound while changing sounds volume</string>
     <string name="disable_low_battery_sound">Disable low battery sound</string>
-    <string name="loading_application_preferences_">Loading application preferences…</string>
     <string name="rebooting_">Rebooting…</string>
     <string name="pending_changes">Pending changes</string>
     <string name="force_mms_connect">Force MMS connect</string>
@@ -171,9 +169,10 @@
     <string name="navigation_bar_color_dialog_message">- Reboot the device\n- Go to Settings > Display > Navigation Bar\n- Select your custom color</string>
     <string name="navigation_bar_color_dialog_title">What to do next?</string>
     <string name="color_dialog_title">Select a Color</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
+    <string name="nav_header_subtitle">Customize your Samsung device</string>
+    <string name="nav_header_desc">Firefds Kit logo</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="status_icon">status icon</string>
+    <string name="xposed_status">Xposed framework is active</string>
 </resources>

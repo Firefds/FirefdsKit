@@ -32,7 +32,7 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     public void initZygote(StartupParam startupParam) {
 
         // Do not load if Not a Touchwiz Rom
-        if (!Utils.isSamsungRom())
+        if (Utils.isNotSamsungRom())
             return;
 
         getModuleSharedPreferences();
@@ -42,7 +42,7 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     public void handleLoadPackage(LoadPackageParam lpparam) {
 
         // Do not load if Not a Touchwiz Rom
-        if (!Utils.isSamsungRom())
+        if (Utils.isNotSamsungRom())
             return;
 
         if (lpparam.packageName.equals(Packages.FIREFDSKIT)) {

@@ -1,16 +1,15 @@
-package sb.firefds.pie.firefdskit;
+package sb.firefds.pie.firefdskit.fragments;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
+import sb.firefds.pie.firefdskit.R;
 import sb.firefds.pie.firefdskit.notifications.RebootNotification;
 
 import static sb.firefds.pie.firefdskit.FirefdsKitActivity.fixPermissions;
@@ -22,16 +21,17 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_SE
 public class FirefdsPreferenceFragment extends PreferenceFragmentCompat
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    @SuppressLint("StaticFieldLeak")
-    private static Context fragmentContext;
-    private List<String> changesMade;
+    private static AppCompatActivity fragmentActivity;
+    private static List<String> changesMade;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        changesMade = new ArrayList<>();
-        fragmentContext = Objects.requireNonNull(getActivity()).getBaseContext();
+        fragmentActivity = (AppCompatActivity) getActivity();
+        if (changesMade == null) {
+            changesMade = new ArrayList<>();
+        }
     }
 
     @Override
@@ -40,13 +40,13 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat
         try {
             // No reboot notification required
             String[] litePrefs =
-                    fragmentContext.getResources().getStringArray(R.array.lite_preferences);
+                    fragmentActivity.getResources().getStringArray(R.array.lite_preferences);
 
             setTimeoutPrefs(sharedPreferences, key);
 
             for (String string : litePrefs) {
                 if (key.equalsIgnoreCase(string)) {
-                    fixPermissions(fragmentContext);
+                    fixPermissions(fragmentActivity);
                     return;
                 }
             }
@@ -55,8 +55,8 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat
             if (!changesMade.contains(key)) {
                 changesMade.add(key);
             }
-            fixPermissions(fragmentContext);
-            RebootNotification.notify(fragmentContext, changesMade.size(), false);
+            fixPermissions(fragmentActivity);
+            RebootNotification.notify(fragmentActivity, changesMade.size(), false);
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -71,14 +71,14 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat
     public void onResume() {
         super.onResume();
         registerPrefsReceiver();
-        fixPermissions(fragmentContext);
+        fixPermissions(fragmentActivity);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         unregisterPrefsReceiver();
-        fixPermissions(fragmentContext);
+        fixPermissions(fragmentActivity);
     }
 
     private void setTimeoutPrefs(SharedPreferences sharedPreferences, String key) {
@@ -91,7 +91,7 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat
             int min = sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_MINUTES, 0) * 60000;
             int sec = sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_SECONDS, 30) * 1000;
             int timeoutML = hour + min + sec;
-            Settings.System.putInt(fragmentContext.getContentResolver(),
+            Settings.System.putInt(fragmentActivity.getContentResolver(),
                     Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
         }
     }

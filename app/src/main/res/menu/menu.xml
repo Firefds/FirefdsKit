@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_credits"
-        android:icon="@android:drawable/ic_menu_info_details"
+        android:icon="@drawable/ic_menu_info"
         android:title="@string/app_name"
         app:showAsAction="ifRoom" />
     <item

@@ -26,9 +26,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.Settings;
-import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +42,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -48,55 +51,48 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.preference.ListPreference;
-import androidx.preference.PreferenceCategory;
+import androidx.fragment.app.FragmentManager;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
-import androidx.preference.SwitchPreferenceCompat;
 import sb.firefds.pie.firefdskit.dialogs.CreditDialog;
 import sb.firefds.pie.firefdskit.dialogs.RestoreDialog;
 import sb.firefds.pie.firefdskit.dialogs.SaveDialog;
+import sb.firefds.pie.firefdskit.fragments.LockscreenSettingsFragment;
+import sb.firefds.pie.firefdskit.fragments.MessagingSettingsFragment;
+import sb.firefds.pie.firefdskit.fragments.NotificationSettingsFragment;
+import sb.firefds.pie.firefdskit.fragments.PhoneSettingsFragment;
+import sb.firefds.pie.firefdskit.fragments.ScreenTimeoutSettingsFragment;
+import sb.firefds.pie.firefdskit.fragments.SecuritySettingsFragment;
+import sb.firefds.pie.firefdskit.fragments.SoundSettingsFragment;
+import sb.firefds.pie.firefdskit.fragments.SystemSettingsFragment;
 import sb.firefds.pie.firefdskit.notifications.RebootNotification;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
-import static com.android.internal.os.BackgroundThread.getHandler;
 import static sb.firefds.pie.firefdskit.utils.Constants.PREFS;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CLOCK_DATE_ON_RIGHT;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CLOCK_DATE_PREFERENCE;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DATA_ICON_BEHAVIOR;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_NUMBER_FORMATTING;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_FIRST_LAUNCH;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_MESSAGING_KEY_INDEX;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_NAVIGATION_BAR_COLOR;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_NFC_BEHAVIOR;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_PHONE_KEY_CAT;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_HOURS;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_MINUTES;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_SECONDS;
 
 public class FirefdsKitActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        RestoreDialog.RestoreDialogListener {
+        RestoreDialog.RestoreDialogListener, PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
     private static SharedPreferences sharedPreferences;
     private static AppCompatActivity activity;
-
-    private static Runnable delayedRoot = new Runnable() {
-
-        @Override
-        public void run() {
-            try {
-                Utils.createSnackbar(activity.findViewById(android.R.id.content),
-                        R.string.root_info_short, activity).show();
-
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-        }
-    };
+    private DrawerLayout drawer;
+    private ActionBarDrawerToggle toggle;
+    private ActionBarDrawerToggle menuToggle;
 
     static {
         Shell.Config.setFlags(Shell.FLAG_REDIRECT_STDERR);
@@ -116,7 +112,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         activity = this;
         verifyStoragePermissions(this);
 
-        if (!Utils.isSamsungRom()) {
+        if (Utils.isNotSamsungRom()) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setTitle(getString(R.string.samsung_rom_warning));
 
@@ -130,16 +126,31 @@ public class FirefdsKitActivity extends AppCompatActivity
         setContentView(R.layout.firefds_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(activity,
+        drawer = findViewById(R.id.firefds_main);
+        toggle = new ActionBarDrawerToggle(activity,
                 drawer,
                 toolbar,
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        menuToggle = toggle;
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        navigationView.getHeaderView(0).findViewById(R.id.firefds_logo).setOnClickListener(v -> {
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle(R.string.app_name);
+            }
+            drawer.closeDrawer(GravityCompat.START);
+            for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+                getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+            }
+            CardView cardRootView = findViewById(R.id.card_root_view);
+            CardView cardXposedView = findViewById(R.id.card_xposed_view);
+            cardRootView.setVisibility(View.VISIBLE);
+            cardXposedView.setVisibility(View.VISIBLE);
+        });
 
         if (Utils.isOmcEncryptedFlag()) {
             navigationView.getMenu().getItem(PREF_MESSAGING_KEY_INDEX).setVisible(false);
@@ -147,8 +158,6 @@ public class FirefdsKitActivity extends AppCompatActivity
 
         Utils.setOmcEncryptedFlag();
         setDefaultPreferences(false);
-
-        showProgressBar();
 
         Editor editor = sharedPreferences.edit();
 
@@ -183,25 +192,81 @@ public class FirefdsKitActivity extends AppCompatActivity
 
         fixAppPermissions(this);
 
-        new CheckRootTask().execute();
+        if (!XposedChecker.isActive()) {
+            findViewById(R.id.root_status_container).setVisibility(View.GONE);
+            findViewById(R.id.root_status_text).setVisibility(View.GONE);
+            setCardStatus(R.id.xposed_status_container,
+                    R.id.xposed_status_icon,
+                    R.id.xposed_status_text,
+                    R.drawable.ic_error,
+                    R.string.firefds_kit_is_not_active,
+                    R.color.error);
+        } else {
+            setCardStatus(R.id.xposed_status_container,
+                    R.id.xposed_status_icon,
+                    R.id.xposed_status_text,
+                    R.drawable.ic_check_circle,
+                    R.string.xposed_status,
+                    R.color.active);
+            new CheckRootTask().execute();
+        }
     }
 
     @Override
     public void onBackPressed() {
-        /*if (!(getVisibleFragment() instanceof MainFragment)) {
+        if (getVisibleFragment() instanceof ScreenTimeoutSettingsFragment) {
             if (getSupportActionBar() != null) {
-                if (getVisibleFragment() instanceof ScreenTimeoutSettingsFragment) {
-                    getSupportActionBar().setTitle(R.string.system);
-                } else {
-                    getSupportActionBar().setHomeButtonEnabled(false);
-                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-                    getSupportActionBar().setTitle(R.string.app_name);
-                }
+                getSupportActionBar().setTitle(R.string.system);
+                toggle = menuToggle;
+                toggle.setDrawerIndicatorEnabled(true);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             }
             super.onBackPressed();
-        } else {*/
-        new QuitTask().execute(this);
-        //}
+        } else {
+            new QuitTask().execute(this);
+        }
+    }
+
+    @Override
+    public void onRestoreDefaults() {
+
+        sharedPreferences.edit().clear().apply();
+        setDefaultPreferences(true);
+
+        if (!Utils.isOmcEncryptedFlag()) {
+            XCscFeaturesManager.applyCscFeatures(sharedPreferences);
+        }
+
+        recreate();
+        Toast.makeText(activity, R.string.defaults_restored, Toast.LENGTH_LONG).show();
+        RebootNotification.notify(activity, 999, false);
+    }
+
+    @Override
+    public void onRestoreBackup(final File backup) {
+        new RestoreBackupTask(backup).execute();
+    }
+
+    @Override
+    public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
+        final Bundle args = pref.getExtras();
+        final Fragment fragment = getSupportFragmentManager().getFragmentFactory().instantiate(
+                getClassLoader(),
+                pref.getFragment(),
+                args);
+        fragment.setArguments(args);
+        fragment.setTargetFragment(caller, 0);
+        if (getSupportActionBar() != null) {
+            toggle.setDrawerIndicatorEnabled(false);
+            toggle.setToolbarNavigationClickListener(v -> onBackPressed());
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(pref.getTitle());
+        }
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_main, fragment)
+                .addToBackStack("screenTimeoutSettings")
+                .commit();
+        return true;
     }
 
     @Override
@@ -239,6 +304,11 @@ public class FirefdsKitActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Fragment newFragment;
+
+        CardView cardRootView = findViewById(R.id.card_root_view);
+        CardView cardXposedView = findViewById(R.id.card_xposed_view);
+        cardRootView.setVisibility(View.GONE);
+        cardXposedView.setVisibility(View.GONE);
 
         switch (item.getItemId()) {
             case R.id.statusbarKey:
@@ -287,81 +357,19 @@ public class FirefdsKitActivity extends AppCompatActivity
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(item.getTitle());
         }
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.firefds_main);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    @Override
-    public void onRestoreDefaults() {
-
-        sharedPreferences.edit().clear().apply();
-        setDefaultPreferences(true);
-
-        if (!Utils.isOmcEncryptedFlag()) {
-            XCscFeaturesManager.applyCscFeatures(sharedPreferences);
+    private Fragment getVisibleFragment() {
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        for (Fragment fragment : fragments) {
+            if (fragment != null && fragment.isVisible())
+                return fragment;
         }
-
-        recreate();
-        Toast.makeText(activity, R.string.defaults_restored, Toast.LENGTH_LONG).show();
-        RebootNotification.notify(activity, 999, false);
-    }
-
-    @Override
-    public void onRestoreBackup(final File backup) {
-        new RestoreBackupTask(backup).execute();
-    }
-
-    public static SharedPreferences getSharedPreferences() {
-        return sharedPreferences;
-    }
-
-    public static Context getActivity() {
-        return activity;
-    }
-
-    public static void verifyStoragePermissions(AppCompatActivity activity) {
-        // Check if we have write permission
-        int permission = ActivityCompat.checkSelfPermission(activity,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE);
-        }
-
-        if (!Settings.System.canWrite(activity)) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-            intent.setData(Uri.parse("package:" + activity.getPackageName()));
-            activity.startActivity(intent);
-        }
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    @SuppressLint("SetWorldReadable")
-    public static void fixPermissions(Context context) {
-        File sharedPrefsFolder =
-                new File(context.getFilesDir().getParentFile(), "shared_prefs");
-        if (sharedPrefsFolder.exists()) {
-            sharedPrefsFolder.setExecutable(true, false);
-            sharedPrefsFolder.setReadable(true, false);
-            File f = new File(String.format("%s/%s_preferences.xml",
-                    sharedPrefsFolder.getAbsolutePath(),
-                    BuildConfig.APPLICATION_ID));
-            if (f.exists()) {
-                f.setReadable(true, false);
-                f.setExecutable(true, false);
-            }
-        }
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    @SuppressLint("SetWorldReadable")
-    public static void fixAppPermissions(Context context) {
-        File appFolder = context.getFilesDir().getParentFile();
-        appFolder.setExecutable(true, false);
-        appFolder.setReadable(true, false);
+        return null;
     }
 
     private void showCreditsDialog() {
@@ -405,6 +413,75 @@ public class FirefdsKitActivity extends AppCompatActivity
         RebootNotification.notify(activity, 999, false);
     }
 
+    public static SharedPreferences getSharedPreferences() {
+        return sharedPreferences;
+    }
+
+    public static Context getActivity() {
+        return activity;
+    }
+
+    private static void setCardStatus(int containerLayoutId,
+                                      int iconLayoutId,
+                                      int textLayoutId,
+                                      int statusIconId,
+                                      int statusTextId,
+                                      int statusColorId) {
+
+        FrameLayout statusContainerLayout = activity.findViewById(containerLayoutId);
+        ImageView statusIcon = activity.findViewById(iconLayoutId);
+        TextView statusText = activity.findViewById(textLayoutId);
+
+        statusContainerLayout.setBackgroundColor(activity.getColor(statusColorId));
+        statusIcon.setImageDrawable(activity.getDrawable(statusIconId));
+        statusText.setText(statusTextId);
+        statusText.setTextColor(activity.getColor(statusColorId));
+    }
+
+    private static void verifyStoragePermissions(AppCompatActivity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE);
+        }
+
+        if (!Settings.System.canWrite(activity)) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+            intent.setData(Uri.parse("package:" + activity.getPackageName()));
+            activity.startActivity(intent);
+        }
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @SuppressLint("SetWorldReadable")
+    public static void fixPermissions(Context context) {
+        File sharedPrefsFolder =
+                new File(context.getFilesDir().getParentFile(), "shared_prefs");
+        if (sharedPrefsFolder.exists()) {
+            sharedPrefsFolder.setExecutable(true, false);
+            sharedPrefsFolder.setReadable(true, false);
+            File f = new File(String.format("%s/%s_preferences.xml",
+                    sharedPrefsFolder.getAbsolutePath(),
+                    BuildConfig.APPLICATION_ID));
+            if (f.exists()) {
+                f.setReadable(true, false);
+                f.setExecutable(true, false);
+            }
+        }
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @SuppressLint("SetWorldReadable")
+    private static void fixAppPermissions(Context context) {
+        File appFolder = context.getFilesDir().getParentFile();
+        appFolder.setExecutable(true, false);
+        appFolder.setReadable(true, false);
+    }
+
     private static void setDefaultPreferences(boolean forceDefault) {
         upgradePreferences();
         PreferenceManager.setDefaultValues(activity, R.xml.lockscreen_settings, true);
@@ -441,114 +518,6 @@ public class FirefdsKitActivity extends AppCompatActivity
         } catch (ClassCastException e) {
             String uid = String.valueOf(preferences.getInt(PREF_NFC_BEHAVIOR, 0));
             preferences.edit().putString(PREF_NFC_BEHAVIOR, uid).apply();
-        }
-    }
-
-    private static class QuitTask extends AsyncTask<AppCompatActivity, Void, Void> {
-        @SuppressLint("StaticFieldLeak")
-        private AppCompatActivity mActivity = null;
-
-        @Override
-        protected Void doInBackground(AppCompatActivity... appCompatActivities) {
-            try {
-                mActivity = appCompatActivities[0];
-                if (!Utils.isOmcEncryptedFlag()) {
-                    XCscFeaturesManager.applyCscFeatures(sharedPreferences);
-                }
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            try {
-                Utils.resetPermissions(mActivity);
-            } catch (Throwable e) {
-                e.printStackTrace();
-            } finally {
-                if (mActivity != null) {
-                    mActivity.finish();
-                }
-            }
-            super.onPostExecute(result);
-        }
-
-    }
-
-    private static class CheckRootTask extends AsyncTask<Void, Void, Void> {
-        private boolean suAvailable = false;
-
-        protected Void doInBackground(Void... params) {
-            try {
-                suAvailable = Shell.getShell().isRoot();
-
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        protected void onPostExecute(Void p) {
-
-            try {
-                getHandler().removeCallbacks(delayedRoot);
-                // Check for root access
-                if (!suAvailable) {
-                    showDisclaimer(R.string.root_info, false);
-                } else {
-                    new CopyCSCTask().execute(getActivity());
-
-                    if (!sharedPreferences.getBoolean(PREF_FIRST_LAUNCH, false)) {
-                        showDisclaimer(R.string.firefds_xposed_disclaimer, true);
-                        sharedPreferences.edit().putBoolean(PREF_FIRST_LAUNCH, true).apply();
-                    }
-                }
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private static void showDisclaimer(int messageId, boolean showIcon) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setCancelable(true)
-                .setTitle(R.string.app_name)
-                .setMessage(messageId)
-                .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
-
-        if (showIcon) {
-            builder.setIcon(android.R.drawable.ic_dialog_alert);
-        }
-
-        builder.create().show();
-    }
-
-    private static class CopyCSCTask extends AsyncTask<Context, Void, Void> {
-
-        protected Void doInBackground(Context... params) {
-            try {
-                if (!Utils.isOmcEncryptedFlag()) {
-                    XCscFeaturesManager.getDefaultCSCFeaturesFromFiles();
-                }
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            try {
-                if (!Utils.isOmcEncryptedFlag()) {
-                    Utils.createCSCFiles(activity);
-                }
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-            super.onPostExecute(result);
         }
     }
 
@@ -621,198 +590,117 @@ public class FirefdsKitActivity extends AppCompatActivity
         }
     }
 
-    private void showProgressBar() {
-        showDelayedRootMsg();
-    }
-
-    private void showDelayedRootMsg() {
-        getHandler().postDelayed(delayedRoot, 20000);
-    }
-
-    public static class NotificationSettingsFragment extends FirefdsPreferenceFragment {
+    private static class QuitTask extends AsyncTask<AppCompatActivity, Void, Void> {
+        @SuppressLint("StaticFieldLeak")
+        private AppCompatActivity mActivity = null;
 
         @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.notification_settings, rootKey);
+        protected Void doInBackground(AppCompatActivity... appCompatActivities) {
+            try {
+                mActivity = appCompatActivities[0];
+                if (!Utils.isOmcEncryptedFlag()) {
+                    XCscFeaturesManager.applyCscFeatures(sharedPreferences);
+                }
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+
+            return null;
         }
 
         @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-
-            ListPreference clock_date_preference = findPreference(PREF_CLOCK_DATE_PREFERENCE);
-            SwitchPreferenceCompat clockDateOnRight = findPreference(PREF_CLOCK_DATE_ON_RIGHT);
-            if (clockDateOnRight != null) {
-                if (clock_date_preference != null) {
-                    clockDateOnRight.setEnabled(!clock_date_preference.getValue().equals("disabled"));
+        protected void onPostExecute(Void result) {
+            try {
+                Utils.resetPermissions(mActivity);
+            } catch (Throwable e) {
+                e.printStackTrace();
+            } finally {
+                if (mActivity != null) {
+                    mActivity.finish();
                 }
             }
-            if (clock_date_preference != null) {
-                clock_date_preference.setOnPreferenceChangeListener((preference, o) -> {
-                    if (!o.toString().equals("disabled")) {
-                        if (clockDateOnRight != null) {
-                            clockDateOnRight.setEnabled(true);
-                        }
-                    } else {
-                        if (clockDateOnRight != null) {
-                            clockDateOnRight.setEnabled(false);
-                        }
-                    }
-                    return true;
-                });
+            super.onPostExecute(result);
+        }
+
+    }
+
+    private static class CheckRootTask extends AsyncTask<Void, Void, Void> {
+        private boolean suAvailable = false;
+
+        protected Void doInBackground(Void... params) {
+            try {
+                suAvailable = Shell.getShell().isRoot();
+
+            } catch (Throwable e) {
+                e.printStackTrace();
             }
-        }
-    }
-
-    public static class LockscreenSettingsFragment extends FirefdsPreferenceFragment {
-
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.lockscreen_settings, rootKey);
-        }
-    }
-
-    public static class MessagingSettingsFragment extends FirefdsPreferenceFragment {
-
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.messaging_settings, rootKey);
-        }
-    }
-
-    public static class PhoneSettingsFragment extends FirefdsPreferenceFragment {
-
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.phone_settings, rootKey);
+            return null;
         }
 
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            if (Utils.isOmcEncryptedFlag()) {
-                PreferenceCategory phoneScreen = findPreference(PREF_PHONE_KEY_CAT);
-                SwitchPreferenceCompat disableNumberFormattingPreference =
-                        findPreference(PREF_DISABLE_NUMBER_FORMATTING);
-
-                if (phoneScreen != null) {
-                    if (disableNumberFormattingPreference != null) {
-                        phoneScreen.removePreference(disableNumberFormattingPreference);
-                    }
-                }
-            }
-        }
-    }
-
-    public static class SecuritySettingsFragment extends FirefdsPreferenceFragment {
-
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.security_settings, rootKey);
-        }
-    }
-
-    public static class SoundSettingsFragment extends FirefdsPreferenceFragment {
-
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.sound_settings, rootKey);
-        }
-    }
-
-    public static class SystemSettingsFragment extends FirefdsPreferenceFragment {
-
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.system_settings, rootKey);
-        }
-
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            super.onSharedPreferenceChanged(sharedPreferences, key);
-
-            if (key.equals(PREF_NAVIGATION_BAR_COLOR)) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                TextView tv = new TextView(activity);
-                tv.setMovementMethod(LinkMovementMethod.getInstance());
-                tv.setText(R.string.navigation_bar_color_dialog_message);
-                tv.setPadding(16, 16, 16, 16);
-                builder.setTitle(R.string.navigation_bar_color_dialog_title)
-                        .setView(tv)
-                        .setNeutralButton("OK", (dialog, id) -> dialog.dismiss())
-                        .show();
-            }
-        }
-    }
-
-    public static class ScreenTimeoutSettingsFragment extends FirefdsPreferenceFragment {
-
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.screen_timeout_settings, rootKey);
-        }
-    }
-
-    /*public static class MainFragment extends FirefdsPreferenceFragment {
-
-        private static Resources res;
-        private AlertDialog alertDialog;
-        //private Context mContext;
-        private FragmentActivity activityCompat;
-
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+        protected void onPostExecute(Void p) {
 
             try {
-                //mContext = getActivity();
-                activityCompat = getActivity();
-                res = getResources();
-                //setDefaultPreferences(context, false);
+                activity.findViewById(R.id.root_progressBar).setVisibility(View.GONE);
+                activity.findViewById(R.id.root_status_icon).setVisibility(View.VISIBLE);
 
-
-
-                *//*if (textViewInformationHeader != null) {
-                    textViewInformationHeader.setTitle("");
-                }
-
-                if (!XposedChecker.isActive()) {
-                    if (textViewInformationHeader != null) {
-                        textViewInformationHeader.setTitle(R.string.firefds_kit_is_not_active);
-                    }
-                    if (textViewInformationHeader != null) {
-                        textViewInformationHeader.setEnabled(false);
-                    }
+                // Check for root access
+                if (!suAvailable) {
+                    setCardStatus(R.id.root_status_container,
+                            R.id.root_status_icon,
+                            R.id.root_status_text,
+                            R.drawable.ic_warning,
+                            R.string.root_info,
+                            R.color.warning);
                 } else {
-                    if (ps != null) {
-                        if (textViewInformationHeader != null) {
-                            ps.removePreference(textViewInformationHeader);
-                        }
+                    new CopyCSCTask().execute(activity);
+                    if (!sharedPreferences.getBoolean(PREF_FIRST_LAUNCH, false)) {
+                        new AlertDialog.Builder(activity)
+                                .setCancelable(true)
+                                .setIcon(R.drawable.ic_warning)
+                                .setTitle(R.string.app_name)
+                                .setMessage(R.string.firefds_xposed_disclaimer)
+                                .setPositiveButton(android.R.string.ok,
+                                        (dialog, which) -> dialog.dismiss())
+                                .create()
+                                .show();
+                        sharedPreferences.edit().putBoolean(PREF_FIRST_LAUNCH, true).apply();
                     }
-                }*//*
-
-
+                    setCardStatus(R.id.root_status_container,
+                            R.id.root_status_icon,
+                            R.id.root_status_text,
+                            R.drawable.ic_check_circle,
+                            R.string.root_granted,
+                            R.color.active);
+                }
             } catch (Throwable e) {
                 e.printStackTrace();
             }
         }
+    }
 
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.firefds_settings, rootKey);
-        }
+    private static class CopyCSCTask extends AsyncTask<Context, Void, Void> {
 
-        @Override
-        public void onDestroy() {
+        protected Void doInBackground(Context... params) {
             try {
-//                if (mLayout.getVisibility() == View.VISIBLE) {
-//                    mLayout.setVisibility(View.INVISIBLE);
-//                }
+                if (!Utils.isOmcEncryptedFlag()) {
+                    XCscFeaturesManager.getDefaultCSCFeaturesFromFiles();
+                }
             } catch (Throwable e) {
                 e.printStackTrace();
             }
-            super.onDestroy();
+            return null;
         }
-    }*/
+
+        @Override
+        protected void onPostExecute(Void result) {
+            try {
+                if (!Utils.isOmcEncryptedFlag()) {
+                    Utils.createCSCFiles(activity);
+                }
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+            super.onPostExecute(result);
+        }
+    }
 }
