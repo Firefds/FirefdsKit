@@ -246,7 +246,7 @@ public class Utils {
         Snackbar snackbar = Snackbar
                 .make(view, stringId, Snackbar.LENGTH_LONG)
                 .setActionTextColor(ContextCompat.getColor(context, android.R.color.white));
-        snackbar.getView().setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
+        snackbar.getView().setBackgroundColor(ContextCompat.getColor(context, R.color.primaryColor));
         return snackbar;
     }
 
