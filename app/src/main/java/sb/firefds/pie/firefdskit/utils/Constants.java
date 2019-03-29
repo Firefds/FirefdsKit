@@ -52,4 +52,9 @@ public class Constants {
     public static final String MAX_RECIPIENT_LENGTH_AS = "CscFeature_Message_MaxRecipientLengthAs";
     public static final String DISABLE_PHONE_NUMBER_FORMATTING = "CscFeature_Common_DisablePhoneNumberFormatting";
 
+    public static final String SHORTCUT_STATUSBAR = "STATUSBAR";
+    public static final String SHORTCUT_SYSTEM = "SYSTEM";
+    public static final String SHORTCUT_PHONE = "PHONE";
+    public static final String SHORTCUT_SECURITY = "SECURITY";
+
 }

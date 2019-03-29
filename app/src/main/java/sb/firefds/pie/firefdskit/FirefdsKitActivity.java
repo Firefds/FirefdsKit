@@ -76,6 +76,10 @@ import sb.firefds.pie.firefdskit.notifications.RebootNotification;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
 import static sb.firefds.pie.firefdskit.utils.Constants.PREFS;
+import static sb.firefds.pie.firefdskit.utils.Constants.SHORTCUT_PHONE;
+import static sb.firefds.pie.firefdskit.utils.Constants.SHORTCUT_SECURITY;
+import static sb.firefds.pie.firefdskit.utils.Constants.SHORTCUT_STATUSBAR;
+import static sb.firefds.pie.firefdskit.utils.Constants.SHORTCUT_SYSTEM;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DATA_ICON_BEHAVIOR;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_FIRST_LAUNCH;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_MESSAGING_KEY_INDEX;
@@ -88,6 +92,8 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_SE
 public class FirefdsKitActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         RestoreDialog.RestoreDialogListener, PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+
+    private static final String notification_shortcut = "notification_shortcut";
 
     private static SharedPreferences sharedPreferences;
     private static AppCompatActivity activity;
@@ -210,6 +216,25 @@ public class FirefdsKitActivity extends AppCompatActivity
                     R.string.xposed_status,
                     R.color.active);
             new CheckRootTask().execute();
+        }
+
+        Menu menuNav = navigationView.getMenu();
+        String shortcutAction = getIntent().getAction();
+        if (shortcutAction != null) {
+            switch (shortcutAction) {
+                case SHORTCUT_STATUSBAR:
+                    onNavigationItemSelected(menuNav.findItem(R.id.statusbarKey));
+                    break;
+                case SHORTCUT_SYSTEM:
+                    onNavigationItemSelected(menuNav.findItem(R.id.systemKey));
+                    break;
+                case SHORTCUT_PHONE:
+                    onNavigationItemSelected(menuNav.findItem(R.id.phoneKey));
+                    break;
+                case SHORTCUT_SECURITY:
+                    onNavigationItemSelected(menuNav.findItem(R.id.securityKey));
+                    break;
+            }
         }
     }
 
