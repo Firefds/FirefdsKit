@@ -93,8 +93,6 @@ public class FirefdsKitActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         RestoreDialog.RestoreDialogListener, PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
-    private static final String notification_shortcut = "notification_shortcut";
-
     private static SharedPreferences sharedPreferences;
     private static AppCompatActivity activity;
     private DrawerLayout drawer;
