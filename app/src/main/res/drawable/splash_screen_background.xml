@@ -5,7 +5,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/splash_logo" />
+            android:src="@mipmap/ic_launcher_foreground" />
     </item>
     <item android:top="200dp">
         <bitmap
