@@ -18,6 +18,12 @@ The module has the following features:
 - Replace add call button instead of call recording
 - Enable call recording from menu
 - Auto call recording
+- Enable navigation bar color settings in Navigation Bar settings
+- Navigation bar custom color picker
+- Enable multi user toggle
+- Set max user value selector
+- Show seconds in status bar clock toggle
+- Show clock date on right of clock toggle
 - Add date to status bar clock options
 - Enable fingerprint unlock on reboot toggle
 - Enable biometrics unlock on reboot toggle
@@ -88,7 +94,8 @@ The project uses the following libraries:
 1. https://github.com/topjohnwu/libsu
 2. https://github.com/rovo89/XposedBridge
 3. https://github.com/rovo89/XposedMods/tree/master/XposedLibrary
-4. Samsung framework libraries which are used for compile only
+4. https://github.com/jaredrummler/ColorPicker
+5. Samsung framework libraries which are used for compile only
 
 ## Credits
 This module wouldn't have been here without the following people:
@@ -99,6 +106,7 @@ This module wouldn't have been here without the following people:
 - [Wanam](https://github.com/wanam) - Creator of the original XTouchWiz module, which this module is based on.
 - [topjohnwu](https://github.com/topjohnwu) - Creator of Magisk
 - [AbrahamGC](https://forum.xda-developers.com/member.php?u=7393522) - [For the Extended Power Menu - Pie - Odex framework Smali guide](https://forum.xda-developers.com/showpost.php?p=78910083&postcount=944)
+- [jaredrummler](https://github.com/jaredrummler) - For Color Picker library
 
 This is a moded version of Wanam's XTouchWiz:
 https://github.com/wanam/XTouchWiz
