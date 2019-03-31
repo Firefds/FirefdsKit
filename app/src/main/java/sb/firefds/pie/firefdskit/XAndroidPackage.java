@@ -27,11 +27,11 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.*;
 
 public class XAndroidPackage {
 
-    private static final String WINDOW_STATE_CLASS = "android.server.wm.WindowState";
+    private static final String WINDOW_STATE_CLASS = "com.android.server.wm.WindowState";
     private static final String WINDOW_MANAGER_SERVICE_CLASS =
-            "android.server.wm.WindowManagerService";
+            "com.android.server.wm.WindowManagerService";
     private static final String PACKAGE_MANAGER_SERVICE_UTILS_CLASS =
-            "android.server.pm.PackageManagerServiceUtils";
+            "com.android.server.pm.PackageManagerServiceUtils";
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
