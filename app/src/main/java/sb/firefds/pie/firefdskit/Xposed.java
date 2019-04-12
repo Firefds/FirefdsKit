@@ -14,6 +14,8 @@
  */
 package sb.firefds.pie.firefdskit;
 
+import java.io.File;
+
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -27,6 +29,9 @@ import sb.firefds.pie.firefdskit.utils.Utils;
 public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     private static XSharedPreferences prefs;
+    private static File securePrefFile =
+            new File("/data/user_de/0/sb.firefds.pie.firefdskit/shared_prefs/"
+                    + BuildConfig.APPLICATION_ID + "preferences.xml");
 
     @Override
     public void initZygote(StartupParam startupParam) {
@@ -135,7 +140,7 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     private static void getModuleSharedPreferences() {
         if (prefs == null) {
-            prefs = new XSharedPreferences(BuildConfig.APPLICATION_ID);
+            prefs = new XSharedPreferences(securePrefFile);
             prefs.makeWorldReadable();
         } else {
             prefs.reload();

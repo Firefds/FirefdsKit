@@ -484,7 +484,7 @@ public class FirefdsKitActivity extends AppCompatActivity
     @SuppressLint("SetWorldReadable")
     public static void fixPermissions(Context context) {
         File sharedPrefsFolder =
-                new File(context.getFilesDir().getParentFile(), "shared_prefs");
+                new File(context.getDataDir().getAbsolutePath() + "/shared_prefs");
         if (sharedPrefsFolder.exists()) {
             sharedPrefsFolder.setExecutable(true, false);
             sharedPrefsFolder.setReadable(true, false);
@@ -502,6 +502,10 @@ public class FirefdsKitActivity extends AppCompatActivity
     @SuppressLint("SetWorldReadable")
     private static void fixAppPermissions(Context context) {
         File appFolder = context.getFilesDir().getParentFile();
+        appFolder.setExecutable(true, false);
+        appFolder.setReadable(true, false);
+
+        File secureAppFolder = new File(context.getDataDir().getAbsolutePath());
         appFolder.setExecutable(true, false);
         appFolder.setReadable(true, false);
     }
