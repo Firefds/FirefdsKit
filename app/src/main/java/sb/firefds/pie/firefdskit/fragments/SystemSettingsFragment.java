@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import sb.firefds.pie.firefdskit.R;
+import sb.firefds.pie.firefdskit.utils.Utils;
 
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_NAVIGATION_BAR_COLOR;
 
@@ -17,7 +18,9 @@ public class SystemSettingsFragment extends FirefdsPreferenceFragment {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        getPreferenceManager().setStorageDeviceProtected();
+        if (Utils.isDeviceEncrypted()) {
+            getPreferenceManager().setStorageDeviceProtected();
+        }
         setPreferencesFromResource(R.xml.system_settings, rootKey);
         activity = (AppCompatActivity) getActivity();
     }

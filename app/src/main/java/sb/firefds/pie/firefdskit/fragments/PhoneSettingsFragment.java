@@ -13,7 +13,9 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_PHONE_KEY_CAT;
 public class PhoneSettingsFragment extends FirefdsPreferenceFragment {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        getPreferenceManager().setStorageDeviceProtected();
+        if (Utils.isDeviceEncrypted()) {
+            getPreferenceManager().setStorageDeviceProtected();
+        }
         setPreferencesFromResource(R.xml.phone_settings, rootKey);
     }
 
