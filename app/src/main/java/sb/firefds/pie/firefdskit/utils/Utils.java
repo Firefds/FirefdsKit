@@ -210,6 +210,10 @@ public class Utils {
         return mCscType;
     }
 
+    public static boolean isDeviceEncrypted() {
+        return SystemProperties.get("ro.crypto.state").equals("encrypted");
+    }
+
     public static boolean isOmcEncryptedFlag() {
         return omcEncryptedFlag;
     }

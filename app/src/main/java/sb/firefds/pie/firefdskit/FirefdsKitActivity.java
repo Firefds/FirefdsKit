@@ -95,6 +95,7 @@ public class FirefdsKitActivity extends AppCompatActivity
 
     private static SharedPreferences sharedPreferences;
     private static AppCompatActivity activity;
+    private static Context appContext;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private ActionBarDrawerToggle menuToggle;
@@ -113,7 +114,8 @@ public class FirefdsKitActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        sharedPreferences = getSharedPreferences(PREFS, 0);
+        appContext = isDeviceProtectedStorage() ? createDeviceProtectedStorageContext() : this;
+        sharedPreferences = appContext.getSharedPreferences(PREFS, 0);
         activity = this;
         verifyStoragePermissions(this);
 
@@ -195,7 +197,7 @@ public class FirefdsKitActivity extends AppCompatActivity
             }
         }
 
-        fixAppPermissions(this);
+        fixAppPermissions(appContext);
 
         if (!XposedChecker.isActive()) {
             findViewById(R.id.root_status_container).setVisibility(View.GONE);
@@ -445,6 +447,10 @@ public class FirefdsKitActivity extends AppCompatActivity
         return activity;
     }
 
+    public static Context getAppContext() {
+        return appContext;
+    }
+
     private static void setCardStatus(int containerLayoutId,
                                       int iconLayoutId,
                                       int textLayoutId,
@@ -504,21 +510,17 @@ public class FirefdsKitActivity extends AppCompatActivity
         File appFolder = context.getFilesDir().getParentFile();
         appFolder.setExecutable(true, false);
         appFolder.setReadable(true, false);
-
-        File secureAppFolder = new File(context.getDataDir().getAbsolutePath());
-        appFolder.setExecutable(true, false);
-        appFolder.setReadable(true, false);
     }
 
     private static void setDefaultPreferences(boolean forceDefault) {
         upgradePreferences();
-        PreferenceManager.setDefaultValues(activity, R.xml.lockscreen_settings, true);
-        PreferenceManager.setDefaultValues(activity, R.xml.messaging_settings, true);
-        PreferenceManager.setDefaultValues(activity, R.xml.notification_settings, true);
-        PreferenceManager.setDefaultValues(activity, R.xml.phone_settings, true);
-        PreferenceManager.setDefaultValues(activity, R.xml.security_settings, true);
-        PreferenceManager.setDefaultValues(activity, R.xml.sound_settings, true);
-        PreferenceManager.setDefaultValues(activity, R.xml.system_settings, true);
+        PreferenceManager.setDefaultValues(appContext, R.xml.lockscreen_settings, true);
+        PreferenceManager.setDefaultValues(appContext, R.xml.messaging_settings, true);
+        PreferenceManager.setDefaultValues(appContext, R.xml.notification_settings, true);
+        PreferenceManager.setDefaultValues(appContext, R.xml.phone_settings, true);
+        PreferenceManager.setDefaultValues(appContext, R.xml.security_settings, true);
+        PreferenceManager.setDefaultValues(appContext, R.xml.sound_settings, true);
+        PreferenceManager.setDefaultValues(appContext, R.xml.system_settings, true);
         if (forceDefault) {
             Editor editor = sharedPreferences.edit();
 
@@ -530,7 +532,7 @@ public class FirefdsKitActivity extends AppCompatActivity
                     activity.getResources()
                             .getIntArray(R.array.navigationbar_color_values)[1]).apply();
         }
-        fixPermissions(activity);
+        fixPermissions(appContext);
     }
 
     private static void upgradePreferences() {
@@ -588,7 +590,7 @@ public class FirefdsKitActivity extends AppCompatActivity
                         prefEdit.putString(key, ((String) v));
                 }
                 prefEdit.apply();
-                fixPermissions(getApplicationContext());
+                fixPermissions(appContext);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

@@ -17,6 +17,7 @@ public class SystemSettingsFragment extends FirefdsPreferenceFragment {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        getPreferenceManager().setStorageDeviceProtected();
         setPreferencesFromResource(R.xml.system_settings, rootKey);
         activity = (AppCompatActivity) getActivity();
     }

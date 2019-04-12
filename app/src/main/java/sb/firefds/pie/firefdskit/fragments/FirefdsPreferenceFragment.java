@@ -1,11 +1,13 @@
 package sb.firefds.pie.firefdskit.fragments;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
@@ -22,12 +24,13 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static AppCompatActivity fragmentActivity;
+    private static Context secureContext;
     private static List<String> changesMade;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        secureContext = Objects.requireNonNull(getContext()).createDeviceProtectedStorageContext();
         fragmentActivity = (AppCompatActivity) getActivity();
         if (changesMade == null) {
             changesMade = new ArrayList<>();
@@ -46,7 +49,7 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat
 
             for (String string : litePrefs) {
                 if (key.equalsIgnoreCase(string)) {
-                    fixPermissions(fragmentActivity);
+                    fixPermissions(secureContext);
                     return;
                 }
             }
@@ -55,7 +58,7 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat
             if (!changesMade.contains(key)) {
                 changesMade.add(key);
             }
-            fixPermissions(fragmentActivity);
+            fixPermissions(secureContext);
             RebootNotification.notify(fragmentActivity, changesMade.size(), false);
         } catch (Throwable e) {
             e.printStackTrace();
@@ -71,14 +74,14 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat
     public void onResume() {
         super.onResume();
         registerPrefsReceiver();
-        fixPermissions(fragmentActivity);
+        fixPermissions(secureContext);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         unregisterPrefsReceiver();
-        fixPermissions(fragmentActivity);
+        fixPermissions(secureContext);
     }
 
     private void setTimeoutPrefs(SharedPreferences sharedPreferences, String key) {

@@ -140,7 +140,9 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     private static void getModuleSharedPreferences() {
         if (prefs == null) {
-            prefs = new XSharedPreferences(securePrefFile);
+            prefs = Utils.isDeviceEncrypted() ?
+                    new XSharedPreferences(securePrefFile) :
+                    new XSharedPreferences(BuildConfig.APPLICATION_ID);
             prefs.makeWorldReadable();
         } else {
             prefs.reload();

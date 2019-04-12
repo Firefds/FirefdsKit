@@ -12,6 +12,7 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CLOCK_DATE_PREFER
 public class NotificationSettingsFragment extends FirefdsPreferenceFragment {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        getPreferenceManager().setStorageDeviceProtected();
         setPreferencesFromResource(R.xml.notification_settings, rootKey);
     }
 
