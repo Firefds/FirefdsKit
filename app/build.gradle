@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 ext {
-    VERSION_CODE = "0121"
-    VERSION_NAME = "0.1.2.1-beta-6.1"
+    VERSION_CODE = "0130"
+    VERSION_NAME = "0.1.3.0-beta-7"
 }
 
 android {

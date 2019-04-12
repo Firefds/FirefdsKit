@@ -59,6 +59,7 @@ Confirmed working on:
 - Galaxy S8+
 - Galaxy S9
 - Note 9
+- Galaxy S10
 
 For Galaxy S9 and above which use encrypted CSC files - I have disabled a few CSC features because I can't test thier implementation.
 
