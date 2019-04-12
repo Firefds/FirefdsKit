@@ -1,13 +1,11 @@
 package sb.firefds.pie.firefdskit.fragments;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
@@ -25,13 +23,11 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static AppCompatActivity fragmentActivity;
-    //private static Context appContext;
     private static List<String> changesMade;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //appContext = Objects.requireNonNull(getContext()).createDeviceProtectedStorageContext();
         fragmentActivity = (AppCompatActivity) getActivity();
         if (changesMade == null) {
             changesMade = new ArrayList<>();

@@ -219,8 +219,7 @@ public class Utils {
     }
 
     public static void setOmcEncryptedFlag() {
-        Utils.omcEncryptedFlag = !SystemProperties.get("ro.omc.img_mount").isEmpty()
-                && !SystemProperties.get("persist.sys.omc_install").isEmpty();
+        Utils.omcEncryptedFlag = SystemProperties.get("ro.omc.img_mount").equals("0");
     }
 
     static String getOMCPath() {
