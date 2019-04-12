@@ -31,7 +31,7 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     private static XSharedPreferences prefs;
     private static File securePrefFile =
             new File("/data/user_de/0/sb.firefds.pie.firefdskit/shared_prefs/"
-                    + BuildConfig.APPLICATION_ID + "preferences.xml");
+                    + BuildConfig.APPLICATION_ID + "_preferences.xml");
 
     @Override
     public void initZygote(StartupParam startupParam) {
