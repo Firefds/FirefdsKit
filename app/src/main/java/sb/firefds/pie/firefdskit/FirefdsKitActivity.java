@@ -163,7 +163,6 @@ public class FirefdsKitActivity extends AppCompatActivity
             navigationView.getMenu().getItem(PREF_MESSAGING_KEY_INDEX).setVisible(false);
         }
 
-        Utils.setOmcEncryptedFlag();
         setDefaultPreferences(false);
 
         Editor editor = sharedPreferences.edit();

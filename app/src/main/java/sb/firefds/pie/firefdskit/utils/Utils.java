@@ -51,7 +51,6 @@ public class Utils {
     }
 
     private static CscType mCscType = null;
-    private static boolean omcEncryptedFlag;
     @SuppressLint("StaticFieldLeak")
     private static Context mGbContext;
 
@@ -215,11 +214,7 @@ public class Utils {
     }
 
     public static boolean isOmcEncryptedFlag() {
-        return omcEncryptedFlag;
-    }
-
-    public static void setOmcEncryptedFlag() {
-        Utils.omcEncryptedFlag = SystemProperties.get("ro.omc.img_mount").equals("0");
+        return SystemProperties.get("ro.omc.img_mount").equals("0");
     }
 
     static String getOMCPath() {
