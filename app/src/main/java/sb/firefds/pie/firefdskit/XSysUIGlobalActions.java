@@ -129,14 +129,27 @@ public class XSysUIGlobalActions {
                                                         "mViewModelFactory");
                                 mSecGlobalActionsPresenter =
                                         (SecGlobalActionsPresenter) param.thisObject;
-                                mSecGlobalActionsPresenter
-                                        .addAction(actionViewModelFactory.createActionViewModel(
-                                                (SecGlobalActionsPresenter) param.thisObject,
-                                                "recovery"));
-                                mSecGlobalActionsPresenter
-                                        .addAction(actionViewModelFactory.createActionViewModel(
-                                                (SecGlobalActionsPresenter) param.thisObject,
-                                                "download"));
+                                if (!prefs.getBoolean(PREF_ENABLE_POWER_OFF, true)) {
+                                    mSecGlobalActionsPresenter.clearActions("power");
+                                }
+                                if (!prefs.getBoolean(PREF_ENABLE_RESTART, true)) {
+                                    mSecGlobalActionsPresenter.clearActions("restart");
+                                }
+                                if (!prefs.getBoolean(PREF_ENABLE_EMERGENCY_MODE, true)) {
+                                    mSecGlobalActionsPresenter.clearActions("emergency");
+                                }
+                                if (prefs.getBoolean(PREF_ENABLE_RECOVERY, true)) {
+                                    mSecGlobalActionsPresenter
+                                            .addAction(actionViewModelFactory.createActionViewModel(
+                                                    (SecGlobalActionsPresenter) param.thisObject,
+                                                    "recovery"));
+                                }
+                                if (prefs.getBoolean(PREF_ENABLE_DOWNLOAD, true)) {
+                                    mSecGlobalActionsPresenter
+                                            .addAction(actionViewModelFactory.createActionViewModel(
+                                                    (SecGlobalActionsPresenter) param.thisObject,
+                                                    "download"));
+                                }
                                 if (prefs.getBoolean(PREF_ENABLE_DATA_MODE, false)) {
                                     mSecGlobalActionsPresenter
                                             .addAction(actionViewModelFactory.createActionViewModel(

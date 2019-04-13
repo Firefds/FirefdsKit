@@ -65,6 +65,7 @@ import sb.firefds.pie.firefdskit.fragments.LockscreenSettingsFragment;
 import sb.firefds.pie.firefdskit.fragments.MessagingSettingsFragment;
 import sb.firefds.pie.firefdskit.fragments.NotificationSettingsFragment;
 import sb.firefds.pie.firefdskit.fragments.PhoneSettingsFragment;
+import sb.firefds.pie.firefdskit.fragments.PowerMenuSettingsFragment;
 import sb.firefds.pie.firefdskit.fragments.ScreenTimeoutSettingsFragment;
 import sb.firefds.pie.firefdskit.fragments.SecuritySettingsFragment;
 import sb.firefds.pie.firefdskit.fragments.SoundSettingsFragment;
@@ -231,7 +232,8 @@ public class FirefdsKitActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if (getVisibleFragment() instanceof ScreenTimeoutSettingsFragment) {
+        if (getVisibleFragment() instanceof ScreenTimeoutSettingsFragment ||
+                getVisibleFragment() instanceof PowerMenuSettingsFragment) {
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setTitle(R.string.system);
                 toggle = menuToggle;
@@ -502,6 +504,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         PreferenceManager.setDefaultValues(appContext, R.xml.security_settings, true);
         PreferenceManager.setDefaultValues(appContext, R.xml.sound_settings, true);
         PreferenceManager.setDefaultValues(appContext, R.xml.system_settings, true);
+        PreferenceManager.setDefaultValues(appContext, R.xml.advanced_power_menu_settings, true);
         if (forceDefault) {
             Editor editor = sharedPreferences.edit();
 

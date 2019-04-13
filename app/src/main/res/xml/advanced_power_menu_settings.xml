@@ -1,0 +1,51 @@
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:key="enablePowerOff"
+        android:summary="@string/enable_power_off_summary"
+        android:title="@string/enable_power_off_title"
+        app:iconSpaceReserved="false" />
+    <SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:key="enableRestart"
+        android:summary="@string/enable_restart_summary"
+        android:title="@string/enable_restart_title"
+        app:iconSpaceReserved="false" />
+    <SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:key="enableRecovery"
+        android:summary="@string/enable_recovery_summary"
+        android:title="@string/enable_recovery_title"
+        app:iconSpaceReserved="false" />
+    <SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:key="enableDownload"
+        android:summary="@string/enable_download_summary"
+        android:title="@string/enable_download_title"
+        app:iconSpaceReserved="false" />
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="enableDataMode"
+        android:summary="@string/enable_data_mode_switch_summary"
+        android:title="@string/enable_data_mode_switch_title"
+        app:iconSpaceReserved="false" />
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="enableScreenshot"
+        android:summary="@string/add_screenshot_to_power_menu"
+        android:title="@string/screenshot"
+        app:iconSpaceReserved="false" />
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="enableRestartSystemUI"
+        android:summary="@string/add_restart_ui_to_power_menu"
+        android:title="@string/restartUI"
+        app:iconSpaceReserved="false" />
+    <SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:key="enableEmergencyMode"
+        android:summary="@string/enable_emergency_summary"
+        android:title="@string/enable_emergency_title"
+        app:iconSpaceReserved="false" />
+</androidx.preference.PreferenceScreen>

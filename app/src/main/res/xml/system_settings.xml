@@ -11,26 +11,12 @@
             android:summary="@string/advanced_power_menu_summary"
             android:title="@string/advanced_power_menu_title"
             app:iconSpaceReserved="false" />
-        <SwitchPreferenceCompat
-            android:defaultValue="false"
+        <androidx.preference.PreferenceScreen
             android:dependency="enableAdvancedPowerMenu"
-            android:key="enableDataMode"
-            android:summary="@string/enable_data_mode_switch_summary"
-            android:title="@string/enable_data_mode_switch_title"
-            app:iconSpaceReserved="false" />
-        <SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:dependency="enableAdvancedPowerMenu"
-            android:key="enableScreenshot"
-            android:summary="@string/add_screenshot_to_power_menu"
-            android:title="@string/screenshot"
-            app:iconSpaceReserved="false" />
-        <SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:dependency="enableAdvancedPowerMenu"
-            android:key="enableRestartSystemUI"
-            android:summary="@string/add_restart_ui_to_power_menu"
-            android:title="@string/restartUI"
+            android:key="powerMenuSettings"
+            android:summary="@string/power_menu_options_summary"
+            android:title="@string/power_menu_options_title"
+            app:fragment="sb.firefds.pie.firefdskit.fragments.PowerMenuSettingsFragment"
             app:iconSpaceReserved="false" />
     </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory

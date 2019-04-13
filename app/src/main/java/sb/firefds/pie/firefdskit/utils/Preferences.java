@@ -26,6 +26,11 @@ public class Preferences {
     public static final String PREF_DISABLE_LOW_BATTERY_SOUND = "disableLowBatterySound";
 
     public static final String PREF_ENABLE_ADVANCED_POWER_MENU = "enableAdvancedPowerMenu";
+    public static final String PREF_ENABLE_POWER_OFF = "enablePowerOff";
+    public static final String PREF_ENABLE_RESTART = "enableRestart";
+    public static final String PREF_ENABLE_RECOVERY = "enableRecovery";
+    public static final String PREF_ENABLE_DOWNLOAD = "enableDownload";
+    public static final String PREF_ENABLE_EMERGENCY_MODE = "enableEmergencyMode";
     public static final String PREF_ENABLE_DATA_MODE = "enableDataMode";
     public static final String PREF_ENABLE_SCREENSHOT = "enableScreenshot";
     public static final String PREF_ENABLE_RESTART_SYSTEMUI = "enableRestartSystemUI";

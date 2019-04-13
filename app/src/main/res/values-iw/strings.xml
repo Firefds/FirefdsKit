@@ -174,4 +174,16 @@
     <string name="xposed_status">Firefds Kit מופעל</string>
     <string name="restartUI">הפעלה מחדש של SystemUI</string>
     <string name="add_restart_ui_to_power_menu">הוספת הפעלה מחדש של SystemUI לתפריט הכיבוי</string>
+    <string name="power_menu_options_title">אפשרויות תפריט כיבוי</string>
+    <string name="power_menu_options_summary">בחירת אפשרויות בתפריט כיבוי</string>
+    <string name="enable_power_off_summary">הוספת כיבוי בתפריט כיבוי</string>
+    <string name="enable_power_off_title">כיבוי</string>
+    <string name="enable_restart_summary">הוספת הפעלה מחדש בתפריט כיבוי</string>
+    <string name="enable_restart_title">הפעלה מחדש</string>
+    <string name="enable_recovery_summary">הוספת הפעלה למצב Recovery בתפריט כיבוי</string>
+    <string name="enable_recovery_title">מצב Recovery</string>
+    <string name="enable_download_summary">הוספת הפעלה למצב Download בתפריט כיבוי</string>
+    <string name="enable_download_title">מצב Download</string>
+    <string name="enable_emergency_summary">הוספת מצב חירום לתפריט כיבוי</string>
+    <string name="enable_emergency_title">מצב חירום</string>
 </resources>

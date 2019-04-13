@@ -90,7 +90,7 @@
     <string name="enable_automatic_call_recording">Enable automatic call recording</string>
     <string name="firefds_kit_is_not_active">Firefds Kit is NOT active! Make sure:\n- This App has Root permissions\n- Xposed framework is installed\n- This module is enabled on Xposed installer then REBOOT.</string>
     <string name="screenshot">Screenshot</string>
-    <string name="add_screenshot_to_power_menu">Add Screenshot to power menu</string>
+    <string name="add_screenshot_to_power_menu">Enable Screenshot in power menu</string>
     <string name="advanced_power_menu_title">Advanced Power Menu</string>
     <string name="advanced_power_menu">Power menu</string>
     <string name="small">Small</string>
@@ -120,7 +120,7 @@
     <string name="four_g_plus_4g">4G Plus instead of 4G</string>
     <string name="four_g_4g_plus">4G instead of 4G Plus</string>
     <string name="four_half_g_4g_plus">4.5G instead of 4G Plus</string>
-    <string name="enable_data_mode_switch_summary">Enable data mode switch in power menu</string>
+    <string name="enable_data_mode_switch_summary">Enable Data Mode switch in power menu</string>
     <string name="enable_data_mode_switch_title">Data Mode Switch</string>
     <string name="quick_settings_data_usage_view_summary">Show data usage view in quick panel</string>
     <string name="quick_settings_data_usage_view_title">Data Usage View</string>
@@ -176,5 +176,17 @@
     <string name="status_icon">status icon</string>
     <string name="xposed_status">Firefds Kit Xposed features activated</string>
     <string name="restartUI">Restart SystemUI</string>
-    <string name="add_restart_ui_to_power_menu">Add Restart SystemUI to power menu</string>
+    <string name="add_restart_ui_to_power_menu">Enable Restart SystemUI in power menu</string>
+    <string name="power_menu_options_title">Power Menu Options</string>
+    <string name="power_menu_options_summary">Select power menu options</string>
+    <string name="enable_power_off_summary">Enable Power Off in power menu</string>
+    <string name="enable_power_off_title">Power Off</string>
+    <string name="enable_restart_summary">Enable Restart in power menu</string>
+    <string name="enable_restart_title">Restart</string>
+    <string name="enable_recovery_summary">Enable Restart to Recovery mode in power menu</string>
+    <string name="enable_recovery_title">Recovery Mode</string>
+    <string name="enable_download_summary">Enable Restart to Download mode in power menu</string>
+    <string name="enable_download_title">Download Mode</string>
+    <string name="enable_emergency_summary">Enable Emergency Mode in power menu</string>
+    <string name="enable_emergency_title">Emergency Mode</string>
 </resources>
