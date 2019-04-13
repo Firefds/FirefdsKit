@@ -41,6 +41,7 @@ import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.actionViewModels.RestartActionViewModel;
+import sb.firefds.pie.firefdskit.actionViewModels.RestartSystemUiActionViewModel;
 import sb.firefds.pie.firefdskit.actionViewModels.ScreenShotActionViewModel;
 import sb.firefds.pie.firefdskit.actionViewModels.UserSwitchActionViewModel;
 import sb.firefds.pie.firefdskit.utils.Utils;
@@ -67,10 +68,12 @@ public class XSysUIGlobalActions {
     private static String mDownloadStr;
     private static String mScreenshotStr;
     private static String mSwitchUserStr;
+    private static String mRestartSystemUiStr;
     private static Drawable mRecoveryIcon;
     private static Drawable mDownloadIcon;
     private static Drawable mScreenshotIcon;
     private static Drawable mSwitchUserIcon;
+    private static Drawable mRestartSystemUiIcon;
     private static String mRebootConfirmRecoveryStr;
     private static String mRebootConfirmDownloadStr;
 
@@ -93,6 +96,7 @@ public class XSysUIGlobalActions {
                                 mDownloadStr = gbContext.getString(R.string.reboot_download);
                                 mScreenshotStr = gbContext.getString(R.string.screenshot);
                                 mSwitchUserStr = gbContext.getString(R.string.switchUser);
+                                mRestartSystemUiStr = gbContext.getString(R.string.restartUI);
 
                                 mRecoveryIcon = gbContext
                                         .getDrawable(R.drawable.tw_ic_do_recovery_stock);
@@ -102,6 +106,8 @@ public class XSysUIGlobalActions {
                                         .getDrawable(R.drawable.tw_ic_do_screenshot_stock);
                                 mSwitchUserIcon = gbContext
                                         .getDrawable(R.drawable.tw_ic_do_users_stock);
+                                mRestartSystemUiIcon = gbContext
+                                        .getDrawable(R.drawable.tw_ic_do_restart_ui_stock);
 
                                 mRebootConfirmRecoveryStr = gbContext
                                         .getString(R.string.reboot_confirm_recovery);
@@ -149,6 +155,12 @@ public class XSysUIGlobalActions {
                                                     (SecGlobalActionsPresenter) param.thisObject,
                                                     "multiuser"));
                                 }
+                                if (prefs.getBoolean(PREF_ENABLE_RESTART_SYSTEMUI, false)) {
+                                    mSecGlobalActionsPresenter
+                                            .addAction(actionViewModelFactory.createActionViewModel(
+                                                    (SecGlobalActionsPresenter) param.thisObject,
+                                                    "restart_ui"));
+                                }
                             }
                         });
 
@@ -187,6 +199,11 @@ public class XSysUIGlobalActions {
                                                 setUserSwitchActionViewMidel();
                                         param.setResult(userSwitchActionViewModel);
                                         break;
+                                    case ("restart_ui"):
+                                        RestartSystemUiActionViewModel restartSystemUiActionViewModel =
+                                                setRestartSystemUiActionViewModel();
+                                        param.setResult(restartSystemUiActionViewModel);
+                                        break;
                                 }
                             }
                         });
@@ -218,6 +235,9 @@ public class XSysUIGlobalActions {
                                         break;
                                     case "multiuser":
                                         localImageView.setImageDrawable(mSwitchUserIcon);
+                                        break;
+                                    case "restart_ui":
+                                        localImageView.setImageDrawable(mRestartSystemUiIcon);
                                         break;
                                 }
                             }
@@ -263,6 +283,16 @@ public class XSysUIGlobalActions {
                 null);
         userSwitchActionViewModel.setActionInfo(actionInfo);
         return userSwitchActionViewModel;
+    }
+
+    private static RestartSystemUiActionViewModel setRestartSystemUiActionViewModel() {
+        RestartSystemUiActionViewModel restartSystemUiActionViewModel =
+                new RestartSystemUiActionViewModel(actionViewModelDefaults);
+        ActionInfo actionInfo = setActionInfo("restart_ui",
+                mRestartSystemUiStr,
+                null);
+        restartSystemUiActionViewModel.setActionInfo(actionInfo);
+        return restartSystemUiActionViewModel;
     }
 
     private static void setActionViewModelDefaults(XC_MethodHook.MethodHookParam param) {

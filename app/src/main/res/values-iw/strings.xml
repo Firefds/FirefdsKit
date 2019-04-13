@@ -172,4 +172,6 @@
     <string name="nav_header_desc">לוגו Firefds Kit</string>
     <string name="status_icon">אייקון מצב</string>
     <string name="xposed_status">Firefds Kit מופעל</string>
+    <string name="restartUI">הפעלה מחדש של SystemUI</string>
+    <string name="add_restart_ui_to_power_menu">הוספת הפעלה מחדש של SystemUI לתפריט הכיבוי</string>
 </resources>

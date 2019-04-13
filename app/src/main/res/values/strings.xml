@@ -175,4 +175,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="status_icon">status icon</string>
     <string name="xposed_status">Firefds Kit Xposed features activated</string>
+    <string name="restartUI">Restart SystemUI</string>
+    <string name="add_restart_ui_to_power_menu">Add Restart SystemUI to power menu</string>
 </resources>
