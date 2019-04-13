@@ -60,7 +60,7 @@ public class BackupAdapter extends BaseAdapter {
                     .inflate(android.R.layout.simple_list_item_2, null);
             ((TextView) convertView
                     .findViewById(android.R.id.text1))
-                    .setText(backups[position].getName().replace(".xt", ""));
+                    .setText(backups[position].getName().replace(".fk", ""));
             ((TextView) convertView.findViewById(android.R.id.text2))
                     .setText(new Date(backups[position].lastModified()).toString());
         }

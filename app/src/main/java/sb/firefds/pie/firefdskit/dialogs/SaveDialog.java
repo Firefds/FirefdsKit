@@ -2,7 +2,6 @@ package sb.firefds.pie.firefdskit.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -13,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Objects;
 
 import androidx.appcompat.app.AlertDialog;
 import sb.firefds.pie.firefdskit.FirefdsKitActivity;
@@ -52,7 +52,7 @@ public class SaveDialog {
         });
         dialog = builder.setCancelable(true).setTitle(R.string.save).setView(editText)
                 .setPositiveButton(R.string.save, (dialog, which) -> {
-                    if (savePreferencesToSdCard(editText.getText().toString())) {
+                    if (savePreferencesToSdCard(context, editText.getText().toString())) {
                         Utils.createSnackbar(contentView,
                                 R.string.save_successful,
                                 context).show();
@@ -69,13 +69,11 @@ public class SaveDialog {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private boolean savePreferencesToSdCard(String string) {
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator
-                + Constants.BACKUP_DIR;
-        File dir = new File(path);
-        dir.mkdirs();
+    private boolean savePreferencesToSdCard(Context context, String string) {
+        File dir = context.getExternalFilesDir(Constants.BACKUP_DIR);
+        Objects.requireNonNull(dir).mkdirs();
 
-        File file = new File(dir, string + ".xt");
+        File file = new File(dir, string + ".fk");
 
         boolean res = false;
         ObjectOutputStream output = null;

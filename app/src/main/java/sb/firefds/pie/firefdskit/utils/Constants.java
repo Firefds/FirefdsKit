@@ -19,7 +19,7 @@ import sb.firefds.pie.firefdskit.utils.Utils.CscType;
 
 public class Constants {
 
-    public static final String BACKUP_DIR = ".FirefdsKit";
+    public static final String BACKUP_DIR = "FirefdsKitBackup";
     public static final String PREFS = BuildConfig.APPLICATION_ID + "_preferences";
 
     public static final String TRUE = "TRUE";

@@ -2,7 +2,6 @@ package sb.firefds.pie.firefdskit.dialogs;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.os.Environment;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -11,6 +10,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.io.File;
+import java.util.Objects;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,8 +33,6 @@ public class RestoreDialog {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void showDialog(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        String path = Environment.getExternalStorageDirectory()
-                .getAbsolutePath() + File.separator + Constants.BACKUP_DIR;
         LinearLayout linearLayout = new LinearLayout(context);
         listView = new ListView(context);
         linearLayout.addView(listView);
@@ -45,8 +43,8 @@ public class RestoreDialog {
         linearLayout.addView(emptyView);
         emptyView.setText(R.string.no_backups);
         listView.setEmptyView(emptyView);
-        dir = new File(path);
-        if (!dir.exists()) {
+        dir = context.getExternalFilesDir(Constants.BACKUP_DIR);
+        if (!Objects.requireNonNull(dir).exists()) {
             dir.mkdirs();
         }
 
