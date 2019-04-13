@@ -277,8 +277,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         final Bundle args = pref.getExtras();
         final Fragment fragment = getSupportFragmentManager().getFragmentFactory().instantiate(
                 getClassLoader(),
-                pref.getFragment(),
-                args);
+                pref.getFragment());
         fragment.setArguments(args);
         fragment.setTargetFragment(caller, 0);
         if (getSupportActionBar() != null) {
@@ -289,7 +288,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         }
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_main, fragment)
-                .addToBackStack("screenTimeoutSettings")
+                .addToBackStack(null)
                 .commit();
         return true;
     }
