@@ -43,6 +43,7 @@ import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.actionViewModels.FlashLightActionViewModel;
 import sb.firefds.pie.firefdskit.actionViewModels.RestartActionViewModel;
 import sb.firefds.pie.firefdskit.actionViewModels.RestartSystemUiActionViewModel;
+import sb.firefds.pie.firefdskit.actionViewModels.ScreenRecordActionViewModel;
 import sb.firefds.pie.firefdskit.actionViewModels.ScreenShotActionViewModel;
 import sb.firefds.pie.firefdskit.actionViewModels.UserSwitchActionViewModel;
 import sb.firefds.pie.firefdskit.utils.Packages;
@@ -85,6 +86,8 @@ public class XSysUIGlobalActions {
     private static Object mFlashlightObject;
     private static String mFlashlightOnStr;
     private static String mFlashlightOffStr;
+    private static String mScreenRecordStr;
+    private static Drawable mScreenRecordIcon;
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
@@ -119,6 +122,7 @@ public class XSysUIGlobalActions {
                                 mSwitchUserStr = gbContext.getString(R.string.switchUser);
                                 mRestartSystemUiStr = gbContext.getString(R.string.restartUI);
                                 mFlashlightStr = gbContext.getString(R.string.flashlight);
+                                mScreenRecordStr = gbContext.getString(R.string.screen_record);
 
                                 mRecoveryIcon = gbContext
                                         .getDrawable(R.drawable.tw_ic_do_recovery_stock);
@@ -132,6 +136,8 @@ public class XSysUIGlobalActions {
                                         .getDrawable(R.drawable.tw_ic_do_restart_ui_stock);
                                 mFlashLightIcon = gbContext
                                         .getDrawable(R.drawable.tw_ic_do_torchlight_stock);
+                                mScreenRecordIcon = gbContext
+                                        .getDrawable(R.drawable.tw_ic_do_screenrecord_stock);
 
                                 mRebootConfirmRecoveryStr = gbContext
                                         .getString(R.string.reboot_confirm_recovery);
@@ -209,6 +215,12 @@ public class XSysUIGlobalActions {
                                                     (SecGlobalActionsPresenter) param.thisObject,
                                                     "flashlight"));
                                 }
+                                if (prefs.getBoolean(PREF_ENABLE_SCREEN_RECORD, false)) {
+                                    mSecGlobalActionsPresenter
+                                            .addAction(actionViewModelFactory.createActionViewModel(
+                                                    (SecGlobalActionsPresenter) param.thisObject,
+                                                    "screen_record"));
+                                }
                             }
                         });
 
@@ -257,6 +269,11 @@ public class XSysUIGlobalActions {
                                                 setFlashLightActionViewModel();
                                         param.setResult(flashLightActionViewModel);
                                         break;
+                                    case ("screen_record"):
+                                        ScreenRecordActionViewModel screenRecordActionViewModel =
+                                                setScreenRecordActionViewModel();
+                                        param.setResult(screenRecordActionViewModel);
+                                        break;
                                 }
                             }
                         });
@@ -294,6 +311,9 @@ public class XSysUIGlobalActions {
                                         break;
                                     case "flashlight":
                                         localImageView.setImageDrawable(mFlashLightIcon);
+                                        break;
+                                    case "screen_record":
+                                        localImageView.setImageDrawable(mScreenRecordIcon);
                                         break;
                                 }
                             }
@@ -362,6 +382,16 @@ public class XSysUIGlobalActions {
                 null);
         flashLightActionViewModel.setActionInfo(actionInfo);
         return flashLightActionViewModel;
+    }
+
+    private static ScreenRecordActionViewModel setScreenRecordActionViewModel() {
+        ScreenRecordActionViewModel screenRecordActionViewModel =
+                new ScreenRecordActionViewModel(actionViewModelDefaults);
+        ActionInfo actionInfo = setActionInfo("screen_record",
+                mScreenRecordStr,
+                null);
+        screenRecordActionViewModel.setActionInfo(actionInfo);
+        return screenRecordActionViewModel;
     }
 
     private static void setActionViewModelDefaults(XC_MethodHook.MethodHookParam param) {

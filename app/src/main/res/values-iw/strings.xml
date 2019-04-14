@@ -189,4 +189,7 @@
     <string name="enable_flashlight_summary">הוספת פנס לתפריט כיבוי</string>
     <string name="flashlight_on">דלוק</string>
     <string name="flashlight_off">כבוי</string>
+    <string name="screen_record">הקלטת מסך</string>
+    <string name="enable_screen_record_title">הקלטת מסך</string>
+    <string name="enable_screen_record_summary">הוספת הקלטת מסך לתפריט הכיבוי (מצריך את אפליקציית הקלטת המסך של סמסונג)</string>
 </resources>

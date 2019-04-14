@@ -189,4 +189,7 @@
     <string name="enable_flashlight_title">Flashlight</string>
     <string name="flashlight_on">On</string>
     <string name="flashlight_off">Off</string>
+    <string name="screen_record">Screen Recorder</string>
+    <string name="enable_screen_record_summary">Enable Screen Record in power menu (requires Samsung Screen Recorder installed)</string>
+    <string name="enable_screen_record_title">Screen Recorder</string>
 </resources>

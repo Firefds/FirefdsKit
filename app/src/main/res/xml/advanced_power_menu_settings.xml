@@ -38,6 +38,12 @@
         app:iconSpaceReserved="false" />
     <SwitchPreferenceCompat
         android:defaultValue="false"
+        android:key="enableScreenRecord"
+        android:summary="@string/enable_screen_record_summary"
+        android:title="@string/enable_screen_record_title"
+        app:iconSpaceReserved="false" />
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
         android:key="enableRestartSystemUI"
         android:summary="@string/add_restart_ui_to_power_menu"
         android:title="@string/restartUI"

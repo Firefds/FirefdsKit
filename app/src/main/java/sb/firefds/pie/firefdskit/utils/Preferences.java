@@ -35,6 +35,7 @@ public class Preferences {
     public static final String PREF_ENABLE_SCREENSHOT = "enableScreenshot";
     public static final String PREF_ENABLE_RESTART_SYSTEMUI = "enableRestartSystemUI";
     public static final String PREF_ENABLE_FLASHLIGHT = "enableFlashlight";
+    public static final String PREF_ENABLE_SCREEN_RECORD = "enableScreenRecord";
     public static final String PREF_NAVIGATION_BAR_COLOR = "navigationBarColor";
     public static final String PREF_SUPPORTS_MULTIPLE_USERS = "supportsMultipleUsers";
     public static final String PREF_MAX_SUPPORTED_USERS = "maxSupportedUsers";
