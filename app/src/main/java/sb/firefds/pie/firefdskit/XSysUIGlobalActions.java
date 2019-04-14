@@ -83,6 +83,7 @@ public class XSysUIGlobalActions {
     private static Drawable mFlashLightIcon;
     private static String mRebootConfirmRecoveryStr;
     private static String mRebootConfirmDownloadStr;
+    private static String mRestartSystemUiConfirmStr;
     private static Object mFlashlightObject;
     private static String mFlashlightOnStr;
     private static String mFlashlightOffStr;
@@ -366,7 +367,7 @@ public class XSysUIGlobalActions {
                 new RestartSystemUiActionViewModel(actionViewModelDefaults);
         ActionInfo actionInfo = setActionInfo("restart_ui",
                 mRestartSystemUiStr,
-                null);
+                mRestartSystemUiConfirmStr);
         restartSystemUiActionViewModel.setActionInfo(actionInfo);
         return restartSystemUiActionViewModel;
     }

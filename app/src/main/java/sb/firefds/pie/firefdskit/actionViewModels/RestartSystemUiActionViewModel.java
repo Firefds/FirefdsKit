@@ -23,8 +23,12 @@ public class RestartSystemUiActionViewModel implements ActionViewModel {
     }
 
     public void onPress() {
-        mGlobalActions.dismissDialog(false);
-        new Handler().postDelayed(this::restartSystemUI, 1000);
+        if (!mGlobalActions.isActionConfirming()) {
+            mGlobalActions.confirmAction(this);
+        } else {
+            mGlobalActions.dismissDialog(false);
+            new Handler().postDelayed(this::restartSystemUI, 1000);
+        }
     }
 
     public void onPressSecureConfirm() {
