@@ -83,8 +83,8 @@ public class XSysUIGlobalActions {
     private static String mRebootConfirmRecoveryStr;
     private static String mRebootConfirmDownloadStr;
     private static Object mFlashlightObject;
-    private static String mFlaslightOnStr;
-    private static String mFlaslightOffStr;
+    private static String mFlashlightOnStr;
+    private static String mFlashlightOffStr;
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
@@ -138,9 +138,9 @@ public class XSysUIGlobalActions {
                                 mRebootConfirmDownloadStr = gbContext
                                         .getString(R.string.reboot_confirm_download);
 
-                                mFlaslightOnStr = gbContext
+                                mFlashlightOnStr = gbContext
                                         .getString(R.string.flashlight_on);
-                                mFlaslightOffStr = gbContext
+                                mFlashlightOffStr = gbContext
                                         .getString(R.string.flashlight_off);
 
                             }
@@ -355,8 +355,8 @@ public class XSysUIGlobalActions {
         FlashLightActionViewModel flashLightActionViewModel =
                 new FlashLightActionViewModel(actionViewModelDefaults,
                         mFlashlightObject,
-                        mFlaslightOnStr,
-                        mFlaslightOffStr);
+                        mFlashlightOnStr,
+                        mFlashlightOffStr);
         ActionInfo actionInfo = setActionInfo("flashlight",
                 mFlashlightStr,
                 null);
