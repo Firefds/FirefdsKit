@@ -184,4 +184,9 @@
     <string name="enable_download_title">מצב Download</string>
     <string name="enable_emergency_summary">הוספת מצב חירום לתפריט כיבוי</string>
     <string name="enable_emergency_title">מצב חירום</string>
+    <string name="flashlight">פנס</string>
+    <string name="enable_flashlight_title">פנס</string>
+    <string name="enable_flashlight_summary">הוספת פנס לתפריט כיבוי</string>
+    <string name="flashlight_on">דלוק</string>
+    <string name="flashlight_off">כבוי</string>
 </resources>

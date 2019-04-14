@@ -184,4 +184,9 @@
     <string name="enable_download_title">Download Mode</string>
     <string name="enable_emergency_summary">Enable Emergency Mode in power menu</string>
     <string name="enable_emergency_title">Emergency Mode</string>
+    <string name="flashlight">Flashlight</string>
+    <string name="enable_flashlight_summary">Enable Flashlight in power menu</string>
+    <string name="enable_flashlight_title">Flashlight</string>
+    <string name="flashlight_on">On</string>
+    <string name="flashlight_off">Off</string>
 </resources>

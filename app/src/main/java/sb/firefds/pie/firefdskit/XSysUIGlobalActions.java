@@ -40,10 +40,12 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
+import sb.firefds.pie.firefdskit.actionViewModels.FlashLightActionViewModel;
 import sb.firefds.pie.firefdskit.actionViewModels.RestartActionViewModel;
 import sb.firefds.pie.firefdskit.actionViewModels.RestartSystemUiActionViewModel;
 import sb.firefds.pie.firefdskit.actionViewModels.ScreenShotActionViewModel;
 import sb.firefds.pie.firefdskit.actionViewModels.UserSwitchActionViewModel;
+import sb.firefds.pie.firefdskit.utils.Packages;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
 import static sb.firefds.pie.firefdskit.utils.Preferences.*;
@@ -62,6 +64,8 @@ public class XSysUIGlobalActions {
             GLOBAL_ACTIONS_PACKAGE + ".view.SecGlobalActionsDialogBase";
     private static final String GLOBAL_ACTION_ITEM_VIEW =
             GLOBAL_ACTIONS_PACKAGE + ".view.GlobalActionItemView";
+    private static final String FLASHLIGHT_CONTROLLER_IMPL_CLASS =
+            Packages.SYSTEM_UI + ".statusbar.policy.FlashlightControllerImpl";
     private static SecGlobalActionsPresenter mSecGlobalActionsPresenter;
     private static Map<String, Object> actionViewModelDefaults;
     private static String mRecoveryStr;
@@ -69,15 +73,32 @@ public class XSysUIGlobalActions {
     private static String mScreenshotStr;
     private static String mSwitchUserStr;
     private static String mRestartSystemUiStr;
+    private static String mFlashlightStr;
     private static Drawable mRecoveryIcon;
     private static Drawable mDownloadIcon;
     private static Drawable mScreenshotIcon;
     private static Drawable mSwitchUserIcon;
     private static Drawable mRestartSystemUiIcon;
+    private static Drawable mFlashLightIcon;
     private static String mRebootConfirmRecoveryStr;
     private static String mRebootConfirmDownloadStr;
+    private static Object mFlashlightObject;
+    private static String mFlaslightOnStr;
+    private static String mFlaslightOffStr;
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
+
+        Class<?> flashlightControllerImplClass =
+                XposedHelpers.findClass(FLASHLIGHT_CONTROLLER_IMPL_CLASS, classLoader);
+
+        XposedHelpers.findAndHookConstructor(flashlightControllerImplClass,
+                Context.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) {
+                        mFlashlightObject = param.thisObject;
+                    }
+                });
 
         final Class<?> secGlobalActionsDialogBaseClass =
                 XposedHelpers.findClass(SEC_GLOBAL_ACTIONS_DIALOG_BASE, classLoader);
@@ -97,6 +118,7 @@ public class XSysUIGlobalActions {
                                 mScreenshotStr = gbContext.getString(R.string.screenshot);
                                 mSwitchUserStr = gbContext.getString(R.string.switchUser);
                                 mRestartSystemUiStr = gbContext.getString(R.string.restartUI);
+                                mFlashlightStr = gbContext.getString(R.string.flashlight);
 
                                 mRecoveryIcon = gbContext
                                         .getDrawable(R.drawable.tw_ic_do_recovery_stock);
@@ -108,11 +130,18 @@ public class XSysUIGlobalActions {
                                         .getDrawable(R.drawable.tw_ic_do_users_stock);
                                 mRestartSystemUiIcon = gbContext
                                         .getDrawable(R.drawable.tw_ic_do_restart_ui_stock);
+                                mFlashLightIcon = gbContext
+                                        .getDrawable(R.drawable.tw_ic_do_torchlight_stock);
 
                                 mRebootConfirmRecoveryStr = gbContext
                                         .getString(R.string.reboot_confirm_recovery);
                                 mRebootConfirmDownloadStr = gbContext
                                         .getString(R.string.reboot_confirm_download);
+
+                                mFlaslightOnStr = gbContext
+                                        .getString(R.string.flashlight_on);
+                                mFlaslightOffStr = gbContext
+                                        .getString(R.string.flashlight_off);
 
                             }
                         });
@@ -174,6 +203,12 @@ public class XSysUIGlobalActions {
                                                     (SecGlobalActionsPresenter) param.thisObject,
                                                     "restart_ui"));
                                 }
+                                if (prefs.getBoolean(PREF_ENABLE_FLASHLIGHT, false)) {
+                                    mSecGlobalActionsPresenter
+                                            .addAction(actionViewModelFactory.createActionViewModel(
+                                                    (SecGlobalActionsPresenter) param.thisObject,
+                                                    "flashlight"));
+                                }
                             }
                         });
 
@@ -217,6 +252,11 @@ public class XSysUIGlobalActions {
                                                 setRestartSystemUiActionViewModel();
                                         param.setResult(restartSystemUiActionViewModel);
                                         break;
+                                    case ("flashlight"):
+                                        FlashLightActionViewModel flashLightActionViewModel =
+                                                setFlashLightActionViewModel();
+                                        param.setResult(flashLightActionViewModel);
+                                        break;
                                 }
                             }
                         });
@@ -251,6 +291,9 @@ public class XSysUIGlobalActions {
                                         break;
                                     case "restart_ui":
                                         localImageView.setImageDrawable(mRestartSystemUiIcon);
+                                        break;
+                                    case "flashlight":
+                                        localImageView.setImageDrawable(mFlashLightIcon);
                                         break;
                                 }
                             }
@@ -306,6 +349,19 @@ public class XSysUIGlobalActions {
                 null);
         restartSystemUiActionViewModel.setActionInfo(actionInfo);
         return restartSystemUiActionViewModel;
+    }
+
+    private static FlashLightActionViewModel setFlashLightActionViewModel() {
+        FlashLightActionViewModel flashLightActionViewModel =
+                new FlashLightActionViewModel(actionViewModelDefaults,
+                        mFlashlightObject,
+                        mFlaslightOnStr,
+                        mFlaslightOffStr);
+        ActionInfo actionInfo = setActionInfo("flashlight",
+                mFlashlightStr,
+                null);
+        flashLightActionViewModel.setActionInfo(actionInfo);
+        return flashLightActionViewModel;
     }
 
     private static void setActionViewModelDefaults(XC_MethodHook.MethodHookParam param) {
