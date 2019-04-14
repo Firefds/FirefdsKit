@@ -10,12 +10,6 @@
         <item name="screen_on">1</item>
         <item name="screen_off">2</item>
     </string-array>
-    <string-array name="reboot_options">
-        <item name="reboot">@string/reboot</item>
-        <item name="hotboot">@string/reboot_hotboot</item>
-        <item name="download">@string/reboot_download</item>
-        <item name="recovery">@string/reboot_recovery</item>
-    </string-array>
     <string-array name="clock_size_entries">
         <item name="small">@string/small</item>
         <item name="medium">@string/medium</item>

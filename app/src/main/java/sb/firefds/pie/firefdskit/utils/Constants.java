@@ -27,7 +27,11 @@ public class Constants {
 
     public static final String FEATURE_XML = Utils.getCSCType().equals(CscType.CSC) ?
             "feature.xml" : "cscfeature.xml";
-    public static final String REBOOT_DEVICE = "reboot";
+    public static final String REBOOT_ACTION = "REBOOT_ACTION";
+    public static final String REBOOT_DEVICE_ACTION = "REBOOT_DEVICE";
+    public static final String QUICK_REBOOT_DEVICE_ACTION = "QUICK_REBOOT_DEVICE";
+    public static final String RECOVERY_REBOOT_DEVICE_ACTION = "RECOVERY_REBOOT_DEVICE";
+    public static final String DOWNLOAD_REBOOT_DEVICE_ACTION = "DOWNLOAD_REBOOT_DEVICE";
 
     public static final String SYSTEM_CSC_FEATURE_XML = Utils.getCSCType().equals(CscType.OMC_OMC) ?
             Utils.getOMCPath() + "/" + FEATURE_XML : "/system/csc/" + FEATURE_XML;

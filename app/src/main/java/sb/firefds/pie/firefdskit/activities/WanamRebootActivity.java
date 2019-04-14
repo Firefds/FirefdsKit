@@ -25,7 +25,11 @@ import sb.firefds.pie.firefdskit.R;
 import sb.firefds.pie.firefdskit.XCscFeaturesManager;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
-import static sb.firefds.pie.firefdskit.utils.Constants.REBOOT_DEVICE;
+import static sb.firefds.pie.firefdskit.utils.Constants.DOWNLOAD_REBOOT_DEVICE_ACTION;
+import static sb.firefds.pie.firefdskit.utils.Constants.REBOOT_ACTION;
+import static sb.firefds.pie.firefdskit.utils.Constants.REBOOT_DEVICE_ACTION;
+import static sb.firefds.pie.firefdskit.utils.Constants.RECOVERY_REBOOT_DEVICE_ACTION;
+import static sb.firefds.pie.firefdskit.utils.Constants.QUICK_REBOOT_DEVICE_ACTION;
 
 public class WanamRebootActivity extends AppCompatActivity {
 
@@ -33,22 +37,19 @@ public class WanamRebootActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int reboot = Objects.requireNonNull(getIntent().getExtras()).getInt(REBOOT_DEVICE);
+        String reboot = Objects.requireNonNull(getIntent().getExtras()).getString(REBOOT_ACTION);
         try {
-            switch (reboot) {
-                case 0:
+            switch (Objects.requireNonNull(reboot)) {
+                case REBOOT_DEVICE_ACTION:
                     rebootDevice();
                     break;
-                case 1:
-                    softRebootDevice();
+                case QUICK_REBOOT_DEVICE_ACTION:
+                    quickRebootDevice();
                     break;
-                case 2:
-                    softRebootOptions();
-                    break;
-                case 3:
+                case RECOVERY_REBOOT_DEVICE_ACTION:
                     Utils.rebootEPM("recovery");
                     break;
-                case 4:
+                case DOWNLOAD_REBOOT_DEVICE_ACTION:
                     Utils.rebootEPM("download");
                     break;
             }
@@ -67,37 +68,13 @@ public class WanamRebootActivity extends AppCompatActivity {
         Utils.reboot();
     }
 
-    private void softRebootDevice() throws Throwable {
+    private void quickRebootDevice() throws Throwable {
         Utils.closeStatusBar(this);
         showRebootDialog();
-        Utils.performSoftReboot();
-    }
-
-    private void softRebootOptions() {
-
-        AlertDialog alertDialog;
-        AlertDialog.Builder rebootOptionsDiag;
-        rebootOptionsDiag = new AlertDialog.Builder(this);
-
-        rebootOptionsDiag.setTitle(getString(R.string.reboot_options))
-                .setItems(R.array.reboot_options, (dialog, which) -> {
-
-                    switch (which) {
-                        case 0:
-                            Utils.reboot();
-                            break;
-                        case 1:
-                            Utils.rebootEPM("recovery");
-                            break;
-                        case 3:
-                            Utils.rebootEPM("download");
-                            break;
-                    }
-
-                }).setCancelable(true).setOnCancelListener(dialog -> finish());
-
-        alertDialog = rebootOptionsDiag.create();
-        alertDialog.show();
+        if (!Utils.isOmcEncryptedFlag()) {
+            XCscFeaturesManager.applyCscFeatures(FirefdsKitActivity.getSharedPreferences());
+        }
+        Utils.performQuickReboot();
     }
 
     private void showRebootDialog(){

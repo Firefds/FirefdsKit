@@ -21,37 +21,24 @@ import android.os.Bundle;
 
 import java.util.Objects;
 
-import sb.firefds.pie.firefdskit.R;
 import sb.firefds.pie.firefdskit.activities.WanamRebootActivity;
 import sb.firefds.pie.firefdskit.notifications.RebootNotification;
 
-import static sb.firefds.pie.firefdskit.FirefdsKitActivity.getActivity;
+import static sb.firefds.pie.firefdskit.utils.Constants.REBOOT_ACTION;
+import static sb.firefds.pie.firefdskit.utils.Constants.REBOOT_DEVICE_ACTION;
+import static sb.firefds.pie.firefdskit.utils.Constants.QUICK_REBOOT_DEVICE_ACTION;
 
 public class WanamRebootReceiver extends BroadcastReceiver {
-
-    private static final String REBOOT_DEVICE =
-            getActivity().getString(R.string.reboot_device_action);
-    private static final String SOFT_REBOOT_DEVICE =
-            getActivity().getString(R.string.soft_reboot_device_action);
-    private static final String REBOOT_OPTIONS =
-            getActivity().getString(R.string.reboot_options_action);
 
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        if (Objects.requireNonNull(action).equalsIgnoreCase(REBOOT_DEVICE)
-                || action.equalsIgnoreCase(SOFT_REBOOT_DEVICE)
-                || action.equalsIgnoreCase(REBOOT_OPTIONS)) {
+        if (Objects.requireNonNull(action).equalsIgnoreCase(REBOOT_DEVICE_ACTION)
+                || action.equalsIgnoreCase(QUICK_REBOOT_DEVICE_ACTION)) {
             RebootNotification.cancel(context);
             Intent rebootIntent = new Intent(context, WanamRebootActivity.class);
             Bundle b = new Bundle();
-            if (action.equalsIgnoreCase(REBOOT_DEVICE)) {
-                b.putInt(REBOOT_DEVICE, 0);
-            } else if (action.equalsIgnoreCase(SOFT_REBOOT_DEVICE)) {
-                b.putInt(REBOOT_DEVICE, 1);
-            } else if (action.equalsIgnoreCase(REBOOT_OPTIONS)) {
-                b.putInt(REBOOT_DEVICE, 2);
-            }
+            b.putString(REBOOT_ACTION, action);
             rebootIntent.putExtras(b);
             rebootIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(rebootIntent);

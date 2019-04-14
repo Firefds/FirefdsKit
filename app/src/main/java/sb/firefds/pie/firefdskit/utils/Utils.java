@@ -20,7 +20,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.SystemProperties;
 import android.view.View;
 import android.widget.TextView;
@@ -31,14 +30,10 @@ import java.util.Objects;
 
 import androidx.core.content.ContextCompat;
 import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.R;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.topjohnwu.superuser.Shell;
-
-import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
-import static de.robv.android.xposed.XposedHelpers.findClass;
 
 public class Utils {
 
@@ -221,22 +216,11 @@ public class Utils {
         return SystemProperties.get(OMC_PATH);
     }
 
-    public static void performSoftReboot() {
+    public static void performQuickReboot() {
         try {
-            Class<?> classSm = XposedHelpers.findClass("android.os.ServiceManager", null);
-            Class<?> classIpm = XposedHelpers.findClass("android.os.IPowerManager.Stub", null);
-            IBinder b = (IBinder) XposedHelpers.callStaticMethod(
-                    classSm, "getService", Context.POWER_SERVICE);
-            Object ipm = XposedHelpers.callStaticMethod(classIpm, "asInterface", b);
-            XposedHelpers.callMethod(ipm, "crash", "Hot reboot");
-        } catch (Throwable e1) {
-            try {
-                SystemProp.set("ctl.restart", "surfaceflinger");
-                SystemProp.set("ctl.restart", "zygote");
-            } catch (Throwable e2) {
-                XposedBridge.log(e1);
-                XposedBridge.log(e2);
-            }
+            new Handler().postDelayed(() -> Shell.su("setprop ctl.restart zygote").submit(), 1000);
+        } catch (Throwable e) {
+            XposedBridge.log(e);
         }
     }
 
@@ -246,103 +230,5 @@ public class Utils {
                 .setActionTextColor(ContextCompat.getColor(context, android.R.color.white));
         snackbar.getView().setBackgroundColor(ContextCompat.getColor(context, R.color.primaryColor));
         return snackbar;
-    }
-
-    static class SystemProp extends Utils {
-
-        private SystemProp() {
-
-        }
-
-        // Get the value for the given key
-        // @param key: key to lookup
-        // @return null if the key isn't found
-        public static String get(String key) {
-            String ret;
-
-            try {
-                Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
-                ret = (String) callStaticMethod(classSystemProperties, "get", key);
-            } catch (Throwable t) {
-                ret = null;
-            }
-            return ret;
-        }
-
-        // Get the value for the given key
-        // @param key: key to lookup
-        // @param def: default value to return
-        // @return if the key isn't found, return def if it isn't null, or an empty string otherwise
-        public static String get(String key, String def) {
-            String ret = def;
-
-            try {
-                Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
-                ret = (String) callStaticMethod(classSystemProperties, "get", key, def);
-            } catch (Throwable t) {
-                ret = def;
-            }
-            return ret;
-        }
-
-        // Get the value for the given key, and return as an integer
-        // @param key: key to lookup
-        // @param def: default value to return
-        // @return the key parsed as an integer, or def if the key isn't found or cannot be parsed
-        public static Integer getInt(String key, Integer def) {
-            Integer ret = def;
-
-            try {
-                Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
-                ret = (Integer) callStaticMethod(classSystemProperties, "getInt", key, def);
-            } catch (Throwable t) {
-                ret = def;
-            }
-            return ret;
-        }
-
-        // Get the value for the given key, and return as a long
-        // @param key: key to lookup
-        // @param def: default value to return
-        // @return the key parsed as a long, or def if the key isn't found or cannot be parsed
-        public static Long getLong(String key, Long def) {
-            Long ret = def;
-
-            try {
-                Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
-                ret = (Long) callStaticMethod(classSystemProperties, "getLong", key, def);
-            } catch (Throwable t) {
-                ret = def;
-            }
-            return ret;
-        }
-
-        // Get the value (case insensitive) for the given key, returned as a boolean
-        // Values 'n', 'no', '0', 'false' or 'off' are considered false
-        // Values 'y', 'yes', '1', 'true' or 'on' are considered true
-        // If the key does not exist, or has any other value, then the default result is returned
-        // @param key: key to lookup
-        // @param def: default value to return
-        // @return the key parsed as a boolean, or def if the key isn't found or cannot be parsed
-        public static Boolean getBoolean(String key, boolean def) {
-            Boolean ret = def;
-
-            try {
-                Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
-                ret = (Boolean) callStaticMethod(classSystemProperties, "getBoolean", key, def);
-            } catch (Throwable t) {
-                ret = def;
-            }
-            return ret;
-        }
-
-        // Set the value for the given key
-        public static void set(String key, String val) {
-            try {
-                Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
-                callStaticMethod(classSystemProperties, "set", key, val);
-            } catch (Throwable t) {
-            }
-        }
     }
 }

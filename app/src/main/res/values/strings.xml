@@ -10,9 +10,7 @@
     <string name="system">System</string>
     <string name="reboot">Restart</string>
     <string name="cancel">Cancel</string>
-    <string name="reboot_options">Restart Menu</string>
     <string name="reboot_recovery">Recovery</string>
-    <string name="reboot_hotboot">Soft Reboot</string>
     <string name="reboot_download">Download</string>
     <string name="quick_settings">Quick settings</string>
     <string name="sound">Sound</string>
@@ -23,7 +21,7 @@
     <string name="mms_sms_mms_conversion_on">Conversion disabled</string>
     <string name="mms_sms_mms_conversion_off">Current conversion threshold: 4 (default)</string>
     <string name="mms_sms_mms_conversion">Disable SMS to MMS threshold</string>
-    <string name="soft_reboot">Fast reboot</string>
+    <string name="quick_reboot">Quick Restart</string>
     <string name="reboot_required">Please reboot to apply changes.</string>
     <string name="reboot_required_title">Reboot requested</string>
     <string name="reboot_required_message">Firefds Kit requires a reboot to apply changes</string>
@@ -110,9 +108,6 @@
     <string name="screen_timeout_seconds">Screen Timeout Seconds</string>
     <string name="screen_timeout_minutes">Screen Timeout Minutes</string>
     <string name="screen_timeout_hours">Screen Timeout Hours</string>
-    <string name="reboot_device_action" translatable="false">ma.wanam.xposed.action.REBOOT_DEVICE</string>
-    <string name="soft_reboot_device_action" translatable="false">ma.wanam.xposed.action.SOFT_REBOOT_DEVICE</string>
-    <string name="reboot_options_action" translatable="false">ma.wanam.xposed.action.REBOOT_OPTIONS</string>
     <string name="enable_camera_shutter_menu">Enable Shutter Sound Menu</string>
     <string name="enable_camera_shutter_menu_summary">Enable shutter sound menu in camera app</string>
     <string name="data_icon_behavior_title">Data Icon Symbol</string>

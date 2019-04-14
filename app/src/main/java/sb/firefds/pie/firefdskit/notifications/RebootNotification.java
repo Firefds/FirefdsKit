@@ -33,13 +33,15 @@ import sb.firefds.pie.firefdskit.FirefdsKitActivity;
 import sb.firefds.pie.firefdskit.receivers.WanamRebootReceiver;
 
 import static androidx.core.content.ContextCompat.getSystemService;
+import static sb.firefds.pie.firefdskit.utils.Constants.REBOOT_DEVICE_ACTION;
+import static sb.firefds.pie.firefdskit.utils.Constants.QUICK_REBOOT_DEVICE_ACTION;
 
 public class RebootNotification {
 
     private static final String NOTIFICATION_TAG = "RebootNotification";
 
     @SuppressLint("NewApi")
-    public static void notify(final Context context, final int n, boolean showSoftReboot) {
+    public static void notify(final Context context, final int n, boolean showQuickReboot) {
 
         final Resources res = context.getResources();
 
@@ -75,7 +77,7 @@ public class RebootNotification {
                 .setAutoCancel(true);
 
         Intent rebootIntent = new Intent(context, WanamRebootReceiver.class)
-                .setAction(context.getResources().getString(R.string.reboot_device_action));
+                .setAction(REBOOT_DEVICE_ACTION);
         builder.addAction(new Notification.Action.Builder(
                 Icon.createWithResource(context, R.drawable.ic_restart_notification),
                 res.getString(R.string.reboot),
@@ -85,15 +87,15 @@ public class RebootNotification {
                         PendingIntent.FLAG_UPDATE_CURRENT))
                 .build());
 
-        if (showSoftReboot) {
-            Intent SoftRebootIntent = new Intent(context, WanamRebootReceiver.class)
-                    .setAction(context.getResources().getString(R.string.soft_reboot_device_action));
+        if (showQuickReboot) {
+            Intent QuickRebootIntent = new Intent(context, WanamRebootReceiver.class)
+                    .setAction(QUICK_REBOOT_DEVICE_ACTION);
             builder.addAction(new Notification.Action.Builder(
                     Icon.createWithResource(context, R.drawable.ic_restart_notification),
-                    res.getString(R.string.soft_reboot),
+                    res.getString(R.string.quick_reboot),
                     PendingIntent.getBroadcast(context,
                             1337,
-                            SoftRebootIntent,
+                            QuickRebootIntent,
                             PendingIntent.FLAG_UPDATE_CURRENT))
                     .build());
         }

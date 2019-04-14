@@ -10,9 +10,7 @@
     <string name="system">מערכת</string>
     <string name="reboot">הפעלה מחדש</string>
     <string name="cancel">ביטול</string>
-    <string name="reboot_options">תפריט הפעלה מחדש</string>
     <string name="reboot_recovery">מצב Recovery</string>
-    <string name="reboot_hotboot">הפעלה מהירה</string>
     <string name="reboot_download">מצב Download</string>
     <string name="quick_settings">הגדרות מהירות</string>
     <string name="sound">שמע</string>
@@ -22,7 +20,7 @@
     <string name="mms_sms_mms_conversion_on">המרה מבוטלת</string>
     <string name="mms_sms_mms_conversion_off">סף המרה נוכחי: 4 (ברירת מחדל)</string>
     <string name="mms_sms_mms_conversion">ביטול המרת SMS ל MMS</string>
-    <string name="soft_reboot">הפעלה מחדש מהירה</string>
+    <string name="quick_reboot">הפעלה מחדש מהירה</string>
     <string name="reboot_required">אנא הפעל מחדש על מנת להחיל את השינויים</string>
     <string name="reboot_required_title">נדרשת הפעלה מחדש</string>
     <string name="reboot_required_message">Firefds Kit דורש הפעלה מחדש</string>
