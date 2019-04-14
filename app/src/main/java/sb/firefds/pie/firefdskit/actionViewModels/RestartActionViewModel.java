@@ -1,16 +1,13 @@
 package sb.firefds.pie.firefdskit.actionViewModels;
 
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
+import android.os.PowerManager;
 
 import com.samsung.android.globalactions.presentation.SecGlobalActions;
 import com.samsung.android.globalactions.presentation.features.FeatureFactory;
 import com.samsung.android.globalactions.presentation.strategies.ActionInteractionStrategy;
 import com.samsung.android.globalactions.presentation.strategies.SecureConfirmStrategy;
 import com.samsung.android.globalactions.presentation.strategies.SoftwareUpdateStrategy;
-import com.samsung.android.globalactions.presentation.strategies.WindowManagerFunctionStrategy;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionInfo;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModel;
 import com.samsung.android.globalactions.util.ConditionChecker;
@@ -24,8 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 public class RestartActionViewModel implements ActionViewModel {
-    private final String FIREFDS_PACKAGE = "sb.firefds.pie.firefdskit";
-    private final String REBOOT_ACTIVITY = FIREFDS_PACKAGE + ".activities.WanamRebootActivity";
     private final ConditionChecker mConditionChecker;
     private final FeatureFactory mFeatureFactory;
     private final SecGlobalActions mGlobalActions;
@@ -34,10 +29,10 @@ public class RestartActionViewModel implements ActionViewModel {
     private final ResourcesWrapper mResourcesWrapper;
     private final ToastController mToastController;
     private Context mContext;
-    private int rebootOption;
+    private String rebootOption;
 
     public RestartActionViewModel(Map<String, Object> actionViewModelDefaults,
-                                  int paramRebootOption) {
+                                  String paramRebootOption) {
         mGlobalActions =
                 (SecGlobalActions) actionViewModelDefaults.get("mSecGlobalActionsPresenter");
         mKeyguardManagerWrapper =
@@ -67,55 +62,44 @@ public class RestartActionViewModel implements ActionViewModel {
 
     public void onPress() {
 
-        for (ActionInteractionStrategy o : mFeatureFactory
-                .createActionInteractionStrategies(mInfo.getName())) {
-            if ((o).onPressRestartAction()) {
+        for (ActionInteractionStrategy onPressRestartAction :
+                mFeatureFactory.createActionInteractionStrategies(mInfo.getName())) {
+            if (onPressRestartAction.onPressRestartAction()) {
                 return;
             }
         }
-
         if (!mGlobalActions.isActionConfirming()) {
             mGlobalActions.confirmAction(this);
         } else if (mConditionChecker.isEnabled(SystemConditions.IS_FMM_LOCKED)) {
-            mToastController.showToast(mResourcesWrapper.getString(17040348), 1);
+            this.mToastController.showToast(mResourcesWrapper.getString(17040348), 1);
         } else {
-            List var2 = mFeatureFactory.createSoftwareUpdateStrategy(mGlobalActions, "restart");
-            boolean var3 = true;
-            Iterator var1 = var2.iterator();
-
-            boolean var4;
+            List<SoftwareUpdateStrategy> createSoftwareUpdateStrategy =
+                    mFeatureFactory.createSoftwareUpdateStrategy(mGlobalActions, "restart");
+            boolean z = true;
+            Iterator it = createSoftwareUpdateStrategy.iterator();
             while (true) {
-                var4 = var3;
-                if (!var1.hasNext()) {
+                if (!it.hasNext()) {
                     break;
-                }
-
-                if (!((SoftwareUpdateStrategy) var1.next()).onUpdate()) {
-                    var4 = false;
+                } else if (!((SoftwareUpdateStrategy) it.next()).onUpdate()) {
+                    z = false;
                     break;
                 }
             }
-
-            if (var4) {
-                var1 = var2.iterator();
-
-                while (var1.hasNext()) {
-                    ((SoftwareUpdateStrategy) var1.next()).update();
+            if (z) {
+                for (SoftwareUpdateStrategy update : createSoftwareUpdateStrategy) {
+                    update.update();
                 }
-
                 mGlobalActions.dismissDialog(false);
-            } else if (!isNeedSecureConfirm()) {
-                reboot();
-            } else {
-                var1 = mFeatureFactory.createSecureConfirmStrategy(mInfo.getName()).iterator();
-
-                while (var1.hasNext()) {
-                    ((SecureConfirmStrategy) var1.next()).doActionBeforeSecureConfirm();
+            } else if (isNeedSecureConfirm()) {
+                for (SecureConfirmStrategy doActionBeforeSecureConfirm :
+                        mFeatureFactory.createSecureConfirmStrategy(mInfo.getName())) {
+                    doActionBeforeSecureConfirm.doActionBeforeSecureConfirm();
                 }
-
                 mGlobalActions.registerSecureConfirmAction(this);
                 mKeyguardManagerWrapper.setPendingIntentAfterUnlock("shutdown");
                 mGlobalActions.hideDialogOnSecureConfirm();
+            } else {
+                reboot();
             }
         }
     }
@@ -124,20 +108,8 @@ public class RestartActionViewModel implements ActionViewModel {
         reboot();
     }
 
-    void reboot() {
-
-        for (WindowManagerFunctionStrategy o : mFeatureFactory
-                .createWindowManagerFunctionStrategy(mGlobalActions, "REBOOT")) {
-            (o).onReboot();
-        }
-
-        Intent rebootIntent = new Intent()
-                .setComponent(new ComponentName(FIREFDS_PACKAGE, REBOOT_ACTIVITY));
-        Bundle b = new Bundle();
-        b.putInt("reboot", rebootOption);
-        rebootIntent.putExtras(b);
-        rebootIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mContext.startActivity(rebootIntent);
+    private void reboot() {
+        ((PowerManager) mContext.getSystemService(Context.POWER_SERVICE)).reboot(rebootOption);
     }
 
     public void setActionInfo(ActionInfo var1) {

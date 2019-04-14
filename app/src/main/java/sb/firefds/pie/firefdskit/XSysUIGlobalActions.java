@@ -50,8 +50,8 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.*;
 
 public class XSysUIGlobalActions {
 
-    private static final int RECOVERY_RESTART_ACTION = 3;
-    private static final int DOWNLOAD_RESTART_ACTION = 4;
+    private static final String RECOVERY_RESTART_ACTION = "recovery";
+    private static final String DOWNLOAD_RESTART_ACTION = "download";
     private static final String GLOBAL_ACTIONS_PACKAGE =
             "com.samsung.android.globalactions.presentation";
     private static final String SEC_GLOBAL_ACTIONS_PRESENTER =
@@ -265,7 +265,7 @@ public class XSysUIGlobalActions {
     private static RestartActionViewModel setRestartActionViewModel(String actionName,
                                                                     String actionLabel,
                                                                     String actionDescription,
-                                                                    int rebootAction) {
+                                                                    String rebootAction) {
 
         RestartActionViewModel restartActionViewModel =
                 new RestartActionViewModel(actionViewModelDefaults, rebootAction);
