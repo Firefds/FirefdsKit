@@ -4,8 +4,6 @@ import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Intent;
 
-import java.util.Map;
-
 import de.robv.android.xposed.XposedBridge;
 
 import static sb.firefds.pie.firefdskit.utils.Packages.SCREEN_RECORDER;
@@ -15,7 +13,7 @@ public class ScreenRecordActionViewModel extends FirefdsKitActionViewModel {
     private static final String SCREEN_RECORDER_ACTIVITY =
             "com.sec.app.screenrecorder.activity.LauncherActivity";
 
-    public ScreenRecordActionViewModel(Map<String, Object> actionViewModelDefaults) {
+    public ScreenRecordActionViewModel(Object[] actionViewModelDefaults) {
         super(actionViewModelDefaults);
     }
 

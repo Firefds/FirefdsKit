@@ -2,13 +2,11 @@ package sb.firefds.pie.firefdskit.actionViewModels;
 
 import android.content.Intent;
 
-import java.util.Map;
-
 import sb.firefds.pie.firefdskit.utils.Packages;
 
 public class UserSwitchActionViewModel extends FirefdsKitActionViewModel {
 
-    public UserSwitchActionViewModel(Map<String, Object> actionViewModelDefaults) {
+    public UserSwitchActionViewModel(Object[] actionViewModelDefaults) {
         super(actionViewModelDefaults);
     }
 

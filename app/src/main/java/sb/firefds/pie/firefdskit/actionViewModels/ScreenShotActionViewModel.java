@@ -4,13 +4,11 @@ import android.hardware.input.InputManager;
 import android.os.SystemClock;
 import android.view.KeyEvent;
 
-import java.util.Map;
-
 import de.robv.android.xposed.XposedHelpers;
 
 public class ScreenShotActionViewModel extends FirefdsKitActionViewModel {
 
-    public ScreenShotActionViewModel(Map<String, Object> actionViewModelDefaults) {
+    public ScreenShotActionViewModel(Object[] actionViewModelDefaults) {
         super(actionViewModelDefaults);
     }
 

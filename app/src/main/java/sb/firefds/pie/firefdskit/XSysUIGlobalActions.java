@@ -32,8 +32,6 @@ import com.samsung.android.globalactions.util.KeyGuardManagerWrapper;
 import com.samsung.android.globalactions.util.UtilFactory;
 
 import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.Map;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -68,7 +66,7 @@ public class XSysUIGlobalActions {
     private static final String FLASHLIGHT_CONTROLLER_IMPL_CLASS =
             Packages.SYSTEM_UI + ".statusbar.policy.FlashlightControllerImpl";
     private static SecGlobalActionsPresenter mSecGlobalActionsPresenter;
-    private static Map<String, Object> actionViewModelDefaults;
+    private static Object[] actionViewModelDefaults;
     private static String mRecoveryStr;
     private static String mDownloadStr;
     private static String mScreenshotStr;
@@ -375,9 +373,10 @@ public class XSysUIGlobalActions {
                                                                 String actionDescription) {
         FirefdsKitActionViewModel firefdsKitActionViewModel = null;
         try {
-            Constructor<?> constructor = basicActionViewModelClass.getConstructor(Map.class);
+            Constructor<?> constructor = basicActionViewModelClass.getConstructor(Object[].class);
+            Object[] param = {actionViewModelDefaults};
             firefdsKitActionViewModel =
-                    (FirefdsKitActionViewModel) constructor.newInstance(actionViewModelDefaults);
+                    (FirefdsKitActionViewModel) constructor.newInstance(param);
             ActionInfo actionInfo = setActionInfo(actionName,
                     actionLabel,
                     actionDescription);
@@ -389,7 +388,7 @@ public class XSysUIGlobalActions {
     }
 
     private static void setActionViewModelDefaults(XC_MethodHook.MethodHookParam param) {
-        Map<String, Object> actionViewModelDefaults = new HashMap<>();
+        Object[] actionViewModelDefaults = new Object[2];
 
         UtilFactory mUtilFactory = (UtilFactory) XposedHelpers.getObjectField(param.thisObject, "mUtilFactory");
         KeyGuardManagerWrapper mKeyGuardManagerWrapper =
@@ -397,10 +396,8 @@ public class XSysUIGlobalActions {
                         "get",
                         KeyGuardManagerWrapper.class);
 
-        actionViewModelDefaults.put("mContext",
-                XposedHelpers.getObjectField(mKeyGuardManagerWrapper, "mContext"));
-        actionViewModelDefaults.put("mSecGlobalActionsPresenter",
-                mSecGlobalActionsPresenter);
+        actionViewModelDefaults[0] = XposedHelpers.getObjectField(mKeyGuardManagerWrapper, "mContext");
+        actionViewModelDefaults[1] = mSecGlobalActionsPresenter;
 
         XSysUIGlobalActions.actionViewModelDefaults = actionViewModelDefaults;
     }

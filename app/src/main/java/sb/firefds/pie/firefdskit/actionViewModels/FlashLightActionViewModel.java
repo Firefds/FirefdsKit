@@ -2,8 +2,6 @@ package sb.firefds.pie.firefdskit.actionViewModels;
 
 import com.samsung.android.globalactions.presentation.viewmodel.ActionInfo;
 
-import java.util.Map;
-
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
@@ -13,7 +11,7 @@ public class FlashLightActionViewModel extends FirefdsKitActionViewModel {
     private static String flashlightOnStr;
     private static String flashlightOffStr;
 
-    public FlashLightActionViewModel(Map<String, Object> actionViewModelDefaults) {
+    public FlashLightActionViewModel(Object[] actionViewModelDefaults) {
         super(actionViewModelDefaults);
     }
 

@@ -6,18 +6,14 @@ import com.samsung.android.globalactions.presentation.SecGlobalActions;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionInfo;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModel;
 
-import java.util.Map;
-
-
 public class FirefdsKitActionViewModel implements ActionViewModel {
     private final SecGlobalActions mGlobalActions;
     private ActionInfo mInfo;
     private Context mContext;
 
-    FirefdsKitActionViewModel(Map<String, Object> actionViewModelDefaults) {
-        mGlobalActions = (
-                SecGlobalActions) actionViewModelDefaults.get("mSecGlobalActionsPresenter");
-        mContext = (Context) actionViewModelDefaults.get("mContext");
+    FirefdsKitActionViewModel(Object[] actionViewModelDefaults) {
+        mContext = (Context) actionViewModelDefaults[0];
+        mGlobalActions = (SecGlobalActions) actionViewModelDefaults[1];
     }
 
     public ActionInfo getActionInfo() {
