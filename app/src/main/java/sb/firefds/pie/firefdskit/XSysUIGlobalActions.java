@@ -75,20 +75,20 @@ public class XSysUIGlobalActions {
     private static String mSwitchUserStr;
     private static String mRestartSystemUiStr;
     private static String mFlashlightStr;
+    private static String mScreenRecordStr;
     private static Drawable mRecoveryIcon;
     private static Drawable mDownloadIcon;
     private static Drawable mScreenshotIcon;
     private static Drawable mSwitchUserIcon;
     private static Drawable mRestartSystemUiIcon;
     private static Drawable mFlashLightIcon;
+    private static Drawable mScreenRecordIcon;
     private static String mRebootConfirmRecoveryStr;
     private static String mRebootConfirmDownloadStr;
     private static String mRestartSystemUiConfirmStr;
     private static Object mFlashlightObject;
     private static String mFlashlightOnStr;
     private static String mFlashlightOffStr;
-    private static String mScreenRecordStr;
-    private static Drawable mScreenRecordIcon;
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
