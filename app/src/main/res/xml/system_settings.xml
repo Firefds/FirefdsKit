@@ -18,6 +18,12 @@
             android:title="@string/power_menu_options_title"
             app:fragment="sb.firefds.pie.firefdskit.fragments.PowerMenuSettingsFragment"
             app:iconSpaceReserved="false" />
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="disbaleRestartConfirmation"
+            android:summary="@string/disbale_restart_confirmation_summary"
+            android:title="@string/disbale_restart_confirmation_title"
+            app:iconSpaceReserved="false" />
     </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory
         android:title="@string/navigation_bar"

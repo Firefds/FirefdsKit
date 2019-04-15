@@ -192,4 +192,6 @@
     <string name="screen_record">Screen Recorder</string>
     <string name="enable_screen_record_summary">Enable Screen Record in power menu (requires Samsung Screen Recorder installed)</string>
     <string name="enable_screen_record_title">Screen Recorder</string>
+    <string name="disbale_restart_confirmation_summary">Disable restart confirmation</string>
+    <string name="disbale_restart_confirmation_title">Disable Restart Confirmation</string>
 </resources>

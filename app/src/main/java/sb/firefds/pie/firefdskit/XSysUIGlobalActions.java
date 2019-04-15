@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
@@ -107,6 +108,13 @@ public class XSysUIGlobalActions {
         final Class<?> secGlobalActionsDialogBaseClass =
                 XposedHelpers.findClass(SEC_GLOBAL_ACTIONS_DIALOG_BASE, classLoader);
 
+        if (prefs.getBoolean(PREF_DISABLE_RESTART_CONFIRMATION, false)) {
+            XposedHelpers.findAndHookMethod(SEC_GLOBAL_ACTIONS_PRESENTER,
+                    classLoader,
+                    "isActionConfirming",
+                    XC_MethodReplacement.returnConstant(Boolean.TRUE));
+        }
+
         if (prefs.getBoolean(PREF_ENABLE_ADVANCED_POWER_MENU, false)) {
             try {
                 XposedBridge.hookAllConstructors(secGlobalActionsDialogBaseClass,
@@ -144,6 +152,8 @@ public class XSysUIGlobalActions {
                                         .getString(R.string.reboot_confirm_recovery);
                                 mRebootConfirmDownloadStr = gbContext
                                         .getString(R.string.reboot_confirm_download);
+                                mRestartSystemUiConfirmStr = gbContext
+                                        .getString(R.string.restartUI);
 
                                 mFlashlightOnStr = gbContext
                                         .getString(R.string.flashlight_on);
