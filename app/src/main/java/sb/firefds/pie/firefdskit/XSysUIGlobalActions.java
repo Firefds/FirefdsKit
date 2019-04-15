@@ -29,8 +29,6 @@ import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModel;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModelFactory;
 import com.samsung.android.globalactions.presentation.viewmodel.ViewType;
 import com.samsung.android.globalactions.util.KeyGuardManagerWrapper;
-import com.samsung.android.globalactions.util.ResourcesWrapper;
-import com.samsung.android.globalactions.util.ToastController;
 import com.samsung.android.globalactions.util.UtilFactory;
 
 import java.util.HashMap;
@@ -418,18 +416,6 @@ public class XSysUIGlobalActions {
                 XposedHelpers.getObjectField(mKeyGuardManagerWrapper, "mContext"));
         actionViewModelDefaults.put("mSecGlobalActionsPresenter",
                 mSecGlobalActionsPresenter);
-        actionViewModelDefaults.put("mConditionChecker",
-                XposedHelpers.getObjectField(param.thisObject, "mConditionChecker"));
-        actionViewModelDefaults.put("mFeatureFactory",
-                XposedHelpers.getObjectField(param.thisObject, "mFeatureFactory"));
-        actionViewModelDefaults.put("ToastController",
-                XposedHelpers.callMethod(mUtilFactory, "get", ToastController.class));
-        actionViewModelDefaults.put("mKeyGuardManagerWrapper",
-                mKeyGuardManagerWrapper);
-        actionViewModelDefaults.put("ResourcesWrapper",
-                XposedHelpers.callMethod(mUtilFactory, "get", ResourcesWrapper.class));
-        actionViewModelDefaults.put("mUtilFactory",
-                mUtilFactory);
 
         XSysUIGlobalActions.actionViewModelDefaults = actionViewModelDefaults;
     }
