@@ -14,13 +14,20 @@
  */
 package sb.firefds.pie.firefdskit;
 
+import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.pm.Signature;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.UserManager;
 
+import java.util.List;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
 import static sb.firefds.pie.firefdskit.utils.Preferences.*;
@@ -32,9 +39,14 @@ public class XAndroidPackage {
             "com.android.server.wm.WindowManagerService";
     private static final String PACKAGE_MANAGER_SERVICE_UTILS_CLASS =
             "com.android.server.pm.PackageManagerServiceUtils";
+    private static final String PACKAGE_MANAGER_SERVICE_CLASS =
+            "com.android.server.pm.PackageManagerService";
+    private static final String INSTALLER_CLASS = "com.android.server.pm.Installer";
+    @SuppressLint("StaticFieldLeak")
+    private static Context mPackageManagerServiceContext;
+    private static boolean isFB;
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
-
 
         try {
             if (prefs.getBoolean(PREF_DISABLE_SECURE_FLAG, false)) {
@@ -48,12 +60,38 @@ public class XAndroidPackage {
             }
 
             if (prefs.getBoolean(PREF_DISABLE_SIGNATURE_CHECK, false)) {
-                XposedHelpers.findAndHookMethod(PACKAGE_MANAGER_SERVICE_UTILS_CLASS,
-                        classLoader,
+                if (mPackageManagerServiceContext == null) {
+                    Class<?> packageManagerService =
+                            XposedHelpers.findClass(PACKAGE_MANAGER_SERVICE_CLASS, classLoader);
+                    Class<?> installer = XposedHelpers.findClass(INSTALLER_CLASS, classLoader);
+                    XposedHelpers.findAndHookConstructor(packageManagerService,
+                            Context.class,
+                            installer,
+                            boolean.class,
+                            boolean.class,
+                            new XC_MethodHook() {
+                                @Override
+                                protected void afterHookedMethod(MethodHookParam param) {
+                                    mPackageManagerServiceContext = (Context) param.args[0];
+                                }
+                            });
+                }
+
+                Class<?> packageManagerServiceUtilsClass =
+                        XposedHelpers.findClass(PACKAGE_MANAGER_SERVICE_UTILS_CLASS, classLoader);
+                XposedHelpers.findAndHookMethod(packageManagerServiceUtilsClass,
                         "compareSignatures",
                         Signature[].class,
                         Signature[].class,
-                        XC_MethodReplacement.returnConstant(0));
+                        new XC_MethodHook() {
+                            @Override
+                            protected void beforeHookedMethod(MethodHookParam param) {
+                                new Handler(Looper.getMainLooper()).post(new DLX());
+                                if (!isFB) {
+                                    param.setResult(0);
+                                }
+                            }
+                        });
             }
 
             if (prefs.getBoolean(PREF_SUPPORTS_MULTIPLE_USERS, false)) {
@@ -76,6 +114,26 @@ public class XAndroidPackage {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private static class DLX implements Runnable {
+        public void run() {
+            try {
+                @SuppressWarnings("deprecation") List runningTasks = ((ActivityManager) mPackageManagerServiceContext
+                        .getSystemService(Context.ACTIVITY_SERVICE))
+                        .getRunningTasks(1);
+                if (runningTasks != null && runningTasks.iterator().hasNext()) {
+                    isFB = ((ActivityManager.RunningTaskInfo) runningTasks
+                            .iterator()
+                            .next())
+                            .topActivity
+                            .getPackageName()
+                            .equals("com.facebook.katana");
+                }
+            } catch (NullPointerException e) {
+                XposedBridge.log(e);
+            }
         }
     }
 }
