@@ -31,6 +31,7 @@ import com.samsung.android.globalactions.presentation.viewmodel.ViewType;
 import com.samsung.android.globalactions.util.KeyGuardManagerWrapper;
 import com.samsung.android.globalactions.util.UtilFactory;
 
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,12 +40,14 @@ import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
+import sb.firefds.pie.firefdskit.actionViewModels.FirefdsKitActionViewModel;
 import sb.firefds.pie.firefdskit.actionViewModels.FlashLightActionViewModel;
 import sb.firefds.pie.firefdskit.actionViewModels.RestartActionViewModel;
 import sb.firefds.pie.firefdskit.actionViewModels.RestartSystemUiActionViewModel;
 import sb.firefds.pie.firefdskit.actionViewModels.ScreenRecordActionViewModel;
 import sb.firefds.pie.firefdskit.actionViewModels.ScreenShotActionViewModel;
 import sb.firefds.pie.firefdskit.actionViewModels.UserSwitchActionViewModel;
+import sb.firefds.pie.firefdskit.utils.Constants;
 import sb.firefds.pie.firefdskit.utils.Packages;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
@@ -174,61 +177,61 @@ public class XSysUIGlobalActions {
                                 mSecGlobalActionsPresenter =
                                         (SecGlobalActionsPresenter) param.thisObject;
                                 if (!prefs.getBoolean(PREF_ENABLE_POWER_OFF, true)) {
-                                    mSecGlobalActionsPresenter.clearActions("power");
+                                    mSecGlobalActionsPresenter.clearActions(Constants.POWER_ACTION);
                                 }
                                 if (!prefs.getBoolean(PREF_ENABLE_RESTART, true)) {
-                                    mSecGlobalActionsPresenter.clearActions("restart");
+                                    mSecGlobalActionsPresenter.clearActions(Constants.RESTART_ACATION);
                                 }
                                 if (!prefs.getBoolean(PREF_ENABLE_EMERGENCY_MODE, true)) {
-                                    mSecGlobalActionsPresenter.clearActions("emergency");
+                                    mSecGlobalActionsPresenter.clearActions(Constants.EMERGENCY_ACTION);
                                 }
                                 if (prefs.getBoolean(PREF_ENABLE_RECOVERY, true)) {
                                     mSecGlobalActionsPresenter
                                             .addAction(actionViewModelFactory.createActionViewModel(
                                                     (SecGlobalActionsPresenter) param.thisObject,
-                                                    "recovery"));
+                                                    Constants.RECOVERY_ACTION));
                                 }
                                 if (prefs.getBoolean(PREF_ENABLE_DOWNLOAD, true)) {
                                     mSecGlobalActionsPresenter
                                             .addAction(actionViewModelFactory.createActionViewModel(
                                                     (SecGlobalActionsPresenter) param.thisObject,
-                                                    "download"));
+                                                    Constants.DOWNLOAD_ACTION));
                                 }
                                 if (prefs.getBoolean(PREF_ENABLE_DATA_MODE, false)) {
                                     mSecGlobalActionsPresenter
                                             .addAction(actionViewModelFactory.createActionViewModel(
                                                     (SecGlobalActionsPresenter) param.thisObject,
-                                                    "data_mode"));
+                                                    Constants.DATA_MODE_ACTION));
                                 }
                                 if (prefs.getBoolean(PREF_ENABLE_SCREENSHOT, false)) {
                                     mSecGlobalActionsPresenter
                                             .addAction(actionViewModelFactory.createActionViewModel(
                                                     (SecGlobalActionsPresenter) param.thisObject,
-                                                    "screenshot"));
+                                                    Constants.SCREENSHOT_ACTION));
                                 }
                                 if (prefs.getBoolean(PREF_SUPPORTS_MULTIPLE_USERS, false)) {
                                     mSecGlobalActionsPresenter
                                             .addAction(actionViewModelFactory.createActionViewModel(
                                                     (SecGlobalActionsPresenter) param.thisObject,
-                                                    "multiuser"));
+                                                    Constants.MULTIUSER_ACTION));
                                 }
                                 if (prefs.getBoolean(PREF_ENABLE_RESTART_SYSTEMUI, false)) {
                                     mSecGlobalActionsPresenter
                                             .addAction(actionViewModelFactory.createActionViewModel(
                                                     (SecGlobalActionsPresenter) param.thisObject,
-                                                    "restart_ui"));
+                                                    Constants.RESTART_UI_ACTION));
                                 }
                                 if (prefs.getBoolean(PREF_ENABLE_FLASHLIGHT, false)) {
                                     mSecGlobalActionsPresenter
                                             .addAction(actionViewModelFactory.createActionViewModel(
                                                     (SecGlobalActionsPresenter) param.thisObject,
-                                                    "flashlight"));
+                                                    Constants.FLASHLIGHT_ACTION));
                                 }
                                 if (prefs.getBoolean(PREF_ENABLE_SCREEN_RECORD, false)) {
                                     mSecGlobalActionsPresenter
                                             .addAction(actionViewModelFactory.createActionViewModel(
                                                     (SecGlobalActionsPresenter) param.thisObject,
-                                                    "screen_record"));
+                                                    Constants.SCREEN_RECORD_ACTION));
                                 }
                             }
                         });
@@ -242,47 +245,56 @@ public class XSysUIGlobalActions {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) {
                                 setActionViewModelDefaults(param);
-                                RestartActionViewModel restartActionViewModel;
-                                switch ((String) param.args[1]) {
-                                    case ("recovery"):
-                                        restartActionViewModel = setRestartActionViewModel("recovery",
+                                FirefdsKitActionViewModel firefdsKitActionViewModel = null;
+                                String actionName = (String) param.args[1];
+                                switch (actionName) {
+                                    case (Constants.RECOVERY_ACTION):
+                                        firefdsKitActionViewModel = setRestartActionViewModel(actionName,
                                                 mRecoveryStr,
                                                 mRebootConfirmRecoveryStr,
                                                 RECOVERY_RESTART_ACTION);
-                                        param.setResult(restartActionViewModel);
                                         break;
-                                    case ("download"):
-                                        restartActionViewModel = setRestartActionViewModel("download",
+                                    case (Constants.DOWNLOAD_ACTION):
+                                        firefdsKitActionViewModel = setRestartActionViewModel(actionName,
                                                 mDownloadStr,
                                                 mRebootConfirmDownloadStr,
                                                 DOWNLOAD_RESTART_ACTION);
-                                        param.setResult(restartActionViewModel);
                                         break;
-                                    case ("screenshot"):
-                                        ScreenShotActionViewModel screenShotActionView =
-                                                setScreenShotActionViewModel();
-                                        param.setResult(screenShotActionView);
+                                    case (Constants.SCREENSHOT_ACTION):
+                                        firefdsKitActionViewModel =
+                                                setActionViewModel(ScreenShotActionViewModel.class,
+                                                        actionName,
+                                                        mScreenshotStr,
+                                                        null);
                                         break;
-                                    case ("multiuser"):
-                                        UserSwitchActionViewModel userSwitchActionViewModel =
-                                                setUserSwitchActionViewMidel();
-                                        param.setResult(userSwitchActionViewModel);
+                                    case (Constants.MULTIUSER_ACTION):
+                                        firefdsKitActionViewModel =
+                                                setActionViewModel(UserSwitchActionViewModel.class,
+                                                        actionName,
+                                                        mSwitchUserStr,
+                                                        null);
                                         break;
-                                    case ("restart_ui"):
-                                        RestartSystemUiActionViewModel restartSystemUiActionViewModel =
-                                                setRestartSystemUiActionViewModel();
-                                        param.setResult(restartSystemUiActionViewModel);
+                                    case (Constants.RESTART_UI_ACTION):
+                                        firefdsKitActionViewModel =
+                                                setActionViewModel(RestartSystemUiActionViewModel.class,
+                                                        actionName,
+                                                        mRestartSystemUiStr,
+                                                        mRestartSystemUiConfirmStr);
                                         break;
-                                    case ("flashlight"):
-                                        FlashLightActionViewModel flashLightActionViewModel =
+                                    case (Constants.FLASHLIGHT_ACTION):
+                                        firefdsKitActionViewModel =
                                                 setFlashLightActionViewModel();
-                                        param.setResult(flashLightActionViewModel);
                                         break;
-                                    case ("screen_record"):
-                                        ScreenRecordActionViewModel screenRecordActionViewModel =
-                                                setScreenRecordActionViewModel();
-                                        param.setResult(screenRecordActionViewModel);
+                                    case (Constants.SCREEN_RECORD_ACTION):
+                                        firefdsKitActionViewModel =
+                                                setActionViewModel(ScreenRecordActionViewModel.class,
+                                                        actionName,
+                                                        mScreenRecordStr,
+                                                        null);
                                         break;
+                                }
+                                if (firefdsKitActionViewModel != null) {
+                                    param.setResult(firefdsKitActionViewModel);
                                 }
                             }
                         });
@@ -303,25 +315,25 @@ public class XSysUIGlobalActions {
                                         .findViewById(resourceFactory
                                                 .getResourceID("sec_global_actions_icon"));
                                 switch (actionViewModel.getActionInfo().getName()) {
-                                    case "recovery":
+                                    case Constants.RECOVERY_ACTION:
                                         localImageView.setImageDrawable(mRecoveryIcon);
                                         break;
-                                    case "download":
+                                    case Constants.DOWNLOAD_ACTION:
                                         localImageView.setImageDrawable(mDownloadIcon);
                                         break;
-                                    case "screenshot":
+                                    case Constants.SCREENSHOT_ACTION:
                                         localImageView.setImageDrawable(mScreenshotIcon);
                                         break;
-                                    case "multiuser":
+                                    case Constants.MULTIUSER_ACTION:
                                         localImageView.setImageDrawable(mSwitchUserIcon);
                                         break;
-                                    case "restart_ui":
+                                    case Constants.RESTART_UI_ACTION:
                                         localImageView.setImageDrawable(mRestartSystemUiIcon);
                                         break;
-                                    case "flashlight":
+                                    case Constants.FLASHLIGHT_ACTION:
                                         localImageView.setImageDrawable(mFlashLightIcon);
                                         break;
-                                    case "screen_record":
+                                    case Constants.SCREEN_RECORD_ACTION:
                                         localImageView.setImageDrawable(mScreenRecordIcon);
                                         break;
                                 }
@@ -334,73 +346,48 @@ public class XSysUIGlobalActions {
         }
     }
 
-    private static RestartActionViewModel setRestartActionViewModel(String actionName,
-                                                                    String actionLabel,
-                                                                    String actionDescription,
-                                                                    String rebootAction) {
+    private static FirefdsKitActionViewModel setRestartActionViewModel(String actionName,
+                                                                       String actionLabel,
+                                                                       String actionDescription,
+                                                                       String rebootAction) {
 
         RestartActionViewModel restartActionViewModel =
-                new RestartActionViewModel(actionViewModelDefaults, rebootAction);
-        ActionInfo actionInfo = setActionInfo(actionName,
-                actionLabel,
-                actionDescription);
-        XposedHelpers.callMethod(restartActionViewModel,
-                "setActionInfo",
-                actionInfo);
+                (RestartActionViewModel) setActionViewModel(RestartActionViewModel.class,
+                        actionName,
+                        actionLabel,
+                        actionDescription);
+        restartActionViewModel.setRebootOption(rebootAction);
         return restartActionViewModel;
     }
 
-    private static ScreenShotActionViewModel setScreenShotActionViewModel() {
-        ScreenShotActionViewModel screenShotActionViewModel =
-                new ScreenShotActionViewModel(actionViewModelDefaults);
-        ActionInfo actionInfo = setActionInfo("screenshot",
-                mScreenshotStr,
-                null);
-        screenShotActionViewModel.setActionInfo(actionInfo);
-        return screenShotActionViewModel;
-    }
+    private static FirefdsKitActionViewModel setFlashLightActionViewModel() {
+        FlashLightActionViewModel.setFlashlightObject(mFlashlightObject);
+        FlashLightActionViewModel.setFlashlightOnStr(mFlashlightOnStr);
+        FlashLightActionViewModel.setFlashlightOffStr(mFlashlightOffStr);
 
-    private static UserSwitchActionViewModel setUserSwitchActionViewMidel() {
-        UserSwitchActionViewModel userSwitchActionViewModel =
-                new UserSwitchActionViewModel(actionViewModelDefaults);
-        ActionInfo actionInfo = setActionInfo("multiuser",
-                mSwitchUserStr,
-                null);
-        userSwitchActionViewModel.setActionInfo(actionInfo);
-        return userSwitchActionViewModel;
-    }
-
-    private static RestartSystemUiActionViewModel setRestartSystemUiActionViewModel() {
-        RestartSystemUiActionViewModel restartSystemUiActionViewModel =
-                new RestartSystemUiActionViewModel(actionViewModelDefaults);
-        ActionInfo actionInfo = setActionInfo("restart_ui",
-                mRestartSystemUiStr,
-                mRestartSystemUiConfirmStr);
-        restartSystemUiActionViewModel.setActionInfo(actionInfo);
-        return restartSystemUiActionViewModel;
-    }
-
-    private static FlashLightActionViewModel setFlashLightActionViewModel() {
-        FlashLightActionViewModel flashLightActionViewModel =
-                new FlashLightActionViewModel(actionViewModelDefaults,
-                        mFlashlightObject,
-                        mFlashlightOnStr,
-                        mFlashlightOffStr);
-        ActionInfo actionInfo = setActionInfo("flashlight",
+        return setActionViewModel(FlashLightActionViewModel.class,
+                Constants.FLASHLIGHT_ACTION,
                 mFlashlightStr,
                 null);
-        flashLightActionViewModel.setActionInfo(actionInfo);
-        return flashLightActionViewModel;
     }
 
-    private static ScreenRecordActionViewModel setScreenRecordActionViewModel() {
-        ScreenRecordActionViewModel screenRecordActionViewModel =
-                new ScreenRecordActionViewModel(actionViewModelDefaults);
-        ActionInfo actionInfo = setActionInfo("screen_record",
-                mScreenRecordStr,
-                null);
-        screenRecordActionViewModel.setActionInfo(actionInfo);
-        return screenRecordActionViewModel;
+    private static FirefdsKitActionViewModel setActionViewModel(Class<?> basicActionViewModelClass,
+                                                                String actionName,
+                                                                String actionLabel,
+                                                                String actionDescription) {
+        FirefdsKitActionViewModel firefdsKitActionViewModel = null;
+        try {
+            Constructor<?> constructor = basicActionViewModelClass.getConstructor(Map.class);
+            firefdsKitActionViewModel =
+                    (FirefdsKitActionViewModel) constructor.newInstance(actionViewModelDefaults);
+            ActionInfo actionInfo = setActionInfo(actionName,
+                    actionLabel,
+                    actionDescription);
+            firefdsKitActionViewModel.setActionInfo(actionInfo);
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
+        return firefdsKitActionViewModel;
     }
 
     private static void setActionViewModelDefaults(XC_MethodHook.MethodHookParam param) {

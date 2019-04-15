@@ -2,64 +2,44 @@ package sb.firefds.pie.firefdskit.actionViewModels;
 
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-
-import com.samsung.android.globalactions.presentation.SecGlobalActions;
-import com.samsung.android.globalactions.presentation.viewmodel.ActionInfo;
-import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModel;
 
 import java.util.Map;
 
 import de.robv.android.xposed.XposedBridge;
 
-public class ScreenRecordActionViewModel implements ActionViewModel {
-    private final SecGlobalActions mGlobalActions;
-    private ActionInfo mInfo;
-    private Context mContext;
+import static sb.firefds.pie.firefdskit.utils.Packages.SCREEN_RECORDER;
+
+public class ScreenRecordActionViewModel extends FirefdsKitActionViewModel {
+
+    private static final String SCREEN_RECORDER_ACTIVITY =
+            "com.sec.app.screenrecorder.activity.LauncherActivity";
 
     public ScreenRecordActionViewModel(Map<String, Object> actionViewModelDefaults) {
-        mGlobalActions = (
-                SecGlobalActions) actionViewModelDefaults.get("mSecGlobalActionsPresenter");
-        mContext = (Context) actionViewModelDefaults.get("mContext");
+        super(actionViewModelDefaults);
     }
 
-    public ActionInfo getActionInfo() {
-        return mInfo;
-    }
-
+    @Override
     public void onPress() {
 
-        mGlobalActions.dismissDialog(false);
+        getmGlobalActions().dismissDialog(false);
         startScreenRecord();
     }
 
+    @Override
     public void onPressSecureConfirm() {
         startScreenRecord();
     }
 
     private void startScreenRecord() {
-        String str = "com.sec.app.screenrecorder/com.sec.app.screenrecorder.activity.LauncherActivity";
-        if (!str.isEmpty()) {
-            String[] split = str.split("/");
-            Intent intent = new Intent("android.intent.action.MAIN");
-            intent.setComponent(new ComponentName(split[0], split[1]));
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            try {
-                mContext.startActivity(intent);
-                this.mGlobalActions.dismissDialog(false);
-            } catch (ActivityNotFoundException e) {
-                e.printStackTrace();
-                XposedBridge.log("Activity not found - ScreenCapture");
-            }
+        Intent intent = new Intent("android.intent.action.MAIN")
+                .setComponent(new ComponentName(SCREEN_RECORDER, SCREEN_RECORDER_ACTIVITY))
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try {
+            getmContext().startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+            XposedBridge.log("Activity not found - ScreenCapture");
         }
-    }
-
-    public void setActionInfo(ActionInfo var1) {
-        mInfo = var1;
-    }
-
-    public boolean showBeforeProvisioning() {
-        return true;
     }
 }

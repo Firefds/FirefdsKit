@@ -61,4 +61,16 @@ public class Constants {
     public static final String SHORTCUT_PHONE = "PHONE";
     public static final String SHORTCUT_SECURITY = "SECURITY";
 
+    public static final String POWER_ACTION = "power";
+    public static final String RESTART_ACATION = "restart";
+    public static final String EMERGENCY_ACTION = "emergency";
+    public static final String RECOVERY_ACTION = "recovery";
+    public static final String DOWNLOAD_ACTION = "download";
+    public static final String DATA_MODE_ACTION = "data_mode";
+    public static final String SCREENSHOT_ACTION = "screenshot";
+    public static final String MULTIUSER_ACTION = "multiuser";
+    public static final String RESTART_UI_ACTION = "restart_ui";
+    public static final String FLASHLIGHT_ACTION = "flashlight";
+    public static final String SCREEN_RECORD_ACTION = "screen_record";
+
 }

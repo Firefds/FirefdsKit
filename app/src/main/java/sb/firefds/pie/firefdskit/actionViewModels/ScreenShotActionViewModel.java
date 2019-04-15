@@ -4,33 +4,24 @@ import android.hardware.input.InputManager;
 import android.os.SystemClock;
 import android.view.KeyEvent;
 
-import com.samsung.android.globalactions.presentation.SecGlobalActions;
-import com.samsung.android.globalactions.presentation.viewmodel.ActionInfo;
-import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModel;
-
 import java.util.Map;
 
 import de.robv.android.xposed.XposedHelpers;
 
-public class ScreenShotActionViewModel implements ActionViewModel {
-    private final SecGlobalActions mGlobalActions;
-    private ActionInfo mInfo;
+public class ScreenShotActionViewModel extends FirefdsKitActionViewModel {
 
     public ScreenShotActionViewModel(Map<String, Object> actionViewModelDefaults) {
-        mGlobalActions = (
-                SecGlobalActions) actionViewModelDefaults.get("mSecGlobalActionsPresenter");
+        super(actionViewModelDefaults);
     }
 
-    public ActionInfo getActionInfo() {
-        return mInfo;
-    }
-
+    @Override
     public void onPress() {
 
-        mGlobalActions.dismissDialog(false);
+        getmGlobalActions().dismissDialog(false);
         takeScreenshot();
     }
 
+    @Override
     public void onPressSecureConfirm() {
         takeScreenshot();
     }
@@ -46,13 +37,5 @@ public class ScreenShotActionViewModel implements ActionViewModel {
                     "injectInputEvent",
                     new KeyEvent(l, l, k, 120, 0, 0, -1, 0, 268435464, 257), 0);
         }
-    }
-
-    public void setActionInfo(ActionInfo var1) {
-        mInfo = var1;
-    }
-
-    public boolean showBeforeProvisioning() {
-        return true;
     }
 }

@@ -1,44 +1,30 @@
 package sb.firefds.pie.firefdskit.actionViewModels;
 
-import com.samsung.android.globalactions.presentation.SecGlobalActions;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionInfo;
-import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModel;
 
 import java.util.Map;
 
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
-public class FlashLightActionViewModel implements ActionViewModel {
-    private final SecGlobalActions mGlobalActions;
-    private ActionInfo mInfo;
+public class FlashLightActionViewModel extends FirefdsKitActionViewModel {
     private static boolean mTorch;
     private static Object flashlightObject;
     private static String flashlightOnStr;
     private static String flashlightOffStr;
 
-
-    public FlashLightActionViewModel(Map<String, Object> actionViewModelDefaults,
-                                     Object flashlight,
-                                     String flashlightOn,
-                                     String flashlightOff) {
-        mGlobalActions = (
-                SecGlobalActions) actionViewModelDefaults.get("mSecGlobalActionsPresenter");
-        flashlightObject = flashlight;
-        flashlightOnStr = flashlightOn;
-        flashlightOffStr = flashlightOff;
+    public FlashLightActionViewModel(Map<String, Object> actionViewModelDefaults) {
+        super(actionViewModelDefaults);
     }
 
-    public ActionInfo getActionInfo() {
-        return mInfo;
-    }
-
+    @Override
     public void onPress() {
 
-        mGlobalActions.dismissDialog(false);
+        getmGlobalActions().dismissDialog(false);
         switchFlashLight();
     }
 
+    @Override
     public void onPressSecureConfirm() {
         switchFlashLight();
     }
@@ -50,19 +36,28 @@ public class FlashLightActionViewModel implements ActionViewModel {
         } catch (Throwable e) {
             XposedBridge.log(e);
         }
-        this.mGlobalActions.dismissDialog(false);
+        this.getmGlobalActions().dismissDialog(false);
     }
 
+    @Override
     public void setActionInfo(ActionInfo var1) {
-        mInfo = var1;
+        super.setActionInfo(var1);
         setStateLabel();
     }
 
     private void setStateLabel() {
-        this.mInfo.setStateLabel(mTorch ? flashlightOnStr : flashlightOffStr);
+        this.getmInfo().setStateLabel(mTorch ? flashlightOnStr : flashlightOffStr);
     }
 
-    public boolean showBeforeProvisioning() {
-        return true;
+    public static void setFlashlightObject(Object flashlightObject) {
+        FlashLightActionViewModel.flashlightObject = flashlightObject;
+    }
+
+    public static void setFlashlightOnStr(String flashlightOnStr) {
+        FlashLightActionViewModel.flashlightOnStr = flashlightOnStr;
+    }
+
+    public static void setFlashlightOffStr(String flashlightOffStr) {
+        FlashLightActionViewModel.flashlightOffStr = flashlightOffStr;
     }
 }

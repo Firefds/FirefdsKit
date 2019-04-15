@@ -3,47 +3,30 @@ package sb.firefds.pie.firefdskit.actionViewModels;
 import android.os.Handler;
 import android.os.Process;
 
-import com.samsung.android.globalactions.presentation.SecGlobalActions;
-import com.samsung.android.globalactions.presentation.viewmodel.ActionInfo;
-import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModel;
-
 import java.util.Map;
 
-public class RestartSystemUiActionViewModel implements ActionViewModel {
-    private final SecGlobalActions mGlobalActions;
-    private ActionInfo mInfo;
+public class RestartSystemUiActionViewModel extends FirefdsKitActionViewModel {
 
     public RestartSystemUiActionViewModel(Map<String, Object> actionViewModelDefaults) {
-        mGlobalActions = (
-                SecGlobalActions) actionViewModelDefaults.get("mSecGlobalActionsPresenter");
+        super(actionViewModelDefaults);
     }
 
-    public ActionInfo getActionInfo() {
-        return mInfo;
-    }
-
+    @Override
     public void onPress() {
-        if (!mGlobalActions.isActionConfirming()) {
-            mGlobalActions.confirmAction(this);
+        if (!getmGlobalActions().isActionConfirming()) {
+            getmGlobalActions().confirmAction(this);
         } else {
-            mGlobalActions.dismissDialog(false);
+            getmGlobalActions().dismissDialog(false);
             new Handler().postDelayed(this::restartSystemUI, 1000);
         }
     }
 
+    @Override
     public void onPressSecureConfirm() {
         restartSystemUI();
     }
 
     private void restartSystemUI() {
         Process.killProcess(Process.myPid());
-    }
-
-    public void setActionInfo(ActionInfo var1) {
-        mInfo = var1;
-    }
-
-    public boolean showBeforeProvisioning() {
-        return true;
     }
 }
