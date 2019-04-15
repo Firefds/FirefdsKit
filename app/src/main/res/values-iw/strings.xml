@@ -194,4 +194,6 @@
     <string name="enable_screen_record_summary">הוספת הקלטת מסך לתפריט הכיבוי (מצריך את אפליקציית הקלטת המסך של סמסונג)</string>
     <string name="disbale_restart_confirmation_summary">ביטול אישור הפעלה מחדש</string>
     <string name="disbale_restart_confirmation_title">ביטול אישור הפעלה מחדש</string>
+    <string name="enable_native_blur_summary">הפעלת טשטוש מקורי בהורדת שורת המצב</string>
+    <string name="enable_native_blur_title">טשטוש מקורי</string>
 </resources>

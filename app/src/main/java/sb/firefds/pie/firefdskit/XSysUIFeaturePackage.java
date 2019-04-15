@@ -50,6 +50,10 @@ public class XSysUIFeaturePackage {
     private static final String KEYGUARD_UPDATE_MONITOR =
             "com.android.keyguard.KeyguardUpdateMonitor";
     private static final String QS_CLOCK = Packages.SYSTEM_UI + ".statusbar.policy.QSClock";
+    private static final String STATE =
+            Packages.SYSTEM_UI + ".statusbar.phone.StatusBarWindowManager.State";
+    private static final String STATUS_BAR_WINDOW_MANAGER =
+            Packages.SYSTEM_UI + ".statusbar.phone.StatusBarWindowManager";
 
     @SuppressLint("StaticFieldLeak")
     private static TextView mClock;
@@ -195,6 +199,21 @@ public class XSysUIFeaturePackage {
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
                                 param.setResult(prefs.getInt(PREF_MAX_SUPPORTED_USERS, 3));
+                            }
+                        });
+            }
+
+            if (prefs.getBoolean(PREFS_ENABLE_SAMSUNG_BLUR, true)) {
+                Class<?> stateClass = XposedHelpers.findClass(STATE, classLoader);
+
+                XposedHelpers.findAndHookMethod(STATUS_BAR_WINDOW_MANAGER,
+                        classLoader,
+                        "applyCoverFlags",
+                        stateClass,
+                        new XC_MethodHook() {
+                            @Override
+                            protected void afterHookedMethod(MethodHookParam param) {
+                                XposedHelpers.callMethod(param.thisObject, "applyBlur", 0.15f);
                             }
                         });
             }

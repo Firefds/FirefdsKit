@@ -10,6 +10,12 @@
             android:summary="@string/status_bar_double_tap_summary"
             android:title="@string/status_bar_double_tap_title"
             app:iconSpaceReserved="false" />
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="enableSamsungBlur"
+            android:summary="@string/enable_native_blur_summary"
+            android:title="@string/enable_native_blur_title"
+            app:iconSpaceReserved="false" />
     </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory
         android:title="@string/status_icons"
