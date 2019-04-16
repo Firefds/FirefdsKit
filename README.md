@@ -9,15 +9,24 @@ XDA Discussion thread: https://forum.xda-developers.com/xposed/modules/xposed-fi
 ## Features
 The module has the following features:
 - Fake system status to Official
-- Add add additional power menu options:
+- Selectable advanced power menu options:
+  - Power off
+  - Restart
+  - Emergency mode
   - Recovery
   - Download
   - Data mode switch
   - Screenshot
-  - Enable call recording
+  - Switch User (when multi user is enabled)
+  - SystemUI restart
+  - Flashlight
+  - Screen Recorder (requires Samsung screen recorder app installed)
+- Disable restart confirmation
+- Enable call recording
 - Replace add call button instead of call recording
 - Enable call recording from menu
 - Auto call recording
+- Enable native blur on notification panel pull down
 - Enable navigation bar color settings in Navigation Bar settings
 - Navigation bar custom color picker
 - Enable multi user toggle
@@ -57,9 +66,11 @@ This was built and tested on the Samsung Galaxy S8 G950F (Exynos) varient.
 Confirmed working on:
 - Galaxy S8
 - Galaxy S8+
+- Galaxy Note 8
 - Galaxy S9
-- Note 9
+- Galaxy Note 9
 - Galaxy S10
+- Galaxy S10+
 
 For Galaxy S9 and above which use encrypted CSC files - I have disabled a few CSC features because I can't test thier implementation.
 
