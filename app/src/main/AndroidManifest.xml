@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="sb.firefds.oreo.firefdskit"
     android:versionCode="100"
-    android:versionName="0.1.0.0-beta-1" >
-
-    <uses-sdk
-        android:minSdkVersion="23"
-        android:targetSdkVersion="23" />
+    android:versionName="0.1.0.0-beta-1">
 
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:name="sb.firefds.oreo.firefdskit.MainApplication"
@@ -19,11 +18,12 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@android:style/Theme.Material" >
+        android:theme="@android:style/Theme.Material"
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
             android:name="sb.firefds.oreo.firefdskit.XTouchWizActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,8 +43,8 @@
 
         <receiver
             android:name="sb.firefds.oreo.firefdskit.receivers.WanamRebootReceiver"
-            android:exported="false" >
-            <intent-filter android:priority="1000" >
+            android:exported="false">
+            <intent-filter android:priority="1000">
                 <action android:name="ma.wanam.xposed.action.REBOOT_DEVICE" />
                 <action android:name="ma.wanam.xposed.action.SOFT_REBOOT_DEVICE" />
                 <action android:name="ma.wanam.xposed.action.REBOOT_OPTIONS" />
@@ -52,18 +52,9 @@
         </receiver>
         <receiver
             android:name="sb.firefds.oreo.firefdskit.receivers.WanamToastReceiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="ma.wanam.xposed.action.SHOW_TOAST" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name="sb.firefds.oreo.firefdskit.receivers.WanamRebootReceiver"
-            android:exported="false" >
-            <intent-filter android:priority="1000" >
-                <action android:name="ma.wanam.xposed.action.REBOOT_DEVICE" />
-                <action android:name="ma.wanam.xposed.action.SOFT_REBOOT_DEVICE" />
-                <action android:name="ma.wanam.xposed.action.REBOOT_OPTIONS" />
             </intent-filter>
         </receiver>
 
@@ -71,8 +62,7 @@
             android:name="sb.firefds.oreo.firefdskit.activities.WanamRebootActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:label="@string/rebooting_"
-            android:theme="@android:style/Theme.DeviceDefault.Dialog" >
-        </activity>
+            android:theme="@android:style/Theme.DeviceDefault.Dialog" />
     </application>
 
 </manifest>
