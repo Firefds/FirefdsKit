@@ -15,46 +15,47 @@
 package sb.firefds.oreo.firefdskit;
 
 import android.content.res.XResources;
+
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import sb.firefds.oreo.firefdskit.utils.Packages;
 
 public class XSystemWide {
 
-	private static XSharedPreferences prefs;
+    private static XSharedPreferences prefs;
 
-	public static void doHook(String modulePath, XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(XSharedPreferences prefs) {
 
-		XSystemWide.prefs = prefs;
+        XSystemWide.prefs = prefs;
 
-		try {
-			setSystemWideTweaks();
+        try {
+            setSystemWideTweaks();
 
-		} catch (Throwable e) {
-			XposedBridge.log(e.toString());
-		}
+        } catch (Throwable e) {
+            XposedBridge.log(e.toString());
+        }
 
-	}
+    }
 
-	private static void setSystemWideTweaks() {
-		
-		if (prefs.getBoolean("disbaleLowBatteryCloseWarningLevel", false)) {
-			try {
-				XResources.setSystemWideReplacement(Packages.ANDROID, "integer", "config_lowBatteryWarningLevel", 1);
-				XResources.setSystemWideReplacement(Packages.ANDROID, "integer", "config_criticalBatteryWarningLevel",
-						1);
-			} catch (Throwable e) {
-				XposedBridge.log(e.toString());
-			}
-		} else if (prefs.getInt("configCriticalBatteryWarningLevel", 5) != 5) {
-			try {
-				XResources.setSystemWideReplacement(Packages.ANDROID, "integer", "config_criticalBatteryWarningLevel",
-						prefs.getInt("configCriticalBatteryWarningLevel", 5));
-				XResources.setSystemWideReplacement(Packages.ANDROID, "integer", "config_lowBatteryCloseWarningLevel",
-						prefs.getInt("configCriticalBatteryWarningLevel", 5));
-			} catch (Throwable e) {
-				XposedBridge.log(e.toString());
-			}
-		}
-	}
+    private static void setSystemWideTweaks() {
+
+        if (prefs.getBoolean("disbaleLowBatteryCloseWarningLevel", false)) {
+            try {
+                XResources.setSystemWideReplacement(Packages.ANDROID, "integer", "config_lowBatteryWarningLevel", 1);
+                XResources.setSystemWideReplacement(Packages.ANDROID, "integer", "config_criticalBatteryWarningLevel",
+                        1);
+            } catch (Throwable e) {
+                XposedBridge.log(e.toString());
+            }
+        } else if (prefs.getInt("configCriticalBatteryWarningLevel", 5) != 5) {
+            try {
+                XResources.setSystemWideReplacement(Packages.ANDROID, "integer", "config_criticalBatteryWarningLevel",
+                        prefs.getInt("configCriticalBatteryWarningLevel", 5));
+                XResources.setSystemWideReplacement(Packages.ANDROID, "integer", "config_lowBatteryCloseWarningLevel",
+                        prefs.getInt("configCriticalBatteryWarningLevel", 5));
+            } catch (Throwable e) {
+                XposedBridge.log(e.toString());
+            }
+        }
+    }
 }

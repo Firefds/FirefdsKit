@@ -17,77 +17,67 @@ package sb.firefds.oreo.firefdskit.activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+
+import java.util.Objects;
+
 import sb.firefds.oreo.firefdskit.R;
 import sb.firefds.oreo.firefdskit.utils.Utils;
 
 @SuppressWarnings("deprecation")
 public class WanamRebootActivity extends Activity {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		int reboot = getIntent().getExtras().getInt("reboot");
-		try {
-			switch (reboot) {
-			case 0:
-				rebootDevice();
-				break;
-			case 2:
-				softRebootOptions();
-				break;
+        int reboot = Objects.requireNonNull(getIntent().getExtras()).getInt("reboot");
+        try {
+            switch (reboot) {
+                case 0:
+                    rebootDevice();
+                    break;
+                case 2:
+                    softRebootOptions();
+                    break;
 
-			}
+            }
 
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-	}
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
 
-	private void rebootDevice() throws Throwable {
-		Utils.closeStatusBar(this);
-		ProgressDialog.show(this, "", getString(R.string.rebooting));
-		Utils.reboot(this);
-	}
+    private void rebootDevice() throws Throwable {
+        Utils.closeStatusBar(this);
+        ProgressDialog.show(this, "", getString(R.string.rebooting));
+        Utils.reboot(this);
+    }
 
-	private void softRebootOptions() throws Throwable {
+    private void softRebootOptions() {
 
-		AlertDialog alertDialog;
-		AlertDialog.Builder rebootOptionsDiag;
-		rebootOptionsDiag = new AlertDialog.Builder(this);
+        AlertDialog alertDialog;
+        AlertDialog.Builder rebootOptionsDiag;
+        rebootOptionsDiag = new AlertDialog.Builder(this);
 
-		rebootOptionsDiag.setTitle(getString(R.string.reboot_options))
-				.setItems(R.array.reboot_options, new OnClickListener() {
+        rebootOptionsDiag.setTitle(getString(R.string.reboot_options))
+                .setItems(R.array.reboot_options, (dialog, which) -> {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case 0:
+                            Utils.reboot(getBaseContext());
+                            break;
+                        case 1:
+                            Utils.rebootEPM(getBaseContext(), "recovery");
+                            break;
+                        case 3:
+                            Utils.rebootEPM(getBaseContext(), "download");
+                            break;
+                    }
+                })
+                .setCancelable(true).setOnCancelListener(dialog -> finish());
 
-						switch (which) {
-						case 0:
-							Utils.reboot(getBaseContext());
-							break;
-						case 1:
-							Utils.rebootEPM(getBaseContext(), "recovery");
-							break;
-						case 3:
-							Utils.rebootEPM(getBaseContext(), "download");
-							break;
-						}
-
-					}
-				}).setCancelable(true).setOnCancelListener(new DialogInterface.OnCancelListener() {
-
-					@Override
-					public void onCancel(DialogInterface dialog) {
-						finish();
-					}
-				});
-
-		alertDialog = rebootOptionsDiag.create();
-		alertDialog.show();
-	}
-
+        alertDialog = rebootOptionsDiag.create();
+        alertDialog.show();
+    }
 }

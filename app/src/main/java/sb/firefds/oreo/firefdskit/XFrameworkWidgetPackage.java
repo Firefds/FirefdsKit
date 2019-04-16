@@ -24,34 +24,34 @@ import sb.firefds.oreo.firefdskit.utils.Packages;
 
 public class XFrameworkWidgetPackage {
 
-	public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(XSharedPreferences prefs) {
 
-		if (prefs.getBoolean("disableScrollingCache", false)) {
-			try {
-				disableScrollingCache();
-			} catch (Throwable e) {
-				XposedBridge.log(e.toString());
+        if (prefs.getBoolean("disableScrollingCache", false)) {
+            try {
+                disableScrollingCache();
+            } catch (Throwable e) {
+                XposedBridge.log(e.toString());
 
-			}
-		}
-	}
+            }
+        }
+    }
 
-	private static void disableScrollingCache() {
-		try {
-			Class<?> absListView = findClass(Packages.ANDROID + ".widget.AbsListView", null);
-			XposedHelpers.findAndHookMethod(absListView, "setScrollingCacheEnabled", boolean.class,
-					new XC_MethodHook() {
+    private static void disableScrollingCache() {
+        try {
+            Class<?> absListView = findClass(Packages.ANDROID + ".widget.AbsListView", null);
+            XposedHelpers.findAndHookMethod(absListView, "setScrollingCacheEnabled", boolean.class,
+                    new XC_MethodHook() {
 
-						@Override
-						protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-							param.args[0] = false;
-						}
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param) {
+                            param.args[0] = false;
+                        }
 
-					});
+                    });
 
-		} catch (Throwable e) {
-			XposedBridge.log(e.toString());
+        } catch (Throwable e) {
+            XposedBridge.log(e.toString());
 
-		}
-	}
+        }
+    }
 }

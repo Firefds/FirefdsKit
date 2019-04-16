@@ -17,8 +17,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'eu.chainfire:libsuperuser:1.0.0.201704021214'
+    compileOnly 'de.robv.android.xposed:api:82'
+    compileOnly 'de.robv.android.xposed:api:82:sources'
+    compileOnly files('src/libs/framework-dex2jar.jar')
+    compileOnly files('src/libs/services-dex2jar.jar')
 }

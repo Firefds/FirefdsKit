@@ -17,36 +17,32 @@ package sb.firefds.oreo.firefdskit.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
+
 import sb.firefds.oreo.firefdskit.R;
 
 public class CreditsDialog extends DialogFragment {
 
-	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		PackageInfo pInfo;
-		String pkgVersion = "";
-		try {
-			pInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
-			pkgVersion = pInfo.versionName;
-		} catch (NameNotFoundException e) {
-		}
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		TextView tv = new TextView(getActivity());
-		tv.setMovementMethod(LinkMovementMethod.getInstance());
-		tv.setText(R.string.credit_details);
-		tv.setPadding(16, 16, 16, 16);
-		builder.setCancelable(true).setView(tv).setTitle(getString(R.string.app_name) + " " + pkgVersion)
-				.setNeutralButton(R.string.no_thanks, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.dismiss();
-					}
-				});
-		return builder.create();
-	}
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        PackageInfo pInfo;
+        String pkgVersion = "";
+        try {
+            pInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
+            pkgVersion = pInfo.versionName;
+        } catch (NameNotFoundException ignored) {
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        TextView tv = new TextView(getActivity());
+        tv.setMovementMethod(LinkMovementMethod.getInstance());
+        tv.setText(R.string.credit_details);
+        tv.setPadding(16, 16, 16, 16);
+        builder.setCancelable(true).setView(tv).setTitle(getString(R.string.app_name) + " " + pkgVersion)
+                .setNeutralButton(R.string.no_thanks, (dialog, id) -> dialog.dismiss());
+        return builder.create();
+    }
 }

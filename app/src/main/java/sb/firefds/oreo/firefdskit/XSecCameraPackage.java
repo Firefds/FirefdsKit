@@ -22,68 +22,68 @@ import sb.firefds.oreo.firefdskit.utils.Packages;
 
 public class XSecCameraPackage {
 
-	private static ClassLoader classLoader;
+    private static ClassLoader classLoader;
 
-	public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
-		XSecCameraPackage.classLoader = classLoader;
+        XSecCameraPackage.classLoader = classLoader;
 
-		if (prefs.getBoolean("disableTemperatureChecks", false)) {
-			try {
-				disableTemperatureChecks();
-			} catch (Throwable e) {
-				XposedBridge.log(e.toString());
+        if (prefs.getBoolean("disableTemperatureChecks", false)) {
+            try {
+                disableTemperatureChecks();
+            } catch (Throwable e) {
+                XposedBridge.log(e.toString());
 
-			}
-		}
+            }
+        }
 
-		if (prefs.getBoolean("disableShutterSound", false)) {
-			try {
-				disableShutterSound();
-			} catch (Throwable e) {
-				XposedBridge.log(e.toString());
+        if (prefs.getBoolean("disableShutterSound", false)) {
+            try {
+                disableShutterSound();
+            } catch (Throwable e) {
+                XposedBridge.log(e.toString());
 
-			}
-		}
-	}
+            }
+        }
+    }
 
-	private static void disableTemperatureChecks() {
+    private static void disableTemperatureChecks() {
 
-		try {
-			XposedHelpers.findAndHookMethod(Packages.CAMERA + ".CameraSettings", classLoader,
-					"isTemperatureHighToUseFlash", XC_MethodReplacement.returnConstant(false));
-		} catch (Throwable e) {
-			XposedBridge.log(e.toString());
+        try {
+            XposedHelpers.findAndHookMethod(Packages.CAMERA + ".CameraSettings", classLoader,
+                    "isTemperatureHighToUseFlash", XC_MethodReplacement.returnConstant(false));
+        } catch (Throwable e) {
+            XposedBridge.log(e.toString());
 
-		}
+        }
 
-		try {
-			XposedHelpers.findAndHookMethod(Packages.CAMERA + ".CameraSettings", classLoader,
-					"isTemperatureLowToUseFlash", XC_MethodReplacement.returnConstant(false));
-		} catch (Throwable e) {
-			XposedBridge.log(e.toString());
+        try {
+            XposedHelpers.findAndHookMethod(Packages.CAMERA + ".CameraSettings", classLoader,
+                    "isTemperatureLowToUseFlash", XC_MethodReplacement.returnConstant(false));
+        } catch (Throwable e) {
+            XposedBridge.log(e.toString());
 
-		}
+        }
 
-		try {
-			XposedHelpers.findAndHookMethod(Packages.CAMERA + ".CameraSettings", classLoader,
-					"isTemperatureHighToRecord", XC_MethodReplacement.returnConstant(false));
-		} catch (Throwable e) {
-			XposedBridge.log(e.toString());
+        try {
+            XposedHelpers.findAndHookMethod(Packages.CAMERA + ".CameraSettings", classLoader,
+                    "isTemperatureHighToRecord", XC_MethodReplacement.returnConstant(false));
+        } catch (Throwable e) {
+            XposedBridge.log(e.toString());
 
-		}
-	}
+        }
+    }
 
-	private static void disableShutterSound() {
+    private static void disableShutterSound() {
 
-		try {
-			XposedHelpers.findAndHookMethod(Packages.CAMERA + ".Camera", classLoader,
-					"playCameraSound", "com.sec.android.app.camera.interfaces.CameraContext.SoundId",
-					int.class, XC_MethodReplacement.DO_NOTHING);
-		} catch (Throwable e) {
-			XposedBridge.log(e.toString());
+        try {
+            XposedHelpers.findAndHookMethod(Packages.CAMERA + ".Camera", classLoader,
+                    "playCameraSound", "com.sec.android.app.camera.interfaces.CameraContext.SoundId",
+                    int.class, XC_MethodReplacement.DO_NOTHING);
+        } catch (Throwable e) {
+            XposedBridge.log(e.toString());
 
-		}
-	}
+        }
+    }
 
 }

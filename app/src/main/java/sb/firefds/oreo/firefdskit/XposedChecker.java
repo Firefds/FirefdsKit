@@ -14,9 +14,9 @@
  */
 package sb.firefds.oreo.firefdskit;
 
-public class XposedChecker {
+class XposedChecker {
 
-	public static Boolean isActive() {
-		return Boolean.FALSE;
-	}
+    static Boolean isActive() {
+        return Boolean.FALSE;
+    }
 }

@@ -14,175 +14,163 @@
  */
 package sb.firefds.oreo.firefdskit;
 
-import de.robv.android.xposed.IXposedHookInitPackageResources;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 import sb.firefds.oreo.firefdskit.utils.Packages;
 import sb.firefds.oreo.firefdskit.utils.Utils;
 
-public class Xposed implements IXposedHookZygoteInit, IXposedHookInitPackageResources, IXposedHookLoadPackage {
+public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
-	private static String MODULE_PATH = null;
-	private static XSharedPreferences prefs;
+    private static String MODULE_PATH = null;
+    private static XSharedPreferences prefs;
 
-	@Override
-	public void initZygote(StartupParam startupParam) {
+    @Override
+    public void initZygote(StartupParam startupParam) {
 
-		// Do not load if Not a Touchwiz Rom
-		if (!Utils.isSamsungRom())
-			return;
+        // Do not load if Not a Touchwiz Rom
+        if (!Utils.isSamsungRom())
+            return;
 
-		MODULE_PATH = startupParam.modulePath;
+        MODULE_PATH = startupParam.modulePath;
 
-		if (prefs == null) {
-			try {
-				prefs = new XSharedPreferences(Packages.FIREFDSKIT, XTouchWizActivity.class.getSimpleName());
-			} catch (Throwable e) {
-				XposedBridge.log(e);
-			}
-		}
+        if (prefs == null) {
+            try {
+                prefs = new XSharedPreferences(Packages.FIREFDSKIT, XTouchWizActivity.class.getSimpleName());
+            } catch (Throwable e) {
+                XposedBridge.log(e);
+            }
+        }
 
-	}
+    }
 
-	@Override
-	public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
+    @Override
+    public void handleLoadPackage(LoadPackageParam lpparam) {
 
-		// Do not load if Not a Touchwiz Rom
-		if (!Utils.isSamsungRom())
-			return;
+        // Do not load if Not a Touchwiz Rom
+        if (!Utils.isSamsungRom())
+            return;
 
-		if (lpparam.packageName.equals(Packages.FIREFDSKIT)) {
-			if (prefs != null) {
-				try {
-					XposedHelpers.findAndHookMethod(Packages.FIREFDSKIT + ".XposedChecker", lpparam.classLoader,
-							"isActive", XC_MethodReplacement.returnConstant(Boolean.TRUE));
-				} catch (Throwable t) {
-					XposedBridge.log(t);
-				}
-			} else {
-				XposedBridge.log("Xposed cannot read XTouchWiz preferences!");
-			}
-		}
+        if (lpparam.packageName.equals(Packages.FIREFDSKIT)) {
+            if (prefs != null) {
+                try {
+                    XposedHelpers.findAndHookMethod(Packages.FIREFDSKIT + ".XposedChecker", lpparam.classLoader,
+                            "isActive", XC_MethodReplacement.returnConstant(Boolean.TRUE));
+                } catch (Throwable t) {
+                    XposedBridge.log(t);
+                }
+            } else {
+                XposedBridge.log("Xposed cannot read XTouchWiz preferences!");
+            }
+        }
 
-		if (lpparam.packageName.equals(Packages.ANDROID)) {
+        if (lpparam.packageName.equals(Packages.ANDROID)) {
 
-			try {
-				XPM23.initZygote(prefs, lpparam.classLoader);
-			} catch (Exception e1) {
-				XposedBridge.log(e1);
-			}
+            try {
+                XPM23.initZygote(lpparam.classLoader);
+            } catch (Exception e1) {
+                XposedBridge.log(e1);
+            }
 
-			try {
+            try {
 
-				XSystemWide.doHook(MODULE_PATH, prefs, lpparam.classLoader);
+                XSystemWide.doHook(prefs);
 
-			} catch (Throwable e) {
-				XposedBridge.log(e.toString());
+            } catch (Throwable e) {
+                XposedBridge.log(e.toString());
 
-			}
+            }
 
-			try {
-				XAndroidPackage.doHook(prefs, lpparam.classLoader);
-			} catch (Throwable e) {
-				XposedBridge.log(e.toString());
+            try {
+                XAndroidPackage.doHook(prefs, lpparam.classLoader);
+            } catch (Throwable e) {
+                XposedBridge.log(e.toString());
 
-			}
+            }
 
-			try {
-				XFrameworkWidgetPackage.doHook(prefs, lpparam.classLoader);
-			} catch (Throwable e) {
-				XposedBridge.log(e.toString());
+            try {
+                XFrameworkWidgetPackage.doHook(prefs);
+            } catch (Throwable e) {
+                XposedBridge.log(e.toString());
 
-			}
+            }
 
-		}
+        }
 
-		if (lpparam.packageName.equals(Packages.SAMSUNG_INCALLUI)) {
-			try {
-				XInCallUIPackage.doHook(prefs, lpparam.classLoader);
-			} catch (Throwable e) {
-				XposedBridge.log(e.toString());
+        if (lpparam.packageName.equals(Packages.SAMSUNG_INCALLUI)) {
+            try {
+                XInCallUIPackage.doHook(prefs, lpparam.classLoader);
+            } catch (Throwable e) {
+                XposedBridge.log(e.toString());
 
-			}
-		}
+            }
+        }
 
-		if (lpparam.packageName.equals(Packages.NFC)) {
-			try {
-				XNfcPackage.doHook(prefs, lpparam.classLoader);
-			} catch (Throwable e) {
-				XposedBridge.log(e.toString());
+        if (lpparam.packageName.equals(Packages.NFC)) {
+            try {
+                XNfcPackage.doHook(prefs, lpparam.classLoader);
+            } catch (Throwable e) {
+                XposedBridge.log(e.toString());
 
-			}
-		}
+            }
+        }
 
-		if (lpparam.packageName.equals(Packages.SYSTEM_UI)) {
-			try {
-				XSysUIPackage.doHook(prefs, lpparam.classLoader);
-			} catch (Throwable e) {
-				XposedBridge.log(e.toString());
+        if (lpparam.packageName.equals(Packages.SYSTEM_UI)) {
+            try {
+                XSysUIPackage.doHook(prefs, lpparam.classLoader);
+            } catch (Throwable e) {
+                XposedBridge.log(e.toString());
 
-			}
-			
-			try {
-				XGlobalActions.init(prefs, lpparam.classLoader);
-			} catch (Throwable e) {
-				XposedBridge.log(e.toString());
+            }
 
-			}
+            try {
+                XGlobalActions.init(prefs, lpparam.classLoader);
+            } catch (Throwable e) {
+                XposedBridge.log(e.toString());
 
-		}
+            }
 
-		if (lpparam.packageName.equals(Packages.SETTINGS)) {
-			try {
-				XSecSettingsPackage.doHook(prefs, lpparam.classLoader);
-			} catch (Throwable e) {
-				XposedBridge.log(e.toString());
+        }
 
-			}
-		}
+        if (lpparam.packageName.equals(Packages.SETTINGS)) {
+            try {
+                XSecSettingsPackage.doHook(prefs, lpparam.classLoader);
+            } catch (Throwable e) {
+                XposedBridge.log(e.toString());
 
-		if (lpparam.packageName.equals(Packages.EMAIL)) {
-			try {
-				XSecEmailPackage.doHook(prefs, lpparam.classLoader);
-			} catch (Throwable e) {
-				XposedBridge.log(e.toString());
+            }
+        }
 
-			}
-		}
+        if (lpparam.packageName.equals(Packages.EMAIL)) {
+            try {
+                XSecEmailPackage.doHook(prefs, lpparam.classLoader);
+            } catch (Throwable e) {
+                XposedBridge.log(e.toString());
 
-		if (lpparam.packageName.equals(Packages.CAMERA)) {
-			try {
-				XSecCameraPackage.doHook(prefs, lpparam.classLoader);
-			} catch (Throwable e) {
-				XposedBridge.log(e.toString());
+            }
+        }
 
-			}
-		}
+        if (lpparam.packageName.equals(Packages.CAMERA)) {
+            try {
+                XSecCameraPackage.doHook(prefs, lpparam.classLoader);
+            } catch (Throwable e) {
+                XposedBridge.log(e.toString());
 
-		if (lpparam.packageName.equals(Packages.SYS_SCOPE)) {
-			try {
-				XSysScopePackage.doHook(prefs, lpparam.classLoader);
-			} catch (Throwable e) {
-				XposedBridge.log(e.toString());
+            }
+        }
 
-			}
-		}
+        if (lpparam.packageName.equals(Packages.SYS_SCOPE)) {
+            try {
+                XSysScopePackage.doHook(prefs, lpparam.classLoader);
+            } catch (Throwable e) {
+                XposedBridge.log(e.toString());
 
-	}
+            }
+        }
 
-	@Override
-	public void handleInitPackageResources(InitPackageResourcesParam resparam) throws Throwable {
-
-		// Do not load if Not a Touchwiz Rom
-		if (!Utils.isSamsungRom())
-			return;
-
-	}
-
+    }
 }

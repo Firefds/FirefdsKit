@@ -22,94 +22,94 @@ import sb.firefds.oreo.firefdskit.utils.Packages;
 
 public class XNfcPackage {
 
-	private static final int SCREEN_STATE_ON_LOCKED = 2;
-	private static final int SCREEN_STATE_ON_UNLOCKED = 3;
-	private static XSharedPreferences prefs;
-	private static ClassLoader classLoader;
-	private static int behavior;
+    private static final int SCREEN_STATE_ON_LOCKED = 2;
+    private static final int SCREEN_STATE_ON_UNLOCKED = 3;
+    private static XSharedPreferences prefs;
+    private static ClassLoader classLoader;
+    private static int behavior;
 
-	public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
-		XNfcPackage.prefs = prefs;
-		XNfcPackage.classLoader = classLoader;
+        XNfcPackage.prefs = prefs;
+        XNfcPackage.classLoader = classLoader;
 
-		try {
-			setIcon();
-		} catch (Throwable e1) {
-			XposedBridge.log(e1.toString());
+        try {
+            setIcon();
+        } catch (Throwable e1) {
+            XposedBridge.log(e1.toString());
 
-		}
+        }
 
-		try {
-			behavior = prefs.getInt("nfcBehavior", 0);
-			if (behavior != 0) {
-				setListenMode();
-			}
-		} catch (Throwable e) {
-			XposedBridge.log(e.toString());
+        try {
+            behavior = prefs.getInt("nfcBehavior", 0);
+            if (behavior != 0) {
+                setListenMode();
+            }
+        } catch (Throwable e) {
+            XposedBridge.log(e.toString());
 
-		}
-	}
+        }
+    }
 
-	private static void setListenMode() {
-		try {
-			XposedHelpers.findAndHookMethod(Packages.NFC + ".NfcService", classLoader, "applyRouting", boolean.class,
-					new XC_MethodHook() {
-						@Override
-						protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+    private static void setListenMode() {
+        try {
+            XposedHelpers.findAndHookMethod(Packages.NFC + ".NfcService", classLoader, "applyRouting", boolean.class,
+                    new XC_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param) {
 
-							final Object mScreenStateHelper = XposedHelpers.getObjectField(param.thisObject,
-									"mScreenStateHelper");
-							final int currScreenState = (Integer) XposedHelpers.callMethod(mScreenStateHelper,
-									"checkScreenState");
-							if ((currScreenState == SCREEN_STATE_ON_UNLOCKED)
-									|| (behavior == 1 && currScreenState != SCREEN_STATE_ON_LOCKED)) {
-								XposedHelpers.setAdditionalInstanceField(param.thisObject, "mOrigScreenState", -1);
-								return;
-							}
+                            final Object mScreenStateHelper = XposedHelpers.getObjectField(param.thisObject,
+                                    "mScreenStateHelper");
+                            final int currScreenState = (Integer) XposedHelpers.callMethod(mScreenStateHelper,
+                                    "checkScreenState");
+                            if ((currScreenState == SCREEN_STATE_ON_UNLOCKED)
+                                    || (behavior == 1 && currScreenState != SCREEN_STATE_ON_LOCKED)) {
+                                XposedHelpers.setAdditionalInstanceField(param.thisObject, "mOrigScreenState", -1);
+                                return;
+                            }
 
-							synchronized (param.thisObject) {
-								XposedHelpers.setAdditionalInstanceField(param.thisObject, "mOrigScreenState",
-										XposedHelpers.getIntField(param.thisObject, "mScreenState"));
-								XposedHelpers.setIntField(param.thisObject, "mScreenState", SCREEN_STATE_ON_UNLOCKED);
-							}
-						}
+                            synchronized (param.thisObject) {
+                                XposedHelpers.setAdditionalInstanceField(param.thisObject, "mOrigScreenState",
+                                        XposedHelpers.getIntField(param.thisObject, "mScreenState"));
+                                XposedHelpers.setIntField(param.thisObject, "mScreenState", SCREEN_STATE_ON_UNLOCKED);
+                            }
+                        }
 
-						@Override
-						protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-							final int mOrigScreenState = (Integer) XposedHelpers.getAdditionalInstanceField(
-									param.thisObject, "mOrigScreenState");
-							if (mOrigScreenState == -1)
-								return;
+                        @Override
+                        protected void afterHookedMethod(MethodHookParam param) {
+                            final int mOrigScreenState = (Integer) XposedHelpers.getAdditionalInstanceField(
+                                    param.thisObject, "mOrigScreenState");
+                            if (mOrigScreenState == -1)
+                                return;
 
-							synchronized (param.thisObject) {
-								XposedHelpers.setIntField(param.thisObject, "mScreenState", mOrigScreenState);
-							}
-						}
+                            synchronized (param.thisObject) {
+                                XposedHelpers.setIntField(param.thisObject, "mScreenState", mOrigScreenState);
+                            }
+                        }
 
-					});
-		} catch (Throwable e) {
-			XposedBridge.log(e.toString());
+                    });
+        } catch (Throwable e) {
+            XposedBridge.log(e.toString());
 
-		}
-	}
+        }
+    }
 
-	private static void setIcon() {
-		try {
-			XposedHelpers.findAndHookMethod(Packages.NFC + ".NfcService", classLoader, "showIcon", boolean.class,
-					new XC_MethodHook() {
-						@Override
-						protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+    private static void setIcon() {
+        try {
+            XposedHelpers.findAndHookMethod(Packages.NFC + ".NfcService", classLoader, "showIcon", boolean.class,
+                    new XC_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param) {
 
-							if ((Boolean) XposedHelpers.callMethod(param.thisObject, "isNfcEnabled")) {
-								param.args[0] = !prefs.getBoolean("hideNfcIcon", false);
-							}
-						}
-					});
-		} catch (Throwable e) {
-			XposedBridge.log(e.toString());
+                            if ((Boolean) XposedHelpers.callMethod(param.thisObject, "isNfcEnabled")) {
+                                param.args[0] = !prefs.getBoolean("hideNfcIcon", false);
+                            }
+                        }
+                    });
+        } catch (Throwable e) {
+            XposedBridge.log(e.toString());
 
-		}
-	}
+        }
+    }
 
 }

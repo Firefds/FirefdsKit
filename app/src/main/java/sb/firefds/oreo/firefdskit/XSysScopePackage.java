@@ -15,6 +15,7 @@
 package sb.firefds.oreo.firefdskit;
 
 import android.os.Parcel;
+
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
@@ -24,62 +25,62 @@ import sb.firefds.oreo.firefdskit.utils.Packages;
 
 public class XSysScopePackage {
 
-	public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
-		if (prefs.getBoolean("makeMeTooLegit", true)) {
+        if (prefs.getBoolean("makeMeTooLegit", true)) {
 
-			try {
-				Object[] arrayOfObject3 = new Object[2];
-				arrayOfObject3[0] = String.class;
-				arrayOfObject3[1] = XC_MethodReplacement.returnConstant(Integer.valueOf(1));
-				XposedHelpers.findAndHookMethod(Packages.SYS_SCOPE + ".job.RootProcessScanner", classLoader,
-						"checkIsApprivedProcess", arrayOfObject3);
-			} catch (Throwable e) {
-				XposedBridge.log(e);
-			}
+            try {
+                Object[] arrayOfObject3 = new Object[2];
+                arrayOfObject3[0] = String.class;
+                arrayOfObject3[1] = XC_MethodReplacement.returnConstant(1);
+                XposedHelpers.findAndHookMethod(Packages.SYS_SCOPE + ".job.RootProcessScanner", classLoader,
+                        "checkIsApprivedProcess", arrayOfObject3);
+            } catch (Throwable e) {
+                XposedBridge.log(e);
+            }
 
-			try {
-				Object[] arrayOfObject2 = new Object[2];
-				arrayOfObject2[0] = String.class;
-				arrayOfObject2[1] = XC_MethodReplacement.returnConstant(Boolean.TRUE);
-				XposedHelpers.findAndHookMethod(Packages.SYS_SCOPE + ".job.KernelStatusChecker", classLoader, "b",
-						arrayOfObject2);
-			} catch (Throwable e) {
-				XposedBridge.log(e);
-			}
+            try {
+                Object[] arrayOfObject2 = new Object[2];
+                arrayOfObject2[0] = String.class;
+                arrayOfObject2[1] = XC_MethodReplacement.returnConstant(Boolean.TRUE);
+                XposedHelpers.findAndHookMethod(Packages.SYS_SCOPE + ".job.KernelStatusChecker", classLoader, "b",
+                        arrayOfObject2);
+            } catch (Throwable e) {
+                XposedBridge.log(e);
+            }
 
-			try {
-				XposedHelpers.findAndHookMethod(Packages.SYS_SCOPE + ".service.SysScopeResultInfo", classLoader, "a",
-						XC_MethodReplacement.returnConstant(Integer.valueOf(1)));
-			} catch (Throwable e) {
-				XposedBridge.log(e);
-			}
+            try {
+                XposedHelpers.findAndHookMethod(Packages.SYS_SCOPE + ".service.SysScopeResultInfo", classLoader, "a",
+                        XC_MethodReplacement.returnConstant(1));
+            } catch (Throwable e) {
+                XposedBridge.log(e);
+            }
 
-			try {
-				XposedHelpers.findAndHookMethod(Packages.SYS_SCOPE + ".service.SysScopeResultInfo", classLoader, "a",
-						Parcel.class, new XC_MethodHook() {
-							@Override
-							protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-								XposedHelpers.setObjectField(param.thisObject, "b", null);
-							}
-						});
-			} catch (Throwable e) {
-				XposedBridge.log(e);
-			}
+            try {
+                XposedHelpers.findAndHookMethod(Packages.SYS_SCOPE + ".service.SysScopeResultInfo", classLoader, "a",
+                        Parcel.class, new XC_MethodHook() {
+                            @Override
+                            protected void afterHookedMethod(MethodHookParam param) {
+                                XposedHelpers.setObjectField(param.thisObject, "b", null);
+                            }
+                        });
+            } catch (Throwable e) {
+                XposedBridge.log(e);
+            }
 
-			try {
-				XposedHelpers.findAndHookMethod(Packages.SYS_SCOPE + ".engine.SystemDiagnosisManager", classLoader,
-						"storeResult", int.class, new XC_MethodHook() {
-							@Override
-							protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-								param.args[0] = 1;
-							}
-						});
-			} catch (Throwable e) {
-				XposedBridge.log(e);
-			}
+            try {
+                XposedHelpers.findAndHookMethod(Packages.SYS_SCOPE + ".engine.SystemDiagnosisManager", classLoader,
+                        "storeResult", int.class, new XC_MethodHook() {
+                            @Override
+                            protected void beforeHookedMethod(MethodHookParam param) {
+                                param.args[0] = 1;
+                            }
+                        });
+            } catch (Throwable e) {
+                XposedBridge.log(e);
+            }
 
-		}
-	}
+        }
+    }
 
 }

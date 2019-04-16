@@ -27,41 +27,41 @@ import android.widget.TextView;
 
 public class BackupAdapter extends BaseAdapter {
 
-	private Context context;
-	private File[] backups;
+    private Context context;
+    private File[] backups;
 
-	public BackupAdapter(Context context, File[] backups) {
-		this.context = context;
-		this.backups = backups;
-	}
+    public BackupAdapter(Context context, File[] backups) {
+        this.context = context;
+        this.backups = backups;
+    }
 
-	@Override
-	public int getCount() {
-		return backups.length;
-	}
+    @Override
+    public int getCount() {
+        return backups.length;
+    }
 
-	@Override
-	public Object getItem(int position) {
-		return backups[position];
-	}
+    @Override
+    public Object getItem(int position) {
+        return backups[position];
+    }
 
-	@Override
-	public long getItemId(int position) {
-		return position;
-	}
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
-	@SuppressLint("InflateParams")
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+    @SuppressLint("InflateParams")
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-		if (convertView == null) {
-			convertView = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_2, null);
-			((TextView) convertView.findViewById(android.R.id.text1)).setText(backups[position].getName().replace(
-					".xt", ""));
-			((TextView) convertView.findViewById(android.R.id.text2))
-					.setText(new Date(backups[position].lastModified()).toString());
-		}
-		return convertView;
-	}
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_2, null);
+            ((TextView) convertView.findViewById(android.R.id.text1)).setText(backups[position].getName().replace(
+                    ".xt", ""));
+            ((TextView) convertView.findViewById(android.R.id.text2))
+                    .setText(new Date(backups[position].lastModified()).toString());
+        }
+        return convertView;
+    }
 
 }

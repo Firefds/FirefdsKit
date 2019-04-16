@@ -12,6 +12,8 @@
         android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
 
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+
     <application
         android:name="sb.firefds.oreo.firefdskit.MainApplication"
         android:allowBackup="true"

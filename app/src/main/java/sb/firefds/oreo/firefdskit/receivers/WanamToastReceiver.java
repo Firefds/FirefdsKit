@@ -18,20 +18,23 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
+
+import java.util.Objects;
+
 import sb.firefds.oreo.firefdskit.R;
 
 public class WanamToastReceiver extends BroadcastReceiver {
 
-	private static final String SHOW_TOAST = "ma.wanam.xposed.action.SHOW_TOAST";
+    private static final String SHOW_TOAST = "ma.wanam.xposed.action.SHOW_TOAST";
 
-	@Override
-	public void onReceive(Context context, Intent intent) {
-		String action = intent.getAction();
-		if (action.equalsIgnoreCase(SHOW_TOAST)) {
-			Toast.makeText(context,
-					context.getResources().getString(R.string.killed_) + intent.getStringExtra("processName"),
-					Toast.LENGTH_SHORT).show();
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+        if (Objects.requireNonNull(action).equalsIgnoreCase(SHOW_TOAST)) {
+            Toast.makeText(context,
+                    context.getResources().getString(R.string.killed_) + intent.getStringExtra("processName"),
+                    Toast.LENGTH_SHORT).show();
 
-		}
-	}
+        }
+    }
 }

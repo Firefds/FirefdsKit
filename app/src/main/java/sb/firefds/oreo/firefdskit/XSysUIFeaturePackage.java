@@ -16,62 +16,61 @@
 package sb.firefds.oreo.firefdskit;
 
 import android.graphics.Color;
+
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.oreo.firefdskit.utils.Packages;
 
 public class XSysUIFeaturePackage {
 
-	private static Object mVolumePanel;
-	
-	public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
+    private static Object mVolumePanel;
+
+    public static void doHook(final ClassLoader classLoader) {
 
 
-		try {
-			Class<?> classVolumePanel = XposedHelpers.findClass(Packages.SYSTEM_UI + ".volume.SecVolumeDialogImpl", classLoader);
-			
+        try {
+            Class<?> classVolumePanel = XposedHelpers.findClass(Packages.SYSTEM_UI + ".volume.SecVolumeDialogImpl", classLoader);
+
             XposedBridge.hookAllConstructors(classVolumePanel, new XC_MethodHook() {
                 @Override
-                protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+                protected void afterHookedMethod(final MethodHookParam param) {
                     mVolumePanel = param.thisObject;
                 }
             });
 
-			XposedHelpers.findAndHookMethod(classVolumePanel, "updateTintColor", new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+            XposedHelpers.findAndHookMethod(classVolumePanel, "updateTintColor", new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) {
 
-					//if (prefs.getBoolean("semiTransparentVolumePanel", false)) {
-						XposedHelpers.setObjectField(
-								mVolumePanel,
-								"mVolumePanelBgColor",
-								XposedHelpers.callMethod(mVolumePanel, "colorToColorStateList",
-										Color.parseColor("#55FF0000")));
-						XposedBridge.log(Packages.FIREFDSKIT + "Color set to #55FF0000");
-					//}
-				}
-			});
-			
-			XposedHelpers.findAndHookMethod(classVolumePanel, "updateDefaultTintColor", new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                    //if (prefs.getBoolean("semiTransparentVolumePanel", false)) {
+                    XposedHelpers.setObjectField(
+                            mVolumePanel,
+                            "mVolumePanelBgColor",
+                            XposedHelpers.callMethod(mVolumePanel, "colorToColorStateList",
+                                    Color.parseColor("#55FF0000")));
+                    XposedBridge.log(Packages.FIREFDSKIT + "Color set to #55FF0000");
+                    //}
+                }
+            });
 
-					//if (prefs.getBoolean("semiTransparentVolumePanel", false)) {
-						XposedHelpers.setObjectField(
-								mVolumePanel,
-								"mVolumePanelBgDefaultColor",
-								XposedHelpers.callMethod(mVolumePanel, "colorToColorStateList",
-										Color.parseColor("#55FF0000")));
-						XposedBridge.log(Packages.FIREFDSKIT + "Color default set to #55FF0000");
-					//}
-				}
-			});
-		}
-		catch (Throwable e1){
-			XposedBridge.log(e1.getMessage());
-		}
-	}
+            XposedHelpers.findAndHookMethod(classVolumePanel, "updateDefaultTintColor", new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) {
+
+                    //if (prefs.getBoolean("semiTransparentVolumePanel", false)) {
+                    XposedHelpers.setObjectField(
+                            mVolumePanel,
+                            "mVolumePanelBgDefaultColor",
+                            XposedHelpers.callMethod(mVolumePanel, "colorToColorStateList",
+                                    Color.parseColor("#55FF0000")));
+                    XposedBridge.log(Packages.FIREFDSKIT + "Color default set to #55FF0000");
+                    //}
+                }
+            });
+        } catch (Throwable e1) {
+            XposedBridge.log(e1.getMessage());
+        }
+    }
 
 }

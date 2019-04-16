@@ -14,6 +14,7 @@
  */
 package sb.firefds.oreo.firefdskit;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -21,56 +22,55 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Handler;
 import android.os.Looper;
-//import android.preference.PreferenceManager;
-//import sb.firefds.nougat.firefdskit.utils.Utils;
 
 public class MainApplication extends Application {
 
-	private static Context mContext;
-	private static Point windowsSize;
-	private static Handler mHandler;
-	private static SharedPreferences sharedPreferences;
+    @SuppressLint("StaticFieldLeak")
+    private static Context mContext;
+    private static Point windowsSize;
+    private static Handler mHandler;
+    private static SharedPreferences sharedPreferences;
 
-	public static SharedPreferences getSharedPreferences() {
-		return sharedPreferences;
-	}
+    public static SharedPreferences getSharedPreferences() {
+        return sharedPreferences;
+    }
 
-	public static void setSharedPreferences(SharedPreferences sharedPreferences) {
-		MainApplication.sharedPreferences = sharedPreferences;
-	}
+    public static void setSharedPreferences(SharedPreferences sharedPreferences) {
+        MainApplication.sharedPreferences = sharedPreferences;
+    }
 
-	public static Point getWindowsSize() {
-		return windowsSize;
-	}
+    public static Point getWindowsSize() {
+        return windowsSize;
+    }
 
-	public static void setWindowsSize(Point windowsSize) {
-		MainApplication.windowsSize = windowsSize;
-	}
+    public static void setWindowsSize(Point windowsSize) {
+        MainApplication.windowsSize = windowsSize;
+    }
 
-	public MainApplication() {
-		super();
-	}
+    public MainApplication() {
+        super();
+    }
 
-	public static Context getAppContext() {
-		return mContext;
-	}
+    public static Context getAppContext() {
+        return mContext;
+    }
 
-	public static Handler getHandler() {
-		if (mHandler == null) {
-			mHandler = new Handler(Looper.getMainLooper());
-		}
-		return mHandler;
-	}
+    public static Handler getHandler() {
+        if (mHandler == null) {
+            mHandler = new Handler(Looper.getMainLooper());
+        }
+        return mHandler;
+    }
 
-	public void onCreate() {
+    public void onCreate() {
 
-		super.onCreate();
-		mContext = getApplicationContext();
-	}
+        super.onCreate();
+        mContext = getApplicationContext();
+    }
 
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-	}
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
 
 }

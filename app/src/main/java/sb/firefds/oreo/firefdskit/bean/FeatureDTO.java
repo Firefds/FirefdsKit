@@ -16,28 +16,28 @@ package sb.firefds.oreo.firefdskit.bean;
 
 public class FeatureDTO {
 
-	private String featureCode;
-	private String featureValue;
+    private String featureCode;
+    private String featureValue;
 
-	public FeatureDTO(String featureCode, String featureValue) {
-		this.featureCode = featureCode;
-		this.featureValue = featureValue;
-	}
+    public FeatureDTO(String featureCode, String featureValue) {
+        this.featureCode = featureCode;
+        this.featureValue = featureValue;
+    }
 
-	public String getfeatureCode() {
-		return featureCode;
-	}
+    public String getfeatureCode() {
+        return featureCode;
+    }
 
-	public void setFeatureName(String featureCode) {
-		this.featureCode = featureCode;
-	}
+    public void setFeatureName(String featureCode) {
+        this.featureCode = featureCode;
+    }
 
-	public String getFeatureValue() {
-		return featureValue;
-	}
+    public String getFeatureValue() {
+        return featureValue;
+    }
 
-	public void setFeatureValue(String featureValue) {
-		this.featureValue = featureValue;
-	}
+    public void setFeatureValue(String featureValue) {
+        this.featureValue = featureValue;
+    }
 
 }
