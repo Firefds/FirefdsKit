@@ -136,6 +136,14 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                 XposedBridge.log(e);
             }
         }
+
+        if (lpparam.packageName.equals(Packages.SAMSUNG_MESSAGING)) {
+            try {
+                XMessagingPackage.doHook(prefs, lpparam.classLoader);
+            } catch (Throwable e) {
+                XposedBridge.log(e);
+            }
+        }
     }
 
     private static void getModuleSharedPreferences() {

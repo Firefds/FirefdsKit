@@ -196,4 +196,6 @@
     <string name="disbale_restart_confirmation_title">Disable Restart Confirmation</string>
     <string name="enable_native_blur_summary">Enable native blur on notification panel pull down</string>
     <string name="enable_native_blur_title">Native Blur</string>
+    <string name="enable_blocked_phrases_summary">Enable block phrases in messages settings</string>
+    <string name="enable_blocked_phrases_title">Enable Block Phrases</string>
 </resources>

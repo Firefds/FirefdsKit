@@ -55,9 +55,10 @@ public class Preferences {
     public static final String PREF_ENABLE_AUTO_CALL_RECORDING = "enableAutoCallRecording";
     public static final String PREF_DISABLE_NUMBER_FORMATTING = "disableNumberFormatting";
 
-    public static final int PREF_MESSAGING_KEY_INDEX = 5;
+    public static final String PREF_MESSAGING_KEY_CAT = "messagingKeyCat";
     public static final String PREF_DISABLE_SMS_TO_MMS = "disableSmsToMmsConversion";
     public static final String PREF_FORCE_MMS_CONNECT = "forceMMSConnect";
+    public static final String PREF_ENABLE_BLOCKED_PHRASES = "enableBlockedPhrases";
 
     public static final String PREF_DISABLE_EXCHANGE_SECURITY = "disableExchangeLockSecurity";
     public static final String PREF_MAKE_OFFICIAL = "makeMeTooLegit";

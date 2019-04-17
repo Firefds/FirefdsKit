@@ -196,4 +196,6 @@
     <string name="disbale_restart_confirmation_title">ביטול אישור הפעלה מחדש</string>
     <string name="enable_native_blur_summary">הפעלת טשטוש מקורי בהורדת שורת המצב</string>
     <string name="enable_native_blur_title">טשטוש מקורי</string>
+    <string name="enable_blocked_phrases_summary">הפעלת חסימת ביטויים בהגדרות הודעות</string>
+    <string name="enable_blocked_phrases_title">הפעלת חסימת ביטויים</string>
 </resources>

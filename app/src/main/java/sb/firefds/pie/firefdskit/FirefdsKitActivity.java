@@ -80,7 +80,6 @@ import static sb.firefds.pie.firefdskit.utils.Constants.SHORTCUT_STATUSBAR;
 import static sb.firefds.pie.firefdskit.utils.Constants.SHORTCUT_SYSTEM;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DATA_ICON_BEHAVIOR;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_FIRST_LAUNCH;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_MESSAGING_KEY_INDEX;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_NAVIGATION_BAR_COLOR;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_NFC_BEHAVIOR;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_HOURS;
@@ -151,10 +150,6 @@ public class FirefdsKitActivity extends AppCompatActivity
             cardRootView.setVisibility(View.VISIBLE);
             cardXposedView.setVisibility(View.VISIBLE);
         });
-
-        if (Utils.isOmcEncryptedFlag()) {
-            navigationView.getMenu().getItem(PREF_MESSAGING_KEY_INDEX).setVisible(false);
-        }
 
         setDefaultPreferences(false);
 
