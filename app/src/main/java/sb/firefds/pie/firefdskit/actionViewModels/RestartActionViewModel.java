@@ -3,6 +3,9 @@ package sb.firefds.pie.firefdskit.actionViewModels;
 import android.content.Context;
 import android.os.PowerManager;
 
+import androidx.annotation.Keep;
+
+@Keep
 public class RestartActionViewModel extends FirefdsKitActionViewModel {
     private String rebootOption;
 

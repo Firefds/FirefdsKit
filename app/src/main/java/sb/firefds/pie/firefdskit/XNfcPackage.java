@@ -62,7 +62,7 @@ public class XNfcPackage {
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) {
                             behavior = prefs.getString(PREF_NFC_BEHAVIOR, "0");
-                            if (behavior.equals(0)) {
+                            if (behavior.equals("0")) {
                                 return;
                             }
                             try {
@@ -98,7 +98,7 @@ public class XNfcPackage {
 
                         @Override
                         protected void afterHookedMethod(MethodHookParam param) {
-                            if (behavior.equals(0)) {
+                            if (behavior.equals("0")) {
                                 return;
                             }
 

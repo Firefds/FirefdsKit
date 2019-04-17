@@ -4,8 +4,10 @@ import android.hardware.input.InputManager;
 import android.os.SystemClock;
 import android.view.KeyEvent;
 
+import androidx.annotation.Keep;
 import de.robv.android.xposed.XposedHelpers;
 
+@Keep
 public class ScreenShotActionViewModel extends FirefdsKitActionViewModel {
 
     public ScreenShotActionViewModel(Object[] actionViewModelDefaults) {

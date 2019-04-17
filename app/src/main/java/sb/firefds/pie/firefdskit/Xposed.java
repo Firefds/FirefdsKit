@@ -14,6 +14,8 @@
  */
 package sb.firefds.pie.firefdskit;
 
+import androidx.annotation.Keep;
+
 import java.io.File;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
@@ -26,6 +28,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 import sb.firefds.pie.firefdskit.utils.Packages;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
+@Keep
 public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     private static XSharedPreferences prefs;

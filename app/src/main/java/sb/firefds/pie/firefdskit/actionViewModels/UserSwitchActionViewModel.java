@@ -2,8 +2,10 @@ package sb.firefds.pie.firefdskit.actionViewModels;
 
 import android.content.Intent;
 
+import androidx.annotation.Keep;
 import sb.firefds.pie.firefdskit.utils.Packages;
 
+@Keep
 public class UserSwitchActionViewModel extends FirefdsKitActionViewModel {
 
     public UserSwitchActionViewModel(Object[] actionViewModelDefaults) {

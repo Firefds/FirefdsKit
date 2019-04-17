@@ -6,6 +6,9 @@ import com.samsung.android.globalactions.presentation.SecGlobalActions;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionInfo;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModel;
 
+import androidx.annotation.Keep;
+
+@Keep
 public class FirefdsKitActionViewModel implements ActionViewModel {
     private final SecGlobalActions mGlobalActions;
     private ActionInfo mInfo;

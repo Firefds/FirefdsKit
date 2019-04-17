@@ -2,9 +2,11 @@ package sb.firefds.pie.firefdskit.actionViewModels;
 
 import com.samsung.android.globalactions.presentation.viewmodel.ActionInfo;
 
+import androidx.annotation.Keep;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
+@Keep
 public class FlashLightActionViewModel extends FirefdsKitActionViewModel {
     private static boolean mTorch;
     private static Object flashlightObject;

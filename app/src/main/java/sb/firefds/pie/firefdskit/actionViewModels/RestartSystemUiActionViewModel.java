@@ -3,6 +3,9 @@ package sb.firefds.pie.firefdskit.actionViewModels;
 import android.os.Handler;
 import android.os.Process;
 
+import androidx.annotation.Keep;
+
+@Keep
 public class RestartSystemUiActionViewModel extends FirefdsKitActionViewModel {
 
     public RestartSystemUiActionViewModel(Object[] actionViewModelDefaults) {
