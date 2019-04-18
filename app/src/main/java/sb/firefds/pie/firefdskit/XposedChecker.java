@@ -14,9 +14,6 @@
  */
 package sb.firefds.pie.firefdskit;
 
-import androidx.annotation.Keep;
-
-@Keep
 class XposedChecker {
 
     static Boolean isActive() {
