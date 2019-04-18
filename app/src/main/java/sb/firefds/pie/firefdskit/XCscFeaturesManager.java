@@ -218,7 +218,7 @@ public class XCscFeaturesManager {
         InputStream is = null;
 
         try {
-            String files[] = {Constants.SYSTEM_CSC_FEATURE_XML, Constants.SYSTEM_CSC_OTHER_XML,
+            String[] files = {Constants.SYSTEM_CSC_FEATURE_XML, Constants.SYSTEM_CSC_OTHER_XML,
                     Constants.SYSTEM_OTHER_FEATURE_BKP, Constants.SYSTEM_CSC_FEATURE_BKP};
 
             for (String cscFile : files) {
