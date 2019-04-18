@@ -22,6 +22,7 @@ import sb.firefds.pie.firefdskit.utils.Packages;
 
 import static sb.firefds.pie.firefdskit.utils.Preferences.*;
 
+@SuppressWarnings("SynchronizeOnNonFinalField")
 public class XNfcPackage {
 
     private static final int SCREEN_STATE_ON_LOCKED = 4;
