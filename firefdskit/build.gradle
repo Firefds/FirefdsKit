@@ -41,15 +41,14 @@ android {
 }
 
 dependencies {
-    implementation 'com.jaredrummler:colorpicker:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha4'
-    implementation 'com.google.android.material:material:1.1.0-alpha05'
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
     implementation 'androidx.preference:preference:1.1.0-alpha04'
-    implementation 'com.github.topjohnwu.libsu:core:2.4.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0-alpha05'
+    implementation 'com.github.topjohnwu.libsu:core:2.5.0'
+    implementation 'com.jaredrummler:colorpicker:1.1.0'
     compileOnly 'de.robv.android.xposed:api:82'
     compileOnly 'de.robv.android.xposed:api:82:sources'
-    compileOnly files('libs/framework2-dex2jar.jar')
-    compileOnly files('libs/framework3-dex2jar.jar')
-    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'], exclude: [])
 }
