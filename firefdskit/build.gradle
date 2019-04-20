@@ -19,7 +19,6 @@ android {
         versionCode 1010
         versionName "1.0.1.0-STABLE-2"
         project.ext.set("archivesBaseName", "FirefdsKit_" + versionName)
-        manifestPlaceholders = [versionCode: versionCode, versionName: versionName]
     }
     buildTypes {
         release {
@@ -48,5 +47,5 @@ dependencies {
     implementation 'com.jaredrummler:colorpicker:1.1.0'
     compileOnly 'de.robv.android.xposed:api:82'
     compileOnly 'de.robv.android.xposed:api:82:sources'
-    compileOnly fileTree(dir: 'libs', include: ['*.aar', '*.jar'], exclude: [])
+    compileOnly fileTree(dir: 'libs', include: ['*.jar'], exclude: [])
 }
