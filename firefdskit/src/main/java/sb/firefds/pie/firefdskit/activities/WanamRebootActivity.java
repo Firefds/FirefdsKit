@@ -16,20 +16,21 @@ package sb.firefds.pie.firefdskit.activities;
 
 import android.os.Bundle;
 
-import java.util.Objects;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Objects;
+
 import sb.firefds.pie.firefdskit.FirefdsKitActivity;
 import sb.firefds.pie.firefdskit.R;
 import sb.firefds.pie.firefdskit.XCscFeaturesManager;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
-import static sb.firefds.pie.firefdskit.utils.Constants.DOWNLOAD_REBOOT_DEVICE_ACTION;
+import static sb.firefds.pie.firefdskit.utils.Constants.DOWNLOAD_ACTION;
+import static sb.firefds.pie.firefdskit.utils.Constants.QUICK_REBOOT_DEVICE_ACTION;
 import static sb.firefds.pie.firefdskit.utils.Constants.REBOOT_ACTION;
 import static sb.firefds.pie.firefdskit.utils.Constants.REBOOT_DEVICE_ACTION;
-import static sb.firefds.pie.firefdskit.utils.Constants.RECOVERY_REBOOT_DEVICE_ACTION;
-import static sb.firefds.pie.firefdskit.utils.Constants.QUICK_REBOOT_DEVICE_ACTION;
+import static sb.firefds.pie.firefdskit.utils.Constants.RECOVERY_ACTION;
 
 public class WanamRebootActivity extends AppCompatActivity {
 
@@ -46,11 +47,11 @@ public class WanamRebootActivity extends AppCompatActivity {
                 case QUICK_REBOOT_DEVICE_ACTION:
                     quickRebootDevice();
                     break;
-                case RECOVERY_REBOOT_DEVICE_ACTION:
-                    Utils.rebootEPM("recovery");
+                case RECOVERY_ACTION:
+                    Utils.rebootEPM(RECOVERY_ACTION);
                     break;
-                case DOWNLOAD_REBOOT_DEVICE_ACTION:
-                    Utils.rebootEPM("download");
+                case DOWNLOAD_ACTION:
+                    Utils.rebootEPM(DOWNLOAD_ACTION);
                     break;
             }
 
