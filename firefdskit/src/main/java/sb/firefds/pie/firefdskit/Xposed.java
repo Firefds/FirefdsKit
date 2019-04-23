@@ -70,6 +70,12 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         if (lpparam.packageName.equals(Packages.ANDROID)) {
 
             try {
+                XPM28.doHook(lpparam.classLoader);
+            } catch (Throwable e) {
+                XposedBridge.log(e);
+            }
+
+            try {
                 XAndroidPackage.doHook(prefs, lpparam.classLoader);
             } catch (Throwable e) {
                 XposedBridge.log(e);
