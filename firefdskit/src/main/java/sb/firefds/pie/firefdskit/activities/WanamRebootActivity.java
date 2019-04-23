@@ -15,6 +15,7 @@
 package sb.firefds.pie.firefdskit.activities;
 
 import android.os.Bundle;
+import android.os.Handler;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -66,7 +67,7 @@ public class WanamRebootActivity extends AppCompatActivity {
         if (!Utils.isOmcEncryptedFlag()) {
             XCscFeaturesManager.applyCscFeatures(FirefdsKitActivity.getSharedPreferences());
         }
-        Utils.reboot();
+        new Handler().postDelayed(Utils::reboot, 1000);
     }
 
     private void quickRebootDevice() throws Throwable {
@@ -75,10 +76,10 @@ public class WanamRebootActivity extends AppCompatActivity {
         if (!Utils.isOmcEncryptedFlag()) {
             XCscFeaturesManager.applyCscFeatures(FirefdsKitActivity.getSharedPreferences());
         }
-        Utils.performQuickReboot();
+        new Handler().postDelayed(Utils::performQuickReboot, 1000);
     }
 
-    private void showRebootDialog(){
+    private void showRebootDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(R.layout.progress_dialog).create().show();
     }
