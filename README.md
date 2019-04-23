@@ -124,3 +124,6 @@ This module wouldn't have been here without the following people:
 
 This is a moded version of Wanam's XTouchWiz:
 https://github.com/wanam/XTouchWiz
+
+## Telegram
+Announcements and pre release versions - https://t.me/firefdskit
