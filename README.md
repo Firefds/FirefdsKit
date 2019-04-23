@@ -26,6 +26,7 @@ The module has the following features:
 - Replace add call button instead of call recording
 - Enable call recording from menu
 - Auto call recording
+- Enable block phrases in messages app settings
 - Enable native blur on notification panel pull down
 - Enable navigation bar color settings in Navigation Bar settings
 - Navigation bar custom color picker
@@ -71,6 +72,7 @@ Confirmed working on:
 - Galaxy Note 9
 - Galaxy S10
 - Galaxy S10+
+- Galaxy Tab S4
 
 For Galaxy S9 and above which use encrypted CSC files - I have disabled a few CSC features because I can't test thier implementation.
 
