@@ -198,4 +198,7 @@
     <string name="enable_native_blur_title">טשטוש מקורי</string>
     <string name="enable_blocked_phrases_summary">הפעלת חסימת ביטויים בהגדרות הודעות</string>
     <string name="enable_blocked_phrases_title">הפעלת חסימת ביטויים</string>
+    <string name="hide_volte_icon">הסתרת אייקון VoLTE</string>
+    <string name="hide_volte_icon_off">אייקון VoLTE מוצג</string>
+    <string name="hide_volte_icon_on">אייקון VoLTE מוסתר</string>
 </resources>

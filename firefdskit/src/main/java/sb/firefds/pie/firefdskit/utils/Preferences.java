@@ -7,6 +7,7 @@ public class Preferences {
     public static final String PREF_STATUSBAR_DOUBLE_TAP = "isStatusBarDoubleTapEnabled";
     public static final String PREFS_ENABLE_SAMSUNG_BLUR = "enableSamsungBlur";
     public static final String PREF_HIDE_NFC_ICON = "hideNfcIcon";
+    public static final String PREF_HIDE_VOLTE_ICON = "hideVolteIcon";
     public static final String PREF_SHOW_NETWORK_SPEED_MENU = "showNetworkSpeedMenu";
     public static final String PREF_DATA_ICON_BEHAVIOR = "dataIconBehavior";
     public static final String PREF_CLOCK_DATE_PREFERENCE = "clock_date_preference";
@@ -64,5 +65,4 @@ public class Preferences {
     public static final String PREF_MAKE_OFFICIAL = "makeMeTooLegit";
     public static final String PREF_DISABLE_SIGNATURE_CHECK = "disableSignatureCheck";
     public static final String PREF_DISABLE_SECURE_FLAG = "disableFlagSecure";
-
 }

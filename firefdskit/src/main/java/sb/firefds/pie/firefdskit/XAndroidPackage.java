@@ -42,6 +42,8 @@ public class XAndroidPackage {
     private static final String PACKAGE_MANAGER_SERVICE_CLASS =
             "com.android.server.pm.PackageManagerService";
     private static final String INSTALLER_CLASS = "com.android.server.pm.Installer";
+    private static final String STATUS_BAR_MANAGER_SERVICE =
+            "com.android.server.statusbar.StatusBarManagerService";
     @SuppressLint("StaticFieldLeak")
     private static Context mPackageManagerServiceContext;
     private static boolean isFB;
@@ -108,6 +110,22 @@ public class XAndroidPackage {
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
                                 param.setResult(prefs.getInt(PREF_MAX_SUPPORTED_USERS, 3));
+                            }
+                        });
+            }
+            if (prefs.getBoolean(PREF_HIDE_VOLTE_ICON, false)) {
+                Class<?> statusBarManagerService =
+                        XposedHelpers.findClass(STATUS_BAR_MANAGER_SERVICE, classLoader);
+                XposedHelpers.findAndHookMethod(statusBarManagerService,
+                        "setIconVisibility",
+                        String.class, boolean.class,
+                        new XC_MethodHook() {
+                            @Override
+                            protected void beforeHookedMethod(MethodHookParam param) {
+                                if (param.args[0].equals("ims_volte") ||
+                                        param.args[0].equals("ims_volte2")) {
+                                    param.args[1] = false;
+                                }
                             }
                         });
             }

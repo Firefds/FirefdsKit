@@ -29,6 +29,13 @@
             app:iconSpaceReserved="false" />
         <SwitchPreferenceCompat
             android:defaultValue="false"
+            android:key="hideVolteIcon"
+            android:summaryOff="@string/hide_volte_icon_off"
+            android:summaryOn="@string/hide_volte_icon_on"
+            android:title="@string/hide_volte_icon"
+            app:iconSpaceReserved="false" />
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
             android:key="showNetworkSpeedMenu"
             android:summary="@string/network_speed_summary"
             android:title="@string/network_speed_title"

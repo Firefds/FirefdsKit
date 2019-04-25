@@ -198,4 +198,7 @@
     <string name="enable_native_blur_title">Native Blur</string>
     <string name="enable_blocked_phrases_summary">Enable block phrases in messages settings</string>
     <string name="enable_blocked_phrases_title">Enable Block Phrases</string>
+    <string name="hide_volte_icon_off">VoLTE icon is shown</string>
+    <string name="hide_volte_icon_on">VoLTE icon is hidden</string>
+    <string name="hide_volte_icon">Hide VoLTE icon</string>
 </resources>
