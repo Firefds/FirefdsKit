@@ -111,7 +111,11 @@ public class Utils {
     }
 
     private static void rebootSystem(final String rebootType) {
-        ((PowerManager) getAppContext().getSystemService(Context.POWER_SERVICE)).reboot(rebootType);
+        try {
+            ((PowerManager) getAppContext().getSystemService(Context.POWER_SERVICE)).reboot(rebootType);
+        } catch (Exception e) {
+            XposedBridge.log(e);
+        }
     }
 
     public static void disableVolumeControlSounds(Context context) {

@@ -30,6 +30,7 @@ public class XPM28 {
     private static final String REBOOT = "android.permission.REBOOT";
     private static final String WRITE_SETTINGS = "android.permission.WRITE_SETTINGS";
     private static final String STATUSBAR = "android.permission.EXPAND_STATUS_BAR";
+    private static final String RECOVERY = "android.permission.RECOVERY";
 
     public static void doHook(final ClassLoader classLoader) {
         try {
@@ -67,6 +68,27 @@ public class XPM28 {
 
                                 if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", WRITE_SETTINGS)) {
                                     final Object pAccess = XposedHelpers.callMethod(permissions, "get", WRITE_SETTINGS);
+                                    XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
+                                }
+
+                                if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", RECOVERY)) {
+                                    final Object pAccess = XposedHelpers.callMethod(permissions, "get", RECOVERY);
+                                    XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
+                                }
+                            }
+                            if (Packages.SYSTEM_UI.equals(pkgName)) {
+                                final Object extras = XposedHelpers.getObjectField(param.args[0], "mExtras");
+                                final Object ps = XposedHelpers.callMethod(extras, "getPermissionsState");
+                                final Object settings = XposedHelpers.getObjectField(param.thisObject, "mSettings");
+                                final Object permissions = XposedHelpers.getObjectField(settings, "mPermissions");
+
+                                if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", REBOOT)) {
+                                    final Object pAccess = XposedHelpers.callMethod(permissions, "get", REBOOT);
+                                    XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
+                                }
+
+                                if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", RECOVERY)) {
+                                    final Object pAccess = XposedHelpers.callMethod(permissions, "get", RECOVERY);
                                     XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
                                 }
                             }
