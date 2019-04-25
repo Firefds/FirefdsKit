@@ -33,17 +33,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.navigation.NavigationView;
-import com.topjohnwu.superuser.Shell;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -58,9 +47,21 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.material.navigation.NavigationView;
+import com.topjohnwu.superuser.Shell;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import sb.firefds.pie.firefdskit.dialogs.CreditDialog;
 import sb.firefds.pie.firefdskit.dialogs.RestoreDialog;
 import sb.firefds.pie.firefdskit.dialogs.SaveDialog;
+import sb.firefds.pie.firefdskit.fragments.FirefdsPreferenceFragment;
 import sb.firefds.pie.firefdskit.fragments.LockscreenSettingsFragment;
 import sb.firefds.pie.firefdskit.fragments.MessagingSettingsFragment;
 import sb.firefds.pie.firefdskit.fragments.NotificationSettingsFragment;
@@ -137,19 +138,9 @@ public class FirefdsKitActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        navigationView.getHeaderView(0).findViewById(R.id.firefds_logo).setOnClickListener(v -> {
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setTitle(R.string.app_name);
-            }
-            drawer.closeDrawer(GravityCompat.START);
-            for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-                getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-            }
-            CardView cardRootView = findViewById(R.id.card_root_view);
-            CardView cardXposedView = findViewById(R.id.card_xposed_view);
-            cardRootView.setVisibility(View.VISIBLE);
-            cardXposedView.setVisibility(View.VISIBLE);
-        });
+        navigationView.getHeaderView(0)
+                .findViewById(R.id.firefds_logo)
+                .setOnClickListener(v -> showHomePage());
 
         setDefaultPreferences(false);
 
@@ -237,7 +228,11 @@ public class FirefdsKitActivity extends AppCompatActivity
             }
             super.onBackPressed();
         } else {
-            new QuitTask().execute(this);
+            if (getVisibleFragment() instanceof FirefdsPreferenceFragment) {
+                showHomePage();
+            } else {
+                new QuitTask().execute(this);
+            }
         }
     }
 
@@ -373,6 +368,20 @@ public class FirefdsKitActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.firefds_main);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showHomePage() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.app_name);
+        }
+        drawer.closeDrawer(GravityCompat.START);
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+        }
+        CardView cardRootView = findViewById(R.id.card_root_view);
+        CardView cardXposedView = findViewById(R.id.card_xposed_view);
+        cardRootView.setVisibility(View.VISIBLE);
+        cardXposedView.setVisibility(View.VISIBLE);
     }
 
     private Fragment getVisibleFragment() {
