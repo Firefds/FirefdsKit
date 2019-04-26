@@ -201,4 +201,8 @@
     <string name="hide_volte_icon">הסתרת אייקון VoLTE</string>
     <string name="hide_volte_icon_off">אייקון VoLTE מוצג</string>
     <string name="hide_volte_icon_on">אייקון VoLTE מוסתר</string>
+    <string name="hide_charging_notification_summary">הסתרת התראת טעינה</string>
+    <string name="hide_charging_notification_title">הסתרת התראת טעינה</string>
+    <string name="hide_usb_notification_summary">הסתרת התראת חיבור USB</string>
+    <string name="hide_usb_notification_title">הסתרת התראת חיבור USB</string>
 </resources>

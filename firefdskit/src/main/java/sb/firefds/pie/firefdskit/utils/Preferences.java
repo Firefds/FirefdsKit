@@ -5,7 +5,9 @@ public class Preferences {
     public static final String PREF_FIRST_LAUNCH = "isFirefdsKitFirstLaunch";
 
     public static final String PREF_STATUSBAR_DOUBLE_TAP = "isStatusBarDoubleTapEnabled";
-    public static final String PREFS_ENABLE_SAMSUNG_BLUR = "enableSamsungBlur";
+    public static final String PREF_ENABLE_SAMSUNG_BLUR = "enableSamsungBlur";
+    public static final String PREF_HIDE_USB_NOTIFICATION = "hideUsbNotification";
+    public static final String PREF_HIDE_CHARGING_NOTIFICATION = "hideChargingNotification";
     public static final String PREF_HIDE_NFC_ICON = "hideNfcIcon";
     public static final String PREF_HIDE_VOLTE_ICON = "hideVolteIcon";
     public static final String PREF_SHOW_NETWORK_SPEED_MENU = "showNetworkSpeedMenu";

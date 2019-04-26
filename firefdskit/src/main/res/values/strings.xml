@@ -201,4 +201,8 @@
     <string name="hide_volte_icon_off">VoLTE icon is shown</string>
     <string name="hide_volte_icon_on">VoLTE icon is hidden</string>
     <string name="hide_volte_icon">Hide VoLTE icon</string>
+    <string name="hide_usb_notification_summary">Hide persistent USB connection notification</string>
+    <string name="hide_usb_notification_title">Hide USB Connection Notification</string>
+    <string name="hide_charging_notification_summary">Hide persistent charging notification</string>
+    <string name="hide_charging_notification_title">Hide Charging Notification</string>
 </resources>

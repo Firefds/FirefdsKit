@@ -37,7 +37,18 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.utils.Packages;
 
-import static sb.firefds.pie.firefdskit.utils.Preferences.*;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_SAMSUNG_BLUR;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CLOCK_DATE_ON_RIGHT;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CLOCK_DATE_PREFERENCE;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_EYE_STRAIN_DIALOG;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_VOLUME_WARNING;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_BIOMETRICS_UNLOCK;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_FINGERPRINT_UNLOCK;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_HIDE_CHARGING_NOTIFICATION;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_MAX_SUPPORTED_USERS;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SHOW_CLOCK_SECONDS;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_STATUSBAR_DOUBLE_TAP;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE_USERS;
 
 public class XSysUIFeaturePackage {
 
@@ -54,6 +65,8 @@ public class XSysUIFeaturePackage {
             Packages.SYSTEM_UI + ".statusbar.phone.StatusBarWindowManager.State";
     private static final String STATUS_BAR_WINDOW_MANAGER =
             Packages.SYSTEM_UI + ".statusbar.phone.StatusBarWindowManager";
+    private static final String POWER_NOTIFICATION_WARNINGS =
+            Packages.SYSTEM_UI + ".power.PowerNotificationWarnings";
 
     @SuppressLint("StaticFieldLeak")
     private static TextView mClock;
@@ -203,7 +216,7 @@ public class XSysUIFeaturePackage {
                         });
             }
 
-            if (prefs.getBoolean(PREFS_ENABLE_SAMSUNG_BLUR, true)) {
+            if (prefs.getBoolean(PREF_ENABLE_SAMSUNG_BLUR, true)) {
                 Class<?> stateClass = XposedHelpers.findClass(STATE, classLoader);
 
                 XposedHelpers.findAndHookMethod(STATUS_BAR_WINDOW_MANAGER,
@@ -216,6 +229,14 @@ public class XSysUIFeaturePackage {
                                 XposedHelpers.callMethod(param.thisObject, "applyBlur", 0.15f);
                             }
                         });
+            }
+
+            if (prefs.getBoolean(PREF_HIDE_CHARGING_NOTIFICATION, false)) {
+                XposedHelpers.findAndHookMethod(POWER_NOTIFICATION_WARNINGS,
+                        classLoader,
+                        "showChargingNotification",
+                        int.class,
+                        XC_MethodReplacement.returnConstant(null));
             }
 
         } catch (Throwable e) {

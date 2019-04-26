@@ -30,7 +30,12 @@ import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
-import static sb.firefds.pie.firefdskit.utils.Preferences.*;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_SECURE_FLAG;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_SIGNATURE_CHECK;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_HIDE_USB_NOTIFICATION;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_HIDE_VOLTE_ICON;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_MAX_SUPPORTED_USERS;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE_USERS;
 
 public class XAndroidPackage {
 
@@ -44,6 +49,7 @@ public class XAndroidPackage {
     private static final String INSTALLER_CLASS = "com.android.server.pm.Installer";
     private static final String STATUS_BAR_MANAGER_SERVICE =
             "com.android.server.statusbar.StatusBarManagerService";
+    private static final String USB_HANDLER = "com.android.server.usb.UsbDeviceManager.UsbHandler";
     @SuppressLint("StaticFieldLeak")
     private static Context mPackageManagerServiceContext;
     private static boolean isFB;
@@ -113,6 +119,7 @@ public class XAndroidPackage {
                             }
                         });
             }
+
             if (prefs.getBoolean(PREF_HIDE_VOLTE_ICON, false)) {
                 Class<?> statusBarManagerService =
                         XposedHelpers.findClass(STATUS_BAR_MANAGER_SERVICE, classLoader);
@@ -128,6 +135,14 @@ public class XAndroidPackage {
                                 }
                             }
                         });
+            }
+
+            if (prefs.getBoolean(PREF_HIDE_USB_NOTIFICATION, false)) {
+                XposedHelpers.findAndHookMethod(USB_HANDLER,
+                        classLoader,
+                        "updateUsbNotification",
+                        boolean.class,
+                        XC_MethodReplacement.returnConstant(null));
             }
 
         } catch (Exception e) {
