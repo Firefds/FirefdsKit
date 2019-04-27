@@ -16,7 +16,7 @@
 package sb.firefds.pie.firefdskit;
 
 import android.annotation.SuppressLint;
-import android.media.AudioManager;
+import android.content.Context;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.os.UserManager;
@@ -100,18 +100,14 @@ public class XSysUIFeaturePackage {
             }
 
             if (prefs.getBoolean(PREF_DISABLE_VOLUME_WARNING, false)) {
-                XposedHelpers.findAndHookMethod(VOLUME_DIALOG_CONTROLLER_IMPL,
+                XposedHelpers.findAndHookConstructor(VOLUME_DIALOG_CONTROLLER_IMPL,
                         classLoader,
-                        "onShowSafetyWarningW",
-                        int.class,
-                        new XC_MethodReplacement() {
+                        Context.class,
+                        new XC_MethodHook() {
                             @Override
-                            protected Object replaceHookedMethod(MethodHookParam param) {
-                                AudioManager mAudio =
-                                        (AudioManager) XposedHelpers.getObjectField(param.thisObject,
-                                                "mAudio");
+                            protected void afterHookedMethod(MethodHookParam param) {
+                                Object mAudio = XposedHelpers.getObjectField(param.thisObject, "mAudio");
                                 XposedHelpers.callMethod(mAudio, "disableSafeMediaVolume");
-                                return null;
                             }
                         });
             }
