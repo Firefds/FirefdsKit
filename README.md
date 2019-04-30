@@ -26,6 +26,9 @@ The module has the following features:
 - Replace add call button instead of call recording
 - Enable call recording from menu
 - Auto call recording
+- Hide VoLTE icon in status bar
+- Hide persistent USB connection notification
+- Hide persistent charging notification
 - Enable block phrases in messages app settings
 - Enable native blur on notification panel pull down
 - Enable navigation bar color settings in Navigation Bar settings
