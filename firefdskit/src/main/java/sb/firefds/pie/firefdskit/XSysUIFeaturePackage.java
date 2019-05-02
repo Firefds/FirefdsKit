@@ -20,6 +20,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.os.UserManager;
+import android.provider.Settings;
 import android.text.format.DateFormat;
 import android.view.Display;
 import android.widget.TextView;
@@ -35,15 +36,15 @@ import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-import sb.firefds.pie.firefdskit.utils.Packages;
 
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_SAMSUNG_BLUR;
+import static sb.firefds.pie.firefdskit.utils.Packages.SYSTEM_UI;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CLOCK_DATE_ON_RIGHT;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CLOCK_DATE_PREFERENCE;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_EYE_STRAIN_DIALOG;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_VOLUME_WARNING;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_BIOMETRICS_UNLOCK;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_FINGERPRINT_UNLOCK;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_SAMSUNG_BLUR;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_HIDE_CHARGING_NOTIFICATION;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_MAX_SUPPORTED_USERS;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SHOW_CLOCK_SECONDS;
@@ -53,20 +54,19 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE
 public class XSysUIFeaturePackage {
 
     private static final String CUSTOM_SDK_MONITOR =
-            Packages.SYSTEM_UI + ".KnoxStateMonitor.CustomSdkMonitor";
-    private static final String TOGGLE_SLIDER_VIEW =
-            Packages.SYSTEM_UI + ".settings.ToggleSliderView";
+            SYSTEM_UI + ".KnoxStateMonitor.CustomSdkMonitor";
+    private static final String TOGGLE_SLIDER_VIEW = SYSTEM_UI + ".settings.ToggleSliderView";
     private static final String VOLUME_DIALOG_CONTROLLER_IMPL =
-            Packages.SYSTEM_UI + ".volume.VolumeDialogControllerImpl";
+            SYSTEM_UI + ".volume.VolumeDialogControllerImpl";
     private static final String KEYGUARD_UPDATE_MONITOR =
             "com.android.keyguard.KeyguardUpdateMonitor";
-    private static final String QS_CLOCK = Packages.SYSTEM_UI + ".statusbar.policy.QSClock";
-    private static final String STATE =
-            Packages.SYSTEM_UI + ".statusbar.phone.StatusBarWindowManager.State";
+    private static final String QS_CLOCK = SYSTEM_UI + ".statusbar.policy.QSClock";
+    private static final String STATE = SYSTEM_UI + ".statusbar.phone.StatusBarWindowManager.State";
     private static final String STATUS_BAR_WINDOW_MANAGER =
-            Packages.SYSTEM_UI + ".statusbar.phone.StatusBarWindowManager";
+            SYSTEM_UI + ".statusbar.phone.StatusBarWindowManager";
     private static final String POWER_NOTIFICATION_WARNINGS =
-            Packages.SYSTEM_UI + ".power.PowerNotificationWarnings";
+            SYSTEM_UI + ".power.PowerNotificationWarnings";
+    private static final String SETTINGS_HELPER = SYSTEM_UI + ".util.SettingsHelper";
 
     @SuppressLint("StaticFieldLeak")
     private static TextView mClock;
@@ -94,7 +94,22 @@ public class XSysUIFeaturePackage {
                         new XC_MethodHook() {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) {
-                                param.args[0] = 0;
+                                param.args[0] = 1;
+                            }
+                        });
+                XposedHelpers.findAndHookMethod(SETTINGS_HELPER,
+                        classLoader,
+                        "isBrightnessEyeStrainDialogEnabled",
+                        XC_MethodReplacement.returnConstant(Boolean.FALSE));
+                XposedHelpers.findAndHookConstructor(SETTINGS_HELPER,
+                        classLoader,
+                        Context.class,
+                        new XC_MethodHook() {
+                            @Override
+                            protected void afterHookedMethod(MethodHookParam param) {
+                                Context mContext = (Context) param.args[0];
+                                Settings.System.putInt(mContext.getContentResolver(),
+                                        "shown_max_brightness_dialog", 1);
                             }
                         });
             }
