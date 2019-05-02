@@ -153,6 +153,14 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                 XposedBridge.log(e);
             }
         }
+
+        if (lpparam.packageName.equals(Packages.TOUCHWIZ_LAUNCHER)) {
+            try {
+                XTouchwizLauncher.doHook(prefs, lpparam.classLoader);
+            } catch (Exception e1) {
+                XposedBridge.log(e1);
+            }
+        }
     }
 
     private static void getModuleSharedPreferences() {

@@ -79,4 +79,36 @@
         <item>@color/navigationbar_default_color_7</item>
         <item />
     </array>
+    <string-array name="transition_effect_entries">
+        <item name="DEFAULT">@string/transition_effect_default</item>
+        <item name="CASCADE">@string/transition_effect_cascade</item>
+        <item name="OUTERCUBE">@string/transition_effect_outercube</item>
+        <item name="INNERCUBE">@string/transition_effect_innercube</item>
+        <item name="CAROUSAL">@string/transition_effect_carousal</item>
+        <item name="PLAIN">@string/transition_effect_plain</item>
+        <item name="CONVEYOR">@string/transition_effect_conveyor</item>
+        <item name="CARD">@string/transition_effect_card</item>
+        <item name="ACCORDIAN">@string/transition_effect_accordion</item>
+        <item name="CARDFLIP">@string/transition_effect_cardflip</item>
+        <item name="FAN">@string/transition_effect_fan</item>
+        <item name="ROTATE">@string/transition_effect_rotate</item>
+        <item name="SPIRAL">@string/transition_effect_spiral</item>
+        <item name="ZOOM">@string/transition_effect_zoom</item>
+    </string-array>
+    <string-array name="transition_effect_values">
+        <item name="NONE">0</item>
+        <item name="CASCADE">1</item>
+        <item name="OUTERCUBE">2</item>
+        <item name="INNERCUBE">3</item>
+        <item name="CAROUSAL">4</item>
+        <item name="PLAIN">5</item>
+        <item name="CONVEYOR">6</item>
+        <item name="CARD">7</item>
+        <item name="ACCORDIAN">8</item>
+        <item name="CARDFLIP">9</item>
+        <item name="FAN">10</item>
+        <item name="ROTATE">11</item>
+        <item name="SPIRAL">12</item>
+        <item name="ZOOM">13</item>
+    </string-array>
 </resources>

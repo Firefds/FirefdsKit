@@ -51,6 +51,7 @@ public class Preferences {
     public static final String PREF_HIDE_MTP_NOTIFICATION = "hideMTPNotification";
     public static final String PREF_DISABLE_TEMPERATURE_CHECKS = "disableTemperatureChecks";
     public static final String PREF_ENABLE_CAMERA_SHUTTER_MENU = "enableCameraShutterMenu";
+    public static final String PREF_TRANSITION_EFFECT = "transitionEffect";
 
     public static final String PREF_PHONE_KEY_CAT = "phoneKeyCat";
     public static final String PREF_ENABLE_CALL_ADD = "enableCallAdd";
