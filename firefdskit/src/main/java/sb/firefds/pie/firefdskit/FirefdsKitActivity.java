@@ -391,7 +391,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         CardView cardXposedView = findViewById(R.id.card_xposed_view);
         cardRootView.setVisibility(View.VISIBLE);
         cardXposedView.setVisibility(View.VISIBLE);
-        if (selectedMenuItem!=null) {
+        if (selectedMenuItem != null) {
             selectedMenuItem.setChecked(false);
         }
     }
