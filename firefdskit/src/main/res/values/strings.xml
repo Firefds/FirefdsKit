@@ -222,4 +222,5 @@
     <string name="transition_effect_fan">Fan</string>
     <string name="transition_effect_rotate">Rotate</string>
     <string name="transition_effect_zoom">Zoom</string>
+    <string name="launcher">Launcher</string>
 </resources>

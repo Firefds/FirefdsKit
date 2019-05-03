@@ -222,4 +222,5 @@
     <string name="transition_effect_fan">מאוורר</string>
     <string name="transition_effect_rotate">סיבוב</string>
     <string name="transition_effect_zoom">זום</string>
+    <string name="launcher">מסך הבית</string>
 </resources>

@@ -32,5 +32,9 @@
             android:id="@+id/securityKey"
             android:icon="@drawable/ic_menu_security"
             android:title="@string/security" />
+        <item
+            android:id="@+id/launcherKey"
+            android:icon="@drawable/ic_menu_touchwiz_launcher"
+            android:title="@string/launcher" />
     </group>
 </menu>

@@ -71,6 +71,7 @@ import sb.firefds.pie.firefdskit.fragments.ScreenTimeoutSettingsFragment;
 import sb.firefds.pie.firefdskit.fragments.SecuritySettingsFragment;
 import sb.firefds.pie.firefdskit.fragments.SoundSettingsFragment;
 import sb.firefds.pie.firefdskit.fragments.SystemSettingsFragment;
+import sb.firefds.pie.firefdskit.fragments.TouchwizLauncherSettingsFragment;
 import sb.firefds.pie.firefdskit.notifications.RebootNotification;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
@@ -363,6 +364,12 @@ public class FirefdsKitActivity extends AppCompatActivity
                         .replace(R.id.content_main, newFragment)
                         .addToBackStack("securityKey").commit();
                 break;
+            case R.id.launcherKey:
+                newFragment = new TouchwizLauncherSettingsFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_main, newFragment)
+                        .addToBackStack("launcherKey").commit();
+                break;
         }
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(item.getTitle());
@@ -514,6 +521,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         PreferenceManager.setDefaultValues(appContext, R.xml.sound_settings, true);
         PreferenceManager.setDefaultValues(appContext, R.xml.system_settings, true);
         PreferenceManager.setDefaultValues(appContext, R.xml.advanced_power_menu_settings, true);
+        PreferenceManager.setDefaultValues(appContext, R.xml.touchwiz_launcher_settings, true);
         if (forceDefault) {
             Editor editor = sharedPreferences.edit();
 
