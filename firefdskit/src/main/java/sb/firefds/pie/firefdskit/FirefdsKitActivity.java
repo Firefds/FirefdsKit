@@ -97,6 +97,7 @@ public class FirefdsKitActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private ActionBarDrawerToggle menuToggle;
+    private MenuItem selectedMenuItem;
 
     static {
         Shell.Config.setFlags(Shell.FLAG_REDIRECT_STDERR);
@@ -317,6 +318,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         CardView cardXposedView = findViewById(R.id.card_xposed_view);
         cardRootView.setVisibility(View.GONE);
         cardXposedView.setVisibility(View.GONE);
+        selectedMenuItem = item;
 
         switch (item.getItemId()) {
             case R.id.statusbarKey:
@@ -382,6 +384,9 @@ public class FirefdsKitActivity extends AppCompatActivity
         CardView cardXposedView = findViewById(R.id.card_xposed_view);
         cardRootView.setVisibility(View.VISIBLE);
         cardXposedView.setVisibility(View.VISIBLE);
+        if (selectedMenuItem!=null) {
+            selectedMenuItem.setChecked(false);
+        }
     }
 
     private Fragment getVisibleFragment() {
