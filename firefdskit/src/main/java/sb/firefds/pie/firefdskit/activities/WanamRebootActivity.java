@@ -15,16 +15,13 @@
 package sb.firefds.pie.firefdskit.activities;
 
 import android.os.Bundle;
-import android.os.Handler;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Objects;
 
-import sb.firefds.pie.firefdskit.FirefdsKitActivity;
 import sb.firefds.pie.firefdskit.R;
-import sb.firefds.pie.firefdskit.XCscFeaturesManager;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
 import static sb.firefds.pie.firefdskit.utils.Constants.DOWNLOAD_ACTION;
@@ -64,19 +61,13 @@ public class WanamRebootActivity extends AppCompatActivity {
     private void rebootDevice() throws Throwable {
         Utils.closeStatusBar(this);
         showRebootDialog();
-        if (!Utils.isOmcEncryptedFlag()) {
-            XCscFeaturesManager.applyCscFeatures(FirefdsKitActivity.getSharedPreferences());
-        }
-        new Handler().postDelayed(Utils::reboot, 1000);
+        Utils.reboot();
     }
 
     private void quickRebootDevice() throws Throwable {
         Utils.closeStatusBar(this);
         showRebootDialog();
-        if (!Utils.isOmcEncryptedFlag()) {
-            XCscFeaturesManager.applyCscFeatures(FirefdsKitActivity.getSharedPreferences());
-        }
-        new Handler().postDelayed(Utils::performQuickReboot, 1000);
+        Utils.performQuickReboot();
     }
 
     private void showRebootDialog() {

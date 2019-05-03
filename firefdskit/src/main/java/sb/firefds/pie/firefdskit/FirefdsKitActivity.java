@@ -48,6 +48,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.navigation.NavigationView;
+import com.samsung.android.feature.SemCscFeature;
 import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
@@ -75,13 +76,19 @@ import sb.firefds.pie.firefdskit.fragments.TouchwizLauncherSettingsFragment;
 import sb.firefds.pie.firefdskit.notifications.RebootNotification;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
+import static sb.firefds.pie.firefdskit.utils.Constants.DISABLE_PHONE_NUMBER_FORMATTING;
+import static sb.firefds.pie.firefdskit.utils.Constants.DISABLE_SMS_TO_MMS_CONVERSION_BY_TEXT_INPUT;
+import static sb.firefds.pie.firefdskit.utils.Constants.FORCE_CONNECT_MMS;
 import static sb.firefds.pie.firefdskit.utils.Constants.PREFS;
 import static sb.firefds.pie.firefdskit.utils.Constants.SHORTCUT_PHONE;
 import static sb.firefds.pie.firefdskit.utils.Constants.SHORTCUT_SECURITY;
 import static sb.firefds.pie.firefdskit.utils.Constants.SHORTCUT_STATUSBAR;
 import static sb.firefds.pie.firefdskit.utils.Constants.SHORTCUT_SYSTEM;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DATA_ICON_BEHAVIOR;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_NUMBER_FORMATTING;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_SMS_TO_MMS;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_FIRST_LAUNCH;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_FORCE_MMS_CONNECT;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_NAVIGATION_BAR_COLOR;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_NFC_BEHAVIOR;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_HOURS;
@@ -244,9 +251,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         sharedPreferences.edit().clear().apply();
         setDefaultPreferences(true);
 
-        if (!Utils.isOmcEncryptedFlag()) {
-            XCscFeaturesManager.applyCscFeatures(sharedPreferences);
-        }
+        Utils.setSoundFilePreferences(sharedPreferences);
 
         recreate();
         Toast.makeText(activity, R.string.defaults_restored, Toast.LENGTH_LONG).show();
@@ -438,9 +443,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         sharedPreferences.edit().clear().apply();
         setDefaultPreferences(true);
 
-        if (!Utils.isOmcEncryptedFlag()) {
-            XCscFeaturesManager.applyCscFeatures(sharedPreferences);
-        }
+        Utils.setSoundFilePreferences(sharedPreferences);
 
         recreate();
         Toast.makeText(activity, R.string.recommended_restored, Toast.LENGTH_LONG).show();
@@ -449,10 +452,6 @@ public class FirefdsKitActivity extends AppCompatActivity
 
     public static SharedPreferences getSharedPreferences() {
         return sharedPreferences;
-    }
-
-    public static Context getActivity() {
-        return activity;
     }
 
     public static Context getAppContext() {
@@ -532,6 +531,19 @@ public class FirefdsKitActivity extends AppCompatActivity
             editor.putInt(PREF_NAVIGATION_BAR_COLOR,
                     activity.getResources()
                             .getIntArray(R.array.navigationbar_color_values)[1]).apply();
+        }
+        if ((!sharedPreferences.getBoolean(PREF_FIRST_LAUNCH, false)) || forceDefault) {
+            Editor editor = sharedPreferences.edit();
+
+            editor.putBoolean(PREF_DISABLE_NUMBER_FORMATTING,
+                    SemCscFeature.getInstance()
+                            .getBoolean(DISABLE_PHONE_NUMBER_FORMATTING)).apply();
+            editor.putBoolean(PREF_DISABLE_SMS_TO_MMS,
+                    SemCscFeature.getInstance()
+                            .getBoolean(DISABLE_SMS_TO_MMS_CONVERSION_BY_TEXT_INPUT)).apply();
+            editor.putBoolean(PREF_FORCE_MMS_CONNECT,
+                    SemCscFeature.getInstance()
+                            .getBoolean(FORCE_CONNECT_MMS)).apply();
         }
         fixPermissions(appContext);
     }
@@ -625,9 +637,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         protected Void doInBackground(AppCompatActivity... appCompatActivities) {
             try {
                 mActivity = appCompatActivities[0];
-                if (!Utils.isOmcEncryptedFlag()) {
-                    XCscFeaturesManager.applyCscFeatures(sharedPreferences);
-                }
+                Utils.setSoundFilePreferences(sharedPreferences);
             } catch (Throwable e) {
                 e.printStackTrace();
             }
@@ -637,14 +647,8 @@ public class FirefdsKitActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(Void result) {
-            try {
-                Utils.resetPermissions(mActivity);
-            } catch (Throwable e) {
-                e.printStackTrace();
-            } finally {
-                if (mActivity != null) {
-                    mActivity.finish();
-                }
+            if (mActivity != null) {
+                mActivity.finish();
             }
             super.onPostExecute(result);
         }
@@ -679,7 +683,6 @@ public class FirefdsKitActivity extends AppCompatActivity
                             R.string.root_info,
                             R.color.warning);
                 } else {
-                    new CopyCSCTask().execute(activity);
                     if (!sharedPreferences.getBoolean(PREF_FIRST_LAUNCH, false)) {
                         new AlertDialog.Builder(activity)
                                 .setCancelable(true)
@@ -702,32 +705,6 @@ public class FirefdsKitActivity extends AppCompatActivity
             } catch (Throwable e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    private static class CopyCSCTask extends AsyncTask<Context, Void, Void> {
-
-        protected Void doInBackground(Context... params) {
-            try {
-                if (!Utils.isOmcEncryptedFlag()) {
-                    XCscFeaturesManager.getDefaultCSCFeaturesFromFiles();
-                }
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            try {
-                if (!Utils.isOmcEncryptedFlag()) {
-                    Utils.createCSCFiles(activity);
-                }
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-            super.onPostExecute(result);
         }
     }
 }

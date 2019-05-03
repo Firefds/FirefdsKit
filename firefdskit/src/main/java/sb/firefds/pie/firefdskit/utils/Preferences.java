@@ -53,13 +53,11 @@ public class Preferences {
     public static final String PREF_ENABLE_CAMERA_SHUTTER_MENU = "enableCameraShutterMenu";
     public static final String PREF_TRANSITION_EFFECT = "transitionEffect";
 
-    public static final String PREF_PHONE_KEY_CAT = "phoneKeyCat";
     public static final String PREF_ENABLE_CALL_ADD = "enableCallAdd";
     public static final String PREF_ENABLE_CALL_RECORDING_MENU = "enableCallRecordingMenu";
     public static final String PREF_ENABLE_AUTO_CALL_RECORDING = "enableAutoCallRecording";
     public static final String PREF_DISABLE_NUMBER_FORMATTING = "disableNumberFormatting";
 
-    public static final String PREF_MESSAGING_KEY_CAT = "messagingKeyCat";
     public static final String PREF_DISABLE_SMS_TO_MMS = "disableSmsToMmsConversion";
     public static final String PREF_FORCE_MMS_CONNECT = "forceMMSConnect";
     public static final String PREF_ENABLE_BLOCKED_PHRASES = "enableBlockedPhrases";

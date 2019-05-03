@@ -38,18 +38,13 @@ import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.R;
 
 import static sb.firefds.pie.firefdskit.FirefdsKitActivity.getAppContext;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_LOW_BATTERY_SOUND;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_VOLUME_CONTROL_SOUND;
 
 public class Utils {
 
-    private static final String OMC_PATH = "persist.sys.omc_path";
-    private static final String OMC_SUPPORT = "persist.sys.omc_support";
     private static final String STATUSBAR_SERVICE = "statusbar";
 
-    public enum CscType {
-        CSC, OMC_CSC, OMC_OMC
-    }
-
-    private static CscType mCscType = null;
     @SuppressLint("StaticFieldLeak")
     private static Context mGbContext;
 
@@ -60,38 +55,6 @@ public class Utils {
                 Class.forName("android.app.StatusBarManager");
         Method showsb = statusbarManager.getMethod("collapsePanels");
         showsb.invoke(sbservice);
-    }
-
-    public static void resetPermissions(Context context) {
-        executeScript(context, R.raw.reset_permissions);
-    }
-
-    public static void createCSCFiles(Context context) {
-        switch (getCSCType()) {
-            case CSC:
-                executeScript(context, R.raw.create_csc_files);
-                break;
-            case OMC_CSC:
-                executeScript(context, R.raw.create_omc_csc_files);
-                break;
-            case OMC_OMC:
-                executeScript(context, R.raw.create_omc_omc_files);
-                break;
-        }
-    }
-
-    public static void applyCSCFeatues(Context context) {
-        switch (getCSCType()) {
-            case CSC:
-                executeScript(context, R.raw.apply_csc_features);
-                break;
-            case OMC_CSC:
-                executeScript(context, R.raw.apply_omc_csc_features);
-                break;
-            case OMC_OMC:
-                executeScript(context, R.raw.apply_omc_omc_features);
-                break;
-        }
     }
 
     public static void reboot() {
@@ -118,27 +81,26 @@ public class Utils {
         }
     }
 
-    public static void disableVolumeControlSounds(Context context) {
-        if (new File("/system/media/audio/ui/TW_Volume_control.ogg").isFile()) {
-            executeScript(context, R.raw.disable_volume_sounds);
-        }
-    }
+    public static void setSoundFilePreferences(SharedPreferences prefs) {
 
-    public static void enableVolumeControlSounds(Context context) {
-        if (new File("/system/media/audio/ui/TW_Volume_control.ogg.bak").isFile()) {
-            executeScript(context, R.raw.enable_volume_sounds);
+        if (prefs.getBoolean(PREF_DISABLE_VOLUME_CONTROL_SOUND, false)) {
+            if (new File("/system/media/audio/ui/TW_Volume_control.ogg").isFile()) {
+                executeScript(getAppContext(), R.raw.disable_volume_sounds);
+            }
+        } else {
+            if (new File("/system/media/audio/ui/TW_Volume_control.ogg.bak").isFile()) {
+                executeScript(getAppContext(), R.raw.enable_volume_sounds);
+            }
         }
-    }
 
-    public static void disableLowBatterySounds(Context context) {
-        if (new File("/system/media/audio/ui/LowBattery.ogg").isFile()) {
-            executeScript(context, R.raw.disable_low_battery_sounds);
-        }
-    }
-
-    public static void enableLowBatterySounds(Context context) {
-        if (new File("/system/media/audio/ui/LowBattery.ogg.bak").isFile()) {
-            executeScript(context, R.raw.enable_low_battery_sounds);
+        if (prefs.getBoolean(PREF_DISABLE_LOW_BATTERY_SOUND, false)) {
+            if (new File("/system/media/audio/ui/LowBattery.ogg").isFile()) {
+                executeScript(getAppContext(), R.raw.disable_low_battery_sounds);
+            }
+        } else {
+            if (new File("/system/media/audio/ui/LowBattery.ogg.bak").isFile()) {
+                executeScript(getAppContext(), R.raw.enable_low_battery_sounds);
+            }
         }
     }
 
@@ -201,26 +163,8 @@ public class Utils {
         return !new File("/system/framework/com.samsung.device.jar").isFile();
     }
 
-    public static CscType getCSCType() {
-        if (mCscType != null)
-            return mCscType;
-
-        mCscType = SystemProperties.getBoolean(OMC_SUPPORT, false) ?
-                CscType.OMC_OMC : CscType.OMC_CSC;
-
-        return mCscType;
-    }
-
     public static boolean isDeviceEncrypted() {
         return SystemProperties.get("ro.crypto.state").equals("encrypted");
-    }
-
-    public static boolean isOmcEncryptedFlag() {
-        return SystemProperties.get("ro.omc.img_mount").equals("0");
-    }
-
-    static String getOMCPath() {
-        return SystemProperties.get(OMC_PATH);
     }
 
     public static void performQuickReboot() {

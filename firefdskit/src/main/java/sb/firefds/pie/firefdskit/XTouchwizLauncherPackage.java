@@ -7,7 +7,7 @@ import de.robv.android.xposed.XposedHelpers;
 
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_TRANSITION_EFFECT;
 
-public class XTouchwizLauncher {
+public class XTouchwizLauncherPackage {
 
     private static final String PAGE_TRANSITION_MANAGER =
             "com.android.launcher3.framework.view.features.pagetransition.PageTransitionManager";
