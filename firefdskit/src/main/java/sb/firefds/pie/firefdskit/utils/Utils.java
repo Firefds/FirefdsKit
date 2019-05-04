@@ -39,8 +39,6 @@ import sb.firefds.pie.firefdskit.R;
 
 import static sb.firefds.pie.firefdskit.FirefdsKitActivity.getAppContext;
 import static sb.firefds.pie.firefdskit.utils.Packages.FIREFDSKIT;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_LOW_BATTERY_SOUND;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_VOLUME_CONTROL_SOUND;
 
 public class Utils {
 
