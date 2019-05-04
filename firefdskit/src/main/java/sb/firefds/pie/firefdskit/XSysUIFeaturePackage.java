@@ -17,6 +17,7 @@ package sb.firefds.pie.firefdskit;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.os.UserManager;
@@ -41,6 +42,8 @@ import static sb.firefds.pie.firefdskit.utils.Packages.SYSTEM_UI;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CLOCK_DATE_ON_RIGHT;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CLOCK_DATE_PREFERENCE;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_EYE_STRAIN_DIALOG;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_LOW_BATTERY_SOUND;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_VOLUME_CONTROL_SOUND;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_VOLUME_WARNING;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_BIOMETRICS_UNLOCK;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_FINGERPRINT_UNLOCK;
@@ -62,6 +65,8 @@ public class XSysUIFeaturePackage {
     private static final String STATUS_BAR_WINDOW_MANAGER = SYSTEM_UI + ".statusbar.phone.StatusBarWindowManager";
     private static final String POWER_NOTIFICATION_WARNINGS = SYSTEM_UI + ".power.PowerNotificationWarnings";
     private static final String SETTINGS_HELPER = SYSTEM_UI + ".util.SettingsHelper";
+    private static final String SEC_VOLUME_DIALOG_IMPL = SYSTEM_UI + ".volume.SecVolumeDialogImpl";
+    private static final String NOTIFICATION_PLAYER = SYSTEM_UI + ".media.NotificationPlayer";
 
     @SuppressLint("StaticFieldLeak")
     private static TextView mClock;
@@ -120,6 +125,7 @@ public class XSysUIFeaturePackage {
                             }
                         });
             }
+
             if (prefs.getBoolean(PREF_ENABLE_FINGERPRINT_UNLOCK, false)) {
                 XposedHelpers.findAndHookMethod(KEYGUARD_UPDATE_MONITOR,
                         classLoader,
@@ -138,6 +144,7 @@ public class XSysUIFeaturePackage {
                         "isUnlockingWithBiometricAllowed",
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
             }
+
             if (prefs.getBoolean(PREF_SHOW_CLOCK_SECONDS, false) ||
                     !prefs.getString(PREF_CLOCK_DATE_PREFERENCE, "disabled").equals("disabled")) {
                 qsClock = XposedHelpers.findClass(QS_CLOCK, classLoader);
@@ -237,6 +244,32 @@ public class XSysUIFeaturePackage {
                         "showChargingNotification",
                         int.class,
                         XC_MethodReplacement.returnConstant(null));
+            }
+
+            if (prefs.getBoolean(PREF_DISABLE_VOLUME_CONTROL_SOUND, false)) {
+                XposedHelpers.findAndHookMethod(SEC_VOLUME_DIALOG_IMPL,
+                        classLoader,
+                        "makeSound",
+                        new XC_MethodHook() {
+                            @Override
+                            protected void beforeHookedMethod(MethodHookParam param) {
+                                param.setResult(null);
+                            }
+                        });
+            }
+
+            if (prefs.getBoolean(PREF_DISABLE_LOW_BATTERY_SOUND, false)) {
+                XposedHelpers.findAndHookConstructor(NOTIFICATION_PLAYER,
+                        classLoader,
+                        String.class,
+                        new XC_MethodHook() {
+                            @Override
+                            protected void afterHookedMethod(MethodHookParam param) {
+                                XposedHelpers.setObjectField(param.thisObject,
+                                        "mLowBatteryUri",
+                                        Uri.parse("file:///system/media/audio/ui/LowBattery.ogg.disabled"));
+                            }
+                        });
             }
 
         } catch (Throwable e) {

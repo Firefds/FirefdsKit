@@ -80,29 +80,6 @@ public class Utils {
         }
     }
 
-    public static void setSoundFilePreferences(SharedPreferences prefs) {
-
-        if (prefs.getBoolean(PREF_DISABLE_VOLUME_CONTROL_SOUND, false)) {
-            if (new File("/system/media/audio/ui/TW_Volume_control.ogg").isFile()) {
-                executeScript(getAppContext(), R.raw.disable_volume_sounds);
-            }
-        } else {
-            if (new File("/system/media/audio/ui/TW_Volume_control.ogg.bak").isFile()) {
-                executeScript(getAppContext(), R.raw.enable_volume_sounds);
-            }
-        }
-
-        if (prefs.getBoolean(PREF_DISABLE_LOW_BATTERY_SOUND, false)) {
-            if (new File("/system/media/audio/ui/LowBattery.ogg").isFile()) {
-                executeScript(getAppContext(), R.raw.disable_low_battery_sounds);
-            }
-        } else {
-            if (new File("/system/media/audio/ui/LowBattery.ogg.bak").isFile()) {
-                executeScript(getAppContext(), R.raw.enable_low_battery_sounds);
-            }
-        }
-    }
-
     public static synchronized Context getGbContext(Context context) throws Throwable {
         if (mGbContext == null) {
             mGbContext = context.createPackageContext(FIREFDSKIT, Context.CONTEXT_IGNORE_SECURITY);
