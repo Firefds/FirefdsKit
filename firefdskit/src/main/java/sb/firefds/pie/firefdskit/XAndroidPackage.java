@@ -39,11 +39,11 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE
 
 public class XAndroidPackage {
 
-    private static final String WINDOW_STATE_CLASS = "com.android.server.wm.WindowState";
-    private static final String WINDOW_MANAGER_SERVICE_CLASS = "com.android.server.wm.WindowManagerService";
-    private static final String PACKAGE_MANAGER_SERVICE_UTILS_CLASS = "com.android.server.pm.PackageManagerServiceUtils";
-    private static final String PACKAGE_MANAGER_SERVICE_CLASS = "com.android.server.pm.PackageManagerService";
-    private static final String INSTALLER_CLASS = "com.android.server.pm.Installer";
+    private static final String WINDOW_STATE = "com.android.server.wm.WindowState";
+    private static final String WINDOW_MANAGER_SERVICE = "com.android.server.wm.WindowManagerService";
+    private static final String PACKAGE_MANAGER_SERVICE_UTILS = "com.android.server.pm.PackageManagerServiceUtils";
+    private static final String PACKAGE_MANAGER_SERVICE = "com.android.server.pm.PackageManagerService";
+    private static final String INSTALLER = "com.android.server.pm.Installer";
     private static final String STATUS_BAR_MANAGER_SERVICE = "com.android.server.statusbar.StatusBarManagerService";
     private static final String USB_HANDLER = "com.android.server.usb.UsbDeviceManager.UsbHandler";
     @SuppressLint("StaticFieldLeak")
@@ -54,9 +54,9 @@ public class XAndroidPackage {
 
         try {
             if (prefs.getBoolean(PREF_DISABLE_SECURE_FLAG, false)) {
-                Class<?> windowStateClass = XposedHelpers.findClass(WINDOW_STATE_CLASS, classLoader);
+                Class<?> windowStateClass = XposedHelpers.findClass(WINDOW_STATE, classLoader);
 
-                XposedHelpers.findAndHookMethod(WINDOW_MANAGER_SERVICE_CLASS,
+                XposedHelpers.findAndHookMethod(WINDOW_MANAGER_SERVICE,
                         classLoader,
                         "isSecureLocked",
                         windowStateClass,
@@ -65,8 +65,8 @@ public class XAndroidPackage {
 
             if (prefs.getBoolean(PREF_DISABLE_SIGNATURE_CHECK, false)) {
                 if (mPackageManagerServiceContext == null) {
-                    Class<?> packageManagerService = XposedHelpers.findClass(PACKAGE_MANAGER_SERVICE_CLASS, classLoader);
-                    Class<?> installer = XposedHelpers.findClass(INSTALLER_CLASS, classLoader);
+                    Class<?> packageManagerService = XposedHelpers.findClass(PACKAGE_MANAGER_SERVICE, classLoader);
+                    Class<?> installer = XposedHelpers.findClass(INSTALLER, classLoader);
                     XposedHelpers.findAndHookConstructor(packageManagerService,
                             Context.class,
                             installer,
@@ -80,8 +80,7 @@ public class XAndroidPackage {
                             });
                 }
 
-                Class<?> packageManagerServiceUtilsClass =
-                        XposedHelpers.findClass(PACKAGE_MANAGER_SERVICE_UTILS_CLASS, classLoader);
+                Class<?> packageManagerServiceUtilsClass = XposedHelpers.findClass(PACKAGE_MANAGER_SERVICE_UTILS, classLoader);
                 XposedHelpers.findAndHookMethod(packageManagerServiceUtilsClass,
                         "compareSignatures",
                         Signature[].class,

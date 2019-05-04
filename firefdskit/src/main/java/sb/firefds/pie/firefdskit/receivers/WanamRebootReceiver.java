@@ -33,8 +33,8 @@ public class WanamRebootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        if (Objects.requireNonNull(action).equalsIgnoreCase(REBOOT_DEVICE_ACTION)
-                || action.equalsIgnoreCase(QUICK_REBOOT_DEVICE_ACTION)) {
+        if (Objects.requireNonNull(action).equalsIgnoreCase(REBOOT_DEVICE_ACTION) ||
+                action.equalsIgnoreCase(QUICK_REBOOT_DEVICE_ACTION)) {
             RebootNotification.cancel(context);
             Intent rebootIntent = new Intent(context, WanamRebootActivity.class);
             Bundle b = new Bundle();

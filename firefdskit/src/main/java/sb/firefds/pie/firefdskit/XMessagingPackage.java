@@ -4,15 +4,15 @@ import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-import sb.firefds.pie.firefdskit.utils.Packages;
 
+import static sb.firefds.pie.firefdskit.utils.Packages.SAMSUNG_MESSAGING;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_SMS_TO_MMS;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_BLOCKED_PHRASES;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_FORCE_MMS_CONNECT;
 
 public class XMessagingPackage {
 
-    private static final String FEATURE = Packages.SAMSUNG_MESSAGING + ".common.configuration.Feature";
+    private static final String FEATURE = SAMSUNG_MESSAGING + ".common.configuration.Feature";
 
     public static void doHook(final XSharedPreferences prefs, ClassLoader classLoader) {
 

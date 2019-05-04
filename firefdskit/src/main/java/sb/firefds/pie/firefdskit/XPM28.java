@@ -17,14 +17,15 @@ package sb.firefds.pie.firefdskit;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-import sb.firefds.pie.firefdskit.utils.Packages;
+
+import static sb.firefds.pie.firefdskit.utils.Packages.FIREFDSKIT;
+import static sb.firefds.pie.firefdskit.utils.Packages.SYSTEM_UI;
 
 public class XPM28 {
-    private static final String CLASS_PERMISSION_MANAGER_SERVICE =
-            "com.android.server.pm.permission.PermissionManagerService";
-    private static final String CLASS_PACKAGE_PARSER_PACKAGE = "android.content.pm.PackageParser.Package";
-    private static final String CLASS_PERMISSION_CALLBACK =
-            "com.android.server.pm.permission.PermissionManagerInternal.PermissionCallback";
+    private static final String PERMISSION = "com.android.server.pm.permission";
+    private static final String PERMISSION_MANAGER_SERVICE = PERMISSION + ".PermissionManagerService";
+    private static final String PACKAGE_PARSER_PACKAGE = "android.content.pm.PackageParser.Package";
+    private static final String PERMISSION_CALLBACK = PERMISSION + ".PermissionManagerInternal.PermissionCallback";
 
     private static final String REBOOT = "android.permission.REBOOT";
     private static final String WRITE_SETTINGS = "android.permission.WRITE_SETTINGS";
@@ -33,12 +34,12 @@ public class XPM28 {
 
     public static void doHook(final ClassLoader classLoader) {
         try {
-            final Class<?> pmServiceClass = XposedHelpers.findClass(CLASS_PERMISSION_MANAGER_SERVICE, classLoader);
-            final Class<?> pmCallbackClass = XposedHelpers.findClass(CLASS_PERMISSION_CALLBACK, classLoader);
+            final Class<?> pmServiceClass = XposedHelpers.findClass(PERMISSION_MANAGER_SERVICE, classLoader);
+            final Class<?> pmCallbackClass = XposedHelpers.findClass(PERMISSION_CALLBACK, classLoader);
 
             XposedHelpers.findAndHookMethod(pmServiceClass,
                     "grantPermissions",
-                    CLASS_PACKAGE_PARSER_PACKAGE,
+                    PACKAGE_PARSER_PACKAGE,
                     boolean.class,
                     String.class,
                     pmCallbackClass,
@@ -46,7 +47,7 @@ public class XPM28 {
                         @Override
                         protected void afterHookedMethod(MethodHookParam param) {
                             final String pkgName = (String) XposedHelpers.getObjectField(param.args[0], "packageName");
-                            if (Packages.FIREFDSKIT.equals(pkgName)) {
+                            if (FIREFDSKIT.equals(pkgName)) {
                                 final Object extras = XposedHelpers.getObjectField(param.args[0], "mExtras");
                                 final Object ps = XposedHelpers.callMethod(extras, "getPermissionsState");
                                 final Object settings = XposedHelpers.getObjectField(param.thisObject, "mSettings");
@@ -72,7 +73,7 @@ public class XPM28 {
                                     XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
                                 }
                             }
-                            if (Packages.SYSTEM_UI.equals(pkgName)) {
+                            if (SYSTEM_UI.equals(pkgName)) {
                                 final Object extras = XposedHelpers.getObjectField(param.args[0], "mExtras");
                                 final Object ps = XposedHelpers.callMethod(extras, "getPermissionsState");
                                 final Object settings = XposedHelpers.getObjectField(param.thisObject, "mSettings");

@@ -18,20 +18,19 @@ import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-import sb.firefds.pie.firefdskit.utils.Packages;
 
-import static sb.firefds.pie.firefdskit.utils.Preferences.*;
+import static sb.firefds.pie.firefdskit.utils.Packages.INCALLUI;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_AUTO_CALL_RECORDING;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_CALL_ADD;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_CALL_RECORDING_MENU;
 
 public class XInCallUIPackage {
 
-    private static final String VOICE_RECORDING_FEATURE_IMPL =
-            Packages.INCALLUI + ".modelimpl.feature.function.VoiceRecordingFeatureImpl";
-    private static final String VOICE_RECORDING_BY_MENU_FEATURE_IMPL =
-            Packages.INCALLUI + ".modelimpl.feature.function.VoiceRecordingByMenuFeatureImpl";
-    private static final String VOICE_RECORDING_BY_BUTTON_FEATURE_IMPL =
-            Packages.INCALLUI + ".modelimpl.feature.function.VoiceRecordingByButtonFeatureImpl";
-    private static final String VOICE_RECORDING_CONTEXT_IMPL =
-            Packages.INCALLUI + ".modelimpl.callcontext.VoiceRecordingContextImpl";
+    private static final String FEATURE_FUNCTION = INCALLUI + ".modelimpl.feature.function";
+    private static final String VOICE_RECORDING_FEATURE_IMPL = FEATURE_FUNCTION + ".VoiceRecordingFeatureImpl";
+    private static final String VOICE_RECORDING_BY_MENU_FEATURE_IMPL = FEATURE_FUNCTION + ".VoiceRecordingByMenuFeatureImpl";
+    private static final String VOICE_RECORDING_BY_BUTTON_FEATURE_IMPL = FEATURE_FUNCTION + ".VoiceRecordingByButtonFeatureImpl";
+    private static final String VOICE_RECORDING_CONTEXT_IMPL = INCALLUI + ".modelimpl.callcontext.VoiceRecordingContextImpl";
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 

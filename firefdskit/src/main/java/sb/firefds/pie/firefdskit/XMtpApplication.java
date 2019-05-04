@@ -4,14 +4,14 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-import sb.firefds.pie.firefdskit.utils.Packages;
 
-import static sb.firefds.pie.firefdskit.utils.Preferences.*;
+import static sb.firefds.pie.firefdskit.utils.Packages.MTP_APPLICATION;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_HIDE_MTP_NOTIFICATION;
 
 public class XMtpApplication {
 
     private static ClassLoader classLoader;
-    private static final String USB_CONNECTION = Packages.MTP_APPLICATION + ".USBConnection";
+    private static final String USB_CONNECTION = MTP_APPLICATION + ".USBConnection";
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 

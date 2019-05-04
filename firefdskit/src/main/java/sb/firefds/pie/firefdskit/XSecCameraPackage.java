@@ -18,15 +18,17 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-import sb.firefds.pie.firefdskit.utils.Packages;
 
-import static sb.firefds.pie.firefdskit.utils.Preferences.*;
+import static sb.firefds.pie.firefdskit.utils.Packages.CAMERA;
+import static sb.firefds.pie.firefdskit.utils.Packages.SAMSUNG_CAMERA;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_TEMPERATURE_CHECKS;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_CAMERA_SHUTTER_MENU;
 
 public class XSecCameraPackage {
 
-    private static final String FEATURE = Packages.SAMSUNG_CAMERA + ".feature.Feature";
-    private static final String CAMERA_TEMPERATURE_MANAGER = Packages.CAMERA + ".provider.CameraTemperatureManager";
-    private static final String PREFERENCE_SETTING_FRAGMENT = Packages.CAMERA + ".setting.PreferenceSettingFragment";
+    private static final String FEATURE = SAMSUNG_CAMERA + ".feature.Feature";
+    private static final String CAMERA_TEMPERATURE_MANAGER = CAMERA + ".provider.CameraTemperatureManager";
+    private static final String PREFERENCE_SETTING_FRAGMENT = CAMERA + ".setting.PreferenceSettingFragment";
 
     public static void doHook(final XSharedPreferences prefs, ClassLoader classLoader) {
 
@@ -40,8 +42,7 @@ public class XSecCameraPackage {
                         new XC_MethodHook() {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) {
-                                XposedHelpers.setStaticBooleanField(cameraFeatureClass,
-                                        "SUPPORT_THERMISTOR_TEMPERATURE", false);
+                                XposedHelpers.setStaticBooleanField(cameraFeatureClass, "SUPPORT_THERMISTOR_TEMPERATURE", false);
                             }
                         });
             } catch (Throwable e) {

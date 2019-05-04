@@ -33,9 +33,10 @@ import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-import sb.firefds.pie.firefdskit.utils.Packages;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
+import static sb.firefds.pie.firefdskit.utils.Packages.FIREFDSKIT;
+import static sb.firefds.pie.firefdskit.utils.Packages.SAMSUNG_SETTINGS;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_BLUETOOTH_DIALOG;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_SYNC_DIALOG;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_MAKE_OFFICIAL;
@@ -46,16 +47,14 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE
 
 public class XSecSettingsPackage {
 
-    private static final String BLUETOOTH_SCAN_DIALOG = Packages.SAMSUNG_SETTINGS + ".bluetooth.BluetoothScanDialog";
-    private static final String SEC_ACCOUNT_TILES = Packages.SAMSUNG_SETTINGS + ".qstile.SecAccountTiles";
+    private static final String BLUETOOTH_SCAN_DIALOG = SAMSUNG_SETTINGS + ".bluetooth.BluetoothScanDialog";
+    private static final String SEC_ACCOUNT_TILES = SAMSUNG_SETTINGS + ".qstile.SecAccountTiles";
+    private static final String SEC_DEVICE_INFO_UTILS = SAMSUNG_SETTINGS + ".deviceinfo.SecDeviceInfoUtils";
+    private static final String STATUS_BAR = SAMSUNG_SETTINGS + ".display.StatusBar";
+    private static final String NAVIGATION_BAR_SETTINGS = SAMSUNG_SETTINGS + ".navigationbar.NavigationBarSettings";
+    private static final String NAVIGATIONBAR_COLOR_PREFERENCE = SAMSUNG_SETTINGS + ".navigationbar.NavigationbarColorPreference";
     private static final String SYSCOPE_STATUS_PREFERENCE_CONTROLLER =
-            Packages.SAMSUNG_SETTINGS + ".deviceinfo.status.SyscopeStatusPreferenceController";
-    private static final String SEC_DEVICE_INFO_UTILS = Packages.SAMSUNG_SETTINGS + ".deviceinfo.SecDeviceInfoUtils";
-    private static final String STATUS_BAR = Packages.SAMSUNG_SETTINGS + ".display.StatusBar";
-    private static final String NAVIGATION_BAR_SETTINGS =
-            Packages.SAMSUNG_SETTINGS + ".navigationbar.NavigationBarSettings";
-    private static final String NAVIGATIONBAR_COLOR_PREFERENCE =
-            Packages.SAMSUNG_SETTINGS + ".navigationbar.NavigationbarColorPreference";
+            SAMSUNG_SETTINGS + ".deviceinfo.status.SyscopeStatusPreferenceController";
 
 
     private static ClassLoader classLoader;
@@ -243,7 +242,7 @@ public class XSecSettingsPackage {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     mContext = (Context) param.args[0];
-                    Context gbContext = mContext.createPackageContext(Packages.FIREFDSKIT, Context.CONTEXT_IGNORE_SECURITY);
+                    Context gbContext = mContext.createPackageContext(FIREFDSKIT, Context.CONTEXT_IGNORE_SECURITY);
                     Resources gbRes = gbContext.getResources();
                     colorArray = gbRes.getIntArray(R.array.navigationbar_color_values);
                     colorArray[7] = prefs.getInt(PREF_NAVIGATION_BAR_COLOR, 0);

@@ -38,6 +38,7 @@ import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.R;
 
 import static sb.firefds.pie.firefdskit.FirefdsKitActivity.getAppContext;
+import static sb.firefds.pie.firefdskit.utils.Packages.FIREFDSKIT;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_LOW_BATTERY_SOUND;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_VOLUME_CONTROL_SOUND;
 
@@ -104,14 +105,14 @@ public class Utils {
 
     public static synchronized Context getGbContext(Context context) throws Throwable {
         if (mGbContext == null) {
-            mGbContext = context.createPackageContext(Packages.FIREFDSKIT, Context.CONTEXT_IGNORE_SECURITY);
+            mGbContext = context.createPackageContext(FIREFDSKIT, Context.CONTEXT_IGNORE_SECURITY);
         }
         return mGbContext;
     }
 
     public static synchronized Context getGbContext(Context context, Configuration config) throws Throwable {
         if (mGbContext == null) {
-            mGbContext = context.createPackageContext(Packages.FIREFDSKIT,
+            mGbContext = context.createPackageContext(FIREFDSKIT,
                     Context.CONTEXT_IGNORE_SECURITY);
         }
         return (config == null ? mGbContext : mGbContext.createConfigurationContext(config));

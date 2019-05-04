@@ -91,8 +91,7 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat
             int min = sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_MINUTES, 0) * 60000;
             int sec = sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_SECONDS, 30) * 1000;
             int timeoutML = hour + min + sec;
-            Settings.System.putInt(fragmentActivity.getContentResolver(),
-                    Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
+            Settings.System.putInt(fragmentActivity.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
         }
     }
 

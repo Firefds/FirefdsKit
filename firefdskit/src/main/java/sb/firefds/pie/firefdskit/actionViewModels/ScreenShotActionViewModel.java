@@ -32,8 +32,7 @@ public class ScreenShotActionViewModel extends FirefdsKitActionViewModel {
         arrayOfInt[1] = 1;
         for (int k : arrayOfInt) {
             long l = SystemClock.uptimeMillis();
-            final InputManager inputManager = (InputManager)
-                    XposedHelpers.callStaticMethod(InputManager.class, "getInstance");
+            final InputManager inputManager = (InputManager) XposedHelpers.callStaticMethod(InputManager.class, "getInstance");
             XposedHelpers.callMethod(inputManager,
                     "injectInputEvent",
                     new KeyEvent(l, l, k, 120, 0, 0, -1, 0, 268435464, 257), 0);

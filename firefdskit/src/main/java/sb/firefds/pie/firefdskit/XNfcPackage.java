@@ -18,9 +18,10 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-import sb.firefds.pie.firefdskit.utils.Packages;
 
-import static sb.firefds.pie.firefdskit.utils.Preferences.*;
+import static sb.firefds.pie.firefdskit.utils.Packages.NFC;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_HIDE_NFC_ICON;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_NFC_BEHAVIOR;
 
 @SuppressWarnings("SynchronizeOnNonFinalField")
 public class XNfcPackage {
@@ -29,7 +30,7 @@ public class XNfcPackage {
     private static final int SCREEN_STATE_ON_UNLOCKED = 8;
     private static String behavior;
 
-    private static final String NFC_SERVICE = Packages.NFC + ".NfcService";
+    private static final String NFC_SERVICE = NFC + ".NfcService";
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
@@ -68,8 +69,7 @@ public class XNfcPackage {
                             }
                             try {
                                 final int currScreenState;
-                                final Object mScreenStateHelper =
-                                        XposedHelpers.getObjectField(param.thisObject, "mScreenStateHelper");
+                                final Object mScreenStateHelper = XposedHelpers.getObjectField(param.thisObject, "mScreenStateHelper");
                                 if (mScreenStateHelper != null) {
                                     currScreenState = (Integer) XposedHelpers.callMethod(mScreenStateHelper, "checkScreenState");
                                 } else {

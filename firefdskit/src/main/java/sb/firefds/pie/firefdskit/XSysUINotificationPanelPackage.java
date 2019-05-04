@@ -7,10 +7,14 @@ import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-import sb.firefds.pie.firefdskit.utils.Packages;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
-import static sb.firefds.pie.firefdskit.utils.Preferences.*;
+import static sb.firefds.pie.firefdskit.utils.Packages.SYSTEM_UI;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CARRIER_SIZE;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DATA_ICON_BEHAVIOR;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DATA_USAGE_VIEW;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_HIDE_CARRIER_LABEL;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SHOW_NETWORK_SPEED_MENU;
 
 public class XSysUINotificationPanelPackage {
 
@@ -18,11 +22,11 @@ public class XSysUINotificationPanelPackage {
     private static final String FOUR_G_PLUS_INSTEAD_OF_4G = "STATBAR_DISPLAY_4G_PLUS_INSTEAD_OF_4G_ICON";
     private static final String FOUR_G_INSTEAD_OF_4G_PLUS = "STATBAR_DISPLAY_4G_INSTEAD_OF_4G_PLUS_ICON";
     private static final String FOUR_HALF_G_INSTEAD_OF_4G_PLUS = "STATBAR_DISPLAY_4_HALF_G_INSTEAD_OF_4G_PLUS_ICON";
-    private static final String RUNE = Packages.SYSTEM_UI + ".Rune";
+    private static final String RUNE = SYSTEM_UI + ".Rune";
     private static final String CARRIER_TEXT = "com.android.keyguard.CarrierText";
-    private static final String DATA_USAGE_BAR = Packages.SYSTEM_UI + ".bar.DataUsageBar";
-    private static final String NETSPEED_VIEW = Packages.SYSTEM_UI + ".statusbar.policy.NetspeedView";
-    private static final String MOBILE_SIGNAL_CONTROLLER_CLASS = Packages.SYSTEM_UI + ".statusbar.policy.MobileSignalController";
+    private static final String DATA_USAGE_BAR = SYSTEM_UI + ".bar.DataUsageBar";
+    private static final String NETSPEED_VIEW = SYSTEM_UI + ".statusbar.policy.NetspeedView";
+    private static final String MOBILE_SIGNAL_CONTROLLER_CLASS = SYSTEM_UI + ".statusbar.policy.MobileSignalController";
 
     private static String dataIconBehavior;
     private static ClassLoader classLoader;

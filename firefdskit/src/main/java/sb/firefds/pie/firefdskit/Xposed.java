@@ -57,7 +57,8 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                 try {
                     XposedHelpers.findAndHookMethod(Packages.FIREFDSKIT + ".XposedChecker",
                             lpparam.classLoader,
-                            "isActive", XC_MethodReplacement.returnConstant(Boolean.TRUE));
+                            "isActive",
+                            XC_MethodReplacement.returnConstant(Boolean.TRUE));
                 } catch (Throwable e) {
                     XposedBridge.log(e);
                 }
