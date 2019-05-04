@@ -15,6 +15,7 @@
             android:name=".activities.SplashScreenActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +26,9 @@
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
-        <activity android:name=".FirefdsKitActivity" />
+        <activity
+            android:name=".FirefdsKitActivity"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="xposedmodule"
