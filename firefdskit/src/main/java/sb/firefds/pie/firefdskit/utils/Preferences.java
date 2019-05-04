@@ -26,8 +26,8 @@ public class Preferences {
     public static final String PREF_ENABLE_BIOMETRICS_UNLOCK = "enableBiometricsUnlock";
 
     public static final String PREF_DISABLE_VOLUME_WARNING = "disableLoudVolumeWarning";
-    static final String PREF_DISABLE_VOLUME_CONTROL_SOUND = "disableVolumeControlSound";
-    static final String PREF_DISABLE_LOW_BATTERY_SOUND = "disableLowBatterySound";
+    public static final String PREF_DISABLE_VOLUME_CONTROL_SOUND = "disableVolumeControlSound";
+    public static final String PREF_DISABLE_LOW_BATTERY_SOUND = "disableLowBatterySound";
 
     public static final String PREF_ENABLE_ADVANCED_POWER_MENU = "enableAdvancedPowerMenu";
     public static final String PREF_ENABLE_POWER_OFF = "enablePowerOff";
