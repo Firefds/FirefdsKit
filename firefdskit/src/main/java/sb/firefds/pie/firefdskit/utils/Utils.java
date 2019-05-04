@@ -27,7 +27,6 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -91,10 +90,6 @@ public class Utils {
                     Context.CONTEXT_IGNORE_SECURITY);
         }
         return (config == null ? mGbContext : mGbContext.createConfigurationContext(config));
-    }
-
-    private static void executeScript(Context context, int scriptId) {
-        Shell.su(context.getResources().openRawResource(scriptId)).submit();
     }
 
     public static void setTypeface(SharedPreferences prefs, TextView tv) {

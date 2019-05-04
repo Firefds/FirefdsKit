@@ -45,8 +45,6 @@
     <string name="enable_call_add_on">Add call button enabled instead of Record button</string>
     <string name="enable_call_add_off">Call Record button enabled instead of Add call button</string>
     <string name="phone">Phone</string>
-    <string name="root_info">Root access NOT granted!\n\nSome features require Root access to work properly.</string>
-    <string name="root_granted">Firefds Kit Root features activated</string>
     <string name="ok_btn">OK</string>
     <string name="call_number_formatting_enabled">Call number formatting enabled</string>
     <string name="call_number_formatting_disabled">Call number formatting disabled</string>
@@ -54,7 +52,6 @@
     <string name="status_custom">Status set to Custom</string>
     <string name="status_official">Status set to Official</string>
     <string name="fake_system_status">Fake system status</string>
-    <string name="checking_root_access">Checking root access…</string>
     <string name="call_recording_menu_disabled">Call recording menu disabled</string>
     <string name="call_recording_menu_enabled">Call recording menu enabled</string>
     <string name="enable_call_recording_menu">Enable call recording menu</string>

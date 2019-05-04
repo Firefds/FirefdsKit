@@ -44,7 +44,6 @@
     <string name="enable_call_add_on">כפתור הוספת שיחה מופעל במקום כפתור הקלטת שיחה</string>
     <string name="enable_call_add_off">כפתור הקלטת שיחה מופעל במקום כפתור הוספת שיחה</string>
     <string name="phone">טלפון</string>
-    <string name="root_info">אין גישת Root!\n\nחלק מהתכונות דורשות גישת Root על מנת לפעול כמו שצריך.</string>
     <string name="ok_btn">אישור</string>
     <string name="call_number_formatting_enabled">עיצוב מספר טלפון מופעל</string>
     <string name="call_number_formatting_disabled">עיצוב מספר טלפון מבוטל</string>
@@ -52,7 +51,6 @@
     <string name="status_custom">סטטוס הוגדר כשונה</string>
     <string name="status_official">סטטוס הוגדר כרשמי</string>
     <string name="fake_system_status">זיוף סטטוס המערכת</string>
-    <string name="checking_root_access">בודק גישת Root…</string>
     <string name="call_recording_menu_disabled">תפריט הקלטת שיחה מבוטל</string>
     <string name="call_recording_menu_enabled">תפריט הקלטת שיחה מופעל</string>
     <string name="enable_call_recording_menu">הפעלת תפריט הקלטת שיחה</string>
@@ -157,7 +155,6 @@
     <string name="clock_date_on_right_off_summary">תאריך ממוקדם בצד שמאל של השעון</string>
     <string name="multiUser">משתמשים מרובים</string>
     <string name="switchUser">החלפת משתמש</string>
-    <string name="root_granted">גישת Root הושגה</string>
     <string name="navigation_bar_color_title">צבע שורת ניווט מותאם אישית</string>
     <string name="navigation_bar_color_summary">צבע בהתאמה אישית של שורת הניווט</string>
     <string name="navigation_bar">שורת הניווט</string>

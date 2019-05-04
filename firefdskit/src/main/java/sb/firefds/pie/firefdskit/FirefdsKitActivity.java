@@ -49,7 +49,6 @@ import androidx.preference.PreferenceManager;
 
 import com.google.android.material.navigation.NavigationView;
 import com.samsung.android.feature.SemCscFeature;
-import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -106,11 +105,6 @@ public class FirefdsKitActivity extends AppCompatActivity
     private ActionBarDrawerToggle toggle;
     private ActionBarDrawerToggle menuToggle;
     private MenuItem selectedMenuItem;
-
-    static {
-        Shell.Config.setFlags(Shell.FLAG_REDIRECT_STDERR);
-        Shell.Config.verboseLogging(BuildConfig.DEBUG);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,8 +169,7 @@ public class FirefdsKitActivity extends AppCompatActivity
 
         if (sharedPreferences.getInt(PREF_NAVIGATION_BAR_COLOR, 0) == 0) {
             try {
-                editor.putInt(PREF_NAVIGATION_BAR_COLOR, Settings.Global.getInt(getContentResolver(), "navigationbar_color"))
-                        .apply();
+                editor.putInt(PREF_NAVIGATION_BAR_COLOR, Settings.Global.getInt(getContentResolver(), "navigationbar_color")).apply();
             } catch (Throwable e) {
                 e.printStackTrace();
             }
@@ -185,22 +178,25 @@ public class FirefdsKitActivity extends AppCompatActivity
         fixAppPermissions(appContext);
 
         if (!XposedChecker.isActive()) {
-            findViewById(R.id.root_status_container).setVisibility(View.GONE);
-            findViewById(R.id.root_status_text).setVisibility(View.GONE);
-            setCardStatus(R.id.xposed_status_container,
-                    R.id.xposed_status_icon,
-                    R.id.xposed_status_text,
-                    R.drawable.ic_error,
+            setCardStatus(R.drawable.ic_error,
                     R.string.firefds_kit_is_not_active,
                     R.color.error);
         } else {
-            setCardStatus(R.id.xposed_status_container,
-                    R.id.xposed_status_icon,
-                    R.id.xposed_status_text,
-                    R.drawable.ic_check_circle,
+            setCardStatus(R.drawable.ic_check_circle,
                     R.string.xposed_status,
                     R.color.active);
-            new CheckRootTask().execute();
+
+            if (!sharedPreferences.getBoolean(PREF_FIRST_LAUNCH, false)) {
+                new AlertDialog.Builder(activity)
+                        .setCancelable(true)
+                        .setIcon(R.drawable.ic_warning)
+                        .setTitle(R.string.app_name)
+                        .setMessage(R.string.firefds_xposed_disclaimer)
+                        .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                        .create()
+                        .show();
+                sharedPreferences.edit().putBoolean(PREF_FIRST_LAUNCH, true).apply();
+            }
         }
 
         Menu menuNav = navigationView.getMenu();
@@ -238,7 +234,7 @@ public class FirefdsKitActivity extends AppCompatActivity
             if (getVisibleFragment() instanceof FirefdsPreferenceFragment) {
                 showHomePage();
             } else {
-                new QuitTask().execute(this);
+                this.finish();
             }
         }
     }
@@ -248,8 +244,6 @@ public class FirefdsKitActivity extends AppCompatActivity
 
         sharedPreferences.edit().clear().apply();
         setDefaultPreferences(true);
-
-        Utils.setSoundFilePreferences(sharedPreferences);
 
         recreate();
         Toast.makeText(activity, R.string.defaults_restored, Toast.LENGTH_LONG).show();
@@ -318,9 +312,7 @@ public class FirefdsKitActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Fragment newFragment;
 
-        CardView cardRootView = findViewById(R.id.card_root_view);
         CardView cardXposedView = findViewById(R.id.card_xposed_view);
-        cardRootView.setVisibility(View.GONE);
         cardXposedView.setVisibility(View.GONE);
         selectedMenuItem = item;
 
@@ -390,9 +382,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         for (Fragment fragment : getSupportFragmentManager().getFragments()) {
             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
-        CardView cardRootView = findViewById(R.id.card_root_view);
         CardView cardXposedView = findViewById(R.id.card_xposed_view);
-        cardRootView.setVisibility(View.VISIBLE);
         cardXposedView.setVisibility(View.VISIBLE);
         if (selectedMenuItem != null) {
             selectedMenuItem.setChecked(false);
@@ -441,8 +431,6 @@ public class FirefdsKitActivity extends AppCompatActivity
         sharedPreferences.edit().clear().apply();
         setDefaultPreferences(true);
 
-        Utils.setSoundFilePreferences(sharedPreferences);
-
         recreate();
         Toast.makeText(activity, R.string.recommended_restored, Toast.LENGTH_LONG).show();
         RebootNotification.notify(activity, 999, false);
@@ -456,16 +444,13 @@ public class FirefdsKitActivity extends AppCompatActivity
         return appContext;
     }
 
-    private static void setCardStatus(int containerLayoutId,
-                                      int iconLayoutId,
-                                      int textLayoutId,
-                                      int statusIconId,
+    private static void setCardStatus(int statusIconId,
                                       int statusTextId,
                                       int statusColorId) {
 
-        FrameLayout statusContainerLayout = activity.findViewById(containerLayoutId);
-        ImageView statusIcon = activity.findViewById(iconLayoutId);
-        TextView statusText = activity.findViewById(textLayoutId);
+        FrameLayout statusContainerLayout = activity.findViewById(R.id.xposed_status_container);
+        ImageView statusIcon = activity.findViewById(R.id.xposed_status_icon);
+        TextView statusText = activity.findViewById(R.id.xposed_status_text);
 
         statusContainerLayout.setBackgroundColor(activity.getColor(statusColorId));
         statusIcon.setImageDrawable(activity.getDrawable(statusIconId));
@@ -622,85 +607,6 @@ public class FirefdsKitActivity extends AppCompatActivity
                     R.string.backup_restored,
                     activity).show();
             RebootNotification.notify(activity, 999, false);
-        }
-    }
-
-    private static class QuitTask extends AsyncTask<AppCompatActivity, Void, Void> {
-        @SuppressLint("StaticFieldLeak")
-        private AppCompatActivity mActivity = null;
-
-        @Override
-        protected Void doInBackground(AppCompatActivity... appCompatActivities) {
-            try {
-                mActivity = appCompatActivities[0];
-                Utils.setSoundFilePreferences(sharedPreferences);
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            if (mActivity != null) {
-                mActivity.finish();
-            }
-            super.onPostExecute(result);
-        }
-
-    }
-
-    private static class CheckRootTask extends AsyncTask<Void, Void, Void> {
-        private boolean suAvailable = false;
-
-        protected Void doInBackground(Void... params) {
-            try {
-                suAvailable = Shell.getShell().isRoot();
-
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        protected void onPostExecute(Void p) {
-
-            try {
-                activity.findViewById(R.id.root_progressBar).setVisibility(View.GONE);
-                activity.findViewById(R.id.root_status_icon).setVisibility(View.VISIBLE);
-
-                // Check for root access
-                if (!suAvailable) {
-                    setCardStatus(R.id.root_status_container,
-                            R.id.root_status_icon,
-                            R.id.root_status_text,
-                            R.drawable.ic_warning,
-                            R.string.root_info,
-                            R.color.warning);
-                } else {
-                    if (!sharedPreferences.getBoolean(PREF_FIRST_LAUNCH, false)) {
-                        new AlertDialog.Builder(activity)
-                                .setCancelable(true)
-                                .setIcon(R.drawable.ic_warning)
-                                .setTitle(R.string.app_name)
-                                .setMessage(R.string.firefds_xposed_disclaimer)
-                                .setPositiveButton(android.R.string.ok,
-                                        (dialog, which) -> dialog.dismiss())
-                                .create()
-                                .show();
-                        sharedPreferences.edit().putBoolean(PREF_FIRST_LAUNCH, true).apply();
-                    }
-                    setCardStatus(R.id.root_status_container,
-                            R.id.root_status_icon,
-                            R.id.root_status_text,
-                            R.drawable.ic_check_circle,
-                            R.string.root_granted,
-                            R.color.active);
-                }
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
         }
     }
 }

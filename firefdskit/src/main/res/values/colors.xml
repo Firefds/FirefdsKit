@@ -11,8 +11,6 @@
     <color name="ic_launcher_endColor">@color/primaryDarkColor</color>
     <color name="active">@color/primaryDarkColor</color>
     <color name="error">#ba000d</color>
-    <color name="warning">#c79100</color>
-    <color name="warning_light">#fec143</color>
     <color name="navigationbar_default_color_1">#fff0f0f0</color>
     <color name="navigationbar_default_color_2">#ffe6e6e6</color>
     <color name="navigationbar_default_color_3">#ffe6e6f0</color>
