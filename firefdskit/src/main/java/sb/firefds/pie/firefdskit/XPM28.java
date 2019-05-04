@@ -22,8 +22,7 @@ import sb.firefds.pie.firefdskit.utils.Packages;
 public class XPM28 {
     private static final String CLASS_PERMISSION_MANAGER_SERVICE =
             "com.android.server.pm.permission.PermissionManagerService";
-    private static final String CLASS_PACKAGE_PARSER_PACKAGE =
-            "android.content.pm.PackageParser.Package";
+    private static final String CLASS_PACKAGE_PARSER_PACKAGE = "android.content.pm.PackageParser.Package";
     private static final String CLASS_PERMISSION_CALLBACK =
             "com.android.server.pm.permission.PermissionManagerInternal.PermissionCallback";
 
@@ -34,10 +33,8 @@ public class XPM28 {
 
     public static void doHook(final ClassLoader classLoader) {
         try {
-            final Class<?> pmServiceClass =
-                    XposedHelpers.findClass(CLASS_PERMISSION_MANAGER_SERVICE, classLoader);
-            final Class<?> pmCallbackClass =
-                    XposedHelpers.findClass(CLASS_PERMISSION_CALLBACK, classLoader);
+            final Class<?> pmServiceClass = XposedHelpers.findClass(CLASS_PERMISSION_MANAGER_SERVICE, classLoader);
+            final Class<?> pmCallbackClass = XposedHelpers.findClass(CLASS_PERMISSION_CALLBACK, classLoader);
 
             XposedHelpers.findAndHookMethod(pmServiceClass,
                     "grantPermissions",
@@ -48,8 +45,7 @@ public class XPM28 {
                     new XC_MethodHook() {
                         @Override
                         protected void afterHookedMethod(MethodHookParam param) {
-                            final String pkgName = (String) XposedHelpers.getObjectField(param.args[0],
-                                    "packageName");
+                            final String pkgName = (String) XposedHelpers.getObjectField(param.args[0], "packageName");
                             if (Packages.FIREFDSKIT.equals(pkgName)) {
                                 final Object extras = XposedHelpers.getObjectField(param.args[0], "mExtras");
                                 final Object ps = XposedHelpers.callMethod(extras, "getPermissionsState");

@@ -161,8 +161,7 @@ public class FirefdsKitActivity extends AppCompatActivity
 
             int screenTimeout = 0;
             try {
-                screenTimeout = Settings.System
-                        .getInt(getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT);
+                screenTimeout = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT);
             } catch (Throwable e) {
                 e.printStackTrace();
             }
@@ -487,8 +486,7 @@ public class FirefdsKitActivity extends AppCompatActivity
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("SetWorldReadable")
     public static void fixPermissions(Context context) {
-        File sharedPrefsFolder =
-                new File(context.getDataDir().getAbsolutePath() + "/shared_prefs");
+        File sharedPrefsFolder = new File(context.getDataDir().getAbsolutePath() + "/shared_prefs");
         if (sharedPrefsFolder.exists()) {
             sharedPrefsFolder.setExecutable(true, false);
             sharedPrefsFolder.setReadable(true, false);

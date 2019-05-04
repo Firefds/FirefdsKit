@@ -15,19 +15,14 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.*;
 public class XSysUINotificationPanelPackage {
 
     private static final String LTE_INSTEAD_OF_4G = "STATBAR_DISPLAY_LTE_INSTEAD_OF_4G_ICON";
-    private static final String FOUR_G_PLUS_INSTEAD_OF_4G =
-            "STATBAR_DISPLAY_4G_PLUS_INSTEAD_OF_4G_ICON";
-    private static final String FOUR_G_INSTEAD_OF_4G_PLUS =
-            "STATBAR_DISPLAY_4G_INSTEAD_OF_4G_PLUS_ICON";
-    private static final String FOUR_HALF_G_INSTEAD_OF_4G_PLUS =
-            "STATBAR_DISPLAY_4_HALF_G_INSTEAD_OF_4G_PLUS_ICON";
+    private static final String FOUR_G_PLUS_INSTEAD_OF_4G = "STATBAR_DISPLAY_4G_PLUS_INSTEAD_OF_4G_ICON";
+    private static final String FOUR_G_INSTEAD_OF_4G_PLUS = "STATBAR_DISPLAY_4G_INSTEAD_OF_4G_PLUS_ICON";
+    private static final String FOUR_HALF_G_INSTEAD_OF_4G_PLUS = "STATBAR_DISPLAY_4_HALF_G_INSTEAD_OF_4G_PLUS_ICON";
     private static final String RUNE = Packages.SYSTEM_UI + ".Rune";
     private static final String CARRIER_TEXT = "com.android.keyguard.CarrierText";
     private static final String DATA_USAGE_BAR = Packages.SYSTEM_UI + ".bar.DataUsageBar";
-    private static final String NETSPEED_VIEW =
-            Packages.SYSTEM_UI + ".statusbar.policy.NetspeedView";
-    private static final String MOBILE_SIGNAL_CONTROLLER_CLASS =
-            Packages.SYSTEM_UI + ".statusbar.policy.MobileSignalController";
+    private static final String NETSPEED_VIEW = Packages.SYSTEM_UI + ".statusbar.policy.NetspeedView";
+    private static final String MOBILE_SIGNAL_CONTROLLER_CLASS = Packages.SYSTEM_UI + ".statusbar.policy.MobileSignalController";
 
     private static String dataIconBehavior;
     private static ClassLoader classLoader;
@@ -118,24 +113,16 @@ public class XSysUINotificationPanelPackage {
                 protected void afterHookedMethod(MethodHookParam param) {
                     switch (dataIconBehavior) {
                         case "1":
-                            XposedHelpers.setStaticBooleanField(aClass,
-                                    LTE_INSTEAD_OF_4G,
-                                    true);
+                            XposedHelpers.setStaticBooleanField(aClass, LTE_INSTEAD_OF_4G, true);
                             break;
                         case "2":
-                            XposedHelpers.setStaticBooleanField(aClass,
-                                    FOUR_G_PLUS_INSTEAD_OF_4G,
-                                    true);
+                            XposedHelpers.setStaticBooleanField(aClass, FOUR_G_PLUS_INSTEAD_OF_4G, true);
                             break;
                         case "3":
-                            XposedHelpers.setStaticBooleanField(aClass,
-                                    FOUR_G_INSTEAD_OF_4G_PLUS,
-                                    true);
+                            XposedHelpers.setStaticBooleanField(aClass, FOUR_G_INSTEAD_OF_4G_PLUS, true);
                             break;
                         case "4":
-                            XposedHelpers.setStaticBooleanField(aClass,
-                                    FOUR_HALF_G_INSTEAD_OF_4G_PLUS,
-                                    true);
+                            XposedHelpers.setStaticBooleanField(aClass, FOUR_HALF_G_INSTEAD_OF_4G_PLUS, true);
                             break;
                     }
                 }

@@ -40,15 +40,11 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE
 public class XAndroidPackage {
 
     private static final String WINDOW_STATE_CLASS = "com.android.server.wm.WindowState";
-    private static final String WINDOW_MANAGER_SERVICE_CLASS =
-            "com.android.server.wm.WindowManagerService";
-    private static final String PACKAGE_MANAGER_SERVICE_UTILS_CLASS =
-            "com.android.server.pm.PackageManagerServiceUtils";
-    private static final String PACKAGE_MANAGER_SERVICE_CLASS =
-            "com.android.server.pm.PackageManagerService";
+    private static final String WINDOW_MANAGER_SERVICE_CLASS = "com.android.server.wm.WindowManagerService";
+    private static final String PACKAGE_MANAGER_SERVICE_UTILS_CLASS = "com.android.server.pm.PackageManagerServiceUtils";
+    private static final String PACKAGE_MANAGER_SERVICE_CLASS = "com.android.server.pm.PackageManagerService";
     private static final String INSTALLER_CLASS = "com.android.server.pm.Installer";
-    private static final String STATUS_BAR_MANAGER_SERVICE =
-            "com.android.server.statusbar.StatusBarManagerService";
+    private static final String STATUS_BAR_MANAGER_SERVICE = "com.android.server.statusbar.StatusBarManagerService";
     private static final String USB_HANDLER = "com.android.server.usb.UsbDeviceManager.UsbHandler";
     @SuppressLint("StaticFieldLeak")
     private static Context mPackageManagerServiceContext;
@@ -69,8 +65,7 @@ public class XAndroidPackage {
 
             if (prefs.getBoolean(PREF_DISABLE_SIGNATURE_CHECK, false)) {
                 if (mPackageManagerServiceContext == null) {
-                    Class<?> packageManagerService =
-                            XposedHelpers.findClass(PACKAGE_MANAGER_SERVICE_CLASS, classLoader);
+                    Class<?> packageManagerService = XposedHelpers.findClass(PACKAGE_MANAGER_SERVICE_CLASS, classLoader);
                     Class<?> installer = XposedHelpers.findClass(INSTALLER_CLASS, classLoader);
                     XposedHelpers.findAndHookConstructor(packageManagerService,
                             Context.class,
@@ -121,8 +116,7 @@ public class XAndroidPackage {
             }
 
             if (prefs.getBoolean(PREF_HIDE_VOLTE_ICON, false)) {
-                Class<?> statusBarManagerService =
-                        XposedHelpers.findClass(STATUS_BAR_MANAGER_SERVICE, classLoader);
+                Class<?> statusBarManagerService = XposedHelpers.findClass(STATUS_BAR_MANAGER_SERVICE, classLoader);
                 XposedHelpers.findAndHookMethod(statusBarManagerService,
                         "setIconVisibility",
                         String.class, boolean.class,

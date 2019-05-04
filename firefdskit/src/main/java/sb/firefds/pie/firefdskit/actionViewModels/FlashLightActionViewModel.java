@@ -1,8 +1,9 @@
 package sb.firefds.pie.firefdskit.actionViewModels;
 
+import androidx.annotation.Keep;
+
 import com.samsung.android.globalactions.presentation.viewmodel.ActionInfo;
 
-import androidx.annotation.Keep;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 

@@ -39,8 +39,7 @@ public class RestartActionViewModel extends FirefdsKitActionViewModel {
         try {
             ((PowerManager) getmContext().getSystemService(Context.POWER_SERVICE)).reboot(rebootOption);
         } catch (SecurityException e) {
-            Intent rebootIntent = new Intent()
-                    .setComponent(new ComponentName(FIREFDSKIT, REBOOT_ACTIVITY));
+            Intent rebootIntent = new Intent().setComponent(new ComponentName(FIREFDSKIT, REBOOT_ACTIVITY));
             Bundle b = new Bundle();
             b.putString(REBOOT_ACTION, rebootOption);
             rebootIntent.putExtras(b);

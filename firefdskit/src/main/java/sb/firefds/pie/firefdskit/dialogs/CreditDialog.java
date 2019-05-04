@@ -8,6 +8,7 @@ import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+
 import de.robv.android.xposed.XposedBridge;
 import sb.firefds.pie.firefdskit.R;
 
@@ -20,9 +21,7 @@ public class CreditDialog {
         PackageInfo pInfo;
         String pkgVersion = "";
         try {
-            pInfo = context
-                    .getPackageManager()
-                    .getPackageInfo(context.getPackageName(), 0);
+            pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             pkgVersion = pInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             XposedBridge.log(e);

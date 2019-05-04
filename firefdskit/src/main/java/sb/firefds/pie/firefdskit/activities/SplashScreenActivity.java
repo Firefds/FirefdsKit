@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import sb.firefds.pie.firefdskit.FirefdsKitActivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -12,8 +13,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent intent = new Intent(getApplicationContext(),
-                FirefdsKitActivity.class);
+        Intent intent = new Intent(getApplicationContext(), FirefdsKitActivity.class);
         startActivity(intent);
         finish();
     }

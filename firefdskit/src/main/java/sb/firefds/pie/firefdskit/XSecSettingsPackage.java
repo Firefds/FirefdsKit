@@ -24,6 +24,10 @@ import android.os.UserManager;
 import android.util.AttributeSet;
 import android.util.Xml;
 
+import org.xmlpull.v1.XmlPullParser;
+
+import java.lang.reflect.Constructor;
+
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
@@ -32,22 +36,21 @@ import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.utils.Packages;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
-import org.xmlpull.v1.XmlPullParser;
-
-import java.lang.reflect.Constructor;
-
-import static sb.firefds.pie.firefdskit.utils.Preferences.*;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_BLUETOOTH_DIALOG;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_SYNC_DIALOG;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_MAKE_OFFICIAL;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_MAX_SUPPORTED_USERS;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_NAVIGATION_BAR_COLOR;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SHOW_NETWORK_SPEED_MENU;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE_USERS;
 
 public class XSecSettingsPackage {
 
-    private static final String BLUETOOTH_SCAN_DIALOG =
-            Packages.SAMSUNG_SETTINGS + ".bluetooth.BluetoothScanDialog";
-    private static final String SEC_ACCOUNT_TILES =
-            Packages.SAMSUNG_SETTINGS + ".qstile.SecAccountTiles";
+    private static final String BLUETOOTH_SCAN_DIALOG = Packages.SAMSUNG_SETTINGS + ".bluetooth.BluetoothScanDialog";
+    private static final String SEC_ACCOUNT_TILES = Packages.SAMSUNG_SETTINGS + ".qstile.SecAccountTiles";
     private static final String SYSCOPE_STATUS_PREFERENCE_CONTROLLER =
             Packages.SAMSUNG_SETTINGS + ".deviceinfo.status.SyscopeStatusPreferenceController";
-    private static final String SEC_DEVICE_INFO_UTILS =
-            Packages.SAMSUNG_SETTINGS + ".deviceinfo.SecDeviceInfoUtils";
+    private static final String SEC_DEVICE_INFO_UTILS = Packages.SAMSUNG_SETTINGS + ".deviceinfo.SecDeviceInfoUtils";
     private static final String STATUS_BAR = Packages.SAMSUNG_SETTINGS + ".display.StatusBar";
     private static final String NAVIGATION_BAR_SETTINGS =
             Packages.SAMSUNG_SETTINGS + ".navigationbar.NavigationBarSettings";
@@ -70,8 +73,7 @@ public class XSecSettingsPackage {
 
         try {
             NavigationBarSettings = XposedHelpers.findClass(NAVIGATION_BAR_SETTINGS, classLoader);
-            NavigationBarColorPreference =
-                    XposedHelpers.findClass(NAVIGATIONBAR_COLOR_PREFERENCE, classLoader);
+            NavigationBarColorPreference = XposedHelpers.findClass(NAVIGATIONBAR_COLOR_PREFERENCE, classLoader);
 
             addNavigationBarColorPreference();
             createColorPalette();
@@ -217,7 +219,8 @@ public class XSecSettingsPackage {
                             Context ctx = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
                             Resources res = ctx.getResources();
                             Context gbContext = Utils.getGbContext(ctx, res.getConfiguration());
-                            Constructor constructor = NavigationBarColorPreference.getDeclaredConstructor(Context.class, AttributeSet.class);
+                            Constructor constructor =
+                                    NavigationBarColorPreference.getDeclaredConstructor(Context.class, AttributeSet.class);
 
                             XmlPullParser parser = gbContext.getResources().getXml(R.xml.org_navigationbar_color_preference);
                             parser.next();
@@ -240,8 +243,7 @@ public class XSecSettingsPackage {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     mContext = (Context) param.args[0];
-                    Context gbContext = mContext.createPackageContext(Packages.FIREFDSKIT,
-                            Context.CONTEXT_IGNORE_SECURITY);
+                    Context gbContext = mContext.createPackageContext(Packages.FIREFDSKIT, Context.CONTEXT_IGNORE_SECURITY);
                     Resources gbRes = gbContext.getResources();
                     colorArray = gbRes.getIntArray(R.array.navigationbar_color_values);
                     colorArray[7] = prefs.getInt(PREF_NAVIGATION_BAR_COLOR, 0);

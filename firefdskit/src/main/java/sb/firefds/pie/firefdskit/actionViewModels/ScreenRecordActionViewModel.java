@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 
 import androidx.annotation.Keep;
+
 import de.robv.android.xposed.XposedBridge;
 
 import static sb.firefds.pie.firefdskit.utils.Packages.SCREEN_RECORDER;
@@ -12,8 +13,7 @@ import static sb.firefds.pie.firefdskit.utils.Packages.SCREEN_RECORDER;
 @Keep
 public class ScreenRecordActionViewModel extends FirefdsKitActionViewModel {
 
-    private static final String SCREEN_RECORDER_ACTIVITY =
-            "com.sec.app.screenrecorder.activity.LauncherActivity";
+    private static final String SCREEN_RECORDER_ACTIVITY = "com.sec.app.screenrecorder.activity.LauncherActivity";
 
     public ScreenRecordActionViewModel(Object[] actionViewModelDefaults) {
         super(actionViewModelDefaults);

@@ -53,18 +53,13 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.*;
 
 public class XSysUIGlobalActions {
 
-    private static final String GLOBAL_ACTIONS_PACKAGE =
-            "com.samsung.android.globalactions.presentation";
-    private static final String SEC_GLOBAL_ACTIONS_PRESENTER =
-            GLOBAL_ACTIONS_PACKAGE + ".SecGlobalActionsPresenter";
-    private static final String DEFAULT_ACTION_VIEW_MODEL_FACTORY =
-            GLOBAL_ACTIONS_PACKAGE + ".viewmodel.DefaultActionViewModelFactory";
-    private static final String SEC_GLOBAL_ACTIONS_DIALOG_BASE =
-            GLOBAL_ACTIONS_PACKAGE + ".view.SecGlobalActionsDialogBase";
-    private static final String GLOBAL_ACTION_ITEM_VIEW =
-            GLOBAL_ACTIONS_PACKAGE + ".view.GlobalActionItemView";
-    private static final String FLASHLIGHT_CONTROLLER_IMPL_CLASS =
-            Packages.SYSTEM_UI + ".statusbar.policy.FlashlightControllerImpl";
+    private static final String GLOBAL_ACTIONS_PACKAGE = "com.samsung.android.globalactions.presentation";
+    private static final String SEC_GLOBAL_ACTIONS_PRESENTER = GLOBAL_ACTIONS_PACKAGE + ".SecGlobalActionsPresenter";
+    private static final String DEFAULT_ACTION_VIEW_MODEL_FACTORY = GLOBAL_ACTIONS_PACKAGE + ".viewmodel.DefaultActionViewModelFactory";
+    private static final String SEC_GLOBAL_ACTIONS_DIALOG_BASE = GLOBAL_ACTIONS_PACKAGE + ".view.SecGlobalActionsDialogBase";
+    private static final String GLOBAL_ACTION_ITEM_VIEW = GLOBAL_ACTIONS_PACKAGE + ".view.GlobalActionItemView";
+    private static final String FLASHLIGHT_CONTROLLER_IMPL_CLASS = Packages.SYSTEM_UI + ".statusbar.policy.FlashlightControllerImpl";
+
     private static SecGlobalActionsPresenter mSecGlobalActionsPresenter;
     private static Object[] actionViewModelDefaults;
     private static String mRecoveryStr;
@@ -90,8 +85,7 @@ public class XSysUIGlobalActions {
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
-        Class<?> flashlightControllerImplClass =
-                XposedHelpers.findClass(FLASHLIGHT_CONTROLLER_IMPL_CLASS, classLoader);
+        Class<?> flashlightControllerImplClass = XposedHelpers.findClass(FLASHLIGHT_CONTROLLER_IMPL_CLASS, classLoader);
 
         XposedHelpers.findAndHookConstructor(flashlightControllerImplClass,
                 Context.class,
@@ -102,8 +96,7 @@ public class XSysUIGlobalActions {
                     }
                 });
 
-        final Class<?> secGlobalActionsDialogBaseClass =
-                XposedHelpers.findClass(SEC_GLOBAL_ACTIONS_DIALOG_BASE, classLoader);
+        final Class<?> secGlobalActionsDialogBaseClass = XposedHelpers.findClass(SEC_GLOBAL_ACTIONS_DIALOG_BASE, classLoader);
 
         if (prefs.getBoolean(PREF_DISABLE_RESTART_CONFIRMATION, false)) {
             XposedHelpers.findAndHookMethod(SEC_GLOBAL_ACTIONS_PRESENTER,
@@ -130,20 +123,13 @@ public class XSysUIGlobalActions {
                                 mFlashlightStr = gbContext.getString(R.string.flashlight);
                                 mScreenRecordStr = gbContext.getString(R.string.screen_record);
 
-                                mRecoveryIcon = gbContext
-                                        .getDrawable(R.drawable.tw_ic_do_recovery_stock);
-                                mDownloadIcon = gbContext
-                                        .getDrawable(R.drawable.tw_ic_do_download_stock);
-                                mScreenshotIcon = gbContext
-                                        .getDrawable(R.drawable.tw_ic_do_screenshot_stock);
-                                mSwitchUserIcon = gbContext
-                                        .getDrawable(R.drawable.tw_ic_do_users_stock);
-                                mRestartSystemUiIcon = gbContext
-                                        .getDrawable(R.drawable.tw_ic_do_restart_ui_stock);
-                                mFlashLightIcon = gbContext
-                                        .getDrawable(R.drawable.tw_ic_do_torchlight_stock);
-                                mScreenRecordIcon = gbContext
-                                        .getDrawable(R.drawable.tw_ic_do_screenrecord_stock);
+                                mRecoveryIcon = gbContext.getDrawable(R.drawable.tw_ic_do_recovery_stock);
+                                mDownloadIcon = gbContext.getDrawable(R.drawable.tw_ic_do_download_stock);
+                                mScreenshotIcon = gbContext.getDrawable(R.drawable.tw_ic_do_screenshot_stock);
+                                mSwitchUserIcon = gbContext.getDrawable(R.drawable.tw_ic_do_users_stock);
+                                mRestartSystemUiIcon = gbContext.getDrawable(R.drawable.tw_ic_do_restart_ui_stock);
+                                mFlashLightIcon = gbContext.getDrawable(R.drawable.tw_ic_do_torchlight_stock);
+                                mScreenRecordIcon = gbContext.getDrawable(R.drawable.tw_ic_do_screenrecord_stock);
 
                                 mRebootConfirmRecoveryStr = gbContext
                                         .getString(R.string.reboot_confirm_recovery);
@@ -168,10 +154,8 @@ public class XSysUIGlobalActions {
                             protected void afterHookedMethod(MethodHookParam param) {
                                 ActionViewModelFactory actionViewModelFactory =
                                         (ActionViewModelFactory) XposedHelpers
-                                                .getObjectField(param.thisObject,
-                                                        "mViewModelFactory");
-                                mSecGlobalActionsPresenter =
-                                        (SecGlobalActionsPresenter) param.thisObject;
+                                                .getObjectField(param.thisObject, "mViewModelFactory");
+                                mSecGlobalActionsPresenter = (SecGlobalActionsPresenter) param.thisObject;
                                 if (!prefs.getBoolean(PREF_ENABLE_POWER_OFF, true)) {
                                     mSecGlobalActionsPresenter.clearActions(Constants.POWER_ACTION);
                                 }
@@ -308,8 +292,7 @@ public class XSysUIGlobalActions {
                                 ResourceFactory resourceFactory = (ResourceFactory) XposedHelpers
                                         .getObjectField(param.thisObject, "mResourceFactory");
                                 ImageView localImageView = ((View) param.args[0])
-                                        .findViewById(resourceFactory
-                                                .getResourceID("sec_global_actions_icon"));
+                                        .findViewById(resourceFactory.getResourceID("sec_global_actions_icon"));
                                 switch (actionViewModel.getActionInfo().getName()) {
                                     case Constants.RECOVERY_ACTION:
                                         localImageView.setImageDrawable(mRecoveryIcon);
@@ -375,11 +358,8 @@ public class XSysUIGlobalActions {
         try {
             Constructor<?> constructor = basicActionViewModelClass.getConstructor(Object[].class);
             Object[] param = {actionViewModelDefaults};
-            firefdsKitActionViewModel =
-                    (FirefdsKitActionViewModel) constructor.newInstance(param);
-            ActionInfo actionInfo = setActionInfo(actionName,
-                    actionLabel,
-                    actionDescription);
+            firefdsKitActionViewModel = (FirefdsKitActionViewModel) constructor.newInstance(param);
+            ActionInfo actionInfo = setActionInfo(actionName, actionLabel, actionDescription);
             firefdsKitActionViewModel.setActionInfo(actionInfo);
         } catch (Throwable e) {
             XposedBridge.log(e);
@@ -391,10 +371,9 @@ public class XSysUIGlobalActions {
         Object[] actionViewModelDefaults = new Object[2];
 
         UtilFactory mUtilFactory = (UtilFactory) XposedHelpers.getObjectField(param.thisObject, "mUtilFactory");
-        KeyGuardManagerWrapper mKeyGuardManagerWrapper =
-                (KeyGuardManagerWrapper) XposedHelpers.callMethod(mUtilFactory,
-                        "get",
-                        KeyGuardManagerWrapper.class);
+        KeyGuardManagerWrapper mKeyGuardManagerWrapper = (KeyGuardManagerWrapper) XposedHelpers.callMethod(mUtilFactory,
+                "get",
+                KeyGuardManagerWrapper.class);
 
         actionViewModelDefaults[0] = XposedHelpers.getObjectField(mKeyGuardManagerWrapper, "mContext");
         actionViewModelDefaults[1] = mSecGlobalActionsPresenter;

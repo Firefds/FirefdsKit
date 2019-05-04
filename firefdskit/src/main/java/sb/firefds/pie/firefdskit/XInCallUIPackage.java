@@ -43,8 +43,8 @@ public class XInCallUIPackage {
                         @Override
                         protected Object replaceHookedMethod(MethodHookParam param) {
                             prefs.reload();
-                            if (prefs.getBoolean(PREF_ENABLE_CALL_ADD, false)
-                                    && !prefs.getBoolean(PREF_ENABLE_AUTO_CALL_RECORDING, false)) {
+                            if (prefs.getBoolean(PREF_ENABLE_CALL_ADD, false) &&
+                                    !prefs.getBoolean(PREF_ENABLE_AUTO_CALL_RECORDING, false)) {
                                 return Boolean.FALSE;
                             } else {
                                 return Boolean.TRUE;

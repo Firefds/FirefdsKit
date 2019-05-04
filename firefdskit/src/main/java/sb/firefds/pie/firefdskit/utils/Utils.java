@@ -49,10 +49,8 @@ public class Utils {
     private static Context mGbContext;
 
     public static void closeStatusBar(Context context) throws Throwable {
-        @SuppressLint("WrongConstant") Object sbservice =
-                context.getSystemService(STATUSBAR_SERVICE);
-        @SuppressLint("PrivateApi") Class<?> statusbarManager =
-                Class.forName("android.app.StatusBarManager");
+        @SuppressLint("WrongConstant") Object sbservice = context.getSystemService(STATUSBAR_SERVICE);
+        @SuppressLint("PrivateApi") Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
         Method showsb = statusbarManager.getMethod("collapsePanels");
         showsb.invoke(sbservice);
     }

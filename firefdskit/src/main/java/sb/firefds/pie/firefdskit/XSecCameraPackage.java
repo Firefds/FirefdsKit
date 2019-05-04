@@ -25,15 +25,12 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.*;
 public class XSecCameraPackage {
 
     private static final String FEATURE = Packages.SAMSUNG_CAMERA + ".feature.Feature";
-    private static final String CAMERA_TEMPERATURE_MANAGER =
-            Packages.CAMERA + ".provider.CameraTemperatureManager";
-    private static final String PREFERENCE_SETTING_FRAGMENT =
-            Packages.CAMERA + ".setting.PreferenceSettingFragment";
+    private static final String CAMERA_TEMPERATURE_MANAGER = Packages.CAMERA + ".provider.CameraTemperatureManager";
+    private static final String PREFERENCE_SETTING_FRAGMENT = Packages.CAMERA + ".setting.PreferenceSettingFragment";
 
     public static void doHook(final XSharedPreferences prefs, ClassLoader classLoader) {
 
-        final Class<?> cameraFeatureClass
-                = XposedHelpers.findClass(FEATURE, classLoader);
+        final Class<?> cameraFeatureClass = XposedHelpers.findClass(FEATURE, classLoader);
 
         if (prefs.getBoolean(PREF_DISABLE_TEMPERATURE_CHECKS, false)) {
             try {

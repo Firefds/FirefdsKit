@@ -53,19 +53,14 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE
 
 public class XSysUIFeaturePackage {
 
-    private static final String CUSTOM_SDK_MONITOR =
-            SYSTEM_UI + ".KnoxStateMonitor.CustomSdkMonitor";
+    private static final String CUSTOM_SDK_MONITOR = SYSTEM_UI + ".KnoxStateMonitor.CustomSdkMonitor";
     private static final String TOGGLE_SLIDER_VIEW = SYSTEM_UI + ".settings.ToggleSliderView";
-    private static final String VOLUME_DIALOG_CONTROLLER_IMPL =
-            SYSTEM_UI + ".volume.VolumeDialogControllerImpl";
-    private static final String KEYGUARD_UPDATE_MONITOR =
-            "com.android.keyguard.KeyguardUpdateMonitor";
+    private static final String VOLUME_DIALOG_CONTROLLER_IMPL = SYSTEM_UI + ".volume.VolumeDialogControllerImpl";
+    private static final String KEYGUARD_UPDATE_MONITOR = "com.android.keyguard.KeyguardUpdateMonitor";
     private static final String QS_CLOCK = SYSTEM_UI + ".statusbar.policy.QSClock";
     private static final String STATE = SYSTEM_UI + ".statusbar.phone.StatusBarWindowManager.State";
-    private static final String STATUS_BAR_WINDOW_MANAGER =
-            SYSTEM_UI + ".statusbar.phone.StatusBarWindowManager";
-    private static final String POWER_NOTIFICATION_WARNINGS =
-            SYSTEM_UI + ".power.PowerNotificationWarnings";
+    private static final String STATUS_BAR_WINDOW_MANAGER = SYSTEM_UI + ".statusbar.phone.StatusBarWindowManager";
+    private static final String POWER_NOTIFICATION_WARNINGS = SYSTEM_UI + ".power.PowerNotificationWarnings";
     private static final String SETTINGS_HELPER = SYSTEM_UI + ".util.SettingsHelper";
 
     @SuppressLint("StaticFieldLeak")
@@ -108,8 +103,7 @@ public class XSysUIFeaturePackage {
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
                                 Context mContext = (Context) param.args[0];
-                                Settings.System.putInt(mContext.getContentResolver(),
-                                        "shown_max_brightness_dialog", 1);
+                                Settings.System.putInt(mContext.getContentResolver(), "shown_max_brightness_dialog", 1);
                             }
                         });
             }
@@ -157,8 +151,7 @@ public class XSysUIFeaturePackage {
                             @SuppressLint({"SetTextI18n", "SimpleDateFormat"})
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
-                                String tag =
-                                        (String) (XposedHelpers.callMethod(param.thisObject, "getTag"));
+                                String tag = (String) (XposedHelpers.callMethod(param.thisObject, "getTag"));
                                 if (tag.equals("status_bar_clock")) {
                                     mClock = (TextView) param.thisObject;
                                     Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
@@ -174,8 +167,7 @@ public class XSysUIFeaturePackage {
                                         }
                                         mClock.setText(mSecondsFormat.format(calendar.getTime()));
                                     }
-                                    String amPm = calendar.getDisplayName(
-                                            Calendar.AM_PM, Calendar.SHORT, Locale.getDefault());
+                                    String amPm = calendar.getDisplayName(Calendar.AM_PM, Calendar.SHORT, Locale.getDefault());
                                     int amPmIndex = mClock.getText().toString().indexOf(amPm);
                                     if (!is24 && amPmIndex == -1) {
                                         // insert AM/PM if missing
@@ -192,17 +184,14 @@ public class XSysUIFeaturePackage {
                                         SimpleDateFormat df = (SimpleDateFormat) SimpleDateFormat
                                                 .getDateInstance(SimpleDateFormat.SHORT);
                                         String pattern = showClockDate.equals("localized") ?
-                                                df.toLocalizedPattern()
-                                                        .replaceAll(".?[Yy].?", "") : showClockDate;
-                                        date = new SimpleDateFormat(pattern,
-                                                Locale.getDefault())
-                                                .format(calendar.getTime());
+                                                df.toLocalizedPattern().replaceAll(".?[Yy].?", "") :
+                                                showClockDate;
+                                        date = new SimpleDateFormat(pattern, Locale.getDefault()).format(calendar.getTime());
                                         if (prefs.getBoolean(PREF_CLOCK_DATE_ON_RIGHT, false)) {
                                             mClock.setText(mClock.getText().toString() + " " + date);
                                         } else {
                                             mClock.setText(date + " " + mClock.getText().toString());
                                         }
-
                                     }
                                 }
                             }
@@ -262,8 +251,7 @@ public class XSysUIFeaturePackage {
             updateClock = XposedHelpers.findMethodExact(qsClock, "updateClock");
             mSecondsHandler = new Handler();
             if (mClock.getDisplay().getState() == Display.STATE_ON) {
-                mSecondsHandler.postAtTime(mSecondTick,
-                        SystemClock.uptimeMillis() / 1000 * 1000 + 1000);
+                mSecondsHandler.postAtTime(mSecondTick, SystemClock.uptimeMillis() / 1000 * 1000 + 1000);
             }
         } else if (mSecondsHandler != null) {
             mSecondsHandler.removeCallbacks(mSecondTick);

@@ -28,8 +28,7 @@ public class Constants {
     public static final String FORCE_CONNECT_MMS = "CscFeature_RIL_ForceConnectMMS";
     public static final String DISABLE_SMS_TO_MMS_CONVERSION_BY_TEXT_INPUT =
             "CscFeature_Message_DisableSmsToMmsConversionByTextInput";
-    public static final String DISABLE_PHONE_NUMBER_FORMATTING =
-            "CscFeature_Common_DisablePhoneNumberFormatting";
+    public static final String DISABLE_PHONE_NUMBER_FORMATTING = "CscFeature_Common_DisablePhoneNumberFormatting";
 
     public static final String SHORTCUT_STATUSBAR = "STATUSBAR";
     public static final String SHORTCUT_SYSTEM = "SYSTEM";

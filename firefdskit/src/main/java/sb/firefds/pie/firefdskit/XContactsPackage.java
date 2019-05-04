@@ -8,8 +8,7 @@ import de.robv.android.xposed.XposedHelpers;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_NUMBER_FORMATTING;
 
 public class XContactsPackage {
-    private static final String CSC_FEATURE_UTIL =
-            "com.samsung.android.dialtacts.util.CscFeatureUtil";
+    private static final String CSC_FEATURE_UTIL = "com.samsung.android.dialtacts.util.CscFeatureUtil";
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 

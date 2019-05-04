@@ -54,8 +54,7 @@ public class RebootNotification {
         NotificationChannel mChannel = new NotificationChannel("Reboot_ID",
                 "Reboot Name",
                 NotificationManager.IMPORTANCE_DEFAULT);
-        NotificationManager mNotificationManager =
-                getSystemService(context, NotificationManager.class);
+        NotificationManager mNotificationManager = getSystemService(context, NotificationManager.class);
         Objects.requireNonNull(mNotificationManager).createNotificationChannel(mChannel);
 
         final Notification.Builder builder = new Notification.Builder(context, "Reboot_ID")
@@ -76,8 +75,7 @@ public class RebootNotification {
                         .setSummaryText(context.getString(R.string.pending_changes)))
                 .setAutoCancel(true);
 
-        Intent rebootIntent = new Intent(context, WanamRebootReceiver.class)
-                .setAction(REBOOT_DEVICE_ACTION);
+        Intent rebootIntent = new Intent(context, WanamRebootReceiver.class).setAction(REBOOT_DEVICE_ACTION);
         builder.addAction(new Notification.Action.Builder(
                 Icon.createWithResource(context, R.drawable.ic_restart_notification),
                 res.getString(R.string.reboot),
@@ -104,14 +102,12 @@ public class RebootNotification {
     }
 
     private static void notify(final Context context, final Notification notification) {
-        final NotificationManager nm =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        final NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(NOTIFICATION_TAG, 0, notification);
     }
 
     public static void cancel(final Context context) {
-        final NotificationManager nm =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        final NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancel(NOTIFICATION_TAG, 0);
     }
 }

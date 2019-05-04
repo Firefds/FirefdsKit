@@ -4,11 +4,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceFragmentCompat;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceFragmentCompat;
 import sb.firefds.pie.firefdskit.R;
 import sb.firefds.pie.firefdskit.notifications.RebootNotification;
 
@@ -39,8 +40,7 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat
 
         try {
             // No reboot notification required
-            String[] litePrefs =
-                    fragmentActivity.getResources().getStringArray(R.array.lite_preferences);
+            String[] litePrefs = fragmentActivity.getResources().getStringArray(R.array.lite_preferences);
 
             setTimeoutPrefs(sharedPreferences, key);
 

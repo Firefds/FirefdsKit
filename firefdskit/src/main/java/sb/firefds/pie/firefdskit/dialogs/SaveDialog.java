@@ -7,6 +7,8 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AlertDialog;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -14,7 +16,6 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Objects;
 
-import androidx.appcompat.app.AlertDialog;
 import sb.firefds.pie.firefdskit.FirefdsKitActivity;
 import sb.firefds.pie.firefdskit.R;
 import sb.firefds.pie.firefdskit.utils.Constants;

@@ -17,8 +17,7 @@ public class XMessagingPackage {
     public static void doHook(final XSharedPreferences prefs, ClassLoader classLoader) {
 
         boolean disableSmsToMms = prefs.getBoolean(PREF_DISABLE_SMS_TO_MMS, false);
-        final Class<?> messagingFeatureClass
-                = XposedHelpers.findClass(FEATURE, classLoader);
+        final Class<?> messagingFeatureClass = XposedHelpers.findClass(FEATURE, classLoader);
 
         if (prefs.getBoolean(PREF_ENABLE_BLOCKED_PHRASES, false)) {
             try {
