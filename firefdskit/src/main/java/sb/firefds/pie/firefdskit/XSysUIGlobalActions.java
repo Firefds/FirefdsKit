@@ -59,6 +59,8 @@ import static sb.firefds.pie.firefdskit.utils.Constants.RESTART_UI_ACTION;
 import static sb.firefds.pie.firefdskit.utils.Constants.SCREENSHOT_ACTION;
 import static sb.firefds.pie.firefdskit.utils.Constants.SCREEN_RECORD_ACTION;
 import static sb.firefds.pie.firefdskit.utils.Packages.SYSTEM_UI;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CUSTOM_RECOVERY;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CUSTOM_RECOVERY_CONFIRMATION;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_RESTART_CONFIRMATION;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_POWER_MENU;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_DATA_MODE;
@@ -137,7 +139,8 @@ public class XSysUIGlobalActions {
                                 Resources res = ctx.getResources();
                                 Context gbContext = Utils.getGbContext(ctx, res.getConfiguration());
 
-                                mRecoveryStr = gbContext.getString(R.string.reboot_recovery);
+                                mRecoveryStr = prefs.getString(PREF_CUSTOM_RECOVERY,
+                                        gbContext.getString(R.string.reboot_recovery));
                                 mDownloadStr = gbContext.getString(R.string.reboot_download);
                                 mScreenshotStr = gbContext.getString(R.string.screenshot);
                                 mSwitchUserStr = gbContext.getString(R.string.switchUser);
@@ -153,8 +156,8 @@ public class XSysUIGlobalActions {
                                 mFlashLightIcon = gbContext.getDrawable(R.drawable.tw_ic_do_torchlight_stock);
                                 mScreenRecordIcon = gbContext.getDrawable(R.drawable.tw_ic_do_screenrecord_stock);
 
-                                mRebootConfirmRecoveryStr = gbContext
-                                        .getString(R.string.reboot_confirm_recovery);
+                                mRebootConfirmRecoveryStr = prefs.getString(PREF_CUSTOM_RECOVERY_CONFIRMATION,
+                                        gbContext.getString(R.string.reboot_confirm_recovery));
                                 mRebootConfirmDownloadStr = gbContext
                                         .getString(R.string.reboot_confirm_download);
                                 mRestartSystemUiConfirmStr = gbContext

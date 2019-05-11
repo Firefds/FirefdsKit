@@ -220,4 +220,8 @@
     <string name="transition_effect_rotate">Rotate</string>
     <string name="transition_effect_zoom">Zoom</string>
     <string name="launcher">Launcher</string>
+    <string name="custom_recovery_title">Custom Recovery Mode Text</string>
+    <string name="custom_recovery_confirmation_title">Custom Recovery Mode Confirmation Text</string>
+    <string name="power_menu_options_custom_text">Custom Texts</string>
+    <string name="power_menu_options">Power Options</string>
 </resources>

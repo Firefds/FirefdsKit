@@ -220,4 +220,8 @@
     <string name="transition_effect_rotate">סיבוב</string>
     <string name="transition_effect_zoom">זום</string>
     <string name="launcher">מסך הבית</string>
+    <string name="custom_recovery_title">התאמה אישית של טקסט הפעלה למצב Recovery</string>
+    <string name="custom_recovery_confirmation_title">התאמה אישית של טקסט אישור הפעלה למצב Recovery</string>
+    <string name="power_menu_options">אפשרויות תפריט כיבוי</string>
+    <string name="power_menu_options_custom_text">טקסט בהתאמה אישית</string>
 </resources>

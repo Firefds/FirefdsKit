@@ -40,6 +40,8 @@ public class Preferences {
     public static final String PREF_ENABLE_RESTART_SYSTEMUI = "enableRestartSystemUI";
     public static final String PREF_ENABLE_FLASHLIGHT = "enableFlashlight";
     public static final String PREF_ENABLE_SCREEN_RECORD = "enableScreenRecord";
+    public static final String PREF_CUSTOM_RECOVERY = "customRecovery";
+    public static final String PREF_CUSTOM_RECOVERY_CONFIRMATION = "customRecoveryConfirmation";
     public static final String PREF_DISABLE_RESTART_CONFIRMATION = "disbaleRestartConfirmation";
     public static final String PREF_NAVIGATION_BAR_COLOR = "navigationBarColor";
     public static final String PREF_SUPPORTS_MULTIPLE_USERS = "supportsMultipleUsers";
