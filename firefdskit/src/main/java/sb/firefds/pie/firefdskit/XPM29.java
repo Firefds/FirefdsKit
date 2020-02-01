@@ -21,7 +21,7 @@ import de.robv.android.xposed.XposedHelpers;
 import static sb.firefds.pie.firefdskit.utils.Packages.FIREFDSKIT;
 import static sb.firefds.pie.firefdskit.utils.Packages.SYSTEM_UI;
 
-public class XPM28 {
+public class XPM29 {
     private static final String PERMISSION = "com.android.server.pm.permission";
     private static final String PERMISSION_MANAGER_SERVICE = PERMISSION + ".PermissionManagerService";
     private static final String PACKAGE_PARSER_PACKAGE = "android.content.pm.PackageParser.Package";
@@ -38,7 +38,7 @@ public class XPM28 {
             final Class<?> pmCallbackClass = XposedHelpers.findClass(PERMISSION_CALLBACK, classLoader);
 
             XposedHelpers.findAndHookMethod(pmServiceClass,
-                    "grantPermissions",
+                    "restorePermissionState",
                     PACKAGE_PARSER_PACKAGE,
                     boolean.class,
                     String.class,
