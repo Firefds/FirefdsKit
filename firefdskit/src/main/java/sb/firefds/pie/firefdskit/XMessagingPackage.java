@@ -37,11 +37,32 @@ public class XMessagingPackage {
             XposedHelpers.findAndHookMethod(messagingFeatureClass,
                     "getEnableMmsOnMobileDataOff",
                     XC_MethodReplacement.returnConstant(prefs.getBoolean(PREF_FORCE_MMS_CONNECT, false)));
+        } catch (Throwable e) {
+            try {
+                XposedHelpers.findAndHookMethod(messagingFeatureClass,
+                        "getApnMmsTypesAllowedOnDataDisabled",
+                        XC_MethodReplacement.returnConstant(prefs.getBoolean(PREF_FORCE_MMS_CONNECT, false)));
+            } catch (Throwable e1) {
+                XposedBridge.log(e1);
+            }
+        }
 
+        try {
             XposedHelpers.findAndHookMethod(messagingFeatureClass,
                     "getSmsToMmsByThreshold",
                     XC_MethodReplacement.returnConstant(!disableSmsToMms));
+        } catch (Throwable e) {
+            try {
+                XposedHelpers.findAndHookMethod(messagingFeatureClass,
+                        "getSmsToMmsByThreshold",
+                        int.class,
+                        XC_MethodReplacement.returnConstant(!disableSmsToMms));
+            } catch (Throwable e1) {
+                XposedBridge.log(e1);
+            }
+        }
 
+        try {
             XposedHelpers.findAndHookMethod(messagingFeatureClass,
                     "getSmsMaxByte",
                     XC_MethodReplacement.returnConstant(disableSmsToMms ? 999 : 140));
