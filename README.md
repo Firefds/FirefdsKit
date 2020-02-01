@@ -1,6 +1,6 @@
-# Firefds Kit [Pie]
+# Firefds Kit [Q]
 
-Xposed module for Samsung Pie devices. 
+Xposed module for Samsung Q devices.
 
 This application also uses Root access to apply some Samsung CSC features.
 
@@ -85,9 +85,9 @@ I've been working with both solohsu and C3C0 on testing EdXposed on Samsung devi
 
 ## Major Update
 
-In the Pie version of FirefdsKit, I have updates the project in the following aspects:
+In the Q version of FirefdsKit, I have updates the project in the following aspects:
 1. Moved project from Eclipse to Android Studio
-2. Updated compile SDK version to use latest SDK (28)
+2. Updated compile SDK version to use latest SDK (29)
 3. Updated dependencies to use online sources
 4. Switched from Chainfire's SU library to topjohnwu's (Magisk) SU library
 
@@ -102,7 +102,7 @@ To install this module you need the following apps and modules installed on your
 
 ## Known Issues
 
-- Some features are removed on purpose. Since GravityBox has been working on Samsung Oreo devices without much issues, I only implemented features that need special Samsung coding. You can check [GravityBox for Pie](https://forum.xda-developers.com/xposed/modules/app-gravitybox-v9-0-0-beta-1-android-9-t3908768) for additional features.
+- Some features are removed on purpose. Since GravityBox has been working on Samsung Oreo devices without much issues, I only implemented features that need special Samsung coding. You can check [GravityBox for Q](https://forum.xda-developers.com/xposed/modules/app-gravitybox-v9-0-0-beta-1-android-9-t3908768) for additional features.
 - It could take some time to popup the root request, just wait a few minutes until it pops up, usually not much after the xposed installer recognized the module.
 
 ## External Libraries

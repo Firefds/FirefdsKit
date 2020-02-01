@@ -13,11 +13,11 @@ android {
         }
     }
     defaultConfig {
-        applicationId 'sb.firefds.pie.firefdskit'
-        minSdkVersion 28
+        applicationId 'sb.firefds.q.firefdskit'
+        minSdkVersion 29
         targetSdkVersion 29
-        versionCode 1040
-        versionName "1.0.4.0-STABLE-5"
+        versionCode 1010
+        versionName "1.0.1.0-ALPHA-1"
         project.ext.set("archivesBaseName", "FirefdsKit_" + versionName)
     }
     buildTypes {
