@@ -155,12 +155,6 @@
     <string name="clock_date_on_right_off_summary">תאריך ממוקדם בצד שמאל של השעון</string>
     <string name="multiUser">משתמשים מרובים</string>
     <string name="switchUser">החלפת משתמש</string>
-    <string name="navigation_bar_color_title">צבע שורת ניווט מותאם אישית</string>
-    <string name="navigation_bar_color_summary">צבע בהתאמה אישית של שורת הניווט</string>
-    <string name="navigation_bar">שורת הניווט</string>
-    <string name="navigation_bar_color_dialog_title">מה השלב הבא?</string>
-    <string name="navigation_bar_color_dialog_message">- הפעלה מחדש של המכשיר\n- כניסה להגדרות > תצוגה > שורת הניווט\n- בחירת הצבע המותאם אישית</string>
-    <string name="color_dialog_title">בחירת צבע</string>
     <string name="nav_header_subtitle">התאמה אישית של מכשיר ה Samsung שלך</string>
     <string name="navigation_drawer_open">פתיחת מגירת ניווט</string>
     <string name="navigation_drawer_close">סגירת מגירת ניווט</string>

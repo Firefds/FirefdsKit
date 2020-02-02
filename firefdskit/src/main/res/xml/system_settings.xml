@@ -26,18 +26,6 @@
             app:iconSpaceReserved="false" />
     </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory
-        android:title="@string/navigation_bar"
-        app:iconSpaceReserved="false">
-        <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
-            android:key="navigationBarColor"
-            android:summary="@string/navigation_bar_color_summary"
-            android:title="@string/navigation_bar_color_title"
-            app:cpv_dialogTitle="@string/color_dialog_title"
-            app:cpv_dialogType="custom"
-            app:cpv_showAlphaSlider="false"
-            app:iconSpaceReserved="false" />
-    </androidx.preference.PreferenceCategory>
-    <androidx.preference.PreferenceCategory
         android:title="@string/multiUser"
         app:iconSpaceReserved="false">
         <SwitchPreferenceCompat

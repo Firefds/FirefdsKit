@@ -88,7 +88,7 @@ import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_NUMBER_FORM
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_SMS_TO_MMS;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_FIRST_LAUNCH;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_FORCE_MMS_CONNECT;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_NAVIGATION_BAR_COLOR;
+//import static sb.firefds.q.firefdskit.utils.Preferences.PREF_NAVIGATION_BAR_COLOR;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_NFC_BEHAVIOR;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_HOURS;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_MINUTES;
@@ -167,13 +167,13 @@ public class FirefdsKitActivity extends AppCompatActivity
             editor.putInt(PREF_SCREEN_TIMEOUT_SECONDS, seconds).apply();
         }
 
-        if (sharedPreferences.getInt(PREF_NAVIGATION_BAR_COLOR, 0) == 0) {
+        /*if (sharedPreferences.getInt(PREF_NAVIGATION_BAR_COLOR, 0) == 0) {
             try {
                 editor.putInt(PREF_NAVIGATION_BAR_COLOR, Settings.Global.getInt(getContentResolver(), "navigationbar_color")).apply();
             } catch (Throwable e) {
                 e.printStackTrace();
             }
-        }
+        }*/
 
         fixAppPermissions(appContext);
 
@@ -510,8 +510,8 @@ public class FirefdsKitActivity extends AppCompatActivity
             editor.putInt(PREF_SCREEN_TIMEOUT_MINUTES, 0).apply();
             editor.putInt(PREF_SCREEN_TIMEOUT_HOURS, 0).apply();
 
-            editor.putInt(PREF_NAVIGATION_BAR_COLOR, activity.getResources().getIntArray(R.array.navigationbar_color_values)[1])
-                    .apply();
+            /*editor.putInt(PREF_NAVIGATION_BAR_COLOR, activity.getResources().getIntArray(R.array.navigationbar_color_values)[1])
+                    .apply();*/
         }
         if ((!sharedPreferences.getBoolean(PREF_FIRST_LAUNCH, false)) || forceDefault) {
             Editor editor = sharedPreferences.edit();

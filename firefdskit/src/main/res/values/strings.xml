@@ -155,12 +155,6 @@
     <string name="clock_date_on_right_title">Clock Date on Right</string>
     <string name="multiUser">Multi User</string>
     <string name="switchUser">Switch User</string>
-    <string name="navigation_bar_color_title">Navigation Bar Custom Color</string>
-    <string name="navigation_bar_color_summary">Custom color of the navigation bar</string>
-    <string name="navigation_bar">Navigation Bar</string>
-    <string name="navigation_bar_color_dialog_message">- Reboot the device\n- Go to Settings > Display > Navigation Bar\n- Select your custom color</string>
-    <string name="navigation_bar_color_dialog_title">What to do next?</string>
-    <string name="color_dialog_title">Select a Color</string>
     <string name="nav_header_subtitle">Customize your Samsung device</string>
     <string name="nav_header_desc">Firefds Kit logo</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>

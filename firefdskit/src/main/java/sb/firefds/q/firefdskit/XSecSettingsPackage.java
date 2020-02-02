@@ -18,30 +18,27 @@ package sb.firefds.q.firefdskit;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.res.Resources;
+//import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.UserManager;
-import android.util.AttributeSet;
-import android.util.Xml;
+//import android.util.AttributeSet;
+//import android.util.Xml;
 
-import org.xmlpull.v1.XmlPullParser;
+//import org.xmlpull.v1.XmlPullParser;
 
-import java.lang.reflect.Constructor;
+//import java.lang.reflect.Constructor;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-import sb.firefds.q.firefdskit.utils.Utils;
 
-import static sb.firefds.q.firefdskit.utils.Packages.FIREFDSKIT;
 import static sb.firefds.q.firefdskit.utils.Packages.SAMSUNG_SETTINGS;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_BLUETOOTH_DIALOG;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_SYNC_DIALOG;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_MAKE_OFFICIAL;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_MAX_SUPPORTED_USERS;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_NAVIGATION_BAR_COLOR;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SHOW_NETWORK_SPEED_MENU;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE_USERS;
 
@@ -51,24 +48,24 @@ public class XSecSettingsPackage {
     private static final String SEC_ACCOUNT_TILES = SAMSUNG_SETTINGS + ".qstile.SecAccountTiles";
     private static final String SEC_DEVICE_INFO_UTILS = SAMSUNG_SETTINGS + ".deviceinfo.SecDeviceInfoUtils";
     private static final String STATUS_BAR = SAMSUNG_SETTINGS + ".display.StatusBar";
-    private static final String NAVIGATION_BAR_SETTINGS = SAMSUNG_SETTINGS + ".navigationbar.NavigationBarSettings";
-    private static final String NAVIGATIONBAR_COLOR_PREFERENCE = SAMSUNG_SETTINGS + ".navigationbar.NavigationbarColorPreference";
+    //private static final String NAVIGATION_BAR_SETTINGS = SAMSUNG_SETTINGS + ".navigationbar.NavigationBarSettings";
+    //private static final String NAVIGATIONBAR_COLOR_PREFERENCE = SAMSUNG_SETTINGS + ".navigationbar.NavigationbarColorPreference";
     private static final String SYSCOPE_STATUS_PREFERENCE_CONTROLLER =
-            SAMSUNG_SETTINGS + ".deviceinfo.status.SyscopeStatusPreferenceController";
+            SAMSUNG_SETTINGS + ".deviceinfo.status.SysScopeStatusPreferenceController";
 
 
     private static ClassLoader classLoader;
-    private static XSharedPreferences prefs;
-    @SuppressLint("StaticFieldLeak")
-    private static Context mContext;
-    private static int[] colorArray;
-    private static Class<?> NavigationBarSettings;
-    private static Class<?> NavigationBarColorPreference;
+    //private static XSharedPreferences prefs;
+    //@SuppressLint("StaticFieldLeak")
+    //private static Context mContext;
+    //private static int[] colorArray;
+    //private static Class<?> NavigationBarSettings;
+    //private static Class<?> NavigationBarColorPreference;
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
         XSecSettingsPackage.classLoader = classLoader;
-        XSecSettingsPackage.prefs = prefs;
+        /*XSecSettingsPackage.prefs = prefs;
 
         try {
             NavigationBarSettings = XposedHelpers.findClass(NAVIGATION_BAR_SETTINGS, classLoader);
@@ -79,7 +76,7 @@ public class XSecSettingsPackage {
 
         } catch (Throwable e) {
             XposedBridge.log(e);
-        }
+        }*/
 
         if (prefs.getBoolean(PREF_MAKE_OFFICIAL, true)) {
             makeOfficial();
@@ -209,7 +206,7 @@ public class XSecSettingsPackage {
         }
     }
 
-    private static void addNavigationBarColorPreference() {
+    /*private static void addNavigationBarColorPreference() {
         try {
             XposedHelpers.findAndHookMethod(NavigationBarSettings,
                     "initUI",
@@ -235,9 +232,9 @@ public class XSecSettingsPackage {
         } catch (Throwable e) {
             XposedBridge.log(e);
         }
-    }
+    }*/
 
-    private static void createColorPalette() {
+    /*private static void createColorPalette() {
         try {
             XposedBridge.hookAllConstructors(NavigationBarColorPreference, new XC_MethodHook() {
                 @Override
@@ -253,5 +250,5 @@ public class XSecSettingsPackage {
         } catch (Throwable e) {
             XposedBridge.log(e);
         }
-    }
+    }*/
 }

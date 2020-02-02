@@ -43,7 +43,7 @@ public class Preferences {
     public static final String PREF_CUSTOM_RECOVERY = "customRecovery";
     public static final String PREF_CUSTOM_RECOVERY_CONFIRMATION = "customRecoveryConfirmation";
     public static final String PREF_DISABLE_RESTART_CONFIRMATION = "disbaleRestartConfirmation";
-    public static final String PREF_NAVIGATION_BAR_COLOR = "navigationBarColor";
+    //public static final String PREF_NAVIGATION_BAR_COLOR = "navigationBarColor";
     public static final String PREF_SUPPORTS_MULTIPLE_USERS = "supportsMultipleUsers";
     public static final String PREF_MAX_SUPPORTED_USERS = "maxSupportedUsers";
     public static final String PREF_SCREEN_TIMEOUT_SECONDS = "screenTimeoutSeconds";
