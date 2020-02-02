@@ -35,16 +35,10 @@ public class XMessagingPackage {
 
         try {
             XposedHelpers.findAndHookMethod(messagingFeatureClass,
-                    "getEnableMmsOnMobileDataOff",
+                    "getSupportMMSThroughWifi",
                     XC_MethodReplacement.returnConstant(prefs.getBoolean(PREF_FORCE_MMS_CONNECT, false)));
         } catch (Throwable e) {
-            try {
-                XposedHelpers.findAndHookMethod(messagingFeatureClass,
-                        "getApnMmsTypesAllowedOnDataDisabled",
-                        XC_MethodReplacement.returnConstant(prefs.getBoolean(PREF_FORCE_MMS_CONNECT, false)));
-            } catch (Throwable e1) {
-                XposedBridge.log(e1);
-            }
+            XposedBridge.log(e);
         }
 
         try {
