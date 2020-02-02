@@ -82,7 +82,7 @@ public class XSysUIGlobalActions {
     private static final String SEC_GLOBAL_ACTIONS_PRESENTER = GLOBAL_ACTIONS_PACKAGE + ".SecGlobalActionsPresenter";
     private static final String DEFAULT_ACTION_VIEW_MODEL_FACTORY = GLOBAL_ACTIONS_PACKAGE + ".viewmodel.DefaultActionViewModelFactory";
     private static final String SEC_GLOBAL_ACTIONS_DIALOG_BASE = GLOBAL_ACTIONS_PACKAGE + ".view.SecGlobalActionsDialogBase";
-    private static final String GLOBAL_ACTION_ITEM_VIEW = GLOBAL_ACTIONS_PACKAGE + ".view.GlobalActionItemView";
+    private static final String GLOBAL_ACTION_CONTENT_ITEM_VIEW = GLOBAL_ACTIONS_PACKAGE + ".view.GlobalActionsContentItemView";
     private static final String FLASHLIGHT_CONTROLLER_IMPL_CLASS = SYSTEM_UI + ".statusbar.policy.FlashlightControllerImpl";
 
     private static SecGlobalActionsPresenter mSecGlobalActionsPresenter;
@@ -304,7 +304,7 @@ public class XSysUIGlobalActions {
                             }
                         });
 
-                XposedHelpers.findAndHookMethod(GLOBAL_ACTION_ITEM_VIEW,
+                XposedHelpers.findAndHookMethod(GLOBAL_ACTION_CONTENT_ITEM_VIEW,
                         classLoader,
                         "setViewAttrs",
                         View.class,
