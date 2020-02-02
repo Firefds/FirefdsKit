@@ -39,7 +39,7 @@ public class XSysUINotificationPanelPackage {
         try {
             XposedHelpers.findAndHookMethod(CARRIER_TEXT_CONTROLLER,
                     classLoader,
-                    "updateCarrierText",
+                    "onFinishInflate",
                     new XC_MethodHook() {
                         @Override
                         protected void afterHookedMethod(MethodHookParam param) {

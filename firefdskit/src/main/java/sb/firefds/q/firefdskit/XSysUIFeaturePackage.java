@@ -89,7 +89,7 @@ public class XSysUIFeaturePackage {
             if (prefs.getBoolean(PREF_DISABLE_EYE_STRAIN_DIALOG, false)) {
                 XposedHelpers.findAndHookMethod(TOGGLE_SLIDER_VIEW,
                         classLoader,
-                        "setEyeStrainDialogEnabled",
+                        "updateEyeStrainDialog",
                         int.class,
                         new XC_MethodHook() {
                             @Override
@@ -97,10 +97,10 @@ public class XSysUIFeaturePackage {
                                 param.args[0] = 1;
                             }
                         });
-                XposedHelpers.findAndHookMethod(SETTINGS_HELPER,
+                /*XposedHelpers.findAndHookMethod(SETTINGS_HELPER,
                         classLoader,
                         "isBrightnessEyeStrainDialogEnabled",
-                        XC_MethodReplacement.returnConstant(Boolean.FALSE));
+                        XC_MethodReplacement.returnConstant(Boolean.FALSE));*/
                 XposedHelpers.findAndHookConstructor(SETTINGS_HELPER,
                         classLoader,
                         Context.class,
@@ -129,7 +129,8 @@ public class XSysUIFeaturePackage {
             if (prefs.getBoolean(PREF_ENABLE_FINGERPRINT_UNLOCK, false)) {
                 XposedHelpers.findAndHookMethod(KEYGUARD_UPDATE_MONITOR,
                         classLoader,
-                        "isUnlockingWithFingerprintAllowed",
+                        "isUnlockWithFingerprintPossible",
+                        int.class,
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
             }
 
