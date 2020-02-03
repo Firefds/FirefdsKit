@@ -23,7 +23,7 @@ public class XSysUINotificationPanelPackage {
     private static final String FOUR_G_INSTEAD_OF_4G_PLUS = "STATBAR_DISPLAY_4G_INSTEAD_OF_4G_PLUS_ICON";
     private static final String FOUR_HALF_G_INSTEAD_OF_4G_PLUS = "STATBAR_DISPLAY_4_HALF_G_INSTEAD_OF_4G_PLUS_ICON";
     private static final String RUNE = SYSTEM_UI + ".Rune";
-    private static final String CARRIER_TEXT_CONTROLLER = "com.android.keyguard.CarrierTextController";
+    private static final String CARRIER_TEXT = "com.android.keyguard.CarrierText";
     private static final String DATA_USAGE_BAR = SYSTEM_UI + ".qs.bar.DataUsageBar";
     private static final String NETSPEED_VIEW = SYSTEM_UI + ".statusbar.policy.NetspeedView";
     private static final String MOBILE_SIGNAL_CONTROLLER_CLASS = SYSTEM_UI + ".statusbar.policy.MobileSignalController";
@@ -37,7 +37,7 @@ public class XSysUINotificationPanelPackage {
         final Class<?> systemUIRuneClass = XposedHelpers.findClass(RUNE, classLoader);
 
         try {
-            XposedHelpers.findAndHookMethod(CARRIER_TEXT_CONTROLLER,
+            XposedHelpers.findAndHookMethod(CARRIER_TEXT,
                     classLoader,
                     "onFinishInflate",
                     new XC_MethodHook() {
