@@ -155,6 +155,7 @@ public class XSysUIFeaturePackage {
                         String.class,
                         boolean.class,
                         String.class,
+                        String.class,
                         new XC_MethodHook() {
                             @SuppressLint({"SetTextI18n", "SimpleDateFormat"})
                             @Override
