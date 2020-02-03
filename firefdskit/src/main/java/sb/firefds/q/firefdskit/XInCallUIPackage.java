@@ -27,17 +27,14 @@ import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_CALL_RECORDI
 public class XInCallUIPackage {
 
     private static final String FEATURE_FUNCTION = INCALLUI + ".modelimpl.feature.function";
-    private static final String VOICE_RECORDING_FEATURE_IMPL = FEATURE_FUNCTION + ".VoiceRecordingFeatureImpl";
-    private static final String VOICE_RECORDING_BY_MENU_FEATURE_IMPL = FEATURE_FUNCTION + ".VoiceRecordingByMenuFeatureImpl";
-    private static final String VOICE_RECORDING_BY_BUTTON_FEATURE_IMPL = FEATURE_FUNCTION + ".VoiceRecordingByButtonFeatureImpl";
-    private static final String VOICE_RECORDING_CONTEXT_IMPL = INCALLUI + ".modelimpl.callcontext.VoiceRecordingContextImpl";
+    private static final String RECORD_VOICE_FEATURE_IMPL = FEATURE_FUNCTION + ".RecordVoiceFeatureImpl";
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
         try {
-            XposedHelpers.findAndHookMethod(VOICE_RECORDING_FEATURE_IMPL,
+            XposedHelpers.findAndHookMethod(RECORD_VOICE_FEATURE_IMPL,
                     classLoader,
-                    "isSupportVoiceRecording",
+                    "check",
                     new XC_MethodReplacement() {
                         @Override
                         protected Object replaceHookedMethod(MethodHookParam param) {
@@ -55,9 +52,9 @@ public class XInCallUIPackage {
         }
 
         try {
-            XposedHelpers.findAndHookMethod(VOICE_RECORDING_BY_MENU_FEATURE_IMPL,
+            XposedHelpers.findAndHookMethod(RECORD_VOICE_FEATURE_IMPL,
                     classLoader,
-                    "isSupportVoiceRecording",
+                    "isSupportOnlyMenu",
                     new XC_MethodReplacement() {
                         @Override
                         protected Object replaceHookedMethod(MethodHookParam param) {
@@ -74,9 +71,9 @@ public class XInCallUIPackage {
         }
 
         try {
-            XposedHelpers.findAndHookMethod(VOICE_RECORDING_BY_BUTTON_FEATURE_IMPL,
+            XposedHelpers.findAndHookMethod(RECORD_VOICE_FEATURE_IMPL,
                     classLoader,
-                    "isSupportVoiceRecording",
+                    "check",
                     new XC_MethodReplacement() {
                         @Override
                         protected Object replaceHookedMethod(MethodHookParam param) {
@@ -93,9 +90,9 @@ public class XInCallUIPackage {
         }
 
         try {
-            XposedHelpers.findAndHookMethod(VOICE_RECORDING_CONTEXT_IMPL,
+            XposedHelpers.findAndHookMethod(RECORD_VOICE_FEATURE_IMPL,
                     classLoader,
-                    "isForcedToAutoRecord",
+                    "isSupportAutoAnswerMemo",
                     new XC_MethodReplacement() {
                         @Override
                         protected Object replaceHookedMethod(MethodHookParam param) {
