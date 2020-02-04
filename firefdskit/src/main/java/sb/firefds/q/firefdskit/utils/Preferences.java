@@ -22,7 +22,7 @@ public class Preferences {
     public static final String PREF_HIDE_CARRIER_LABEL = "hideCarrierLabel";
     public static final String PREF_CARRIER_SIZE = "carrierSize";
 
-    public static final String PREF_ENABLE_FINGERPRINT_UNLOCK = "enableFingerprintUnlock";
+    //public static final String PREF_ENABLE_FINGERPRINT_UNLOCK = "enableFingerprintUnlock";
     public static final String PREF_ENABLE_BIOMETRICS_UNLOCK = "enableBiometricsUnlock";
 
     public static final String PREF_DISABLE_VOLUME_WARNING = "disableLoudVolumeWarning";

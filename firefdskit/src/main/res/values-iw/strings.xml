@@ -130,10 +130,10 @@
     <string name="disable_flag_secure_off">דגל אבטחה מבוטל</string>
     <string name="lockscreen">מסך נעילה</string>
     <string name="screen_unlock">פתיחת נעילת מסך</string>
-    <string name="enable_fingerprint_unlock_summary">הפעלת שימוש בטביעת אצבע בפתיחת מסך הנעילה אחרי הפעלה מחדש</string>
-    <string name="enable_fingerprint_unlock_title">טביעת אצבע אחרי הפעלה מחדש</string>
-    <string name="enable_biometrics_unlock_summary">הפעלת שימוש בביומטרי בפתיחת מסך הנעילה אחרי הפעלה מחדש</string>
-    <string name="enable_biometrics_unlock_title">ביומטרי אחרי הפעלה מחדש</string>
+    <!--<string name="enable_fingerprint_unlock_summary">הפעלת שימוש בטביעת אצבע בפתיחת מסך הנעילה אחרי הפעלה מחדש</string>
+    <string name="enable_fingerprint_unlock_title">טביעת אצבע אחרי הפעלה מחדש</string>-->string
+    <string name="enable_biometrics_unlock_summary">הפעלת שימוש בטביעת אצבע וביומטרי בפתיחת מסך הנעילה אחרי הפעלה מחדש</string>
+    <string name="enable_biometrics_unlock_title">אצבע וביומטרי אחרי הפעלה מחדש</string>
     <string name="reboot_confirm_recovery">הפעלה מחדש למצב Recovery</string>
     <string name="reboot_confirm_download">הפעלה מחדש למצב Download</string>
     <string name="clock">שעון</string>

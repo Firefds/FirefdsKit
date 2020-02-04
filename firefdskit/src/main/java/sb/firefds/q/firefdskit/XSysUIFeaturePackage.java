@@ -46,7 +46,7 @@ import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_LOW_BATTERY
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_VOLUME_CONTROL_SOUND;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_VOLUME_WARNING;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_BIOMETRICS_UNLOCK;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_FINGERPRINT_UNLOCK;
+//import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_FINGERPRINT_UNLOCK;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_SAMSUNG_BLUR;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_HIDE_CHARGING_NOTIFICATION;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_MAX_SUPPORTED_USERS;
@@ -126,13 +126,17 @@ public class XSysUIFeaturePackage {
                         });
             }
 
-            if (prefs.getBoolean(PREF_ENABLE_FINGERPRINT_UNLOCK, false)) {
+            /*if (prefs.getBoolean(PREF_ENABLE_FINGERPRINT_UNLOCK, false)) {
+                XposedHelpers.findAndHookMethod(KEYGUARD_UPDATE_MONITOR,
+                        classLoader,
+                        "isUnlockCompleted",
+                        XC_MethodReplacement.returnConstant(Boolean.TRUE));
                 XposedHelpers.findAndHookMethod(KEYGUARD_UPDATE_MONITOR,
                         classLoader,
                         "isUnlockWithFingerprintPossible",
                         int.class,
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
-            }
+            }*/
 
             if (prefs.getBoolean(PREF_ENABLE_BIOMETRICS_UNLOCK, false)) {
                 XposedHelpers.findAndHookMethod(KEYGUARD_UPDATE_MONITOR,
