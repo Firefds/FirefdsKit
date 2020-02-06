@@ -34,8 +34,7 @@ The module has the following features:
 - Show seconds in status bar clock toggle
 - Show clock date on right of clock toggle
 - Add date to status bar clock options
-- Enable fingerprint unlock on reboot toggle
-- Enable biometrics unlock on reboot toggle
+- Enable biometrics and fingerprints unlock on reboot toggle
 - Add network speed menu to show network speed in the status bar
 - Data icon symbol selection (4G, LTE, 4G+, 4.5G)
 - Show Data usage view in quick panel
