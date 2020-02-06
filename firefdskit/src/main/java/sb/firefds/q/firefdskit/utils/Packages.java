@@ -31,6 +31,5 @@ public class Packages {
     public static final String FOTA_AGENT = "com.wssyncmldm";
     public static final String SCREEN_RECORDER = "com.sec.app.screenrecorder";
     public static final String SAMSUNG_MESSAGING = "com.samsung.android.messaging";
-    public static final String TOUCHWIZ_LAUNCHER = "com.sec.android.app.launcher";
     public static final String SAMSUNG_CONTACTS = "com.samsung.android.contacts";
 }

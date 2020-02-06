@@ -130,8 +130,6 @@
     <string name="disable_flag_secure_off">דגל אבטחה מבוטל</string>
     <string name="lockscreen">מסך נעילה</string>
     <string name="screen_unlock">פתיחת נעילת מסך</string>
-    <!--<string name="enable_fingerprint_unlock_summary">הפעלת שימוש בטביעת אצבע בפתיחת מסך הנעילה אחרי הפעלה מחדש</string>
-    <string name="enable_fingerprint_unlock_title">טביעת אצבע אחרי הפעלה מחדש</string>-->string
     <string name="enable_biometrics_unlock_summary">הפעלת שימוש בטביעת אצבע וביומטרי בפתיחת מסך הנעילה אחרי הפעלה מחדש</string>
     <string name="enable_biometrics_unlock_title">אצבע וביומטרי אחרי הפעלה מחדש</string>
     <string name="reboot_confirm_recovery">הפעלה מחדש למצב Recovery</string>
@@ -213,7 +211,6 @@
     <string name="transition_effect_fan">מאוורר</string>
     <string name="transition_effect_rotate">סיבוב</string>
     <string name="transition_effect_zoom">זום</string>
-    <string name="launcher">מסך הבית</string>
     <string name="custom_recovery_title">התאמה אישית של טקסט הפעלה למצב Recovery</string>
     <string name="custom_recovery_confirmation_title">התאמה אישית של טקסט אישור הפעלה למצב Recovery</string>
     <string name="power_menu_options">אפשרויות תפריט כיבוי</string>

@@ -154,14 +154,6 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             }
         }
 
-        if (lpparam.packageName.equals(Packages.TOUCHWIZ_LAUNCHER)) {
-            try {
-                XTouchwizLauncherPackage.doHook(prefs, lpparam.classLoader);
-            } catch (Exception e1) {
-                XposedBridge.log(e1);
-            }
-        }
-
         if (lpparam.packageName.equals(Packages.SAMSUNG_CONTACTS)) {
             try {
                 XContactsPackage.doHook(prefs, lpparam.classLoader);

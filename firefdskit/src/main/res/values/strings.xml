@@ -130,8 +130,6 @@
     <string name="disable_flag_secure_on">Secure flag enabled</string>
     <string name="disable_flag_secure_off">Secure flag disabled</string>
     <string name="screen_unlock">Screen Unlock</string>
-    <!--<string name="enable_fingerprint_unlock_summary">Enable fingerprint unlock on reboot</string>
-    <string name="enable_fingerprint_unlock_title">Fingerprint Unlock on Reboot</string>-->
     <string name="enable_biometrics_unlock_summary">Enable fingerprint and biometrics unlock on reboot</string>
     <string name="enable_biometrics_unlock_title">Enable Fingerprint and Biometrics Unlock on Reboot</string>
     <string name="reboot_confirm_recovery">Reboot to Recovery mode</string>
@@ -213,7 +211,6 @@
     <string name="transition_effect_fan">Fan</string>
     <string name="transition_effect_rotate">Rotate</string>
     <string name="transition_effect_zoom">Zoom</string>
-    <string name="launcher">Launcher</string>
     <string name="custom_recovery_title">Custom Recovery Mode Text</string>
     <string name="custom_recovery_confirmation_title">Custom Recovery Mode Confirmation Text</string>
     <string name="power_menu_options_custom_text">Custom Texts</string>

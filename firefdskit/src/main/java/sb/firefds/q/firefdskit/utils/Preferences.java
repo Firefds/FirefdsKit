@@ -22,7 +22,6 @@ public class Preferences {
     public static final String PREF_HIDE_CARRIER_LABEL = "hideCarrierLabel";
     public static final String PREF_CARRIER_SIZE = "carrierSize";
 
-    //public static final String PREF_ENABLE_FINGERPRINT_UNLOCK = "enableFingerprintUnlock";
     public static final String PREF_ENABLE_BIOMETRICS_UNLOCK = "enableBiometricsUnlock";
 
     public static final String PREF_DISABLE_VOLUME_WARNING = "disableLoudVolumeWarning";
@@ -43,7 +42,6 @@ public class Preferences {
     public static final String PREF_CUSTOM_RECOVERY = "customRecovery";
     public static final String PREF_CUSTOM_RECOVERY_CONFIRMATION = "customRecoveryConfirmation";
     public static final String PREF_DISABLE_RESTART_CONFIRMATION = "disbaleRestartConfirmation";
-    //public static final String PREF_NAVIGATION_BAR_COLOR = "navigationBarColor";
     public static final String PREF_SUPPORTS_MULTIPLE_USERS = "supportsMultipleUsers";
     public static final String PREF_MAX_SUPPORTED_USERS = "maxSupportedUsers";
     public static final String PREF_SCREEN_TIMEOUT_SECONDS = "screenTimeoutSeconds";
@@ -53,7 +51,6 @@ public class Preferences {
     public static final String PREF_HIDE_MTP_NOTIFICATION = "hideMTPNotification";
     public static final String PREF_DISABLE_TEMPERATURE_CHECKS = "disableTemperatureChecks";
     public static final String PREF_ENABLE_CAMERA_SHUTTER_MENU = "enableCameraShutterMenu";
-    public static final String PREF_TRANSITION_EFFECT = "transitionEffect";
 
     public static final String PREF_ENABLE_CALL_ADD = "enableCallAdd";
     public static final String PREF_ENABLE_CALL_RECORDING_MENU = "enableCallRecordingMenu";
