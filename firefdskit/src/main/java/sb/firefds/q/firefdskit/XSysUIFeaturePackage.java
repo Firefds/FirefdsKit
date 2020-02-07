@@ -97,10 +97,6 @@ public class XSysUIFeaturePackage {
                                 param.args[0] = 1;
                             }
                         });
-                /*XposedHelpers.findAndHookMethod(SETTINGS_HELPER,
-                        classLoader,
-                        "isBrightnessEyeStrainDialogEnabled",
-                        XC_MethodReplacement.returnConstant(Boolean.FALSE));*/
                 XposedHelpers.findAndHookConstructor(SETTINGS_HELPER,
                         classLoader,
                         Context.class,
@@ -125,18 +121,6 @@ public class XSysUIFeaturePackage {
                             }
                         });
             }
-
-            /*if (prefs.getBoolean(PREF_ENABLE_FINGERPRINT_UNLOCK, false)) {
-                XposedHelpers.findAndHookMethod(KEYGUARD_UPDATE_MONITOR,
-                        classLoader,
-                        "isUnlockCompleted",
-                        XC_MethodReplacement.returnConstant(Boolean.TRUE));
-                XposedHelpers.findAndHookMethod(KEYGUARD_UPDATE_MONITOR,
-                        classLoader,
-                        "isUnlockWithFingerprintPossible",
-                        int.class,
-                        XC_MethodReplacement.returnConstant(Boolean.TRUE));
-            }*/
 
             if (prefs.getBoolean(PREF_ENABLE_BIOMETRICS_UNLOCK, false)) {
                 XposedHelpers.findAndHookMethod(KEYGUARD_UPDATE_MONITOR,
