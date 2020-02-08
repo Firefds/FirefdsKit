@@ -31,6 +31,8 @@ public class XPM29 {
     private static final String WRITE_SETTINGS = "android.permission.WRITE_SETTINGS";
     private static final String STATUSBAR = "android.permission.EXPAND_STATUS_BAR";
     private static final String RECOVERY = "android.permission.RECOVERY";
+    private static final String WRITE_EXTERNAL_STORAGE = "android.permission.WRITE_EXTERNAL_STORAGE";
+    private static final String RECORD_AUDIO = "android.permission.RECORD_AUDIO";
 
     public static void doHook(final ClassLoader classLoader) {
         try {
@@ -72,6 +74,16 @@ public class XPM29 {
                                     final Object pAccess = XposedHelpers.callMethod(permissions, "get", RECOVERY);
                                     XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
                                 }
+
+                                if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", WRITE_EXTERNAL_STORAGE)) {
+                                    final Object pAccess = XposedHelpers.callMethod(permissions, "get", WRITE_EXTERNAL_STORAGE);
+                                    XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
+                                }
+
+                                if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", RECORD_AUDIO)) {
+                                    final Object pAccess = XposedHelpers.callMethod(permissions, "get", RECORD_AUDIO);
+                                    XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
+                                }
                             }
                             if (SYSTEM_UI.equals(pkgName)) {
                                 final Object extras = XposedHelpers.getObjectField(param.args[0], "mExtras");
@@ -86,6 +98,16 @@ public class XPM29 {
 
                                 if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", RECOVERY)) {
                                     final Object pAccess = XposedHelpers.callMethod(permissions, "get", RECOVERY);
+                                    XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
+                                }
+
+                                if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", WRITE_EXTERNAL_STORAGE)) {
+                                    final Object pAccess = XposedHelpers.callMethod(permissions, "get", WRITE_EXTERNAL_STORAGE);
+                                    XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
+                                }
+
+                                if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", RECORD_AUDIO)) {
+                                    final Object pAccess = XposedHelpers.callMethod(permissions, "get", RECORD_AUDIO);
                                     XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
                                 }
                             }

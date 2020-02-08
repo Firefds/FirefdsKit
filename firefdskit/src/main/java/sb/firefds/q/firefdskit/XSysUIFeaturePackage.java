@@ -46,7 +46,6 @@ import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_LOW_BATTERY
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_VOLUME_CONTROL_SOUND;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_VOLUME_WARNING;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_BIOMETRICS_UNLOCK;
-//import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_FINGERPRINT_UNLOCK;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_SAMSUNG_BLUR;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_HIDE_CHARGING_NOTIFICATION;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_MAX_SUPPORTED_USERS;
@@ -262,6 +261,16 @@ public class XSysUIFeaturePackage {
                         });
             }
 
+            /*XposedHelpers.findAndHookMethod("com.android.systemui.screenrecord.RecordingService",
+                    classLoader,
+                    "createSaveNotification",
+                    Path.class,
+                    new XC_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param) {
+                            param.setResult(null);
+                        }
+                    });*/
         } catch (Throwable e) {
             XposedBridge.log(e);
         }
