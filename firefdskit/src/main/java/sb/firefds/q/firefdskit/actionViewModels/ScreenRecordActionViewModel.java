@@ -44,7 +44,7 @@ public class ScreenRecordActionViewModel extends FirefdsKitActionViewModel {
             XposedBridge.log("Activity not found - ScreenCapture. Trying natively");
             Intent intent2 = new Intent()
                     .setComponent(new ComponentName(SYSTEM_UI, NATIVE_SCREEN_RECORDER_ACTIVITY))
-                    .setFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
                 getmContext().startActivity(intent2);
             } catch (Throwable e1) {
