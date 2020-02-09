@@ -49,72 +49,35 @@ public class XPM29 {
                         @Override
                         protected void afterHookedMethod(MethodHookParam param) {
                             final String pkgName = (String) XposedHelpers.getObjectField(param.args[0], "packageName");
-                            if (FIREFDSKIT.equals(pkgName)) {
+                            if (pkgName.equals(FIREFDSKIT) || pkgName.equals(SYSTEM_UI)) {
                                 final Object extras = XposedHelpers.getObjectField(param.args[0], "mExtras");
                                 final Object ps = XposedHelpers.callMethod(extras, "getPermissionsState");
                                 final Object settings = XposedHelpers.getObjectField(param.thisObject, "mSettings");
                                 final Object permissions = XposedHelpers.getObjectField(settings, "mPermissions");
 
-                                if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", REBOOT)) {
-                                    final Object pAccess = XposedHelpers.callMethod(permissions, "get", REBOOT);
-                                    XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
-                                }
-
-                                if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", STATUSBAR)) {
-                                    final Object pAccess = XposedHelpers.callMethod(permissions, "get", STATUSBAR);
-                                    XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
-                                }
-
-                                if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", WRITE_SETTINGS)) {
-                                    final Object pAccess = XposedHelpers.callMethod(permissions, "get", WRITE_SETTINGS);
-                                    XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
-                                }
-
-                                if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", RECOVERY)) {
-                                    final Object pAccess = XposedHelpers.callMethod(permissions, "get", RECOVERY);
-                                    XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
-                                }
-
-                                if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", WRITE_EXTERNAL_STORAGE)) {
-                                    final Object pAccess = XposedHelpers.callMethod(permissions, "get", WRITE_EXTERNAL_STORAGE);
-                                    XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
-                                }
-
-                                if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", RECORD_AUDIO)) {
-                                    final Object pAccess = XposedHelpers.callMethod(permissions, "get", RECORD_AUDIO);
-                                    XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
-                                }
-                            }
-                            if (SYSTEM_UI.equals(pkgName)) {
-                                final Object extras = XposedHelpers.getObjectField(param.args[0], "mExtras");
-                                final Object ps = XposedHelpers.callMethod(extras, "getPermissionsState");
-                                final Object settings = XposedHelpers.getObjectField(param.thisObject, "mSettings");
-                                final Object permissions = XposedHelpers.getObjectField(settings, "mPermissions");
-
-                                if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", REBOOT)) {
-                                    final Object pAccess = XposedHelpers.callMethod(permissions, "get", REBOOT);
-                                    XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
-                                }
-
-                                if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", RECOVERY)) {
-                                    final Object pAccess = XposedHelpers.callMethod(permissions, "get", RECOVERY);
-                                    XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
-                                }
-
-                                if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", WRITE_EXTERNAL_STORAGE)) {
-                                    final Object pAccess = XposedHelpers.callMethod(permissions, "get", WRITE_EXTERNAL_STORAGE);
-                                    XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
-                                }
-
-                                if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", RECORD_AUDIO)) {
-                                    final Object pAccess = XposedHelpers.callMethod(permissions, "get", RECORD_AUDIO);
-                                    XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
+                                switch (pkgName) {
+                                    case FIREFDSKIT:
+                                        grantPermission(ps, permissions, STATUSBAR);
+                                        grantPermission(ps, permissions, WRITE_SETTINGS);
+                                    case SYSTEM_UI:
+                                        grantPermission(ps, permissions, REBOOT);
+                                        grantPermission(ps, permissions, RECOVERY);
+                                        grantPermission(ps, permissions, WRITE_EXTERNAL_STORAGE);
+                                        grantPermission(ps, permissions, RECORD_AUDIO);
+                                        break;
                                 }
                             }
                         }
                     });
         } catch (Throwable e) {
             XposedBridge.log(e);
+        }
+    }
+
+    private static void grantPermission(Object ps, Object permissions, String permission) {
+        if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", permission)) {
+            final Object pAccess = XposedHelpers.callMethod(permissions, "get", permission);
+            XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
         }
     }
 }
