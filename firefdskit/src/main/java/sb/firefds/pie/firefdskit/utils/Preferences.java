@@ -59,6 +59,7 @@ public class Preferences {
     public static final String PREF_ENABLE_CALL_RECORDING_MENU = "enableCallRecordingMenu";
     public static final String PREF_ENABLE_AUTO_CALL_RECORDING = "enableAutoCallRecording";
     public static final String PREF_DISABLE_NUMBER_FORMATTING = "disableNumberFormatting";
+    public static final String PREF_DISABLE_FIX_CONTACTS_SANDHOOK_CRASH = "disableFixContactsSandhookCrash";
 
     public static final String PREF_DISABLE_SMS_TO_MMS = "disableSmsToMmsConversion";
     public static final String PREF_FORCE_MMS_CONNECT = "forceMMSConnect";

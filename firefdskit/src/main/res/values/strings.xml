@@ -224,4 +224,7 @@
     <string name="custom_recovery_confirmation_title">Custom Recovery Mode Confirmation Text</string>
     <string name="power_menu_options_custom_text">Custom Texts</string>
     <string name="power_menu_options">Power Options</string>
+    <string name="contacts_sandhook_crash_on">Sandhook contacts crash fix enabled</string>
+    <string name="contacts_sandhook_crash_off">Sandhook contacts crash fix disabled</string>
+    <string name="fix_contacts_sandhook_crash">Disable Contacts crash fix</string>
 </resources>

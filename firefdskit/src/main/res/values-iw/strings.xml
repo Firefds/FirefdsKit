@@ -224,4 +224,7 @@
     <string name="custom_recovery_confirmation_title">התאמה אישית של טקסט אישור הפעלה למצב Recovery</string>
     <string name="power_menu_options">אפשרויות תפריט כיבוי</string>
     <string name="power_menu_options_custom_text">טקסט בהתאמה אישית</string>
+    <string name="contacts_sandhook_crash_on">תיקון קריסת אנשי קשר פועל</string>
+    <string name="contacts_sandhook_crash_off">תיקון קריסת אנשי קשר כבוי</string>
+    <string name="fix_contacts_sandhook_crash">ביטול תיקון קריסת אנשי קשר</string>
 </resources>
