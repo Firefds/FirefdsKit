@@ -60,8 +60,8 @@ public class XSysUIFeaturePackage {
     private static final String VOLUME_DIALOG_CONTROLLER_IMPL = SYSTEM_UI + ".volume.VolumeDialogControllerImpl";
     private static final String KEYGUARD_UPDATE_MONITOR = "com.android.keyguard.KeyguardUpdateMonitor";
     private static final String QS_CLOCK = SYSTEM_UI + ".statusbar.policy.QSClock";
-    private static final String STATE = SYSTEM_UI + ".statusbar.phone.StatusBarWindowManager.State";
-    private static final String STATUS_BAR_WINDOW_MANAGER = SYSTEM_UI + ".statusbar.phone.StatusBarWindowManager";
+    private static final String STATUS_BAR_WINDOW_CONTROLLER = SYSTEM_UI + ".statusbar.phone.StatusBarWindowController";
+    private static final String STATE = STATUS_BAR_WINDOW_CONTROLLER + ".State";
     private static final String POWER_NOTIFICATION_WARNINGS = SYSTEM_UI + ".power.PowerNotificationWarnings";
     private static final String SETTINGS_HELPER = SYSTEM_UI + ".util.SettingsHelper";
     private static final String SEC_VOLUME_DIALOG_IMPL = SYSTEM_UI + ".volume.SecVolumeDialogImpl";
@@ -215,14 +215,14 @@ public class XSysUIFeaturePackage {
             if (prefs.getBoolean(PREF_ENABLE_SAMSUNG_BLUR, true)) {
                 Class<?> stateClass = XposedHelpers.findClass(STATE, classLoader);
 
-                XposedHelpers.findAndHookMethod(STATUS_BAR_WINDOW_MANAGER,
+                XposedHelpers.findAndHookMethod(STATUS_BAR_WINDOW_CONTROLLER,
                         classLoader,
-                        "applyCoverFlags",
+                        "applyBouncer",
                         stateClass,
                         new XC_MethodHook() {
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
-                                XposedHelpers.callMethod(param.thisObject, "applyBlur", 0.15f);
+                                XposedHelpers.callMethod(param.thisObject, "applyPanelBlur", 0.15f);
                             }
                         });
             }
