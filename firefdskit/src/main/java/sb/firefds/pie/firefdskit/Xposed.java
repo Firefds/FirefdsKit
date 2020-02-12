@@ -14,12 +14,17 @@
  */
 package sb.firefds.pie.firefdskit;
 
+import android.view.SurfaceView;
+import android.view.Window;
+import android.view.WindowManager;
+
 import androidx.annotation.Keep;
 
 import java.io.File;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
+import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
@@ -27,6 +32,8 @@ import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 import sb.firefds.pie.firefdskit.utils.Packages;
 import sb.firefds.pie.firefdskit.utils.Utils;
+
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_SECURE_FLAG;
 
 @Keep
 public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
@@ -64,6 +71,35 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                 }
             } else {
                 XposedBridge.log("Xposed cannot read XTouchWiz preferences!");
+            }
+        }
+        if (prefs.getBoolean(PREF_DISABLE_SECURE_FLAG, false)) {
+            try {
+                XposedHelpers.findAndHookMethod(Window.class,
+                        "setFlags",
+                        int.class,
+                        int.class,
+                        new XC_MethodHook() {
+                            @Override
+                            protected void beforeHookedMethod(MethodHookParam param) {
+                                Integer flags = (Integer) param.args[0];
+                                flags &= ~WindowManager.LayoutParams.FLAG_SECURE;
+                                param.args[0] = flags;
+                            }
+                        });
+
+                XposedHelpers.findAndHookMethod(SurfaceView.class,
+                        "setSecure",
+                        boolean.class,
+                        new XC_MethodHook() {
+                            @Override
+                            protected void beforeHookedMethod(MethodHookParam param) {
+                                param.args[0] = false;
+                            }
+                        });
+
+            } catch (Throwable e) {
+                XposedBridge.log(e);
             }
         }
 
