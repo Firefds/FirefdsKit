@@ -29,7 +29,7 @@ public class Packages {
     public static final String NFC = "com.android.nfc";
     public static final String MTP_APPLICATION = "com.samsung.android.MtpApplication";
     public static final String FOTA_AGENT = "com.wssyncmldm";
-    public static final String SCREEN_RECORDER = "com.sec.app.screenrecorder";
+    public static final String SMART_CAPTURE = "com.samsung.android.app.smartcapture";
     public static final String SAMSUNG_MESSAGING = "com.samsung.android.messaging";
     public static final String SAMSUNG_CONTACTS = "com.samsung.android.contacts";
 }
