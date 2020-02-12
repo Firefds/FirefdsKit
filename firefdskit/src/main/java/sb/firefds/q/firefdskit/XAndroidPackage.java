@@ -16,6 +16,7 @@ package sb.firefds.q.firefdskit;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.Signature;
 import android.os.Handler;
@@ -41,6 +42,9 @@ public class XAndroidPackage {
 
     private static final String WINDOW_STATE = "com.android.server.wm.WindowState";
     private static final String WINDOW_MANAGER_SERVICE = "com.android.server.wm.WindowManagerService";
+    private static final String DEVICE_POLICY_MANAGER_SERVICE = "com.android.server.devicepolicy.DevicePolicyManagerService";
+    private static final String DEVICE_POLICY_CACHE_IMPL = "com.android.server.devicepolicy.DevicePolicyCacheImpl";
+    private static final String WINDOW_SURFACE_CONTROLLER = "com.android.server.wm.WindowSurfaceController";
     private static final String PACKAGE_MANAGER_SERVICE_UTILS = "com.android.server.pm.PackageManagerServiceUtils";
     private static final String PACKAGE_MANAGER_SERVICE = "com.android.server.pm.PackageManagerService";
     private static final String INSTALLER = "com.android.server.pm.Installer";
@@ -61,6 +65,54 @@ public class XAndroidPackage {
                         "isSecureLocked",
                         windowStateClass,
                         XC_MethodReplacement.returnConstant(Boolean.FALSE));
+
+                XposedHelpers.findAndHookMethod(DEVICE_POLICY_MANAGER_SERVICE,
+                        classLoader,
+                        "getScreenCaptureDisabled",
+                        ComponentName.class,
+                        int.class,
+                        XC_MethodReplacement.returnConstant(Boolean.TRUE));
+
+                XposedHelpers.findAndHookMethod(DEVICE_POLICY_MANAGER_SERVICE,
+                        classLoader,
+                        "setScreenCaptureDisabled",
+                        ComponentName.class,
+                        boolean.class,
+                        new XC_MethodHook() {
+                            @Override
+                            protected void beforeHookedMethod(MethodHookParam param) {
+                                param.setResult(null);
+                            }
+                        });
+
+                XposedHelpers.findAndHookMethod(DEVICE_POLICY_CACHE_IMPL,
+                        classLoader,
+                        "getScreenCaptureDisabled",
+                        int.class,
+                        XC_MethodReplacement.returnConstant(Boolean.TRUE));
+
+                XposedHelpers.findAndHookMethod(DEVICE_POLICY_CACHE_IMPL,
+                        classLoader,
+                        "setScreenCaptureDisabled",
+                        int.class,
+                        boolean.class,
+                        new XC_MethodHook() {
+                            @Override
+                            protected void beforeHookedMethod(MethodHookParam param) {
+                                param.setResult(null);
+                            }
+                        });
+
+                XposedHelpers.findAndHookMethod(WINDOW_SURFACE_CONTROLLER,
+                        classLoader,
+                        "setSecure",
+                        boolean.class,
+                        new XC_MethodHook() {
+                            @Override
+                            protected void beforeHookedMethod(MethodHookParam param) {
+                                param.setResult(null);
+                            }
+                        });
             }
 
             if (prefs.getBoolean(PREF_DISABLE_SIGNATURE_CHECK, false)) {
