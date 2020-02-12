@@ -16,7 +16,7 @@ package sb.firefds.q.firefdskit;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-//import android.content.ComponentName;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.Signature;
 import android.os.Handler;
@@ -43,11 +43,11 @@ import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE_U
 
 public class XAndroidPackage {
 
-   /* private static final String WINDOW_STATE = "com.android.server.wm.WindowState";
+    private static final String WINDOW_STATE = "com.android.server.wm.WindowState";
     private static final String WINDOW_MANAGER_SERVICE = "com.android.server.wm.WindowManagerService";
     private static final String DEVICE_POLICY_MANAGER_SERVICE = "com.android.server.devicepolicy.DevicePolicyManagerService";
     private static final String DEVICE_POLICY_CACHE_IMPL = "com.android.server.devicepolicy.DevicePolicyCacheImpl";
-    private static final String WINDOW_SURFACE_CONTROLLER = "com.android.server.wm.WindowSurfaceController";*/
+    private static final String WINDOW_SURFACE_CONTROLLER = "com.android.server.wm.WindowSurfaceController";
     private static final String PACKAGE_MANAGER_SERVICE_UTILS = "com.android.server.pm.PackageManagerServiceUtils";
     private static final String PACKAGE_MANAGER_SERVICE = "com.android.server.pm.PackageManagerService";
     private static final String INSTALLER = "com.android.server.pm.Installer";
@@ -61,9 +61,9 @@ public class XAndroidPackage {
 
         try {
             if (prefs.getBoolean(PREF_DISABLE_SECURE_FLAG, false)) {
-                //Class<?> windowStateClass = XposedHelpers.findClass(WINDOW_STATE, classLoader);
+                Class<?> windowStateClass = XposedHelpers.findClass(WINDOW_STATE, classLoader);
 
-    /*            XposedHelpers.findAndHookMethod(WINDOW_MANAGER_SERVICE,
+                XposedHelpers.findAndHookMethod(WINDOW_MANAGER_SERVICE,
                         classLoader,
                         "isSecureLocked",
                         windowStateClass,
@@ -115,9 +115,10 @@ public class XAndroidPackage {
                             protected void beforeHookedMethod(MethodHookParam param) {
                                 param.setResult(null);
                             }
-                        });*/
+                        });
 
-                XposedHelpers.findAndHookMethod(Window.class, "setFlags",
+                XposedHelpers.findAndHookMethod(Window.class,
+                        "setFlags",
                         int.class,
                         int.class,
                         new XC_MethodHook() {
@@ -128,7 +129,8 @@ public class XAndroidPackage {
                                 param.args[0] = flags;
                             }
                         });
-                XposedHelpers.findAndHookMethod(SurfaceView.class, "setSecure",
+                XposedHelpers.findAndHookMethod(SurfaceView.class,
+                        "setSecure",
                         boolean.class,
                         new XC_MethodHook() {
                             @Override
