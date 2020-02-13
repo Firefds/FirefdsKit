@@ -227,4 +227,6 @@
     <string name="contacts_sandhook_crash_on">Sandhook contacts crash fix enabled</string>
     <string name="contacts_sandhook_crash_off">Sandhook contacts crash fix disabled</string>
     <string name="fix_contacts_sandhook_crash">Disable Contacts crash fix</string>
+    <string name="disable_power_menu_secure_lockscreen_title">Disable Power Menu On Lockscreen</string>
+    <string name="disable_power_menu_secure_lockscreen_summary">Disable display of power menu when device is secure locked</string>
 </resources>

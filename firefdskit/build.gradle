@@ -17,7 +17,7 @@ android {
         minSdkVersion 28
         targetSdkVersion 29
         versionCode 1051
-        versionName "1.0.5.1-STABLE-7"
+        versionName "1.0.6.0-STABLE-7"
         project.ext.set("archivesBaseName", "FirefdsKit_" + versionName)
     }
     buildTypes {

@@ -227,4 +227,6 @@
     <string name="contacts_sandhook_crash_on">תיקון קריסת אנשי קשר פועל</string>
     <string name="contacts_sandhook_crash_off">תיקון קריסת אנשי קשר כבוי</string>
     <string name="fix_contacts_sandhook_crash">ביטול תיקון קריסת אנשי קשר</string>
+    <string name="disable_power_menu_secure_lockscreen_title">מניעת תפריט כיבוי בנעילת מסך</string>
+    <string name="disable_power_menu_secure_lockscreen_summary">מניעת הופעת תפריט הכיבוי בעת נעילת מסך בטוחה</string>
 </resources>
