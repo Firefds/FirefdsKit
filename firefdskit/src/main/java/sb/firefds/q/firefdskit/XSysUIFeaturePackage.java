@@ -260,17 +260,6 @@ public class XSysUIFeaturePackage {
                             }
                         });
             }
-
-            /*XposedHelpers.findAndHookMethod("com.android.systemui.screenrecord.RecordingService",
-                    classLoader,
-                    "createSaveNotification",
-                    Path.class,
-                    new XC_MethodHook() {
-                        @Override
-                        protected void beforeHookedMethod(MethodHookParam param) {
-                            param.setResult(null);
-                        }
-                    });*/
         } catch (Throwable e) {
             XposedBridge.log(e);
         }
