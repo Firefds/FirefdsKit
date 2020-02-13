@@ -74,6 +74,7 @@ import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_RESTART;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_RESTART_SYSTEMUI;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_SCREENSHOT;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_SCREEN_RECORD;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_REPLACE_RECOVERY_ICON;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE_USERS;
 
 public class XSysUIGlobalActions {
@@ -101,6 +102,7 @@ public class XSysUIGlobalActions {
     private static Drawable mRestartSystemUiIcon;
     private static Drawable mFlashLightIcon;
     private static Drawable mScreenRecordIcon;
+    private static Drawable mRestartStockIcon;
     private static String mRebootConfirmRecoveryStr;
     private static String mRebootConfirmDownloadStr;
     private static String mRestartSystemUiConfirmStr;
@@ -156,6 +158,7 @@ public class XSysUIGlobalActions {
                                 mRestartSystemUiIcon = gbContext.getDrawable(R.drawable.tw_ic_do_restart_ui_stock);
                                 mFlashLightIcon = gbContext.getDrawable(R.drawable.tw_ic_do_torchlight_stock);
                                 mScreenRecordIcon = gbContext.getDrawable(R.drawable.tw_ic_do_screenrecord_stock);
+                                mRestartStockIcon = gbContext.getDrawable(R.drawable.tw_ic_do_restart_stock);
 
                                 mRebootConfirmRecoveryStr = prefs.getString(PREF_CUSTOM_RECOVERY_CONFIRMATION,
                                         gbContext.getString(R.string.reboot_confirm_recovery));
@@ -320,7 +323,11 @@ public class XSysUIGlobalActions {
                                         .findViewById(resourceFactory.get(ResourceType.ID_ICON));
                                 switch (actionViewModel.getActionInfo().getName()) {
                                     case RECOVERY_ACTION:
-                                        localImageView.setImageDrawable(mRecoveryIcon);
+                                        if (prefs.getBoolean(PREF_REPLACE_RECOVERY_ICON, false)) {
+                                            localImageView.setImageDrawable(mRestartStockIcon);
+                                        } else {
+                                            localImageView.setImageDrawable(mRecoveryIcon);
+                                        }
                                         break;
                                     case DOWNLOAD_ACTION:
                                         localImageView.setImageDrawable(mDownloadIcon);

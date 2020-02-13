@@ -197,5 +197,10 @@
     <string name="custom_recovery_title">התאמה אישית של טקסט הפעלה למצב Recovery</string>
     <string name="custom_recovery_confirmation_title">התאמה אישית של טקסט אישור הפעלה למצב Recovery</string>
     <string name="power_menu_options">אפשרויות תפריט כיבוי</string>
-    <string name="power_menu_options_custom_text">טקסט בהתאמה אישית</string>
+    <string name="power_menu_options_custom_tweaks">התאמות אישיות</string>
+    <string name="replace_recovery_icon_summary">החלפת אייקון הפעלה לRecovery באייקון הפעלה מחדש</string>
+    <string name="replace_recovery_icon_title">אייקון הפעלה לRecovery לאייקון הפעלה מחדש</string>
+    <string name="default_reboot_behavior_title">קביעת ברירת המחדל להפעלה מחדש לRecovery</string>
+    <string name="default_reboot_behavior_recovery">ברירת המחדל להפעלה מחדש נקבעה לRecovery</string>
+    <string name="default_reboot_behavior_reboot">ברירת המחדל להפעלה מחדש נקבעה להפעלה מחדש</string>
 </resources>

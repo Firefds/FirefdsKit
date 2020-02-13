@@ -196,6 +196,11 @@
     <string name="hide_charging_notification_title">Hide Charging Notification</string>
     <string name="custom_recovery_title">Custom Recovery Mode Text</string>
     <string name="custom_recovery_confirmation_title">Custom Recovery Mode Confirmation Text</string>
-    <string name="power_menu_options_custom_text">Custom Texts</string>
+    <string name="power_menu_options_custom_tweaks">Custom Tweaks</string>
     <string name="power_menu_options">Power Options</string>
+    <string name="replace_recovery_icon_summary">Replace Reboot to Recovery icon with Stock Reboot</string>
+    <string name="replace_recovery_icon_title">Reboot to Recovery Stock Reboot Icon</string>
+    <string name="default_reboot_behavior_title">Set Default Reboot Behavior to Recovery</string>
+    <string name="default_reboot_behavior_recovery">Default reboot behavior set to Recovery</string>
+    <string name="default_reboot_behavior_reboot">Default reboot behavior set to reboot</string>
 </resources>

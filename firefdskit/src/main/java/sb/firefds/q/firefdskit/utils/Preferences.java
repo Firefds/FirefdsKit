@@ -42,6 +42,8 @@ public class Preferences {
     public static final String PREF_CUSTOM_RECOVERY = "customRecovery";
     public static final String PREF_CUSTOM_RECOVERY_CONFIRMATION = "customRecoveryConfirmation";
     public static final String PREF_DISABLE_RESTART_CONFIRMATION = "disbaleRestartConfirmation";
+    public static final String PREF_REPLACE_RECOVERY_ICON = "replaceRecoveryIcon";
+    public static final String PREF_DEFAULT_REBOOT_BEHAVIOR = "defaultRebootBehavior";
     public static final String PREF_SUPPORTS_MULTIPLE_USERS = "supportsMultipleUsers";
     public static final String PREF_MAX_SUPPORTED_USERS = "maxSupportedUsers";
     public static final String PREF_SCREEN_TIMEOUT_SECONDS = "screenTimeoutSeconds";

@@ -65,7 +65,7 @@
             app:iconSpaceReserved="false" />
     </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory
-        android:title="@string/power_menu_options_custom_text"
+        android:title="@string/power_menu_options_custom_tweaks"
         app:iconSpaceReserved="false">
         <EditTextPreference
             android:defaultValue="@string/reboot_recovery"
@@ -81,5 +81,11 @@
             android:title="@string/custom_recovery_confirmation_title"
             app:iconSpaceReserved="false"
             app:useSimpleSummaryProvider="true" />
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="replaceRecoveryIcon"
+            android:summary="@string/replace_recovery_icon_summary"
+            android:title="@string/replace_recovery_icon_title"
+            app:iconSpaceReserved="false" />
     </androidx.preference.PreferenceCategory>
 </androidx.preference.PreferenceScreen>

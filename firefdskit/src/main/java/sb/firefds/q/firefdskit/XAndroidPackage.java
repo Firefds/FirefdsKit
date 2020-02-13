@@ -16,15 +16,11 @@ package sb.firefds.q.firefdskit;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.Signature;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.UserManager;
-import android.view.SurfaceView;
-import android.view.Window;
-import android.view.WindowManager;
 
 import java.util.List;
 
@@ -34,7 +30,7 @@ import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_SECURE_FLAG;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DEFAULT_REBOOT_BEHAVIOR;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_SIGNATURE_CHECK;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_HIDE_USB_NOTIFICATION;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_HIDE_VOLTE_ICON;
@@ -43,16 +39,12 @@ import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE_U
 
 public class XAndroidPackage {
 
-    private static final String WINDOW_STATE = "com.android.server.wm.WindowState";
-    private static final String WINDOW_MANAGER_SERVICE = "com.android.server.wm.WindowManagerService";
-    private static final String DEVICE_POLICY_MANAGER_SERVICE = "com.android.server.devicepolicy.DevicePolicyManagerService";
-    private static final String DEVICE_POLICY_CACHE_IMPL = "com.android.server.devicepolicy.DevicePolicyCacheImpl";
-    private static final String WINDOW_SURFACE_CONTROLLER = "com.android.server.wm.WindowSurfaceController";
     private static final String PACKAGE_MANAGER_SERVICE_UTILS = "com.android.server.pm.PackageManagerServiceUtils";
     private static final String PACKAGE_MANAGER_SERVICE = "com.android.server.pm.PackageManagerService";
     private static final String INSTALLER = "com.android.server.pm.Installer";
     private static final String STATUS_BAR_MANAGER_SERVICE = "com.android.server.statusbar.StatusBarManagerService";
     private static final String USB_HANDLER = "com.android.server.usb.UsbDeviceManager.UsbHandler";
+    private static final String SHUTDOWN_THREAD = "com.android.server.power.ShutdownThread";
     @SuppressLint("StaticFieldLeak")
     private static Context mPackageManagerServiceContext;
     private static boolean isFB;
@@ -60,82 +52,35 @@ public class XAndroidPackage {
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
         try {
-            if (prefs.getBoolean(PREF_DISABLE_SECURE_FLAG, false)) {
-                Class<?> windowStateClass = XposedHelpers.findClass(WINDOW_STATE, classLoader);
-
-                XposedHelpers.findAndHookMethod(WINDOW_MANAGER_SERVICE,
+            if (prefs.getBoolean(PREF_DEFAULT_REBOOT_BEHAVIOR, false)) {
+                XposedHelpers.findAndHookMethod(SHUTDOWN_THREAD,
                         classLoader,
-                        "isSecureLocked",
-                        windowStateClass,
-                        XC_MethodReplacement.returnConstant(Boolean.FALSE));
-
-                XposedHelpers.findAndHookMethod(DEVICE_POLICY_MANAGER_SERVICE,
-                        classLoader,
-                        "getScreenCaptureDisabled",
-                        ComponentName.class,
-                        int.class,
-                        XC_MethodReplacement.returnConstant(Boolean.TRUE));
-
-                XposedHelpers.findAndHookMethod(DEVICE_POLICY_MANAGER_SERVICE,
-                        classLoader,
-                        "setScreenCaptureDisabled",
-                        ComponentName.class,
+                        "reboot",
+                        Context.class,
+                        String.class,
                         boolean.class,
                         new XC_MethodHook() {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) {
-                                param.setResult(null);
+                                if (param.args[1].equals("userrequested")) {
+                                    param.args[1] = "recovery";
+                                }
                             }
                         });
 
-                XposedHelpers.findAndHookMethod(DEVICE_POLICY_CACHE_IMPL,
+                XposedHelpers.findAndHookMethod(SHUTDOWN_THREAD,
                         classLoader,
-                        "getScreenCaptureDisabled",
-                        int.class,
-                        XC_MethodReplacement.returnConstant(Boolean.TRUE));
-
-                XposedHelpers.findAndHookMethod(DEVICE_POLICY_CACHE_IMPL,
-                        classLoader,
-                        "setScreenCaptureDisabled",
-                        int.class,
+                        "reboot",
+                        Context.class,
+                        String.class,
                         boolean.class,
+                        String.class,
                         new XC_MethodHook() {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) {
-                                param.setResult(null);
-                            }
-                        });
-
-                XposedHelpers.findAndHookMethod(WINDOW_SURFACE_CONTROLLER,
-                        classLoader,
-                        "setSecure",
-                        boolean.class,
-                        new XC_MethodHook() {
-                            @Override
-                            protected void beforeHookedMethod(MethodHookParam param) {
-                                param.setResult(null);
-                            }
-                        });
-
-                XposedHelpers.findAndHookMethod(Window.class,
-                        "setFlags",
-                        int.class,
-                        int.class,
-                        new XC_MethodHook() {
-                            @Override
-                            protected void beforeHookedMethod(MethodHookParam param) {
-                                Integer flags = (Integer) param.args[0];
-                                flags &= ~WindowManager.LayoutParams.FLAG_SECURE;
-                                param.args[0] = flags;
-                            }
-                        });
-                XposedHelpers.findAndHookMethod(SurfaceView.class,
-                        "setSecure",
-                        boolean.class,
-                        new XC_MethodHook() {
-                            @Override
-                            protected void beforeHookedMethod(MethodHookParam param) {
-                                param.args[0] = false;
+                                if (param.args[1].equals("userrequested")) {
+                                    param.args[1] = "recovery";
+                                }
                             }
                         });
             }
