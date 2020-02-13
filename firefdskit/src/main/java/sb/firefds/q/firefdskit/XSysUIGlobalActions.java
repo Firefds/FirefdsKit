@@ -176,7 +176,7 @@ public class XSysUIGlobalActions {
                                 mRestartSystemUiIcon = gbContext.getDrawable(R.drawable.tw_ic_do_restart_ui_stock);
                                 mFlashLightIcon = gbContext.getDrawable(R.drawable.tw_ic_do_torchlight_stock);
                                 mScreenRecordIcon = gbContext.getDrawable(R.drawable.tw_ic_do_screenrecord_stock);
-                                mRestartStockIcon = gbContext.getDrawable(R.drawable.tw_ic_do_restart_stock);
+                                mRestartStockIcon = gbContext.getDrawable(R.drawable.tw_ic_do_restart);
 
                                 mRebootConfirmRecoveryStr = prefs.getString(PREF_CUSTOM_RECOVERY_CONFIRMATION,
                                         gbContext.getString(R.string.reboot_confirm_recovery));
