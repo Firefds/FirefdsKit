@@ -30,7 +30,7 @@ import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DEFAULT_REBOOT_BEHAVIOR;
+//import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DEFAULT_REBOOT_BEHAVIOR;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_SIGNATURE_CHECK;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_HIDE_USB_NOTIFICATION;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_HIDE_VOLTE_ICON;
@@ -44,7 +44,7 @@ public class XAndroidPackage {
     private static final String INSTALLER = "com.android.server.pm.Installer";
     private static final String STATUS_BAR_MANAGER_SERVICE = "com.android.server.statusbar.StatusBarManagerService";
     private static final String USB_HANDLER = "com.android.server.usb.UsbDeviceManager.UsbHandler";
-    private static final String SHUTDOWN_THREAD = "com.android.server.power.ShutdownThread";
+    //private static final String SHUTDOWN_THREAD = "com.android.server.power.ShutdownThread";
     @SuppressLint("StaticFieldLeak")
     private static Context mPackageManagerServiceContext;
     private static boolean isFB;
@@ -52,7 +52,7 @@ public class XAndroidPackage {
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
         try {
-            if (prefs.getBoolean(PREF_DEFAULT_REBOOT_BEHAVIOR, false)) {
+            /*if (prefs.getBoolean(PREF_DEFAULT_REBOOT_BEHAVIOR, false)) {
                 XposedHelpers.findAndHookMethod(SHUTDOWN_THREAD,
                         classLoader,
                         "reboot",
@@ -83,7 +83,7 @@ public class XAndroidPackage {
                                 }
                             }
                         });
-            }
+            }*/
 
             if (prefs.getBoolean(PREF_DISABLE_SIGNATURE_CHECK, false)) {
                 if (mPackageManagerServiceContext == null) {

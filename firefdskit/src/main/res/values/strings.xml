@@ -201,6 +201,8 @@
     <string name="replace_recovery_icon_summary">Replace Reboot to Recovery icon with Stock Reboot</string>
     <string name="replace_recovery_icon_title">Reboot to Recovery Stock Reboot Icon</string>
     <string name="default_reboot_behavior_title">Set Default Reboot Behavior to Recovery</string>
-    <string name="default_reboot_behavior_recovery">Default reboot behavior set to Recovery</string>
-    <string name="default_reboot_behavior_reboot">Default reboot behavior set to reboot</string>
+    <!--<string name="default_reboot_behavior_recovery">Default reboot behavior set to Recovery</string>
+    <string name="default_reboot_behavior_reboot">Default reboot behavior set to reboot</string>-->
+    <string name="disable_power_menu_secure_lockscreen_title">Disable Power Menu On Lockscreen</string>
+    <string name="disable_power_menu_secure_lockscreen_summary">Disable display of power menu when device is secure locked</string>
 </resources>

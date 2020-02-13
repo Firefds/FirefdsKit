@@ -15,6 +15,7 @@
 
 package sb.firefds.q.firefdskit;
 
+import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -62,6 +63,7 @@ import static sb.firefds.q.firefdskit.utils.Constants.SCREEN_RECORD_ACTION;
 import static sb.firefds.q.firefdskit.utils.Packages.SYSTEM_UI;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_CUSTOM_RECOVERY;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_CUSTOM_RECOVERY_CONFIRMATION;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_POWER_MENU_SECURE_LOCKSCREEN;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_RESTART_CONFIRMATION;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_POWER_MENU;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_DATA_MODE;
@@ -124,6 +126,22 @@ public class XSysUIGlobalActions {
                 });
 
         final Class<?> secGlobalActionsDialogBaseClass = XposedHelpers.findClass(SEC_GLOBAL_ACTIONS_DIALOG_BASE, classLoader);
+
+        if (prefs.getBoolean(PREF_DISABLE_POWER_MENU_SECURE_LOCKSCREEN, false)) {
+            XposedHelpers.findAndHookMethod(secGlobalActionsDialogBaseClass,
+                    "showDialog",
+                    new XC_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param) {
+                            Context context = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
+                            KeyguardManager mKeyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+                            if (mKeyguardManager.isKeyguardLocked()) {
+                                param.setResult(null);
+                            }
+                        }
+                    }
+            );
+        }
 
         if (prefs.getBoolean(PREF_DISABLE_RESTART_CONFIRMATION, false)) {
             XposedHelpers.findAndHookMethod(SEC_GLOBAL_ACTIONS_PRESENTER,
