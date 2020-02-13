@@ -83,6 +83,7 @@
             app:useSimpleSummaryProvider="true" />
         <SwitchPreferenceCompat
             android:defaultValue="false"
+            android:dependency="enableRecovery"
             android:key="replaceRecoveryIcon"
             android:summary="@string/replace_recovery_icon_summary"
             android:title="@string/replace_recovery_icon_title"
