@@ -73,34 +73,10 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                 XposedBridge.log("Xposed cannot read XTouchWiz preferences!");
             }
         }
-        if (prefs.getBoolean(PREF_DISABLE_SECURE_FLAG, false)) {
-            try {
-                XposedHelpers.findAndHookMethod(Window.class,
-                        "setFlags",
-                        int.class,
-                        int.class,
-                        new XC_MethodHook() {
-                            @Override
-                            protected void beforeHookedMethod(MethodHookParam param) {
-                                Integer flags = (Integer) param.args[0];
-                                flags &= ~WindowManager.LayoutParams.FLAG_SECURE;
-                                param.args[0] = flags;
-                            }
-                        });
-
-                XposedHelpers.findAndHookMethod(SurfaceView.class,
-                        "setSecure",
-                        boolean.class,
-                        new XC_MethodHook() {
-                            @Override
-                            protected void beforeHookedMethod(MethodHookParam param) {
-                                param.args[0] = false;
-                            }
-                        });
-
-            } catch (Throwable e) {
-                XposedBridge.log(e);
-            }
+        try {
+            XSystemWide.doHook(prefs);
+        } catch (Throwable e) {
+            XposedBridge.log(e);
         }
 
         if (lpparam.packageName.equals(Packages.ANDROID)) {
