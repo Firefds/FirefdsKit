@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
-import de.robv.android.xposed.XposedBridge;
 import sb.firefds.pie.firefdskit.R;
+import sb.firefds.pie.firefdskit.utils.Utils;
 
 public class CreditDialog {
 
@@ -24,7 +24,7 @@ public class CreditDialog {
             pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             pkgVersion = pInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
-            XposedBridge.log(e);
+            Utils.log(e);
         }
         TextView tv = new TextView(context);
         tv.setMovementMethod(LinkMovementMethod.getInstance());

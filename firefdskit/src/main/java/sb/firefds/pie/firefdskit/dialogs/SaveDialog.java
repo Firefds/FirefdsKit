@@ -83,10 +83,8 @@ public class SaveDialog {
             output.writeObject(FirefdsKitActivity.getSharedPreferences().getAll());
 
             res = true;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            Utils.log(e);
         } finally {
             try {
                 if (output != null) {
@@ -94,7 +92,7 @@ public class SaveDialog {
                     output.close();
                 }
             } catch (IOException ex) {
-                ex.printStackTrace();
+                Utils.log(ex);
             }
         }
         return res;

@@ -38,8 +38,8 @@ public class ScreenRecordActionViewModel extends FirefdsKitActionViewModel {
         try {
             getmContext().startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
             XposedBridge.log("Activity not found - ScreenCapture");
+            XposedBridge.log(e);
         }
     }
 }

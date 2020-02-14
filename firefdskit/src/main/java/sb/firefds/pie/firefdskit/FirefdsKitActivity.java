@@ -157,7 +157,7 @@ public class FirefdsKitActivity extends AppCompatActivity
             try {
                 screenTimeout = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT);
             } catch (Throwable e) {
-                e.printStackTrace();
+                Utils.log(e);
             }
             int hour = screenTimeout / 3600000;
             int min = (screenTimeout % 3600000) / 60000;
@@ -171,7 +171,7 @@ public class FirefdsKitActivity extends AppCompatActivity
             try {
                 editor.putInt(PREF_NAVIGATION_BAR_COLOR, Settings.Global.getInt(getContentResolver(), "navigationbar_color")).apply();
             } catch (Throwable e) {
-                e.printStackTrace();
+                Utils.log(e);
             }
         }
 
@@ -586,14 +586,14 @@ public class FirefdsKitActivity extends AppCompatActivity
                 prefEdit.apply();
                 fixPermissions(appContext);
             } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
+                Utils.log(e);
             } finally {
                 try {
                     if (input != null) {
                         input.close();
                     }
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    Utils.log(ex);
                 }
             }
             SystemClock.sleep(1500);

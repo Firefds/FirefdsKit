@@ -87,7 +87,7 @@ public class XSysUINotificationPanelPackage {
                     });
 
         } catch (Exception e) {
-            e.printStackTrace();
+           XposedBridge.log(e);
         }
 
         if (prefs.getBoolean(PREF_SHOW_NETWORK_SPEED_MENU, false)) {
@@ -105,7 +105,7 @@ public class XSysUINotificationPanelPackage {
                         });
 
             } catch (Exception e) {
-                e.printStackTrace();
+                XposedBridge.log(e);
             }
         }
     }

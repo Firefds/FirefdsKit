@@ -21,6 +21,7 @@ import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.PowerManager;
 import android.os.SystemProperties;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,10 +30,11 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.R;
 
@@ -57,7 +59,7 @@ public class Utils {
         try {
             rebootSystem(null);
         } catch (Throwable e) {
-            e.printStackTrace();
+            Utils.log(e);
         }
     }
 
@@ -65,7 +67,7 @@ public class Utils {
         try {
             rebootSystem(rebootType);
         } catch (Throwable e) {
-            e.printStackTrace();
+            Utils.log(e);
         }
     }
 
@@ -73,7 +75,7 @@ public class Utils {
         try {
             ((PowerManager) getAppContext().getSystemService(Context.POWER_SERVICE)).reboot(rebootType);
         } catch (Exception e) {
-            XposedBridge.log(e);
+            Utils.log(e);
         }
     }
 
@@ -138,10 +140,10 @@ public class Utils {
 
     public static void performQuickReboot() {
         try {
-            SystemProp.set("ctl.restart", "surfaceflinger");
-            SystemProp.set("ctl.restart", "zygote");
+            set("ctl.restart", "surfaceflinger");
+            set("ctl.restart", "zygote");
         } catch (Throwable e) {
-            XposedBridge.log(e);
+            log(e);
         }
     }
 
@@ -153,7 +155,23 @@ public class Utils {
         return snackbar;
     }
 
-    static class SystemProp extends Utils {
+    public static void log(Throwable e) {
+        StringWriter errors = new StringWriter();
+        e.printStackTrace(new PrintWriter(errors));
+        Log.e("FFK", errors.toString());
+    }
+
+    private static void set(String key, String val) {
+        try {
+            Class<?> classSystemProperties = XposedHelpers.findClass("android.os.SystemProperties", null);
+            XposedHelpers.callStaticMethod(classSystemProperties, "set", key, val);
+            //SystemProperties.set(key, val);
+        } catch (Throwable e) {
+            log(e);
+        }
+    }
+
+    /*static class SystemProp extends Utils {
 
         // Get the value for the given key
         // @param key: key to lookup
@@ -240,10 +258,12 @@ public class Utils {
         // Set the value for the given key
         public static void set(String key, String val) {
             try {
-                Class<?> classSystemProperties = XposedHelpers.findClass("android.os.SystemProperties", null);
-                XposedHelpers.callStaticMethod(classSystemProperties, "set", key, val);
-            } catch (Throwable ignored) {
+                //Class<?> classSystemProperties = XposedHelpers.findClass("android.os.SystemProperties", null);
+                // XposedHelpers.callStaticMethod(classSystemProperties, "set", key, val);
+                SystemProperties.set(key, val);
+            } catch (Throwable e) {
+                log(e);
             }
         }
-    }
+    }*/
 }
