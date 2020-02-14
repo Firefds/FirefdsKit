@@ -14,17 +14,12 @@
  */
 package sb.firefds.pie.firefdskit;
 
-import android.view.SurfaceView;
-import android.view.Window;
-import android.view.WindowManager;
-
 import androidx.annotation.Keep;
 
 import java.io.File;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
-import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
@@ -32,8 +27,6 @@ import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 import sb.firefds.pie.firefdskit.utils.Packages;
 import sb.firefds.pie.firefdskit.utils.Utils;
-
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_SECURE_FLAG;
 
 @Keep
 public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
@@ -118,7 +111,7 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             }
         }
 
-        if (lpparam.packageName.equalsIgnoreCase(Packages.SETTINGS)) {
+        if (lpparam.packageName.equals(Packages.SETTINGS)) {
             try {
                 XSecSettingsPackage.doHook(prefs, lpparam.classLoader);
             } catch (Throwable e) {
