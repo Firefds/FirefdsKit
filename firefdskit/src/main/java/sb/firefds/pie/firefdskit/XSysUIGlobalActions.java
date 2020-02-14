@@ -15,6 +15,7 @@
 
 package sb.firefds.pie.firefdskit;
 
+import android.app.Dialog;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.res.Resources;
@@ -111,6 +112,7 @@ public class XSysUIGlobalActions {
 
     public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
 
+
         Class<?> flashlightControllerImplClass = XposedHelpers.findClass(FLASHLIGHT_CONTROLLER_IMPL_CLASS, classLoader);
 
         XposedHelpers.findAndHookConstructor(flashlightControllerImplClass,
@@ -124,27 +126,32 @@ public class XSysUIGlobalActions {
 
         final Class<?> secGlobalActionsDialogBaseClass = XposedHelpers.findClass(SEC_GLOBAL_ACTIONS_DIALOG_BASE, classLoader);
 
-        if (prefs.getBoolean(PREF_DISABLE_POWER_MENU_SECURE_LOCKSCREEN, false)) {
-            XposedHelpers.findAndHookMethod(secGlobalActionsDialogBaseClass,
-                    "showDialog",
-                    new XC_MethodHook() {
-                        @Override
-                        protected void beforeHookedMethod(MethodHookParam param) {
-                            Context context = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
-                            KeyguardManager mKeyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-                            if (mKeyguardManager.isKeyguardLocked()) {
-                                param.setResult(null);
+        try {
+            if (prefs.getBoolean(PREF_DISABLE_POWER_MENU_SECURE_LOCKSCREEN, false)) {
+                XposedHelpers.findAndHookMethod(secGlobalActionsDialogBaseClass,
+                        "showDialog",
+                        new XC_MethodHook() {
+                            @Override
+                            protected void afterHookedMethod(MethodHookParam param) {
+                                Context context = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
+                                Dialog dialog = (Dialog) XposedHelpers.getObjectField(param.thisObject, "mDialog");
+                                KeyguardManager mKeyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+                                if (mKeyguardManager.isKeyguardLocked()) {
+                                    dialog.dismiss();
+                                }
                             }
                         }
-                    }
-            );
-        }
+                );
+            }
 
-        if (prefs.getBoolean(PREF_DISABLE_RESTART_CONFIRMATION, false)) {
-            XposedHelpers.findAndHookMethod(SEC_GLOBAL_ACTIONS_PRESENTER,
-                    classLoader,
-                    "isActionConfirming",
-                    XC_MethodReplacement.returnConstant(Boolean.TRUE));
+            if (prefs.getBoolean(PREF_DISABLE_RESTART_CONFIRMATION, false)) {
+                XposedHelpers.findAndHookMethod(SEC_GLOBAL_ACTIONS_PRESENTER,
+                        classLoader,
+                        "isActionConfirming",
+                        XC_MethodReplacement.returnConstant(Boolean.TRUE));
+            }
+        } catch (Throwable e) {
+            XposedBridge.log(e);
         }
 
         if (prefs.getBoolean(PREF_ENABLE_ADVANCED_POWER_MENU, false)) {
