@@ -54,7 +54,7 @@ public class WanamRebootActivity extends AppCompatActivity {
             }
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            Utils.log(e);
         }
     }
 

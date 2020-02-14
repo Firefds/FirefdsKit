@@ -10,7 +10,6 @@ import android.widget.EditText;
 import androidx.appcompat.app.AlertDialog;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -83,10 +82,8 @@ public class SaveDialog {
             output.writeObject(FirefdsKitActivity.getSharedPreferences().getAll());
 
             res = true;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            Utils.log(e);
         } finally {
             try {
                 if (output != null) {
@@ -94,7 +91,7 @@ public class SaveDialog {
                     output.close();
                 }
             } catch (IOException ex) {
-                ex.printStackTrace();
+                Utils.log(ex);
             }
         }
         return res;

@@ -112,7 +112,7 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             }
         }
 
-        if (lpparam.packageName.equalsIgnoreCase(Packages.SETTINGS)) {
+        if (lpparam.packageName.equals(Packages.SETTINGS)) {
             try {
                 XSecSettingsPackage.doHook(prefs, lpparam.classLoader);
             } catch (Throwable e) {

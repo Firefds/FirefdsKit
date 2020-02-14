@@ -161,7 +161,7 @@ public class XAndroidPackage {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            XposedBridge.log(e);
         }
     }
 

@@ -24,7 +24,7 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.q.firefdskit.utils.Packages;
 
-import static sb.firefds.q.firefdskit.utils.Preferences.*;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_EXCHANGE_SECURITY;
 
 public class XSecEmailPackage {
 

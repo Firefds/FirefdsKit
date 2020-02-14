@@ -12,6 +12,7 @@ import java.util.List;
 
 import sb.firefds.q.firefdskit.R;
 import sb.firefds.q.firefdskit.notifications.RebootNotification;
+import sb.firefds.q.firefdskit.utils.Utils;
 
 import static sb.firefds.q.firefdskit.FirefdsKitActivity.fixPermissions;
 import static sb.firefds.q.firefdskit.FirefdsKitActivity.getAppContext;
@@ -58,7 +59,7 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat
             fixPermissions(getAppContext());
             RebootNotification.notify(fragmentActivity, changesMade.size(), true);
         } catch (Throwable e) {
-            e.printStackTrace();
+            Utils.log(e);
         }
     }
 

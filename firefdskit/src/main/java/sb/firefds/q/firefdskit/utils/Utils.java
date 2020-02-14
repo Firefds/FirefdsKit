@@ -21,6 +21,7 @@ import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.PowerManager;
 import android.os.SystemProperties;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,10 +30,11 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.q.firefdskit.R;
 
@@ -57,7 +59,7 @@ public class Utils {
         try {
             rebootSystem(null);
         } catch (Throwable e) {
-            e.printStackTrace();
+            log(e);
         }
     }
 
@@ -65,7 +67,7 @@ public class Utils {
         try {
             rebootSystem(rebootType);
         } catch (Throwable e) {
-            e.printStackTrace();
+            log(e);
         }
     }
 
@@ -73,7 +75,7 @@ public class Utils {
         try {
             ((PowerManager) getAppContext().getSystemService(Context.POWER_SERVICE)).reboot(rebootType);
         } catch (Exception e) {
-            XposedBridge.log(e);
+            log(e);
         }
     }
 
@@ -138,10 +140,10 @@ public class Utils {
 
     public static void performQuickReboot() {
         try {
-            SystemProp.set("ctl.restart", "surfaceflinger");
-            SystemProp.set("ctl.restart", "zygote");
+            set("ctl.restart", "surfaceflinger");
+            set("ctl.restart", "zygote");
         } catch (Throwable e) {
-            XposedBridge.log(e);
+            log(e);
         }
     }
 
@@ -153,97 +155,18 @@ public class Utils {
         return snackbar;
     }
 
-    static class SystemProp extends Utils {
+    public static void log(Throwable e) {
+        StringWriter errors = new StringWriter();
+        e.printStackTrace(new PrintWriter(errors));
+        Log.e("FFK", errors.toString());
+    }
 
-        // Get the value for the given key
-        // @param key: key to lookup
-        // @return null if the key isn't found
-        public static String get(String key) {
-            String ret;
-
-            try {
-                Class<?> classSystemProperties = XposedHelpers.findClass("android.os.SystemProperties", null);
-                ret = (String) XposedHelpers.callStaticMethod(classSystemProperties, "get", key);
-            } catch (Throwable t) {
-                ret = null;
-            }
-            return ret;
-        }
-
-        // Get the value for the given key
-        // @param key: key to lookup
-        // @param def: default value to return
-        // @return if the key isn't found, return def if it isn't null, or an empty string otherwise
-        public static String get(String key, String def) {
-            String ret;
-
-            try {
-                Class<?> classSystemProperties = XposedHelpers.findClass("android.os.SystemProperties", null);
-                ret = (String) XposedHelpers.callStaticMethod(classSystemProperties, "get", key, def);
-            } catch (Throwable t) {
-                ret = def;
-            }
-            return ret;
-        }
-
-        // Get the value for the given key, and return as an integer
-        // @param key: key to lookup
-        // @param def: default value to return
-        // @return the key parsed as an integer, or def if the key isn't found or cannot be parsed
-        public static Integer getInt(String key, Integer def) {
-            Integer ret;
-
-            try {
-                Class<?> classSystemProperties = XposedHelpers.findClass("android.os.SystemProperties", null);
-                ret = (Integer) XposedHelpers.callStaticMethod(classSystemProperties, "getInt", key, def);
-            } catch (Throwable t) {
-                ret = def;
-            }
-            return ret;
-        }
-
-        // Get the value for the given key, and return as a long
-        // @param key: key to lookup
-        // @param def: default value to return
-        // @return the key parsed as a long, or def if the key isn't found or cannot be parsed
-        public static Long getLong(String key, Long def) {
-            Long ret;
-
-            try {
-                Class<?> classSystemProperties = XposedHelpers.findClass("android.os.SystemProperties", null);
-                ret = (Long) XposedHelpers.callStaticMethod(classSystemProperties, "getLong", key, def);
-            } catch (Throwable t) {
-                ret = def;
-            }
-            return ret;
-        }
-
-        // Get the value (case insensitive) for the given key, returned as a boolean
-        // Values 'n', 'no', '0', 'false' or 'off' are considered false
-        // Values 'y', 'yes', '1', 'true' or 'on' are considered true
-        // If the key does not exist, or has any other value, then the default result is returned
-        // @param key: key to lookup
-        // @param def: default value to return
-        // @return the key parsed as a boolean, or def if the key isn't found or cannot be parsed
-        public static Boolean getBoolean(String key, boolean def) {
-            Boolean ret;
-
-            try {
-                Class<?> classSystemProperties = XposedHelpers.findClass("android.os.SystemProperties", null);
-                ret = (Boolean) XposedHelpers.callStaticMethod(classSystemProperties, "getBoolean", key, def);
-            } catch (Throwable t) {
-                ret = def;
-            }
-            return ret;
-        }
-
-        // Set the value for the given key
-        public static void set(String key, String val) {
-            try {
-                Class<?> classSystemProperties = XposedHelpers.findClass("android.os.SystemProperties", null);
-                XposedHelpers.callStaticMethod(classSystemProperties, "set", key, val);
-            } catch (Throwable ignored) {
-            }
+    // Set the value for the given key
+    public static void set(String key, String val) {
+        try {
+            Class<?> classSystemProperties = XposedHelpers.findClass("android.os.SystemProperties", null);
+            XposedHelpers.callStaticMethod(classSystemProperties, "set", key, val);
+        } catch (Throwable ignored) {
         }
     }
 }
