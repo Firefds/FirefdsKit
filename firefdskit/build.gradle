@@ -18,7 +18,7 @@ android {
         targetSdkVersion 29
         versionCode 1060
         versionName "1.0.6.0-STABLE-7"
-        project.ext.set("archivesBaseName", "FirefdsKit_" + versionName)
+        project.ext.set("archivesBaseName", "FirefdsKit_Pie_" + versionName)
     }
     buildTypes {
         release {
