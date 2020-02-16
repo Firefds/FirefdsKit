@@ -30,6 +30,12 @@
             android:summary="@string/disable_power_menu_secure_lockscreen_summary"
             android:title="@string/disable_power_menu_secure_lockscreen_title"
             app:iconSpaceReserved="false" />
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="defaultRebootBehavior"
+            android:summary="@string/default_reboot_behavior_summary"
+            android:title="@string/default_reboot_behavior_title"
+            app:iconSpaceReserved="false" />
     </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory
         android:title="@string/navigation_bar"
