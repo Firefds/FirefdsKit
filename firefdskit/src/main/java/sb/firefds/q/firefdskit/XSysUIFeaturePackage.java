@@ -148,7 +148,7 @@ public class XSysUIFeaturePackage {
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
                                 String tag = (String) (XposedHelpers.callMethod(param.thisObject, "getTag"));
-                                if (tag.equals("status_bar_clock")) {
+                                if (tag.equals("phone_status_bar_clock")) {
                                     mClock = (TextView) param.thisObject;
                                     Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
                                     boolean is24 = DateFormat.is24HourFormat(mClock.getContext());
