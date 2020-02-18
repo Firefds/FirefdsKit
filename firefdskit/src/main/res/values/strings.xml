@@ -130,7 +130,7 @@
     <string name="disable_flag_secure_on">Secure flag enabled</string>
     <string name="disable_flag_secure_off">Secure flag disabled</string>
     <string name="screen_unlock">Screen Unlock</string>
-    <string name="enable_biometrics_unlock_summary">Enable fingerprint and biometrics unlock on reboot</string>
+    <string name="enable_biometrics_unlock_summary">Enable fingerprint and biometrics unlock on reboot. Requires Multidisabler by Ianmacd for encrypted devices such as Galaxy S10</string>
     <string name="enable_biometrics_unlock_title">Enable Fingerprint and Biometrics Unlock on Reboot</string>
     <string name="reboot_confirm_recovery">Reboot to Recovery mode</string>
     <string name="reboot_confirm_download">Reboot to Download mode</string>

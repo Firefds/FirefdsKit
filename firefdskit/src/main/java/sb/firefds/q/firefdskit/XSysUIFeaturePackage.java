@@ -58,7 +58,7 @@ public class XSysUIFeaturePackage {
     private static final String CUSTOM_SDK_MONITOR = SYSTEM_UI + ".KnoxStateMonitor.CustomSdkMonitor";
     private static final String TOGGLE_SLIDER_VIEW = SYSTEM_UI + ".settings.ToggleSliderView";
     private static final String VOLUME_DIALOG_CONTROLLER_IMPL = SYSTEM_UI + ".volume.VolumeDialogControllerImpl";
-    private static final String KEYGUARD_UPDATE_MONITOR = "com.android.keyguard.KeyguardUpdateMonitor";
+    private static final String KEYGUARD_STRONG_AUTH_TRACKER = "com.android.keyguard.KeyguardUpdateMonitor.StrongAuthTracker";
     private static final String QS_CLOCK = SYSTEM_UI + ".statusbar.policy.QSClock";
     private static final String STATUS_BAR_WINDOW_CONTROLLER = SYSTEM_UI + ".statusbar.phone.StatusBarWindowController";
     private static final String STATE = STATUS_BAR_WINDOW_CONTROLLER + ".State";
@@ -122,12 +122,12 @@ public class XSysUIFeaturePackage {
             }
 
             if (prefs.getBoolean(PREF_ENABLE_BIOMETRICS_UNLOCK, false)) {
-                XposedHelpers.findAndHookMethod(KEYGUARD_UPDATE_MONITOR,
+                XposedHelpers.findAndHookMethod(KEYGUARD_STRONG_AUTH_TRACKER,
                         classLoader,
-                        "isUnlockCompleted",
+                        "hasUserAuthenticatedSinceBoot",
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
 
-                XposedHelpers.findAndHookMethod(KEYGUARD_UPDATE_MONITOR,
+                XposedHelpers.findAndHookMethod(KEYGUARD_STRONG_AUTH_TRACKER,
                         classLoader,
                         "isUnlockingWithBiometricAllowed",
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
