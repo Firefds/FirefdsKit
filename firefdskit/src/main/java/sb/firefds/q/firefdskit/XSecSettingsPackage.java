@@ -43,6 +43,7 @@ public class XSecSettingsPackage {
     private static final String STATUS_BAR = SAMSUNG_SETTINGS + ".notification.StatusBar";
     private static final String SYSCOPE_STATUS_PREFERENCE_CONTROLLER =
             SAMSUNG_SETTINGS + ".deviceinfo.status.SysScopeStatusPreferenceController";
+    private static final String ICDVERIFICATION = "com.sec.icdverification.ICDVerification";
 
 
     private static ClassLoader classLoader;
@@ -118,6 +119,14 @@ public class XSecSettingsPackage {
     }
 
     private static void makeOfficial() {
+        try {
+            XposedHelpers.findAndHookMethod(ICDVERIFICATION,
+                    classLoader,
+                    "check",
+                    XC_MethodReplacement.returnConstant(1));
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
         try {
             XposedHelpers.findAndHookMethod(SYSCOPE_STATUS_PREFERENCE_CONTROLLER,
                     classLoader,
