@@ -1,5 +1,6 @@
 package sb.firefds.pie.firefdskit;
 
+import android.os.PowerManager;
 import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
@@ -9,6 +10,7 @@ import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DEFAULT_REBOOT_BEHAVIOR;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_SECURE_FLAG;
 
 public class XSystemWide {
@@ -38,6 +40,20 @@ public class XSystemWide {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) {
                                 param.args[0] = false;
+                            }
+                        });
+            }
+
+            if (prefs.getBoolean(PREF_DEFAULT_REBOOT_BEHAVIOR, false)) {
+                XposedHelpers.findAndHookMethod(PowerManager.class,
+                        "reboot",
+                        String.class,
+                        new XC_MethodHook() {
+                            @Override
+                            protected void beforeHookedMethod(MethodHookParam param) {
+                                if (((String) param.args[0]).isEmpty()) {
+                                    param.args[0] = "recovery";
+                                }
                             }
                         });
             }
