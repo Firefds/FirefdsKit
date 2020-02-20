@@ -114,6 +114,7 @@ public class XSecSettingsPackage {
                     "showConfirmPopup",
                     boolean.class,
                     new XC_MethodHook() {
+                        @SuppressLint("MissingPermission")
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) {
                             if (prefs.getBoolean(PREF_DISABLE_SYNC_DIALOG, false)) {
