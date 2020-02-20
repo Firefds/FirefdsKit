@@ -231,4 +231,6 @@
     <string name="disable_power_menu_secure_lockscreen_summary">מניעת הופעת תפריט הכיבוי בעת נעילת מסך בטוחה</string>
     <string name="default_reboot_behavior_title">קביעת ברירת המחדל להפעלה מחדש לRecovery</string>
     <string name="default_reboot_behavior_summary">קביעת ברירת המחדל להפעלה מחדש להפעלה מחדש לRecovery. אזהרה: אין להשתמש באופציה זו בשימוש עם קרנל מקוסטם שמדמה פעולה זו!</string>
+    <string name="enable_advanced_hotspot_options_title">הפעלת אפשרויות מתקדמות בנקודת גישה חמה</string>
+    <string name="enable_advanced_hotspot_options_summary">הפעלת אפשרויות מתקדמות נוספות בהגדרת נקודת גישה חמה</string>
 </resources>

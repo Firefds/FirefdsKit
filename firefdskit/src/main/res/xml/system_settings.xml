@@ -91,6 +91,12 @@
             android:summaryOn="@string/hide_mtp_notification_on"
             android:title="@string/hide_mtp_notification"
             app:iconSpaceReserved="false" />
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="enableAdvancedHotspotOptions"
+            android:summary="@string/enable_advanced_hotspot_options_summary"
+            android:title="@string/enable_advanced_hotspot_options_title"
+            app:iconSpaceReserved="false" />
     </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory
         android:title="@string/camera_and_gallery"

@@ -12,6 +12,7 @@ import de.robv.android.xposed.XposedHelpers;
 
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DEFAULT_REBOOT_BEHAVIOR;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_SECURE_FLAG;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS;
 
 public class XSystemWide {
 
@@ -56,6 +57,14 @@ public class XSystemWide {
                                 }
                             }
                         });
+            }
+
+            if (prefs.getBoolean(PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS, false)) {
+                Class<?> WifiApCustClass = XposedHelpers.findClass("android.net.wifi.WifiApCust", null);
+                XposedHelpers.setStaticBooleanField(WifiApCustClass, "mSupportMaxClientMenu", true);
+                XposedHelpers.setStaticBooleanField(WifiApCustClass, "mSupport5G", true);
+                XposedHelpers.setStaticBooleanField(WifiApCustClass, "mSupport5GBasedOnCountry", true);
+                XposedHelpers.setStaticObjectField(WifiApCustClass, "mRegion", "NA");
             }
         } catch (Throwable e) {
             XposedBridge.log(e);
