@@ -16,6 +16,8 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_H
 
 public class XSystemWide {
 
+    private final static String WIFI_AP_CUST_CLASS = "android.net.wifi.WifiApCust";
+
     public static void doHook(final XSharedPreferences prefs) {
 
         try {
@@ -60,7 +62,7 @@ public class XSystemWide {
             }
 
             if (prefs.getBoolean(PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS, false)) {
-                Class<?> WifiApCustClass = XposedHelpers.findClass("android.net.wifi.WifiApCust", null);
+                Class<?> WifiApCustClass = XposedHelpers.findClass(WIFI_AP_CUST_CLASS, null);
                 XposedHelpers.setStaticBooleanField(WifiApCustClass, "mSupportMaxClientMenu", true);
                 XposedHelpers.setStaticBooleanField(WifiApCustClass, "mSupport5G", true);
                 XposedHelpers.setStaticBooleanField(WifiApCustClass, "mSupport5GBasedOnCountry", true);
