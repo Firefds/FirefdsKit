@@ -204,4 +204,6 @@
     <string name="default_reboot_behavior_summary">Set Default reboot behavior to reboot to Recovery. WARNING: DO NOT USE WITH CUSTOM KERNELS THAT MIMIC THIS BEHAVIOR!</string>
     <string name="disable_power_menu_secure_lockscreen_title">Disable Power Menu On Lockscreen</string>
     <string name="disable_power_menu_secure_lockscreen_summary">Disable display of power menu when device is secure locked</string>
+    <string name="enable_advanced_hotspot_options_title">Enable Advanced Hotspot Options</string>
+    <string name="enable_advanced_hotspot_options_summary">Enable additional advanced hotspot settings options</string>
 </resources>

@@ -30,6 +30,7 @@ import de.robv.android.xposed.XposedHelpers;
 import static sb.firefds.q.firefdskit.utils.Packages.SAMSUNG_SETTINGS;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_BLUETOOTH_DIALOG;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_SYNC_DIALOG;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_MAKE_OFFICIAL;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_MAX_SUPPORTED_USERS;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SHOW_NETWORK_SPEED_MENU;
@@ -44,6 +45,7 @@ public class XSecSettingsPackage {
     private static final String SYSCOPE_STATUS_PREFERENCE_CONTROLLER =
             SAMSUNG_SETTINGS + ".deviceinfo.status.SysScopeStatusPreferenceController";
     private static final String ICDVERIFICATION = "com.sec.icdverification.ICDVerification";
+    private static final String SETTINGS_UTILS = "com.android.settings.Utils";
 
 
     private static ClassLoader classLoader;
@@ -109,6 +111,23 @@ public class XSecSettingsPackage {
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
                                 param.setResult(prefs.getInt(PREF_MAX_SUPPORTED_USERS, 3));
+                            }
+                        });
+            }
+
+            if (prefs.getBoolean(PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS, false)) {
+                XposedHelpers.findAndHookMethod(SETTINGS_UTILS,
+                        classLoader,
+                        "initMHSFeature",
+                        Context.class,
+                        new XC_MethodHook() {
+                            @Override
+                            protected void afterHookedMethod(MethodHookParam param) {
+                                Class<?> settingsUtils = XposedHelpers.findClass(SETTINGS_UTILS, classLoader);
+                                XposedHelpers.setStaticBooleanField(settingsUtils, "SUPPORT_MOBILEAP_MAXCLIENT_MENU", true);
+                                XposedHelpers.setStaticBooleanField(settingsUtils, "SUPPORT_MOBILEAP_5G", true);
+                                XposedHelpers.setStaticBooleanField(settingsUtils, "SUPPORT_MOBILEAP_5G_BASED_ON_COUNTRY", true);
+                                XposedHelpers.setStaticObjectField(settingsUtils, "SUPPORT_MOBILEAP_REGION", "NA");
                             }
                         });
             }
