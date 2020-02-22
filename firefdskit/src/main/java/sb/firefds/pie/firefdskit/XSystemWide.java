@@ -54,7 +54,7 @@ public class XSystemWide {
                         new XC_MethodHook() {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) {
-                                if (((String) param.args[0]).isEmpty()) {
+                                if (param.args[0] == null) {
                                     param.args[0] = "recovery";
                                 }
                             }
