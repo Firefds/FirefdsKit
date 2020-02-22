@@ -39,8 +39,10 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     public void initZygote(StartupParam startupParam) {
 
         // Do not load if Not a Touchwiz Rom
-        if (Utils.isNotSamsungRom())
+        if (Utils.isNotSamsungRom()) {
+            XposedBridge.log("FFK: com.samsung.device.jar or com.samsung.device.lite.jar not found!");
             return;
+        }
 
         getModuleSharedPreferences();
     }
@@ -49,8 +51,10 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     public void handleLoadPackage(LoadPackageParam lpparam) {
 
         // Do not load if Not a Touchwiz Rom
-        if (Utils.isNotSamsungRom())
+        if (Utils.isNotSamsungRom()) {
+            XposedBridge.log("FFK: com.samsung.device.jar or com.samsung.device.lite.jar not found!");
             return;
+        }
 
         if (lpparam.packageName.equals(Packages.FIREFDSKIT)) {
             if (prefs != null) {

@@ -131,7 +131,8 @@ public class Utils {
     }
 
     public static boolean isNotSamsungRom() {
-        return !new File("/system/framework/com.samsung.device.jar").isFile();
+        return !(new File("/system/framework/com.samsung.device.jar").isFile() ||
+                new File("/system/framework/com.samsung.device.lite.jar").isFile());
     }
 
     public static boolean isDeviceEncrypted() {
