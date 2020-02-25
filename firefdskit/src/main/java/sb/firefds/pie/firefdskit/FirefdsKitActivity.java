@@ -111,7 +111,7 @@ public class FirefdsKitActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
         appContext = Utils.isDeviceEncrypted() ? createDeviceProtectedStorageContext() : this;
-        sharedPreferences = appContext.getSharedPreferences(PREFS, 0);
+        sharedPreferences = appContext.getSharedPreferences(PREFS, MODE_PRIVATE);
         activity = this;
         verifyStoragePermissions(this);
 
