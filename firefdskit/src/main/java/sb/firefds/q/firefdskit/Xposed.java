@@ -28,13 +28,13 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 import sb.firefds.q.firefdskit.utils.Packages;
 import sb.firefds.q.firefdskit.utils.Utils;
 
-import static sb.firefds.q.firefdskit.utils.Constants.PREFS;
+import static sb.firefds.q.firefdskit.utils.Packages.FIREFDSKIT;
 
 @Keep
 public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     private static XSharedPreferences prefs;
-    private static File securePrefFile = new File("/data/user_de/0/sb.firefds.q.firefdskit/shared_prefs/" + PREFS);
+    private static File securePrefFile = new File("/data/user_de/0/sb.firefds.q.firefdskit/shared_prefs/" + FIREFDSKIT + "_preferences.xml");
 
     @Override
     public void initZygote(StartupParam startupParam) {
@@ -57,10 +57,10 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             return;
         }
 
-        if (lpparam.packageName.equals(Packages.FIREFDSKIT)) {
+        if (lpparam.packageName.equals(FIREFDSKIT)) {
             if (prefs != null) {
                 try {
-                    XposedHelpers.findAndHookMethod(Packages.FIREFDSKIT + ".XposedChecker",
+                    XposedHelpers.findAndHookMethod(FIREFDSKIT + ".XposedChecker",
                             lpparam.classLoader,
                             "isActive",
                             XC_MethodReplacement.returnConstant(Boolean.TRUE));
@@ -178,7 +178,7 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         if (prefs == null) {
             prefs = Utils.isDeviceEncrypted() ?
                     new XSharedPreferences(securePrefFile) :
-                    new XSharedPreferences(BuildConfig.APPLICATION_ID);
+                    new XSharedPreferences(FIREFDSKIT);
             prefs.makeWorldReadable();
         } else {
             prefs.reload();
