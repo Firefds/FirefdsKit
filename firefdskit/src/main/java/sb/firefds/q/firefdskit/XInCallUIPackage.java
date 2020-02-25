@@ -39,11 +39,15 @@ public class XInCallUIPackage {
                         @Override
                         protected Object replaceHookedMethod(MethodHookParam param) {
                             prefs.reload();
-                            if (prefs.getBoolean(PREF_ENABLE_CALL_ADD, false) &&
-                                    !prefs.getBoolean(PREF_ENABLE_AUTO_CALL_RECORDING, false)) {
-                                return Boolean.FALSE;
-                            } else {
+                            if (prefs.getBoolean(PREF_ENABLE_AUTO_CALL_RECORDING, false) ||
+                                    prefs.getBoolean(PREF_ENABLE_CALL_RECORDING_MENU, false)) {
                                 return Boolean.TRUE;
+                            } else {
+                                if (prefs.getBoolean(PREF_ENABLE_CALL_ADD, false)) {
+                                    return Boolean.FALSE;
+                                } else {
+                                    return Boolean.TRUE;
+                                }
                             }
                         }
                     });
@@ -63,25 +67,6 @@ public class XInCallUIPackage {
                                 return Boolean.TRUE;
                             } else {
                                 return Boolean.FALSE;
-                            }
-                        }
-                    });
-        } catch (Throwable e) {
-            XposedBridge.log(e);
-        }
-
-        try {
-            XposedHelpers.findAndHookMethod(RECORD_VOICE_FEATURE_IMPL,
-                    classLoader,
-                    "check",
-                    new XC_MethodReplacement() {
-                        @Override
-                        protected Object replaceHookedMethod(MethodHookParam param) {
-                            prefs.reload();
-                            if (prefs.getBoolean(PREF_ENABLE_CALL_ADD, false)) {
-                                return Boolean.FALSE;
-                            } else {
-                                return Boolean.TRUE;
                             }
                         }
                     });
