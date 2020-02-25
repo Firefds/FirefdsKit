@@ -14,9 +14,11 @@
  */
 package sb.firefds.pie.firefdskit.utils;
 
+import sb.firefds.pie.firefdskit.BuildConfig;
+
 public class Packages {
 
-    public static final String FIREFDSKIT = "sb.firefds.pie.firefdskit";
+    public static final String FIREFDSKIT = BuildConfig.APPLICATION_ID;
     public static final String ANDROID = "android";
     public static final String SYSTEM_UI = "com.android.systemui";
     public static final String INCALLUI = "com.android.incallui";

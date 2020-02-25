@@ -1,0 +1,10 @@
+# Default ignored files
+/.gradle/
+/.idea/
+/build/
+/release/
+/FirefdsKit.iml
+/local.properties
+/firefdskit/build/
+/firefdskit/firefdskit.iml
+/firefdskit/gradle.properties
