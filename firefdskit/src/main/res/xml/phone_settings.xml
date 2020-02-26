@@ -6,25 +6,18 @@
         android:title="@string/phone"
         app:iconSpaceReserved="false">
         <SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="enableCallRecording"
+            android:title="@string/call_recording"
+            android:summary="@string/call_recording_summary"
+            app:iconSpaceReserved="false" />
+        <SwitchPreferenceCompat
             android:defaultValue="false"
+            android:dependency="enableCallRecording"
             android:key="enableCallAdd"
             android:summaryOff="@string/enable_call_add_off"
             android:summaryOn="@string/enable_call_add_on"
             android:title="@string/enable_call_add"
-            app:iconSpaceReserved="false" />
-        <SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:dependency="enableCallAdd"
-            android:key="enableCallRecordingMenu"
-            android:summaryOff="@string/call_recording_menu_disabled"
-            android:summaryOn="@string/call_recording_menu_enabled"
-            android:title="@string/enable_call_recording_menu"
-            app:iconSpaceReserved="false" />
-        <SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:key="enableAutoCallRecording"
-            android:summary="@string/enable_automatic_call_recording"
-            android:title="@string/auto_call_recording"
             app:iconSpaceReserved="false" />
         <SwitchPreferenceCompat
             android:defaultValue="false"
