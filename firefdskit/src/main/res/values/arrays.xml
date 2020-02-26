@@ -32,8 +32,6 @@
         <item>hideCarrierLabel</item>
         <item>carrierSize</item>
         <item>enableCallAdd</item>
-        <item>enableCallRecordingMenu</item>
-        <item>enableAutoCallRecording</item>
         <item>disableBluetoothScanDialog</item>
         <item>enableCameraShutterMenu</item>
     </string-array>

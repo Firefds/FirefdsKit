@@ -93,14 +93,6 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             }
         }
 
-        if (lpparam.packageName.equals(Packages.SAMSUNG_INCALLUI)) {
-            try {
-                XInCallUIPackage.doHook(prefs, lpparam.classLoader);
-            } catch (Throwable e) {
-                XposedBridge.log(e);
-            }
-        }
-
         if (lpparam.packageName.equals(Packages.NFC)) {
             try {
                 XNfcPackage.doHook(prefs, lpparam.classLoader);

@@ -78,8 +78,8 @@
     <string name="force_mms_connect_to_receive_mms">דחיפת MMS בכוח, על מנת לקבל הודעות MMS מבלי להתחבר ידנית לנתונים ניידים</string>
     <string name="disable_temperature_checks">ביטול בדיקות טמפרטורה</string>
     <string name="disable_temperature_warnings_on_the_recording">ביטול התראות טמפרטורה בעת הקלטה ושימוש בהבזק. שימוש רק במקרה שצריך!</string>
-    <string name="auto_call_recording">הקלטת שיחות אוטומטית</string>
-    <string name="enable_automatic_call_recording">הפעלת הקלטת שיחות אוטומטית</string>
+    <string name="call_recording">הקלטת שיחות</string>
+    <string name="call_recording_summary">הפעלת הקלטת שיחות והגדרות הקלטה בהגדרות טלפון</string>
     <string name="firefds_kit_is_not_active">Firefds Kit לא פועל! יש לוודא:\n- ליישום זה דרושות השראות Root\n- מסגרת Xposed מתוקנת\n- מודל זה מופעל ב Xposed installer ואז הפעלה מחדש.</string>
     <string name="screenshot">צילום מסך</string>
     <string name="add_screenshot_to_power_menu">הוספת צילום מסך לתפריט כיבוי</string>
