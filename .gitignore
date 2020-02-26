@@ -8,3 +8,5 @@
 /firefdskit/gradle.properties
 /local.properties
 /firefdskit/build/
+/firefdskit/debug/
+/firefdskit/release/
