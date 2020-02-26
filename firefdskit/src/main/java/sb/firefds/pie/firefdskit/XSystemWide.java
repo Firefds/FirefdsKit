@@ -94,6 +94,28 @@ public class XSystemWide {
                             }
                         }
                     });
+
+            XposedHelpers.findAndHookMethod(SemCscFeature.class,
+                    "getString",
+                    String.class,
+                    String.class,
+                    new XC_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param) {
+                            if (param.args[0].equals(ENABLE_CALL_RECORDING)) {
+                                prefs.reload();
+                                if (prefs.getBoolean(PREF_ENABLE_CALL_RECORDING, false)) {
+                                    if (prefs.getBoolean(PREF_ENABLE_CALL_ADD, false)) {
+                                        param.setResult("RecordingAllowedByMenu");
+                                    } else {
+                                        param.setResult("RecordingAllowed");
+                                    }
+                                } else {
+                                    param.setResult("");
+                                }
+                            }
+                        }
+                    });
         } catch (Throwable e) {
             XposedBridge.log(e);
         }
