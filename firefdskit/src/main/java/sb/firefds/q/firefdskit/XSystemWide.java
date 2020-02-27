@@ -20,11 +20,10 @@ import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_CALL_RECORDI
 
 public class XSystemWide {
 
-    public static void doHook(final XSharedPreferences prefs) {
+    public static void doHook(XSharedPreferences prefs) {
 
         try {
             if (prefs.getBoolean(PREF_DISABLE_SECURE_FLAG, false)) {
-
                 XposedHelpers.findAndHookMethod(Window.class,
                         "setFlags",
                         int.class,

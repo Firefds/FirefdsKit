@@ -33,7 +33,7 @@ public class XPM29 {
     private static final String RECOVERY = "android.permission.RECOVERY";
     private static final String ACCESS_SCREEN_RECORDER_SVC = "com.samsung.android.app.screenrecorder.permission.ACCESS_SCREEN_RECORDER_SVC";
 
-    public static void doHook(final ClassLoader classLoader) {
+    public static void doHook(ClassLoader classLoader) {
         try {
             final Class<?> pmServiceClass = XposedHelpers.findClass(PERMISSION_MANAGER_SERVICE, classLoader);
             final Class<?> pmCallbackClass = XposedHelpers.findClass(PERMISSION_CALLBACK, classLoader);

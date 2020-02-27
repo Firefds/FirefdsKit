@@ -112,11 +112,10 @@ public class XSysUIGlobalActions {
     private static String mFlashlightOnStr;
     private static String mFlashlightOffStr;
 
-    public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
+    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
-        Class<?> flashlightControllerImplClass = XposedHelpers.findClass(FLASHLIGHT_CONTROLLER_IMPL_CLASS, classLoader);
-
-        XposedHelpers.findAndHookConstructor(flashlightControllerImplClass,
+        XposedHelpers.findAndHookConstructor(FLASHLIGHT_CONTROLLER_IMPL_CLASS,
+                classLoader,
                 Context.class,
                 new XC_MethodHook() {
                     @Override

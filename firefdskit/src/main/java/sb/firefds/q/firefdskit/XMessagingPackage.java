@@ -14,7 +14,7 @@ public class XMessagingPackage {
 
     private static final String FEATURE = SAMSUNG_MESSAGING + ".common.configuration.Feature";
 
-    public static void doHook(final XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
         boolean disableSmsToMms = prefs.getBoolean(PREF_DISABLE_SMS_TO_MMS, false);
         final Class<?> messagingFeatureClass = XposedHelpers.findClass(FEATURE, classLoader);

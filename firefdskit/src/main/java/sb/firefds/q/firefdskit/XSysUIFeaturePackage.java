@@ -74,8 +74,7 @@ public class XSysUIFeaturePackage {
     private static Class<?> qsClock;
     private static Method updateClock;
 
-    public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
-
+    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
         try {
             if (prefs.getBoolean(PREF_STATUSBAR_DOUBLE_TAP, false)) {

@@ -50,7 +50,7 @@ public class XSecSettingsPackage {
 
     private static ClassLoader classLoader;
 
-    public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
+    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
         XSecSettingsPackage.classLoader = classLoader;
 

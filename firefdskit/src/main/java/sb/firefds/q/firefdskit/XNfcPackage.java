@@ -32,7 +32,7 @@ public class XNfcPackage {
 
     private static final String NFC_SERVICE = NFC + ".NfcService";
 
-    public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
+    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
         try {
             XposedHelpers.findAndHookMethod(NFC_SERVICE,

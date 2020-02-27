@@ -31,7 +31,7 @@ public class XSysUINotificationPanelPackage {
     private static String dataIconBehavior;
     private static ClassLoader classLoader;
 
-    public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
+    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
         XSysUINotificationPanelPackage.classLoader = classLoader;
         final Class<?> systemUIRuneClass = XposedHelpers.findClass(RUNE, classLoader);
