@@ -35,7 +35,7 @@ public class XSecEmailPackage {
 
     private static ClassLoader classLoader;
 
-    public static void doHook(final XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
         XSecEmailPackage.classLoader = classLoader;
 

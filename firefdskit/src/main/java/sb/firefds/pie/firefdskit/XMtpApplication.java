@@ -10,37 +10,26 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_HIDE_MTP_NOTIFICA
 
 public class XMtpApplication {
 
-    private static ClassLoader classLoader;
     private static final String USB_CONNECTION = MTP_APPLICATION + ".USBConnection";
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
-        XMtpApplication.classLoader = classLoader;
-
         if (prefs.getBoolean(PREF_HIDE_MTP_NOTIFICATION, false)) {
             try {
-                hideMTPNotification();
+                XposedHelpers.findAndHookMethod(USB_CONNECTION,
+                        classLoader,
+                        "showDiaglog",
+                        new XC_MethodHook() {
+                            @Override
+                            protected void afterHookedMethod(MethodHookParam param) {
+                                Object mReceiver = XposedHelpers.getObjectField(param.thisObject, "mReceiver");
+                                XposedHelpers.callMethod(mReceiver, "changeMtpMode");
+                                XposedHelpers.callMethod(param.thisObject, "finish");
+                            }
+                        });
             } catch (Throwable e) {
                 XposedBridge.log(e);
             }
-        }
-    }
-
-    private static void hideMTPNotification() {
-        try {
-            XposedHelpers.findAndHookMethod(USB_CONNECTION,
-                    classLoader,
-                    "showDiaglog",
-                    new XC_MethodHook() {
-                        @Override
-                        protected void afterHookedMethod(MethodHookParam param) {
-                            Object mReceiver = XposedHelpers.getObjectField(param.thisObject, "mReceiver");
-                            XposedHelpers.callMethod(mReceiver, "changeMtpMode");
-                            XposedHelpers.callMethod(param.thisObject, "finish");
-                        }
-                    });
-        } catch (Throwable e) {
-            XposedBridge.log(e);
         }
     }
 }

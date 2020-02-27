@@ -13,7 +13,7 @@ public class XTouchwizLauncherPackage {
             "com.android.launcher3.framework.view.features.pagetransition.PageTransitionManager";
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
-        int transEffect = Integer.valueOf(prefs.getString(PREF_TRANSITION_EFFECT, "0"));
+        int transEffect = Integer.parseInt(prefs.getString(PREF_TRANSITION_EFFECT, "0"));
         if (transEffect != 0) {
             try {
                 XposedHelpers.findAndHookMethod(PAGE_TRANSITION_MANAGER,

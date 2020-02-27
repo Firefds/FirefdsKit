@@ -52,7 +52,7 @@ public class XAndroidPackage {
     private static Context mPackageManagerServiceContext;
     private static boolean isFB;
 
-    public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
+    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
         try {
             if (prefs.getBoolean(PREF_DEFAULT_REBOOT_BEHAVIOR, false)) {
@@ -75,7 +75,6 @@ public class XAndroidPackage {
             }
             if (prefs.getBoolean(PREF_DISABLE_SECURE_FLAG, false)) {
                 Class<?> windowStateClass = XposedHelpers.findClass(WINDOW_STATE, classLoader);
-
                 XposedHelpers.findAndHookMethod(WINDOW_MANAGER_SERVICE,
                         classLoader,
                         "isSecureLocked",
@@ -85,9 +84,9 @@ public class XAndroidPackage {
 
             if (prefs.getBoolean(PREF_DISABLE_SIGNATURE_CHECK, false)) {
                 if (mPackageManagerServiceContext == null) {
-                    Class<?> packageManagerService = XposedHelpers.findClass(PACKAGE_MANAGER_SERVICE, classLoader);
                     Class<?> installer = XposedHelpers.findClass(INSTALLER, classLoader);
-                    XposedHelpers.findAndHookConstructor(packageManagerService,
+                    XposedHelpers.findAndHookConstructor(PACKAGE_MANAGER_SERVICE,
+                            classLoader,
                             Context.class,
                             installer,
                             boolean.class,
@@ -100,8 +99,8 @@ public class XAndroidPackage {
                             });
                 }
 
-                Class<?> packageManagerServiceUtilsClass = XposedHelpers.findClass(PACKAGE_MANAGER_SERVICE_UTILS, classLoader);
-                XposedHelpers.findAndHookMethod(packageManagerServiceUtilsClass,
+                XposedHelpers.findAndHookMethod(PACKAGE_MANAGER_SERVICE_UTILS,
+                        classLoader,
                         "compareSignatures",
                         Signature[].class,
                         Signature[].class,
@@ -117,7 +116,8 @@ public class XAndroidPackage {
             }
 
             if (prefs.getBoolean(PREF_SUPPORTS_MULTIPLE_USERS, false)) {
-                XposedHelpers.findAndHookMethod(UserManager.class, "supportsMultipleUsers",
+                XposedHelpers.findAndHookMethod(UserManager.class,
+                        "supportsMultipleUsers",
                         new XC_MethodHook() {
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
@@ -125,7 +125,8 @@ public class XAndroidPackage {
                             }
                         });
 
-                XposedHelpers.findAndHookMethod(UserManager.class, "getMaxSupportedUsers",
+                XposedHelpers.findAndHookMethod(UserManager.class,
+                        "getMaxSupportedUsers",
                         new XC_MethodHook() {
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
@@ -135,10 +136,11 @@ public class XAndroidPackage {
             }
 
             if (prefs.getBoolean(PREF_HIDE_VOLTE_ICON, false)) {
-                Class<?> statusBarManagerService = XposedHelpers.findClass(STATUS_BAR_MANAGER_SERVICE, classLoader);
-                XposedHelpers.findAndHookMethod(statusBarManagerService,
+                XposedHelpers.findAndHookMethod(STATUS_BAR_MANAGER_SERVICE,
+                        classLoader,
                         "setIconVisibility",
-                        String.class, boolean.class,
+                        String.class,
+                        boolean.class,
                         new XC_MethodHook() {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) {

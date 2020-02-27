@@ -19,7 +19,7 @@ import de.robv.android.xposed.XposedBridge;
 
 public class XSysUIPackage {
 
-    public static void doHook(final XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
 		try {
 			XSysUIFeaturePackage.doHook(prefs, classLoader);

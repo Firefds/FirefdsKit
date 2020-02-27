@@ -23,11 +23,10 @@ public class XSystemWide {
 
     private final static String WIFI_AP_CUST_CLASS = "android.net.wifi.WifiApCust";
 
-    public static void doHook(final XSharedPreferences prefs) {
+    public static void doHook(XSharedPreferences prefs) {
 
         try {
             if (prefs.getBoolean(PREF_DISABLE_SECURE_FLAG, false)) {
-
                 XposedHelpers.findAndHookMethod(Window.class,
                         "setFlags",
                         int.class,
