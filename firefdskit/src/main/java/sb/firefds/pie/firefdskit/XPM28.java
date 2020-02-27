@@ -32,7 +32,7 @@ public class XPM28 {
     private static final String STATUSBAR = "android.permission.EXPAND_STATUS_BAR";
     private static final String RECOVERY = "android.permission.RECOVERY";
 
-    public static void doHook(final ClassLoader classLoader) {
+    public static void doHook(ClassLoader classLoader) {
         try {
             final Class<?> pmServiceClass = XposedHelpers.findClass(PERMISSION_MANAGER_SERVICE, classLoader);
             final Class<?> pmCallbackClass = XposedHelpers.findClass(PERMISSION_CALLBACK, classLoader);

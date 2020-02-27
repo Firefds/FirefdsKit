@@ -65,7 +65,7 @@ public class XSecSettingsPackage {
     private static Class<?> NavigationBarSettings;
     private static Class<?> NavigationBarColorPreference;
 
-    public static void doHook(final XSharedPreferences prefs, final ClassLoader classLoader) {
+    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
         XSecSettingsPackage.classLoader = classLoader;
         XSecSettingsPackage.prefs = prefs;
