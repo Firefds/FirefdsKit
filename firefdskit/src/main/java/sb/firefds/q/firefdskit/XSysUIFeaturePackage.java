@@ -130,6 +130,18 @@ public class XSysUIFeaturePackage {
                         classLoader,
                         "isUnlockingWithBiometricAllowed",
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
+
+                XposedHelpers.findAndHookMethod("com.android.keyguard.KeyguardUpdateMonitor$20",
+                        classLoader,
+                        "onAuthenticationError",
+                        int.class,
+                        CharSequence.class,
+                        new XC_MethodHook() {
+                            @Override
+                            protected void beforeHookedMethod(MethodHookParam param) {
+                                param.setResult(null);
+                            }
+                        });
             }
 
             if (prefs.getBoolean(PREF_SHOW_CLOCK_SECONDS, false) ||
