@@ -6,12 +6,14 @@ import android.view.KeyEvent;
 
 import androidx.annotation.Keep;
 
+import java.util.HashMap;
+
 import de.robv.android.xposed.XposedHelpers;
 
 @Keep
 public class ScreenShotActionViewModel extends FirefdsKitActionViewModel {
 
-    public ScreenShotActionViewModel(Object[] actionViewModelDefaults) {
+    public ScreenShotActionViewModel(HashMap<String, Object> actionViewModelDefaults) {
         super(actionViewModelDefaults);
     }
 

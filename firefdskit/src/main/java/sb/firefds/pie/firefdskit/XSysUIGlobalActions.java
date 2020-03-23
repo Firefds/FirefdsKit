@@ -30,10 +30,13 @@ import com.samsung.android.globalactions.presentation.viewmodel.ActionInfo;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModel;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModelFactory;
 import com.samsung.android.globalactions.presentation.viewmodel.ViewType;
+import com.samsung.android.globalactions.util.ConditionChecker;
 import com.samsung.android.globalactions.util.KeyGuardManagerWrapper;
+import com.samsung.android.globalactions.util.SystemConditions;
 import com.samsung.android.globalactions.util.UtilFactory;
 
 import java.lang.reflect.Constructor;
+import java.util.HashMap;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -77,6 +80,7 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_RESTART_SY
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_SCREENSHOT;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_SCREEN_RECORD;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE_USERS;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_UNLOCK_KEYGUARD_BEFORE_ACTION_EXECUTE;
 
 public class XSysUIGlobalActions {
 
@@ -86,9 +90,13 @@ public class XSysUIGlobalActions {
     private static final String SEC_GLOBAL_ACTIONS_DIALOG_BASE = GLOBAL_ACTIONS_PACKAGE + ".view.SecGlobalActionsDialogBase";
     private static final String GLOBAL_ACTION_ITEM_VIEW = GLOBAL_ACTIONS_PACKAGE + ".view.GlobalActionItemView";
     private static final String FLASHLIGHT_CONTROLLER_IMPL_CLASS = SYSTEM_UI + ".statusbar.policy.FlashlightControllerImpl";
+    private static final String RESTART_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel.RestartActionViewModel";
+    private static final String SAFE_MODE_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel.SafeModeActionViewModel";
+    private static final String POWER_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel.PowerActionViewModel";
+    private static final String EMERGENCY_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel.EmergencyActionViewModel";
 
     private static SecGlobalActionsPresenter mSecGlobalActionsPresenter;
-    private static Object[] actionViewModelDefaults;
+    private static HashMap<String, Object> actionViewModelDefaults;
     private static String mRecoveryStr;
     private static String mDownloadStr;
     private static String mScreenshotStr;
@@ -109,6 +117,7 @@ public class XSysUIGlobalActions {
     private static Object mFlashlightObject;
     private static String mFlashlightOnStr;
     private static String mFlashlightOffStr;
+    private static boolean prefUnlockKeyguardBeforeActionExecute;
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
@@ -123,8 +132,42 @@ public class XSysUIGlobalActions {
                 });
 
         final Class<?> secGlobalActionsDialogBaseClass = XposedHelpers.findClass(SEC_GLOBAL_ACTIONS_DIALOG_BASE, classLoader);
+        prefUnlockKeyguardBeforeActionExecute = prefs.getBoolean(PREF_UNLOCK_KEYGUARD_BEFORE_ACTION_EXECUTE, false);
 
         try {
+            if (prefUnlockKeyguardBeforeActionExecute) {
+                XC_MethodHook isNeedSecureConfirmHook = new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) {
+                        ConditionChecker mConditionChecker =
+                                (ConditionChecker) XposedHelpers.getObjectField(param.thisObject, "mConditionChecker");
+                        if (mConditionChecker.isEnabled(SystemConditions.IS_SECURE_KEYGUARD)) {
+                            param.setResult(Boolean.TRUE);
+                        }
+                    }
+                };
+
+                XposedHelpers.findAndHookMethod(RESTART_ACTION_VIEW_MODEL,
+                        classLoader,
+                        "isNeedSecureConfirm",
+                        isNeedSecureConfirmHook);
+
+                XposedHelpers.findAndHookMethod(SAFE_MODE_ACTION_VIEW_MODEL,
+                        classLoader,
+                        "isNeedSecureConfirm",
+                        isNeedSecureConfirmHook);
+
+                XposedHelpers.findAndHookMethod(POWER_ACTION_VIEW_MODEL,
+                        classLoader,
+                        "isNeedSecureConfirm",
+                        isNeedSecureConfirmHook);
+
+                XposedHelpers.findAndHookMethod(EMERGENCY_ACTION_VIEW_MODEL,
+                        classLoader,
+                        "isNeedSecureConfirm",
+                        isNeedSecureConfirmHook);
+            }
+
             if (prefs.getBoolean(PREF_DISABLE_POWER_MENU_SECURE_LOCKSCREEN, false)) {
                 XposedHelpers.findAndHookMethod(secGlobalActionsDialogBaseClass,
                         "showDialog",
@@ -382,6 +425,7 @@ public class XSysUIGlobalActions {
                 actionLabel,
                 actionDescription);
         restartActionViewModel.setRebootOption(rebootAction);
+        restartActionViewModel.setUnlockKeyguardBeforeActionExecute(prefUnlockKeyguardBeforeActionExecute);
         return restartActionViewModel;
     }
 
@@ -399,8 +443,8 @@ public class XSysUIGlobalActions {
                                                                 String actionDescription) {
         FirefdsKitActionViewModel firefdsKitActionViewModel = null;
         try {
-            Constructor<?> constructor = basicActionViewModelClass.getConstructor(Object[].class);
-            Object[] param = {actionViewModelDefaults};
+            Constructor<?> constructor = basicActionViewModelClass.getConstructor(HashMap.class);
+            HashMap<String, Object> param = actionViewModelDefaults;
             firefdsKitActionViewModel = (FirefdsKitActionViewModel) constructor.newInstance(param);
             ActionInfo actionInfo = setActionInfo(actionName, actionLabel, actionDescription);
             firefdsKitActionViewModel.setActionInfo(actionInfo);
@@ -411,15 +455,18 @@ public class XSysUIGlobalActions {
     }
 
     private static void setActionViewModelDefaults(XC_MethodHook.MethodHookParam param) {
-        Object[] actionViewModelDefaults = new Object[2];
+        HashMap<String, Object> actionViewModelDefaults = new HashMap<>();
 
         UtilFactory mUtilFactory = (UtilFactory) XposedHelpers.getObjectField(param.thisObject, "mUtilFactory");
         KeyGuardManagerWrapper mKeyGuardManagerWrapper = (KeyGuardManagerWrapper) XposedHelpers.callMethod(mUtilFactory,
                 "get",
                 KeyGuardManagerWrapper.class);
 
-        actionViewModelDefaults[0] = XposedHelpers.getObjectField(mKeyGuardManagerWrapper, "mContext");
-        actionViewModelDefaults[1] = mSecGlobalActionsPresenter;
+        actionViewModelDefaults.put("mContext", XposedHelpers.getObjectField(mKeyGuardManagerWrapper, "mContext"));
+        actionViewModelDefaults.put("mGlobalActions", mSecGlobalActionsPresenter);
+        actionViewModelDefaults.put("mFeatureFactory", XposedHelpers.getObjectField(param.thisObject, "mFeatureFactory"));
+        actionViewModelDefaults.put("mConditionChecker", XposedHelpers.getObjectField(param.thisObject, "mConditionChecker"));
+        actionViewModelDefaults.put("mKeyGuardManagerWrapper", mKeyGuardManagerWrapper);
 
         XSysUIGlobalActions.actionViewModelDefaults = actionViewModelDefaults;
     }
