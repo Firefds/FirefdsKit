@@ -32,6 +32,12 @@
             app:iconSpaceReserved="false" />
         <SwitchPreferenceCompat
             android:defaultValue="false"
+            android:key="unlockKeyguardBeforeActionExecute"
+            android:summary="@string/unlock_keyguard_before_action_execute_summary"
+            android:title="@string/unlock_keyguard_before_action_execute_title"
+            app:iconSpaceReserved="false" />
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
             android:key="defaultRebootBehavior"
             android:summary="@string/default_reboot_behavior_summary"
             android:title="@string/default_reboot_behavior_title"

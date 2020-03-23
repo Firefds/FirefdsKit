@@ -5,6 +5,8 @@ import android.content.Intent;
 
 import androidx.annotation.Keep;
 
+import java.util.HashMap;
+
 import de.robv.android.xposed.XposedBridge;
 
 import static sb.firefds.q.firefdskit.utils.Packages.SMART_CAPTURE;
@@ -14,7 +16,7 @@ public class ScreenRecordActionViewModel extends FirefdsKitActionViewModel {
 
     private static final String SCREEN_RECORDER_SERVICE = "com.samsung.android.app.screenrecorder.ScreenRecorderService";
 
-    public ScreenRecordActionViewModel(Object[] actionViewModelDefaults) {
+    public ScreenRecordActionViewModel(HashMap<String, Object> actionViewModelDefaults) {
         super(actionViewModelDefaults);
     }
 

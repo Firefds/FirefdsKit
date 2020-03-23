@@ -8,6 +8,14 @@ import android.os.PowerManager;
 
 import androidx.annotation.Keep;
 
+import com.samsung.android.globalactions.presentation.features.FeatureFactory;
+import com.samsung.android.globalactions.presentation.strategies.SecureConfirmStrategy;
+import com.samsung.android.globalactions.util.ConditionChecker;
+import com.samsung.android.globalactions.util.KeyGuardManagerWrapper;
+import com.samsung.android.globalactions.util.SystemConditions;
+
+import java.util.HashMap;
+
 import static sb.firefds.q.firefdskit.utils.Constants.REBOOT_ACTION;
 import static sb.firefds.q.firefdskit.utils.Packages.FIREFDSKIT;
 
@@ -15,9 +23,16 @@ import static sb.firefds.q.firefdskit.utils.Packages.FIREFDSKIT;
 public class RestartActionViewModel extends FirefdsKitActionViewModel {
     private static final String REBOOT_ACTIVITY = FIREFDSKIT + ".activities.WanamRebootActivity";
     private String rebootOption;
+    private FeatureFactory mFeatureFactory;
+    private ConditionChecker mConditionChecker;
+    private KeyGuardManagerWrapper mKeyGuardManagerWrapper;
+    private boolean unlockKeyguardBeforeActionExecute;
 
-    public RestartActionViewModel(Object[] actionViewModelDefaults) {
+    public RestartActionViewModel(HashMap<String, Object> actionViewModelDefaults) {
         super(actionViewModelDefaults);
+        mFeatureFactory = (FeatureFactory) actionViewModelDefaults.get("mFeatureFactory");
+        mConditionChecker = (ConditionChecker) actionViewModelDefaults.get("mConditionChecker");
+        mKeyGuardManagerWrapper = (KeyGuardManagerWrapper) actionViewModelDefaults.get("mKeyGuardManagerWrapper");
     }
 
     @Override
@@ -26,7 +41,20 @@ public class RestartActionViewModel extends FirefdsKitActionViewModel {
         if (!getmGlobalActions().isActionConfirming()) {
             getmGlobalActions().confirmAction(this);
         } else {
-            reboot();
+            if (unlockKeyguardBeforeActionExecute) {
+                if (mConditionChecker.isEnabled(SystemConditions.IS_SECURE_KEYGUARD)) {
+                    for (SecureConfirmStrategy strategy3 : mFeatureFactory.createSecureConfirmStrategy(getmGlobalActions(), getActionInfo().getName())) {
+                        strategy3.doActionBeforeSecureConfirm(this, getmGlobalActions());
+                    }
+                    getmGlobalActions().registerSecureConfirmAction(this);
+                    mKeyGuardManagerWrapper.setPendingIntentAfterUnlock("reboot");
+                    getmGlobalActions().hideDialogOnSecureConfirm();
+                } else {
+                    reboot();
+                }
+            } else {
+                reboot();
+            }
         }
     }
 
@@ -50,5 +78,9 @@ public class RestartActionViewModel extends FirefdsKitActionViewModel {
 
     public void setRebootOption(String rebootOption) {
         this.rebootOption = rebootOption;
+    }
+
+    public void setUnlockKeyguardBeforeActionExecute(boolean unlockKeyguardBeforeActionExecute) {
+        this.unlockKeyguardBeforeActionExecute = unlockKeyguardBeforeActionExecute;
     }
 }

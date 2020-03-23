@@ -5,10 +5,12 @@ import android.os.Process;
 
 import androidx.annotation.Keep;
 
+import java.util.HashMap;
+
 @Keep
 public class RestartSystemUiActionViewModel extends FirefdsKitActionViewModel {
 
-    public RestartSystemUiActionViewModel(Object[] actionViewModelDefaults) {
+    public RestartSystemUiActionViewModel(HashMap<String, Object> actionViewModelDefaults) {
         super(actionViewModelDefaults);
     }
 

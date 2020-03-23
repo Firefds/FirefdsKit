@@ -4,6 +4,8 @@ import androidx.annotation.Keep;
 
 import com.samsung.android.globalactions.presentation.viewmodel.ActionInfo;
 
+import java.util.HashMap;
+
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
@@ -14,7 +16,7 @@ public class FlashLightActionViewModel extends FirefdsKitActionViewModel {
     private static String flashlightOnStr;
     private static String flashlightOffStr;
 
-    public FlashLightActionViewModel(Object[] actionViewModelDefaults) {
+    public FlashLightActionViewModel(HashMap<String, Object> actionViewModelDefaults) {
         super(actionViewModelDefaults);
     }
 

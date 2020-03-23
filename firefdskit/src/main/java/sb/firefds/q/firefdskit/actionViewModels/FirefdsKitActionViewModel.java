@@ -2,11 +2,13 @@ package sb.firefds.q.firefdskit.actionViewModels;
 
 import android.content.Context;
 
+import androidx.annotation.Keep;
+
 import com.samsung.android.globalactions.presentation.SecGlobalActions;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionInfo;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModel;
 
-import androidx.annotation.Keep;
+import java.util.HashMap;
 
 @Keep
 public class FirefdsKitActionViewModel implements ActionViewModel {
@@ -14,9 +16,9 @@ public class FirefdsKitActionViewModel implements ActionViewModel {
     private ActionInfo mInfo;
     private Context mContext;
 
-    FirefdsKitActionViewModel(Object[] actionViewModelDefaults) {
-        mContext = (Context) actionViewModelDefaults[0];
-        mGlobalActions = (SecGlobalActions) actionViewModelDefaults[1];
+    FirefdsKitActionViewModel(HashMap<String, Object> actionViewModelDefaults) {
+        mContext = (Context) actionViewModelDefaults.get("mContext");
+        mGlobalActions = (SecGlobalActions) actionViewModelDefaults.get("mGlobalActions");
     }
 
     public ActionInfo getActionInfo() {

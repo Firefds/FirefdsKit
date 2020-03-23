@@ -4,12 +4,14 @@ import android.content.Intent;
 
 import androidx.annotation.Keep;
 
+import java.util.HashMap;
+
 import static sb.firefds.q.firefdskit.utils.Packages.SETTINGS;
 
 @Keep
 public class UserSwitchActionViewModel extends FirefdsKitActionViewModel {
 
-    public UserSwitchActionViewModel(Object[] actionViewModelDefaults) {
+    public UserSwitchActionViewModel(HashMap<String, Object> actionViewModelDefaults) {
         super(actionViewModelDefaults);
     }
 

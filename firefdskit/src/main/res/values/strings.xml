@@ -206,4 +206,6 @@
     <string name="disable_power_menu_secure_lockscreen_summary">Disable display of power menu when device is secure locked</string>
     <string name="enable_advanced_hotspot_options_title">Enable Advanced Hotspot Options</string>
     <string name="enable_advanced_hotspot_options_summary">Enable additional advanced hotspot settings options</string>
+    <string name="unlock_keyguard_before_action_execute_summary">Perform restart or power off actions after unlocking secure keyguard</string>
+    <string name="unlock_keyguard_before_action_execute_title">Unlock Keyguard Before Actions</string>
 </resources>

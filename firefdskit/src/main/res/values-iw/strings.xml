@@ -206,4 +206,6 @@
     <string name="disable_power_menu_secure_lockscreen_summary">מניעת הופעת תפריט הכיבוי בעת נעילת מסך בטוחה</string>
     <string name="enable_advanced_hotspot_options_title">הפעלת אפשרויות מתקדמות בנקודת גישה חמה</string>
     <string name="enable_advanced_hotspot_options_summary">הפעלת אפשרויות מתקדמות נוספות בהגדרת נקודת גישה חמה</string>
+    <string name="unlock_keyguard_before_action_execute_summary">ביצוע פעולת הפעלה מחדש או כיבוי אחרי פתיחת נעילת מסך מאובטחת</string>
+    <string name="unlock_keyguard_before_action_execute_title">פתיחת נעילה מאובטחת לפני ביצועי</string>
 </resources>

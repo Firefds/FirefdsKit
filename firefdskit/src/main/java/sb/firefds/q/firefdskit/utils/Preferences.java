@@ -43,6 +43,7 @@ public class Preferences {
     public static final String PREF_CUSTOM_RECOVERY_CONFIRMATION = "customRecoveryConfirmation";
     public static final String PREF_DISABLE_RESTART_CONFIRMATION = "disbaleRestartConfirmation";
     public static final String PREF_DISABLE_POWER_MENU_SECURE_LOCKSCREEN = "disablePowerMenuSecureLockscreen";
+    public static final String PREF_UNLOCK_KEYGUARD_BEFORE_ACTION_EXECUTE = "unlockKeyguardBeforeActionExecute";
     public static final String PREF_REPLACE_RECOVERY_ICON = "replaceRecoveryIcon";
     public static final String PREF_DEFAULT_REBOOT_BEHAVIOR = "defaultRebootBehavior";
     public static final String PREF_SUPPORTS_MULTIPLE_USERS = "supportsMultipleUsers";
