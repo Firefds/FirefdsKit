@@ -1,5 +1,6 @@
 package sb.firefds.pie.firefdskit;
 
+import android.net.wifi.WifiManager;
 import android.os.PowerManager;
 import android.view.SurfaceView;
 import android.view.Window;
@@ -8,6 +9,7 @@ import android.view.WindowManager;
 import com.samsung.android.feature.SemCscFeature;
 
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
@@ -71,6 +73,14 @@ public class XSystemWide {
                 XposedHelpers.setStaticBooleanField(WifiApCustClass, "mSupport5G", true);
                 XposedHelpers.setStaticBooleanField(WifiApCustClass, "mSupport5GBasedOnCountry", true);
                 XposedHelpers.setStaticObjectField(WifiApCustClass, "mRegion", "NA");
+
+                XposedHelpers.findAndHookMethod(WifiManager.class,
+                        "semSupportWifiAp5GBasedOnCountry",
+                        XC_MethodReplacement.returnConstant(Boolean.TRUE));
+
+                XposedHelpers.findAndHookMethod(WifiManager.class,
+                        "semSupportWifiAp5G",
+                        XC_MethodReplacement.returnConstant(Boolean.TRUE));
             }
 
             XposedHelpers.findAndHookMethod(SemCscFeature.class,
