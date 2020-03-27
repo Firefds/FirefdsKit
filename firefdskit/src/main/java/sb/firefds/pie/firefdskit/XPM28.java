@@ -31,6 +31,7 @@ public class XPM28 {
     private static final String WRITE_SETTINGS = "android.permission.WRITE_SETTINGS";
     private static final String STATUSBAR = "android.permission.EXPAND_STATUS_BAR";
     private static final String RECOVERY = "android.permission.RECOVERY";
+    private static final String ACCESS_SCREEN_RECORDER_SVC = "com.samsung.android.app.screenrecorder.permission.ACCESS_SCREEN_RECORDER_SVC";
 
     public static void doHook(ClassLoader classLoader) {
         try {
@@ -60,6 +61,7 @@ public class XPM28 {
                                     case SYSTEM_UI:
                                         grantPermission(ps, permissions, REBOOT);
                                         grantPermission(ps, permissions, RECOVERY);
+                                        grantPermission(ps, permissions, ACCESS_SCREEN_RECORDER_SVC);
                                         break;
                                 }
                             }

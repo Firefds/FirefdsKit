@@ -15,7 +15,7 @@
         <item
             android:id="@+id/soundKey"
             android:icon="@drawable/ic_menu_sound"
-            android:title="@string/sound" />
+            android:title="@string/soundAndRecording" />
         <item
             android:id="@+id/systemKey"
             android:icon="@drawable/ic_menu_system"
