@@ -13,7 +13,9 @@
     <string name="reboot_recovery">מצב Recovery</string>
     <string name="reboot_download">מצב Download</string>
     <string name="quick_settings">הגדרות מהירות</string>
+    <string name="soundAndRecording">שמע והקלטה</string>
     <string name="sound">שמע</string>
+    <string name="recording">הקלטה (נדרש Samsung Capture גרסה 3.0.0 ומעלה)</string>
     <string name="security">פריצות אבטחה</string>
     <string name="messaging">הודעות</string>
     <string name="apply">החל</string>
@@ -208,4 +210,6 @@
     <string name="enable_advanced_hotspot_options_summary">הפעלת אפשרויות מתקדמות נוספות בהגדרת נקודת גישה חמה</string>
     <string name="unlock_keyguard_before_action_execute_summary">ביצוע פעולת הפעלה מחדש או כיבוי אחרי פתיחת נעילת מסך מאובטחת</string>
     <string name="unlock_keyguard_before_action_execute_title">פתיחת נעילה מאובטחת לפני ביצועי</string>
+    <string name="enable_screen_record_in_call_summary">הפעלת הקלטת מסך בזמן שיחה</string>
+    <string name="enable_screen_record_in_call_title">הקלטת מסך בזמן שיחה</string>
 </resources>

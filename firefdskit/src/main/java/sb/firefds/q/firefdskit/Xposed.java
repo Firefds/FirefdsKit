@@ -68,7 +68,7 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                     XposedBridge.log(e);
                 }
             } else {
-                XposedBridge.log("Xposed cannot read XTouchWiz preferences!");
+                XposedBridge.log("FFK: Xposed cannot read XTouchWiz preferences!");
             }
         }
 
@@ -160,8 +160,16 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         if (lpparam.packageName.equals(Packages.SAMSUNG_CONTACTS)) {
             try {
                 XContactsPackage.doHook(prefs, lpparam.classLoader);
-            } catch (Exception e1) {
-                XposedBridge.log(e1);
+            } catch (Throwable e) {
+                XposedBridge.log(e);
+            }
+        }
+
+        if (lpparam.packageName.equals(Packages.SMART_CAPTURE)) {
+            try {
+                XSmartCapturePackage.doHook(prefs, lpparam.classLoader);
+            } catch (Exception e) {
+                XposedBridge.log(e);
             }
         }
     }

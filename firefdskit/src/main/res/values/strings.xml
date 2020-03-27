@@ -13,7 +13,9 @@
     <string name="reboot_recovery">Recovery</string>
     <string name="reboot_download">Download</string>
     <string name="quick_settings">Quick settings</string>
+    <string name="soundAndRecording">Sound &amp; Recording</string>
     <string name="sound">Sound</string>
+    <string name="recording">Recording (Requires Samsung Capture 3.0.0 and above)</string>
     <string name="security">Security Hacks</string>
     <string name="lockscreen">Lockscreen</string>
     <string name="messaging">Messaging</string>
@@ -208,4 +210,6 @@
     <string name="enable_advanced_hotspot_options_summary">Enable additional advanced hotspot settings options</string>
     <string name="unlock_keyguard_before_action_execute_summary">Perform restart or power off actions after unlocking secure keyguard</string>
     <string name="unlock_keyguard_before_action_execute_title">Unlock Keyguard Before Actions</string>
+    <string name="enable_screen_record_in_call_summary">Enable screen recording while call is active</string>
+    <string name="enable_screen_record_in_call_title">Enable Screen Recording In Call</string>
 </resources>
