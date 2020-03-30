@@ -51,6 +51,7 @@ public class XAndroidPackage {
     private static final String SHUTDOWN_THREAD = "com.android.server.power.ShutdownThread";
     private static final String WIFI_NATIVE_CLASS = "com.android.server.wifi.WifiNative";
     private static final String AP_CONFIG_UTIL_CLASS = "com.android.server.wifi.util.ApConfigUtil";
+    private static final String ACTIVITY_MANAGER_SERVICE = "com.android.server.am.ActivityManagerService";
     @SuppressLint("StaticFieldLeak")
     private static Context mPackageManagerServiceContext;
     private static boolean isFB;
@@ -58,6 +59,22 @@ public class XAndroidPackage {
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
         try {
+
+            XposedHelpers.findAndHookMethod(ACTIVITY_MANAGER_SERVICE,
+                    classLoader,
+                    "appRestrictedInBackgroundLocked",
+                    int.class,
+                    String.class,
+                    int.class,
+                    new XC_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param) {
+                            if (param.args[1].equals("org.meowcat.edxposed.manager")) {
+                                param.setResult(0);
+                            }
+                        }
+                    });
+
             if (prefs.getBoolean(PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS, false)) {
                 Class<?> wifiNativeClass = XposedHelpers.findClass(WIFI_NATIVE_CLASS, classLoader);
                 XposedHelpers.findAndHookMethod(AP_CONFIG_UTIL_CLASS,
@@ -67,6 +84,7 @@ public class XAndroidPackage {
                         String.class,
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
             }
+
             if (prefs.getBoolean(PREF_DEFAULT_REBOOT_BEHAVIOR, false)) {
                 Class<?> shutdownThreadClass = XposedHelpers.findClass(SHUTDOWN_THREAD, classLoader);
                 XposedHelpers.findAndHookMethod(shutdownThreadClass,
@@ -85,6 +103,7 @@ public class XAndroidPackage {
                             }
                         });
             }
+
             if (prefs.getBoolean(PREF_DISABLE_SECURE_FLAG, false)) {
                 Class<?> windowStateClass = XposedHelpers.findClass(WINDOW_STATE, classLoader);
                 XposedHelpers.findAndHookMethod(WINDOW_MANAGER_SERVICE,
