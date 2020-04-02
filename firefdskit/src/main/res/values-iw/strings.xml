@@ -241,4 +241,9 @@
     <string name="enable_screen_record_in_call_title">הקלטת מסך בזמן שיחה</string>
     <string name="enable_screen_record_tile_summary">הפעלת אריח הפעלה מהירה להקלטת מסך</string>
     <string name="enable_screen_record_tile_title">אריח הקלטת מסך</string>
+    <string name="language_settings">הגדרות שפה</string>
+    <string name="force_english_summary">כפיית שפת הממשק של Firefds Kit לאנגלית</string>
+    <string name="force_english_title">כפיית שפה לאנגלית</string>
+    <string name="language_toast">שפת הממשק תשתנה לאחר הפעלת המודל מחדש</string>
+    <string name="firefds_kit_settings">הגדרות Firefds Kit</string>
 </resources>

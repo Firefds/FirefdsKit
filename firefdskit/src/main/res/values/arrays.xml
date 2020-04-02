@@ -34,6 +34,7 @@
         <item>enableCallAdd</item>
         <item>disableBluetoothScanDialog</item>
         <item>enableCameraShutterMenu</item>
+        <item>forceEnglish</item>
     </string-array>
     <string-array name="data_icon_entries">
         <item name="Default">Default</item>

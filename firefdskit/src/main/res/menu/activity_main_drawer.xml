@@ -36,5 +36,9 @@
             android:id="@+id/launcherKey"
             android:icon="@drawable/ic_menu_touchwiz_launcher"
             android:title="@string/launcher" />
+        <item
+            android:id="@+id/firefdsKitKey"
+            android:icon="@drawable/ic_launcher"
+            android:title="@string/firefds_kit_settings" />
     </group>
 </menu>
