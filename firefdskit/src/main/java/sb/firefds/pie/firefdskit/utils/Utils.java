@@ -166,7 +166,18 @@ public class Utils {
     }
 
     public static ContextWrapper checkForceEnglish(Context context, SharedPreferences prefs) {
-
+        LocaleList localeList;
+        Configuration config = context.getResources().getConfiguration();
+        if (prefs.getBoolean("forceEnglish", false)) {
+            config.setLocale(Locale.ENGLISH);
+            localeList = new LocaleList(Locale.ENGLISH);
+        } else {
+            config.setLocale(Locale.getDefault());
+            localeList = new LocaleList(Locale.getDefault());
+        }
+        LocaleList.setDefault(localeList);
+        config.setLocales(localeList);
+        context = context.createConfigurationContext(config);
         return new ContextWrapper(context);
     }
 
