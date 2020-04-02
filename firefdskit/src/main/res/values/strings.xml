@@ -212,4 +212,9 @@
     <string name="unlock_keyguard_before_action_execute_title">Unlock Keyguard Before Actions</string>
     <string name="enable_screen_record_in_call_summary">Enable screen recording while call is active</string>
     <string name="enable_screen_record_in_call_title">Enable Screen Recording In Call</string>
+    <string name="language_settings">Language Settings</string>
+    <string name="force_english_summary">Forces Firefds Kit to use English language</string>
+    <string name="force_english_title">Force English Language</string>
+    <string name="language_toast">Language change will take affect after application module restart</string>
+    <string name="firefds_kit_settings">Firefds Kit Settings</string>
 </resources>

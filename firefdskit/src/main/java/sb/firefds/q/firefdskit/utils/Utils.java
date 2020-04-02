@@ -16,9 +16,11 @@ package sb.firefds.q.firefdskit.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
+import android.os.LocaleList;
 import android.os.PowerManager;
 import android.os.SystemProperties;
 import android.util.Log;
@@ -33,6 +35,7 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Method;
+import java.util.Locale;
 import java.util.Objects;
 
 import de.robv.android.xposed.XposedHelpers;
@@ -160,6 +163,23 @@ public class Utils {
         StringWriter errors = new StringWriter();
         e.printStackTrace(new PrintWriter(errors));
         Log.e("FFK", errors.toString());
+    }
+
+    public static ContextWrapper checkForceEnglish(Context context, SharedPreferences prefs) {
+
+        LocaleList localeList;
+        Configuration config = context.getResources().getConfiguration();
+        if (prefs.getBoolean("forceEnglish", false)) {
+            config.setLocale(Locale.ENGLISH);
+            localeList = new LocaleList(Locale.ENGLISH);
+        } else {
+            config.setLocale(Locale.getDefault());
+            localeList = new LocaleList(Locale.getDefault());
+        }
+        LocaleList.setDefault(localeList);
+        config.setLocales(localeList);
+        context = context.createConfigurationContext(config);
+        return new ContextWrapper(context);
     }
 
     // Set the value for the given key

@@ -3,6 +3,7 @@ package sb.firefds.q.firefdskit.fragments;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
@@ -42,6 +43,9 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat
         try {
             // No reboot notification required
             String[] litePrefs = fragmentActivity.getResources().getStringArray(R.array.lite_preferences);
+
+            if (key.equals("forceEnglish"))
+                Toast.makeText(getActivity(), getResources().getText(R.string.language_toast), Toast.LENGTH_SHORT).show();
 
             setTimeoutPrefs(sharedPreferences, key);
 

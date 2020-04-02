@@ -61,6 +61,7 @@ import java.util.Map.Entry;
 import sb.firefds.q.firefdskit.dialogs.CreditDialog;
 import sb.firefds.q.firefdskit.dialogs.RestoreDialog;
 import sb.firefds.q.firefdskit.dialogs.SaveDialog;
+import sb.firefds.q.firefdskit.fragments.FirefdsKitSettingsFragment;
 import sb.firefds.q.firefdskit.fragments.FirefdsPreferenceFragment;
 import sb.firefds.q.firefdskit.fragments.LockscreenSettingsFragment;
 import sb.firefds.q.firefdskit.fragments.MessagingSettingsFragment;
@@ -91,6 +92,10 @@ import static sb.firefds.q.firefdskit.utils.Preferences.PREF_NFC_BEHAVIOR;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_HOURS;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_MINUTES;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_SECONDS;
+import static sb.firefds.q.firefdskit.utils.Utils.checkForceEnglish;
+import static sb.firefds.q.firefdskit.utils.Utils.isDeviceEncrypted;
+import static sb.firefds.q.firefdskit.utils.Utils.isNotSamsungRom;
+import static sb.firefds.q.firefdskit.utils.Utils.log;
 
 public class FirefdsKitActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -108,12 +113,12 @@ public class FirefdsKitActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        appContext = Utils.isDeviceEncrypted() ? createDeviceProtectedStorageContext() : this;
+        appContext = isDeviceEncrypted() ? createDeviceProtectedStorageContext() : this;
         sharedPreferences = appContext.getSharedPreferences(PREFS, 0);
         activity = this;
         verifyStoragePermissions(this);
 
-        if (Utils.isNotSamsungRom()) {
+        if (isNotSamsungRom()) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setTitle(getString(R.string.samsung_rom_warning));
 
@@ -155,7 +160,7 @@ public class FirefdsKitActivity extends AppCompatActivity
             try {
                 screenTimeout = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT);
             } catch (Throwable e) {
-                Utils.log(e);
+                log(e);
             }
             int hour = screenTimeout / 3600000;
             int min = (screenTimeout % 3600000) / 60000;
@@ -349,6 +354,12 @@ public class FirefdsKitActivity extends AppCompatActivity
                         .replace(R.id.content_main, newFragment)
                         .addToBackStack("securityKey").commit();
                 break;
+            case R.id.firefdsKitKey:
+                newFragment = new FirefdsKitSettingsFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_main, newFragment)
+                        .addToBackStack("firefdsKitKey").commit();
+                break;
         }
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(item.getTitle());
@@ -356,6 +367,13 @@ public class FirefdsKitActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.firefds_main);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        Context tempContext = isDeviceEncrypted() ? newBase.createDeviceProtectedStorageContext() : newBase;
+        Context context = checkForceEnglish(newBase, tempContext.getSharedPreferences(PREFS, MODE_PRIVATE));
+        super.attachBaseContext(context);
     }
 
     private void showHomePage() {
@@ -567,14 +585,14 @@ public class FirefdsKitActivity extends AppCompatActivity
                 prefEdit.apply();
                 fixPermissions(appContext);
             } catch (IOException | ClassNotFoundException e) {
-                Utils.log(e);
+                log(e);
             } finally {
                 try {
                     if (input != null) {
                         input.close();
                     }
                 } catch (IOException ex) {
-                    Utils.log(ex);
+                    log(ex);
                 }
             }
             SystemClock.sleep(1500);

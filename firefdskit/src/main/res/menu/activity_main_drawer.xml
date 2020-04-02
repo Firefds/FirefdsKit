@@ -32,5 +32,9 @@
             android:id="@+id/securityKey"
             android:icon="@drawable/ic_menu_security"
             android:title="@string/security" />
+        <item
+            android:id="@+id/firefdsKitKey"
+            android:icon="@drawable/ic_launcher"
+            android:title="@string/firefds_kit_settings" />
     </group>
 </menu>
