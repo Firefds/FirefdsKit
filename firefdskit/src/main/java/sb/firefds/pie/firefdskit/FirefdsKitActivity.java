@@ -130,6 +130,12 @@ public class FirefdsKitActivity extends AppCompatActivity
         }
 
         setContentView(R.layout.firefds_main);
+
+        if (savedInstanceState != null) {
+            CardView cardXposedView = findViewById(R.id.card_xposed_view);
+            cardXposedView.setVisibility(View.GONE);
+        }
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.firefds_main);
