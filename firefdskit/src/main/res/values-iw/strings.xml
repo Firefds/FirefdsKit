@@ -109,10 +109,10 @@
     <string name="enable_camera_shutter_menu">הפעלת תפריט צליל צמצם</string>
     <string name="enable_camera_shutter_menu_summary">הפעלת תפריט צליל צמצם באפליקציית המצלמה</string>
     <string name="data_icon_behavior_title">סמל חיבור נתונים ניידים</string>
-    <string name="lte_4g">LTE במקום 4G</string>
-    <string name="four_g_plus_4g">4G Plus במקום 4G</string>
-    <string name="four_g_4g_plus">4G במקום 4G Plus</string>
-    <string name="four_half_g_4g_plus">4.5G במקום 4G Plus</string>
+    <string name="lte_4g">הצגת LTE במקום 4G</string>
+    <string name="four_g_plus_4g">הצגת 4G במקום 4G Plus</string>
+    <string name="four_g_4g_plus">הצגת 4G Plus במקום 4G</string>
+    <string name="four_half_g_4g_plus">הצגת 4.5G במקום 4G Plus</string>
     <string name="enable_data_mode_switch_summary">הפעלת מתג נתונים ניידים בתפריט הפעלה</string>
     <string name="enable_data_mode_switch_title">מתג נתונים ניידים</string>
     <string name="quick_settings_data_usage_view_summary">הצגת שימוש בנתונים בשורת ההגדרות המהירות</string>
