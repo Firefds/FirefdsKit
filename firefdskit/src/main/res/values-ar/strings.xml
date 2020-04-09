@@ -28,7 +28,7 @@
     <string name="reboot_required_title">تم طلب إعادة التشغيل</string>
     <string name="reboot_required_message">يحتاج Firefds Kit إلى إعادة التشغيل لتطبيق التغييرات</string>
     <string name="rebooting">جار إعادة التشغيل‫…‬</string>
-    <string name="credit_details">\n.Xposed framework على إنشاء Rovo89الشكر لـ\n\nالشكر لـC3C076 وRikkaW وsolohsu وMlgmXyysd على مساهماتهم في Xposed framework والوحدات.\n\n\n<a href="http://forum.xda-developers.com/member.php?u=3844620">Firefds firefds@Xda-Developers</a> المطور‫:‬\n\n\nاستنادا إلى XTouchWiz من طرف:\n\n\\<a href="http://forum.xda-developers.com/member.php?u=3562083">Wanam @Xda-Developers</a></string>
+    <string name="credit_details">\nالشكر لـ Rovo89 على إنشاء Xposed framework.\n\nالشكر لـC3C076, RikkaW, solohsu, MlgmXyysd على مساهماتهم في Xposed framework والوحدات.\n\n\nالمطور: <a href="http://forum.xda-developers.com/member.php?u=3844620">Firefds firefds@Xda-Developers</a>\n\n\nاستنادا إلى XTouchWiz من طرف  :\n\n\\<a href="http://forum.xda-developers.com/member.php?u=3562083">Wanam @Xda-Developers</a></string>
     <string name="restore">استعادة نسخة احتياطية</string>
     <string name="save">حفظ نسخة احتياطية</string>
     <string name="backup_name">اسم النسخة الاحتياطية</string>
