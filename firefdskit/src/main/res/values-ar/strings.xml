@@ -226,7 +226,7 @@
     <string name="transition_effects">تأثير الانتقال</string>
     <string name="transition_effect_title">منتقي تأثير الانتقال</string>
     <string name="transition_effect_summary">إختر تأثير الانتقال</string>
-    <string name="transition_effect_default">الإفتراضي</string>
+    <string name="transition_effect_default">الافتراضي</string>
     <string name="transition_effect_cascade">شلال</string>
     <string name="transition_effect_outercube">خارخ المكعب</string>
     <string name="transition_effect_innercube">داخل المكعب</string>
