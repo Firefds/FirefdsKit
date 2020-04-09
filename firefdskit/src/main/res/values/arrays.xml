@@ -37,7 +37,7 @@
         <item>forceEnglish</item>
     </string-array>
     <string-array name="data_icon_entries">
-        <item name="Default">Default</item>
+        <item name="Default">@string/default_text</item>
         <item name="LTE">@string/lte_4g</item>
         <item name="4GPlus">@string/four_g_plus_4g</item>
         <item name="4G">@string/four_g_4g_plus</item>

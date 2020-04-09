@@ -217,4 +217,5 @@
     <string name="force_english_title">כפיית שפה לאנגלית</string>
     <string name="language_toast">שפת הממשק תשתנה לאחר הפעלת המודל מחדש</string>
     <string name="firefds_kit_settings">הגדרות Firefds Kit</string>
+    <string name="default_text">ברירת מחדל</string>
 </resources>
