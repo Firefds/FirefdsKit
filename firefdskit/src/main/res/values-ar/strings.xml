@@ -21,7 +21,7 @@
     <string name="messaging">المراسلة</string>
     <string name="apply">تطبيق</string>
     <string name="mms_sms_mms_conversion_on">المحادثة معطّلة</string>
-    <string name="mms_sms_mms_conversion_off">عتبة المحادثة الحالية‫:‬ ٤ ‫(‬الافتراضي‫ة)‬</string>
+    <string name="mms_sms_mms_conversion_off">عتبة المحادثة الحالية :  ٤  ( الافتراضية) </string>
     <string name="mms_sms_mms_conversion">MMS إلى SMS تعطيل عتبة تحويل</string>
     <string name="quick_reboot">إعادة التشغيل السريع</string>
     <string name="reboot_required">يرجى إعادة التشغيل لتطبيق التغييرات.</string>
