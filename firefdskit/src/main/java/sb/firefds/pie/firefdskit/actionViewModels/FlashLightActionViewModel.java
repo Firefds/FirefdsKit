@@ -1,10 +1,10 @@
 package sb.firefds.pie.firefdskit.actionViewModels;
 
+import android.graphics.drawable.Drawable;
+
 import androidx.annotation.Keep;
 
-import com.samsung.android.globalactions.presentation.viewmodel.ActionInfo;
-
-import java.util.HashMap;
+import java.util.Map;
 
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
@@ -12,12 +12,24 @@ import de.robv.android.xposed.XposedHelpers;
 @Keep
 public class FlashLightActionViewModel extends FirefdsKitActionViewModel {
     private static boolean mTorch;
-    private static Object flashlightObject;
-    private static String flashlightOnStr;
-    private static String flashlightOffStr;
+    private Object flashlightObject;
+    private String flashlightOnStr;
+    private String flashlightOffStr;
 
-    public FlashLightActionViewModel(HashMap<String, Object> actionViewModelDefaults) {
-        super(actionViewModelDefaults);
+    FlashLightActionViewModel(Map<String, Object> actionViewModelDefaults,
+                              String actionName,
+                              String actionLabel,
+                              String actionDescription,
+                              Drawable actionIcon,
+                              Object flashlightObject,
+                              String flashlightOnStr,
+                              String flashlightOffStr) {
+
+        super(actionViewModelDefaults, actionName, actionLabel, actionDescription, actionIcon);
+        this.flashlightObject = flashlightObject;
+        this.flashlightOnStr = flashlightOnStr;
+        this.flashlightOffStr = flashlightOffStr;
+        setStateLabel();
     }
 
     @Override
@@ -39,28 +51,10 @@ public class FlashLightActionViewModel extends FirefdsKitActionViewModel {
         } catch (Throwable e) {
             XposedBridge.log(e);
         }
-        this.getmGlobalActions().dismissDialog(false);
-    }
-
-    @Override
-    public void setActionInfo(ActionInfo var1) {
-        super.setActionInfo(var1);
-        setStateLabel();
+        getmGlobalActions().dismissDialog(false);
     }
 
     private void setStateLabel() {
-        this.getmInfo().setStateLabel(mTorch ? flashlightOnStr : flashlightOffStr);
-    }
-
-    public static void setFlashlightObject(Object flashlightObject) {
-        FlashLightActionViewModel.flashlightObject = flashlightObject;
-    }
-
-    public static void setFlashlightOnStr(String flashlightOnStr) {
-        FlashLightActionViewModel.flashlightOnStr = flashlightOnStr;
-    }
-
-    public static void setFlashlightOffStr(String flashlightOffStr) {
-        FlashLightActionViewModel.flashlightOffStr = flashlightOffStr;
+        getActionInfo().setStateLabel(mTorch ? flashlightOnStr : flashlightOffStr);
     }
 }

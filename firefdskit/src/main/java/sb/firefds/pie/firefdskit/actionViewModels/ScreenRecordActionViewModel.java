@@ -3,10 +3,11 @@ package sb.firefds.pie.firefdskit.actionViewModels;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 
 import androidx.annotation.Keep;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import de.robv.android.xposed.XposedBridge;
 
@@ -19,8 +20,13 @@ public class ScreenRecordActionViewModel extends FirefdsKitActionViewModel {
     private static final String SCREEN_RECORDER_ACTIVITY = "com.sec.app.screenrecorder.activity.LauncherActivity";
     private static final String SCREEN_RECORDER_SERVICE = "com.samsung.android.app.screenrecorder.ScreenRecorderService";
 
-    public ScreenRecordActionViewModel(HashMap<String, Object> actionViewModelDefaults) {
-        super(actionViewModelDefaults);
+    ScreenRecordActionViewModel(Map<String, Object> actionViewModelDefaults,
+                                String actionName,
+                                String actionLabel,
+                                String actionDescription,
+                                Drawable actionIcon) {
+
+        super(actionViewModelDefaults, actionName, actionLabel, actionDescription, actionIcon);
     }
 
     @Override

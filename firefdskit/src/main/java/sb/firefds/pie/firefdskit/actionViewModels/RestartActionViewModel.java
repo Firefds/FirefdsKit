@@ -3,6 +3,7 @@ package sb.firefds.pie.firefdskit.actionViewModels;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.PowerManager;
 
@@ -14,7 +15,7 @@ import com.samsung.android.globalactions.util.ConditionChecker;
 import com.samsung.android.globalactions.util.KeyGuardManagerWrapper;
 import com.samsung.android.globalactions.util.SystemConditions;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import static sb.firefds.pie.firefdskit.utils.Constants.REBOOT_ACTION;
 import static sb.firefds.pie.firefdskit.utils.Packages.FIREFDSKIT;
@@ -28,11 +29,19 @@ public class RestartActionViewModel extends FirefdsKitActionViewModel {
     private KeyGuardManagerWrapper mKeyGuardManagerWrapper;
     private boolean unlockKeyguardBeforeActionExecute;
 
-    public RestartActionViewModel(HashMap<String, Object> actionViewModelDefaults) {
-        super(actionViewModelDefaults);
+    RestartActionViewModel(Map<String, Object> actionViewModelDefaults,
+                           String actionName,
+                           String actionLabel,
+                           String actionDescription,
+                           Drawable actionIcon,
+                           boolean unlockKeyguardBeforeActionExecute) {
+
+        super(actionViewModelDefaults, actionName, actionLabel, actionDescription, actionIcon);
         mFeatureFactory = (FeatureFactory) actionViewModelDefaults.get("mFeatureFactory");
         mConditionChecker = (ConditionChecker) actionViewModelDefaults.get("mConditionChecker");
         mKeyGuardManagerWrapper = (KeyGuardManagerWrapper) actionViewModelDefaults.get("mKeyGuardManagerWrapper");
+        rebootOption = actionName;
+        this.unlockKeyguardBeforeActionExecute = unlockKeyguardBeforeActionExecute;
     }
 
     @Override
@@ -74,13 +83,5 @@ public class RestartActionViewModel extends FirefdsKitActionViewModel {
             rebootIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getmContext().startActivity(rebootIntent);
         }
-    }
-
-    public void setRebootOption(String rebootOption) {
-        this.rebootOption = rebootOption;
-    }
-
-    public void setUnlockKeyguardBeforeActionExecute(boolean unlockKeyguardBeforeActionExecute) {
-        this.unlockKeyguardBeforeActionExecute = unlockKeyguardBeforeActionExecute;
     }
 }

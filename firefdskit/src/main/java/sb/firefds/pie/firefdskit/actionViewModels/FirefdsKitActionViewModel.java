@@ -1,50 +1,68 @@
 package sb.firefds.pie.firefdskit.actionViewModels;
 
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 
 import androidx.annotation.Keep;
 
 import com.samsung.android.globalactions.presentation.SecGlobalActions;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionInfo;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModel;
+import com.samsung.android.globalactions.presentation.viewmodel.ViewType;
 
-import java.util.HashMap;
+import java.util.Map;
 
 @Keep
-public class FirefdsKitActionViewModel implements ActionViewModel {
+public abstract class FirefdsKitActionViewModel implements ActionViewModel {
     private final SecGlobalActions mGlobalActions;
-    private ActionInfo mInfo;
+    private ActionInfo mInfo = new ActionInfo();
     private Context mContext;
+    private BitmapDrawable mIcon;
 
-    FirefdsKitActionViewModel(HashMap<String, Object> actionViewModelDefaults) {
+    FirefdsKitActionViewModel(Map<String, Object> actionViewModelDefaults,
+                              String actionName,
+                              String actionLabel,
+                              String actionDescription,
+                              Drawable actionIcon) {
+
         mContext = (Context) actionViewModelDefaults.get("mContext");
         mGlobalActions = (SecGlobalActions) actionViewModelDefaults.get("mGlobalActions");
+        mInfo.setName(actionName);
+        mInfo.setLabel(actionLabel);
+        mInfo.setDescription(actionDescription);
+        mInfo.setViewType(ViewType.CENTER_ICON_3P_VIEW);
+        mIcon = (BitmapDrawable) actionIcon;
     }
 
+    @Override
     public ActionInfo getActionInfo() {
         return mInfo;
     }
 
-    public void onPress() {
-    }
+    @Override
+    public abstract void onPress();
 
-    public void onPressSecureConfirm() {
-    }
+    @Override
+    public abstract void onPressSecureConfirm();
 
+    @Override
     public void setActionInfo(ActionInfo var1) {
         mInfo = var1;
     }
 
+    @Override
     public boolean showBeforeProvisioning() {
         return true;
     }
 
-    SecGlobalActions getmGlobalActions() {
-        return mGlobalActions;
+    @Override
+    public BitmapDrawable getIcon() {
+        return mIcon;
     }
 
-    ActionInfo getmInfo() {
-        return mInfo;
+    SecGlobalActions getmGlobalActions() {
+        return mGlobalActions;
     }
 
     Context getmContext() {
