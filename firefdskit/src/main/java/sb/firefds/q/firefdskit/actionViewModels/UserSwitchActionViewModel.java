@@ -1,18 +1,19 @@
 package sb.firefds.q.firefdskit.actionViewModels;
 
 import android.content.Intent;
-
-import androidx.annotation.Keep;
-
-import java.util.HashMap;
+import android.graphics.drawable.Drawable;
 
 import static sb.firefds.q.firefdskit.utils.Packages.SETTINGS;
 
-@Keep
 public class UserSwitchActionViewModel extends FirefdsKitActionViewModel {
 
-    public UserSwitchActionViewModel(HashMap<String, Object> actionViewModelDefaults) {
-        super(actionViewModelDefaults);
+    UserSwitchActionViewModel(ActionViewModelDefaults actionViewModelDefaults,
+                              String actionName,
+                              String actionLabel,
+                              String actionDescription,
+                              Drawable actionIcon) {
+
+        super(actionViewModelDefaults, actionName, actionLabel, actionDescription, actionIcon);
     }
 
     @Override

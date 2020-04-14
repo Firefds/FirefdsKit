@@ -18,38 +18,31 @@ package sb.firefds.q.firefdskit;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.samsung.android.globalactions.presentation.SecGlobalActions;
 import com.samsung.android.globalactions.presentation.SecGlobalActionsPresenter;
+import com.samsung.android.globalactions.presentation.features.FeatureFactory;
 import com.samsung.android.globalactions.presentation.view.ResourceFactory;
 import com.samsung.android.globalactions.presentation.view.ResourceType;
-import com.samsung.android.globalactions.presentation.viewmodel.ActionInfo;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModel;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModelFactory;
-import com.samsung.android.globalactions.presentation.viewmodel.ViewType;
 import com.samsung.android.globalactions.util.ConditionChecker;
 import com.samsung.android.globalactions.util.KeyGuardManagerWrapper;
 import com.samsung.android.globalactions.util.SystemConditions;
 import com.samsung.android.globalactions.util.UtilFactory;
-
-import java.lang.reflect.Constructor;
-import java.util.HashMap;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
+import sb.firefds.q.firefdskit.actionViewModels.ActionIcons;
+import sb.firefds.q.firefdskit.actionViewModels.ActionStrings;
+import sb.firefds.q.firefdskit.actionViewModels.ActionViewModelDefaults;
 import sb.firefds.q.firefdskit.actionViewModels.FirefdsKitActionViewModel;
-import sb.firefds.q.firefdskit.actionViewModels.FlashLightActionViewModel;
-import sb.firefds.q.firefdskit.actionViewModels.RestartActionViewModel;
-import sb.firefds.q.firefdskit.actionViewModels.RestartSystemUiActionViewModel;
-import sb.firefds.q.firefdskit.actionViewModels.ScreenRecordActionViewModel;
-import sb.firefds.q.firefdskit.actionViewModels.ScreenShotActionViewModel;
-import sb.firefds.q.firefdskit.actionViewModels.UserSwitchActionViewModel;
+import sb.firefds.q.firefdskit.actionViewModels.FirefdsKitActionViewModelsFactory;
 import sb.firefds.q.firefdskit.utils.Utils;
 
 import static sb.firefds.q.firefdskit.utils.Constants.DATA_MODE_ACTION;
@@ -99,28 +92,10 @@ public class XSysUIGlobalActions {
     private static final String DATA_MODE_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel.DataModeActionViewModel";
 
     private static SecGlobalActionsPresenter mSecGlobalActionsPresenter;
-    private static HashMap<String, Object> actionViewModelDefaults;
-    private static String mRecoveryStr;
-    private static String mDownloadStr;
-    private static String mScreenshotStr;
-    private static String mSwitchUserStr;
-    private static String mRestartSystemUiStr;
-    private static String mFlashlightStr;
-    private static String mScreenRecordStr;
-    private static Drawable mRecoveryIcon;
-    private static Drawable mDownloadIcon;
-    private static Drawable mScreenshotIcon;
-    private static Drawable mSwitchUserIcon;
-    private static Drawable mRestartSystemUiIcon;
-    private static Drawable mFlashLightIcon;
-    private static Drawable mScreenRecordIcon;
-    private static Drawable mRestartStockIcon;
-    private static String mRebootConfirmRecoveryStr;
-    private static String mRebootConfirmDownloadStr;
-    private static String mRestartSystemUiConfirmStr;
+    private static ActionViewModelDefaults actionViewModelDefaults;
+    private static ActionStrings actionStrings = new ActionStrings();
+    private static ActionIcons actionIcons = new ActionIcons();
     private static Object mFlashlightObject;
-    private static String mFlashlightOnStr;
-    private static String mFlashlightOffStr;
     private static boolean prefUnlockKeyguardBeforeActionExecute;
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
@@ -214,36 +189,29 @@ public class XSysUIGlobalActions {
                                 Resources res = ctx.getResources();
                                 Context gbContext = Utils.getGbContext(ctx, res.getConfiguration());
 
-                                mRecoveryStr = prefs.getString(PREF_CUSTOM_RECOVERY,
-                                        gbContext.getString(R.string.reboot_recovery));
-                                mDownloadStr = gbContext.getString(R.string.reboot_download);
-                                mScreenshotStr = gbContext.getString(R.string.screenshot);
-                                mSwitchUserStr = gbContext.getString(R.string.switchUser);
-                                mRestartSystemUiStr = gbContext.getString(R.string.restartUI);
-                                mFlashlightStr = gbContext.getString(R.string.flashlight);
-                                mScreenRecordStr = gbContext.getString(R.string.screen_record);
+                                actionStrings.setRecovery(prefs.getString(PREF_CUSTOM_RECOVERY,
+                                        gbContext.getString(R.string.reboot_recovery)));
+                                actionStrings.setDownload(gbContext.getString(R.string.reboot_download));
+                                actionStrings.setScreenshot(gbContext.getString(R.string.screenshot));
+                                actionStrings.setSwitchUser(gbContext.getString(R.string.switchUser));
+                                actionStrings.setRestartSystemUi(gbContext.getString(R.string.restartUI));
+                                actionStrings.setFlashlight(gbContext.getString(R.string.flashlight));
+                                actionStrings.setScreenRecord(gbContext.getString(R.string.screen_record));
+                                actionStrings.setRebootConfirmRecovery(prefs.getString(PREF_CUSTOM_RECOVERY_CONFIRMATION,
+                                        gbContext.getString(R.string.reboot_confirm_recovery)));
+                                actionStrings.setRebootConfirmDownload(gbContext.getString(R.string.reboot_confirm_download));
+                                actionStrings.setRestartSystemUiConfirm(gbContext.getString(R.string.restartUI));
+                                actionStrings.setFlashlightOn(gbContext.getString(R.string.flashlight_on));
+                                actionStrings.setFlashlightOff(gbContext.getString(R.string.flashlight_off));
 
-                                mRecoveryIcon = gbContext.getDrawable(R.drawable.tw_ic_do_recovery_stock);
-                                mDownloadIcon = gbContext.getDrawable(R.drawable.tw_ic_do_download_stock);
-                                mScreenshotIcon = gbContext.getDrawable(R.drawable.tw_ic_do_screenshot_stock);
-                                mSwitchUserIcon = gbContext.getDrawable(R.drawable.tw_ic_do_users_stock);
-                                mRestartSystemUiIcon = gbContext.getDrawable(R.drawable.tw_ic_do_restart_ui_stock);
-                                mFlashLightIcon = gbContext.getDrawable(R.drawable.tw_ic_do_torchlight_stock);
-                                mScreenRecordIcon = gbContext.getDrawable(R.drawable.tw_ic_do_screenrecord_stock);
-                                mRestartStockIcon = gbContext.getDrawable(R.drawable.tw_ic_do_restart);
-
-                                mRebootConfirmRecoveryStr = prefs.getString(PREF_CUSTOM_RECOVERY_CONFIRMATION,
-                                        gbContext.getString(R.string.reboot_confirm_recovery));
-                                mRebootConfirmDownloadStr = gbContext
-                                        .getString(R.string.reboot_confirm_download);
-                                mRestartSystemUiConfirmStr = gbContext
-                                        .getString(R.string.restartUI);
-
-                                mFlashlightOnStr = gbContext
-                                        .getString(R.string.flashlight_on);
-                                mFlashlightOffStr = gbContext
-                                        .getString(R.string.flashlight_off);
-
+                                actionIcons.setRecovery(gbContext.getDrawable(R.drawable.tw_ic_do_recovery_stock));
+                                actionIcons.setDownload(gbContext.getDrawable(R.drawable.tw_ic_do_download_stock));
+                                actionIcons.setScreenshot(gbContext.getDrawable(R.drawable.tw_ic_do_screenshot_stock));
+                                actionIcons.setSwitchUser(gbContext.getDrawable(R.drawable.tw_ic_do_users_stock));
+                                actionIcons.setRestartSystemUi(gbContext.getDrawable(R.drawable.tw_ic_do_restart_ui_stock));
+                                actionIcons.setFlashlight(gbContext.getDrawable(R.drawable.tw_ic_do_torchlight_stock));
+                                actionIcons.setScreenRecord(gbContext.getDrawable(R.drawable.tw_ic_do_screenrecord_stock));
+                                actionIcons.setRestartStock(gbContext.getDrawable(R.drawable.tw_ic_do_restart));
                             }
                         });
 
@@ -325,54 +293,14 @@ public class XSysUIGlobalActions {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) {
                                 setActionViewModelDefaults(param);
-                                FirefdsKitActionViewModel firefdsKitActionViewModel = null;
-                                String actionName = (String) param.args[1];
-                                switch (actionName) {
-                                    case (RECOVERY_ACTION):
-                                        firefdsKitActionViewModel = setRestartActionViewModel(actionName,
-                                                mRecoveryStr,
-                                                mRebootConfirmRecoveryStr,
-                                                RECOVERY_ACTION);
-                                        break;
-                                    case (DOWNLOAD_ACTION):
-                                        firefdsKitActionViewModel = setRestartActionViewModel(actionName,
-                                                mDownloadStr,
-                                                mRebootConfirmDownloadStr,
-                                                DOWNLOAD_ACTION);
-                                        break;
-                                    case (SCREENSHOT_ACTION):
-                                        firefdsKitActionViewModel =
-                                                setActionViewModel(ScreenShotActionViewModel.class,
-                                                        actionName,
-                                                        mScreenshotStr,
-                                                        null);
-                                        break;
-                                    case (MULTIUSER_ACTION):
-                                        firefdsKitActionViewModel =
-                                                setActionViewModel(UserSwitchActionViewModel.class,
-                                                        actionName,
-                                                        mSwitchUserStr,
-                                                        null);
-                                        break;
-                                    case (RESTART_UI_ACTION):
-                                        firefdsKitActionViewModel =
-                                                setActionViewModel(RestartSystemUiActionViewModel.class,
-                                                        actionName,
-                                                        mRestartSystemUiStr,
-                                                        mRestartSystemUiConfirmStr);
-                                        break;
-                                    case (FLASHLIGHT_ACTION):
-                                        firefdsKitActionViewModel =
-                                                setFlashLightActionViewModel();
-                                        break;
-                                    case (SCREEN_RECORD_ACTION):
-                                        firefdsKitActionViewModel =
-                                                setActionViewModel(ScreenRecordActionViewModel.class,
-                                                        actionName,
-                                                        mScreenRecordStr,
-                                                        null);
-                                        break;
-                                }
+                                FirefdsKitActionViewModelsFactory.initFactory(mFlashlightObject,
+                                        actionIcons,
+                                        actionStrings,
+                                        actionViewModelDefaults,
+                                        prefUnlockKeyguardBeforeActionExecute,
+                                        prefs.getBoolean(PREF_REPLACE_RECOVERY_ICON, false));
+                                FirefdsKitActionViewModel firefdsKitActionViewModel = FirefdsKitActionViewModelsFactory
+                                        .getActionViewModel((String) param.args[1]);
                                 if (firefdsKitActionViewModel != null) {
                                     param.setResult(firefdsKitActionViewModel);
                                 }
@@ -393,32 +321,8 @@ public class XSysUIGlobalActions {
                                         .getObjectField(param.thisObject, "mResourceFactory");
                                 ImageView localImageView = ((View) param.args[0])
                                         .findViewById(resourceFactory.get(ResourceType.ID_ICON));
-                                switch (actionViewModel.getActionInfo().getName()) {
-                                    case RECOVERY_ACTION:
-                                        if (prefs.getBoolean(PREF_REPLACE_RECOVERY_ICON, false)) {
-                                            localImageView.setImageDrawable(mRestartStockIcon);
-                                        } else {
-                                            localImageView.setImageDrawable(mRecoveryIcon);
-                                        }
-                                        break;
-                                    case DOWNLOAD_ACTION:
-                                        localImageView.setImageDrawable(mDownloadIcon);
-                                        break;
-                                    case SCREENSHOT_ACTION:
-                                        localImageView.setImageDrawable(mScreenshotIcon);
-                                        break;
-                                    case MULTIUSER_ACTION:
-                                        localImageView.setImageDrawable(mSwitchUserIcon);
-                                        break;
-                                    case RESTART_UI_ACTION:
-                                        localImageView.setImageDrawable(mRestartSystemUiIcon);
-                                        break;
-                                    case FLASHLIGHT_ACTION:
-                                        localImageView.setImageDrawable(mFlashLightIcon);
-                                        break;
-                                    case SCREEN_RECORD_ACTION:
-                                        localImageView.setImageDrawable(mScreenRecordIcon);
-                                        break;
+                                if (actionViewModel.getIcon() != null) {
+                                    localImageView.setImageDrawable(actionViewModel.getIcon());
                                 }
                             }
                         });
@@ -429,70 +333,17 @@ public class XSysUIGlobalActions {
         }
     }
 
-    private static FirefdsKitActionViewModel setRestartActionViewModel(String actionName,
-                                                                       String actionLabel,
-                                                                       String actionDescription,
-                                                                       String rebootAction) {
-
-        RestartActionViewModel restartActionViewModel = (RestartActionViewModel) setActionViewModel(RestartActionViewModel.class,
-                actionName,
-                actionLabel,
-                actionDescription);
-        restartActionViewModel.setRebootOption(rebootAction);
-        restartActionViewModel.setUnlockKeyguardBeforeActionExecute(prefUnlockKeyguardBeforeActionExecute);
-        return restartActionViewModel;
-    }
-
-    private static FirefdsKitActionViewModel setFlashLightActionViewModel() {
-        FlashLightActionViewModel.setFlashlightObject(mFlashlightObject);
-        FlashLightActionViewModel.setFlashlightOnStr(mFlashlightOnStr);
-        FlashLightActionViewModel.setFlashlightOffStr(mFlashlightOffStr);
-
-        return setActionViewModel(FlashLightActionViewModel.class, FLASHLIGHT_ACTION, mFlashlightStr, null);
-    }
-
-    private static FirefdsKitActionViewModel setActionViewModel(Class<?> basicActionViewModelClass,
-                                                                String actionName,
-                                                                String actionLabel,
-                                                                String actionDescription) {
-        FirefdsKitActionViewModel firefdsKitActionViewModel = null;
-        try {
-            Constructor<?> constructor = basicActionViewModelClass.getConstructor(HashMap.class);
-            HashMap<String, Object> param = actionViewModelDefaults;
-            firefdsKitActionViewModel = (FirefdsKitActionViewModel) constructor.newInstance(param);
-            ActionInfo actionInfo = setActionInfo(actionName, actionLabel, actionDescription);
-            firefdsKitActionViewModel.setActionInfo(actionInfo);
-        } catch (Throwable e) {
-            XposedBridge.log(e);
-        }
-        return firefdsKitActionViewModel;
-    }
-
     private static void setActionViewModelDefaults(XC_MethodHook.MethodHookParam param) {
-        HashMap<String, Object> actionViewModelDefaults = new HashMap<>();
-
         UtilFactory mUtilFactory = (UtilFactory) XposedHelpers.getObjectField(param.thisObject, "mUtilFactory");
         KeyGuardManagerWrapper mKeyGuardManagerWrapper = (KeyGuardManagerWrapper) XposedHelpers.callMethod(mUtilFactory,
                 "get",
                 KeyGuardManagerWrapper.class);
 
-        actionViewModelDefaults.put("mContext", XposedHelpers.getObjectField(mKeyGuardManagerWrapper, "mContext"));
-        actionViewModelDefaults.put("mGlobalActions", mSecGlobalActionsPresenter);
-        actionViewModelDefaults.put("mFeatureFactory", XposedHelpers.getObjectField(param.thisObject, "mFeatureFactory"));
-        actionViewModelDefaults.put("mConditionChecker", XposedHelpers.getObjectField(param.thisObject, "mConditionChecker"));
-        actionViewModelDefaults.put("mKeyGuardManagerWrapper", mKeyGuardManagerWrapper);
-
-        XSysUIGlobalActions.actionViewModelDefaults = actionViewModelDefaults;
+        actionViewModelDefaults = new ActionViewModelDefaults(XposedHelpers.getObjectField(mKeyGuardManagerWrapper, "mContext"),
+                mSecGlobalActionsPresenter,
+                (FeatureFactory) XposedHelpers.getObjectField(param.thisObject, "mFeatureFactory"),
+                (ConditionChecker) XposedHelpers.getObjectField(param.thisObject, "mConditionChecker"),
+                mKeyGuardManagerWrapper);
     }
 
-    private static ActionInfo setActionInfo(String actionName,
-                                            String actionLabel,
-                                            String actionDescription) {
-        ActionInfo actionInfo = new ActionInfo();
-        actionInfo.setName(actionName);
-        actionInfo.setLabel(actionLabel);
-        actionInfo.setDescription(actionDescription);
-        actionInfo.setViewType(ViewType.CENTER_ICON_3P_VIEW);
-        return actionInfo;
-    }
 }

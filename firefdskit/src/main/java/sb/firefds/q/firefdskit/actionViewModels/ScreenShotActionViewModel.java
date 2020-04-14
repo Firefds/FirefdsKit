@@ -1,20 +1,21 @@
 package sb.firefds.q.firefdskit.actionViewModels;
 
+import android.graphics.drawable.Drawable;
 import android.hardware.input.InputManager;
 import android.os.SystemClock;
 import android.view.KeyEvent;
 
-import androidx.annotation.Keep;
-
-import java.util.HashMap;
-
 import de.robv.android.xposed.XposedHelpers;
 
-@Keep
 public class ScreenShotActionViewModel extends FirefdsKitActionViewModel {
 
-    public ScreenShotActionViewModel(HashMap<String, Object> actionViewModelDefaults) {
-        super(actionViewModelDefaults);
+    ScreenShotActionViewModel(ActionViewModelDefaults actionViewModelDefaults,
+                              String actionName,
+                              String actionLabel,
+                              String actionDescription,
+                              Drawable actionIcon) {
+
+        super(actionViewModelDefaults, actionName, actionLabel, actionDescription, actionIcon);
     }
 
     @Override

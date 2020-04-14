@@ -1,17 +1,18 @@
 package sb.firefds.q.firefdskit.actionViewModels;
 
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Process;
 
-import androidx.annotation.Keep;
-
-import java.util.HashMap;
-
-@Keep
 public class RestartSystemUiActionViewModel extends FirefdsKitActionViewModel {
 
-    public RestartSystemUiActionViewModel(HashMap<String, Object> actionViewModelDefaults) {
-        super(actionViewModelDefaults);
+    RestartSystemUiActionViewModel(ActionViewModelDefaults actionViewModelDefaults,
+                                   String actionName,
+                                   String actionLabel,
+                                   String actionDescription,
+                                   Drawable actionIcon) {
+
+        super(actionViewModelDefaults, actionName, actionLabel, actionDescription, actionIcon);
     }
 
     @Override

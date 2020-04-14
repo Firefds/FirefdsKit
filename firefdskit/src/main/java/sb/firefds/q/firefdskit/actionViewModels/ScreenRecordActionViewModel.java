@@ -2,22 +2,23 @@ package sb.firefds.q.firefdskit.actionViewModels;
 
 import android.content.ComponentName;
 import android.content.Intent;
-
-import androidx.annotation.Keep;
-
-import java.util.HashMap;
+import android.graphics.drawable.Drawable;
 
 import de.robv.android.xposed.XposedBridge;
 
 import static sb.firefds.q.firefdskit.utils.Packages.SMART_CAPTURE;
 
-@Keep
 public class ScreenRecordActionViewModel extends FirefdsKitActionViewModel {
 
     private static final String SCREEN_RECORDER_SERVICE = "com.samsung.android.app.screenrecorder.ScreenRecorderService";
 
-    public ScreenRecordActionViewModel(HashMap<String, Object> actionViewModelDefaults) {
-        super(actionViewModelDefaults);
+    ScreenRecordActionViewModel(ActionViewModelDefaults actionViewModelDefaults,
+                                String actionName,
+                                String actionLabel,
+                                String actionDescription,
+                                Drawable actionIcon) {
+
+        super(actionViewModelDefaults, actionName, actionLabel, actionDescription, actionIcon);
     }
 
     @Override

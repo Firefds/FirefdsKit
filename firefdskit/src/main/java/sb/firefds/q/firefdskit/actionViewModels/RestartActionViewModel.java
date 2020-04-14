@@ -3,10 +3,9 @@ package sb.firefds.q.firefdskit.actionViewModels;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.PowerManager;
-
-import androidx.annotation.Keep;
 
 import com.samsung.android.globalactions.presentation.features.FeatureFactory;
 import com.samsung.android.globalactions.presentation.strategies.SecureConfirmStrategy;
@@ -14,12 +13,9 @@ import com.samsung.android.globalactions.util.ConditionChecker;
 import com.samsung.android.globalactions.util.KeyGuardManagerWrapper;
 import com.samsung.android.globalactions.util.SystemConditions;
 
-import java.util.HashMap;
-
 import static sb.firefds.q.firefdskit.utils.Constants.REBOOT_ACTION;
 import static sb.firefds.q.firefdskit.utils.Packages.FIREFDSKIT;
 
-@Keep
 public class RestartActionViewModel extends FirefdsKitActionViewModel {
     private static final String REBOOT_ACTIVITY = FIREFDSKIT + ".activities.WanamRebootActivity";
     private String rebootOption;
@@ -28,11 +24,19 @@ public class RestartActionViewModel extends FirefdsKitActionViewModel {
     private KeyGuardManagerWrapper mKeyGuardManagerWrapper;
     private boolean unlockKeyguardBeforeActionExecute;
 
-    public RestartActionViewModel(HashMap<String, Object> actionViewModelDefaults) {
-        super(actionViewModelDefaults);
-        mFeatureFactory = (FeatureFactory) actionViewModelDefaults.get("mFeatureFactory");
-        mConditionChecker = (ConditionChecker) actionViewModelDefaults.get("mConditionChecker");
-        mKeyGuardManagerWrapper = (KeyGuardManagerWrapper) actionViewModelDefaults.get("mKeyGuardManagerWrapper");
+    RestartActionViewModel(ActionViewModelDefaults actionViewModelDefaults,
+                           String actionName,
+                           String actionLabel,
+                           String actionDescription,
+                           Drawable actionIcon,
+                           boolean unlockKeyguardBeforeActionExecute) {
+
+        super(actionViewModelDefaults, actionName, actionLabel, actionDescription, actionIcon);
+        mFeatureFactory = actionViewModelDefaults.getFeatureFactory();
+        mConditionChecker = actionViewModelDefaults.getConditionChecker();
+        mKeyGuardManagerWrapper = actionViewModelDefaults.getKeyGuardManagerWrapper();
+        rebootOption = actionName;
+        this.unlockKeyguardBeforeActionExecute = unlockKeyguardBeforeActionExecute;
     }
 
     @Override
