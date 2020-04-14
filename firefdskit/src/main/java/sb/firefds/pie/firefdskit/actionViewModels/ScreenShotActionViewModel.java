@@ -5,16 +5,11 @@ import android.hardware.input.InputManager;
 import android.os.SystemClock;
 import android.view.KeyEvent;
 
-import androidx.annotation.Keep;
-
-import java.util.Map;
-
 import de.robv.android.xposed.XposedHelpers;
 
-@Keep
 public class ScreenShotActionViewModel extends FirefdsKitActionViewModel {
 
-    ScreenShotActionViewModel(Map<String, Object> actionViewModelDefaults,
+    ScreenShotActionViewModel(ActionViewModelDefaults actionViewModelDefaults,
                               String actionName,
                               String actionLabel,
                               String actionDescription,

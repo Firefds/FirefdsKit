@@ -4,14 +4,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Process;
 
-import androidx.annotation.Keep;
-
-import java.util.Map;
-
-@Keep
 public class RestartSystemUiActionViewModel extends FirefdsKitActionViewModel {
 
-    RestartSystemUiActionViewModel(Map<String, Object> actionViewModelDefaults,
+    RestartSystemUiActionViewModel(ActionViewModelDefaults actionViewModelDefaults,
                                    String actionName,
                                    String actionLabel,
                                    String actionDescription,

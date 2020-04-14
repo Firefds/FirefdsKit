@@ -19,12 +19,12 @@ import android.app.Dialog;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.samsung.android.globalactions.presentation.SecGlobalActions;
 import com.samsung.android.globalactions.presentation.SecGlobalActionsPresenter;
+import com.samsung.android.globalactions.presentation.features.FeatureFactory;
 import com.samsung.android.globalactions.presentation.view.ResourceFactory;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModel;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModelFactory;
@@ -33,14 +33,14 @@ import com.samsung.android.globalactions.util.KeyGuardManagerWrapper;
 import com.samsung.android.globalactions.util.SystemConditions;
 import com.samsung.android.globalactions.util.UtilFactory;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
+import sb.firefds.pie.firefdskit.actionViewModels.ActionIcons;
+import sb.firefds.pie.firefdskit.actionViewModels.ActionStrings;
+import sb.firefds.pie.firefdskit.actionViewModels.ActionViewModelDefaults;
 import sb.firefds.pie.firefdskit.actionViewModels.FirefdsKitActionViewModel;
 import sb.firefds.pie.firefdskit.actionViewModels.FirefdsKitActionViewModelsFactory;
 import sb.firefds.pie.firefdskit.utils.Utils;
@@ -89,9 +89,9 @@ public class XSysUIGlobalActions {
     private static final String EMERGENCY_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel.EmergencyActionViewModel";
 
     private static SecGlobalActionsPresenter mSecGlobalActionsPresenter;
-    private static Map<String, Object> actionViewModelDefaults;
-    private static Map<String, Drawable> actionIcons = new HashMap<>();
-    private static Map<String, String> actionStrings = new HashMap<>();
+    private static ActionViewModelDefaults actionViewModelDefaults;
+    private static ActionStrings actionStrings = new ActionStrings();
+    private static ActionIcons actionIcons = new ActionIcons();
     private static Object mFlashlightObject;
     private static boolean prefUnlockKeyguardBeforeActionExecute;
 
@@ -182,46 +182,28 @@ public class XSysUIGlobalActions {
                                 Resources res = ctx.getResources();
                                 Context gbContext = Utils.getGbContext(ctx, res.getConfiguration());
 
-                                actionStrings.put("mRecoveryStr",
-                                        prefs.getString(PREF_CUSTOM_RECOVERY, gbContext.getString(R.string.reboot_recovery)));
-                                actionStrings.put("mDownloadStr",
-                                        gbContext.getString(R.string.reboot_download));
-                                actionStrings.put("mScreenshotStr",
-                                        gbContext.getString(R.string.screenshot));
-                                actionStrings.put("mSwitchUserStr",
-                                        gbContext.getString(R.string.switchUser));
-                                actionStrings.put("mRestartSystemUiStr",
-                                        gbContext.getString(R.string.restartUI));
-                                actionStrings.put("mFlashlightStr",
-                                        gbContext.getString(R.string.flashlight));
-                                actionStrings.put("mScreenRecordStr",
-                                        gbContext.getString(R.string.screen_record));
-                                actionStrings.put("mRebootConfirmRecoveryStr",
-                                        prefs.getString(PREF_CUSTOM_RECOVERY_CONFIRMATION, gbContext.getString(R.string.reboot_confirm_recovery)));
-                                actionStrings.put("mRebootConfirmDownloadStr",
-                                        gbContext.getString(R.string.reboot_confirm_download));
-                                actionStrings.put("mRestartSystemUiConfirmStr",
-                                        gbContext.getString(R.string.restartUI));
-                                actionStrings.put("mFlashlightOnStr",
-                                        gbContext.getString(R.string.flashlight_on));
-                                actionStrings.put("mFlashlightOffStr",
-                                        gbContext.getString(R.string.flashlight_off));
+                                actionStrings.setRecovery(prefs.getString(PREF_CUSTOM_RECOVERY,
+                                        gbContext.getString(R.string.reboot_recovery)));
+                                actionStrings.setDownload(gbContext.getString(R.string.reboot_download));
+                                actionStrings.setScreenshot(gbContext.getString(R.string.screenshot));
+                                actionStrings.setSwitchUser(gbContext.getString(R.string.switchUser));
+                                actionStrings.setRestartSystemUi(gbContext.getString(R.string.restartUI));
+                                actionStrings.setFlashlight(gbContext.getString(R.string.flashlight));
+                                actionStrings.setScreenRecord(gbContext.getString(R.string.screen_record));
+                                actionStrings.setRebootConfirmRecovery(prefs.getString(PREF_CUSTOM_RECOVERY_CONFIRMATION,
+                                        gbContext.getString(R.string.reboot_confirm_recovery)));
+                                actionStrings.setRebootConfirmDownload(gbContext.getString(R.string.reboot_confirm_download));
+                                actionStrings.setRestartSystemUiConfirm(gbContext.getString(R.string.restartUI));
+                                actionStrings.setFlashlightOn(gbContext.getString(R.string.flashlight_on));
+                                actionStrings.setFlashlightOff(gbContext.getString(R.string.flashlight_off));
 
-                                actionIcons.put("mRecoveryIcon",
-                                        gbContext.getDrawable(R.drawable.tw_ic_do_recovery_stock));
-                                actionIcons.put("mDownloadIcon",
-                                        gbContext.getDrawable(R.drawable.tw_ic_do_download_stock));
-                                actionIcons.put("mScreenshotIcon",
-                                        gbContext.getDrawable(R.drawable.tw_ic_do_screenshot_stock));
-                                actionIcons.put("mSwitchUserIcon",
-                                        gbContext.getDrawable(R.drawable.tw_ic_do_users_stock));
-                                actionIcons.put("mRestartSystemUiIcon",
-                                        gbContext.getDrawable(R.drawable.tw_ic_do_restart_ui_stock));
-                                actionIcons.put("mFlashLightIcon",
-                                        gbContext.getDrawable(R.drawable.tw_ic_do_torchlight_stock));
-                                actionIcons.put("mScreenRecordIcon",
-                                        gbContext.getDrawable(R.drawable.tw_ic_do_screenrecord_stock));
-
+                                actionIcons.setRecovery(gbContext.getDrawable(R.drawable.tw_ic_do_recovery_stock));
+                                actionIcons.setDownload(gbContext.getDrawable(R.drawable.tw_ic_do_download_stock));
+                                actionIcons.setScreenshot(gbContext.getDrawable(R.drawable.tw_ic_do_screenshot_stock));
+                                actionIcons.setSwitchUser(gbContext.getDrawable(R.drawable.tw_ic_do_users_stock));
+                                actionIcons.setRestartSystemUi(gbContext.getDrawable(R.drawable.tw_ic_do_restart_ui_stock));
+                                actionIcons.setFlashlight(gbContext.getDrawable(R.drawable.tw_ic_do_torchlight_stock));
+                                actionIcons.setScreenRecord(gbContext.getDrawable(R.drawable.tw_ic_do_screenrecord_stock));
                             }
                         });
 
@@ -343,19 +325,16 @@ public class XSysUIGlobalActions {
     }
 
     private static void setActionViewModelDefaults(XC_MethodHook.MethodHookParam param) {
-        Map<String, Object> actionViewModelDefaults = new HashMap<>();
 
         UtilFactory mUtilFactory = (UtilFactory) XposedHelpers.getObjectField(param.thisObject, "mUtilFactory");
         KeyGuardManagerWrapper mKeyGuardManagerWrapper = (KeyGuardManagerWrapper) XposedHelpers.callMethod(mUtilFactory,
                 "get",
                 KeyGuardManagerWrapper.class);
 
-        actionViewModelDefaults.put("mContext", XposedHelpers.getObjectField(mKeyGuardManagerWrapper, "mContext"));
-        actionViewModelDefaults.put("mGlobalActions", mSecGlobalActionsPresenter);
-        actionViewModelDefaults.put("mFeatureFactory", XposedHelpers.getObjectField(param.thisObject, "mFeatureFactory"));
-        actionViewModelDefaults.put("mConditionChecker", XposedHelpers.getObjectField(param.thisObject, "mConditionChecker"));
-        actionViewModelDefaults.put("mKeyGuardManagerWrapper", mKeyGuardManagerWrapper);
-
-        XSysUIGlobalActions.actionViewModelDefaults = actionViewModelDefaults;
+        actionViewModelDefaults = new ActionViewModelDefaults(XposedHelpers.getObjectField(mKeyGuardManagerWrapper, "mContext"),
+                mSecGlobalActionsPresenter,
+                (FeatureFactory) XposedHelpers.getObjectField(param.thisObject, "mFeatureFactory"),
+                (ConditionChecker) XposedHelpers.getObjectField(param.thisObject, "mConditionChecker"),
+                mKeyGuardManagerWrapper);
     }
 }

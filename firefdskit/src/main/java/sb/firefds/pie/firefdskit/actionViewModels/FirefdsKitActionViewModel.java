@@ -4,30 +4,25 @@ import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-import androidx.annotation.Keep;
-
 import com.samsung.android.globalactions.presentation.SecGlobalActions;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionInfo;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModel;
 import com.samsung.android.globalactions.presentation.viewmodel.ViewType;
 
-import java.util.Map;
-
-@Keep
 public abstract class FirefdsKitActionViewModel implements ActionViewModel {
     private final SecGlobalActions mGlobalActions;
     private ActionInfo mInfo = new ActionInfo();
     private Context mContext;
     private BitmapDrawable mIcon;
 
-    FirefdsKitActionViewModel(Map<String, Object> actionViewModelDefaults,
+    FirefdsKitActionViewModel(ActionViewModelDefaults actionViewModelDefaults,
                               String actionName,
                               String actionLabel,
                               String actionDescription,
                               Drawable actionIcon) {
 
-        mContext = (Context) actionViewModelDefaults.get("mContext");
-        mGlobalActions = (SecGlobalActions) actionViewModelDefaults.get("mGlobalActions");
+        mContext = actionViewModelDefaults.getContext();
+        mGlobalActions = actionViewModelDefaults.getGlobalActions();
         mInfo.setName(actionName);
         mInfo.setLabel(actionLabel);
         mInfo.setDescription(actionDescription);

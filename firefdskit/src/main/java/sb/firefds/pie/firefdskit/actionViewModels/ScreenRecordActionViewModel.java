@@ -5,22 +5,17 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
-import androidx.annotation.Keep;
-
-import java.util.Map;
-
 import de.robv.android.xposed.XposedBridge;
 
 import static sb.firefds.pie.firefdskit.utils.Packages.SCREEN_RECORDER;
 import static sb.firefds.pie.firefdskit.utils.Packages.SMART_CAPTURE;
 
-@Keep
 public class ScreenRecordActionViewModel extends FirefdsKitActionViewModel {
 
     private static final String SCREEN_RECORDER_ACTIVITY = "com.sec.app.screenrecorder.activity.LauncherActivity";
     private static final String SCREEN_RECORDER_SERVICE = "com.samsung.android.app.screenrecorder.ScreenRecorderService";
 
-    ScreenRecordActionViewModel(Map<String, Object> actionViewModelDefaults,
+    ScreenRecordActionViewModel(ActionViewModelDefaults actionViewModelDefaults,
                                 String actionName,
                                 String actionLabel,
                                 String actionDescription,

@@ -3,16 +3,11 @@ package sb.firefds.pie.firefdskit.actionViewModels;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
-import androidx.annotation.Keep;
-
-import java.util.Map;
-
 import static sb.firefds.pie.firefdskit.utils.Packages.SETTINGS;
 
-@Keep
 public class UserSwitchActionViewModel extends FirefdsKitActionViewModel {
 
-    UserSwitchActionViewModel(Map<String, Object> actionViewModelDefaults,
+    UserSwitchActionViewModel(ActionViewModelDefaults actionViewModelDefaults,
                               String actionName,
                               String actionLabel,
                               String actionDescription,

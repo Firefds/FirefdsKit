@@ -2,21 +2,16 @@ package sb.firefds.pie.firefdskit.actionViewModels;
 
 import android.graphics.drawable.Drawable;
 
-import androidx.annotation.Keep;
-
-import java.util.Map;
-
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
-@Keep
 public class FlashLightActionViewModel extends FirefdsKitActionViewModel {
     private static boolean mTorch;
     private Object flashlightObject;
     private String flashlightOnStr;
     private String flashlightOffStr;
 
-    FlashLightActionViewModel(Map<String, Object> actionViewModelDefaults,
+    FlashLightActionViewModel(ActionViewModelDefaults actionViewModelDefaults,
                               String actionName,
                               String actionLabel,
                               String actionDescription,
