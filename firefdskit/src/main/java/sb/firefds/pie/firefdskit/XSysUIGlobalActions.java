@@ -56,6 +56,8 @@ import static sb.firefds.pie.firefdskit.utils.Constants.RESTART_UI_ACTION;
 import static sb.firefds.pie.firefdskit.utils.Constants.SCREENSHOT_ACTION;
 import static sb.firefds.pie.firefdskit.utils.Constants.SCREEN_RECORD_ACTION;
 import static sb.firefds.pie.firefdskit.utils.Packages.SYSTEM_UI;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CUSTOM_RECOVERY;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CUSTOM_RECOVERY_CONFIRMATION;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_POWER_MENU_SECURE_LOCKSCREEN;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_RESTART_CONFIRMATION;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_POWER_MENU;
@@ -89,9 +91,15 @@ public class XSysUIGlobalActions {
     private static ActionViewModelDefaults actionViewModelDefaults;
     private static Object mFlashlightObject;
     private static boolean prefUnlockKeyguardBeforeActionExecute;
+    private static String prefCustomRecovery;
+    private static String prefCustomRecoveryConfirmation;
     private static Resources resources;
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
+
+        prefUnlockKeyguardBeforeActionExecute = prefs.getBoolean(PREF_UNLOCK_KEYGUARD_BEFORE_ACTION_EXECUTE, false);
+        prefCustomRecovery = prefs.getString(PREF_CUSTOM_RECOVERY, null);
+        prefCustomRecoveryConfirmation = prefs.getString(PREF_CUSTOM_RECOVERY_CONFIRMATION, null);
 
         XposedHelpers.findAndHookConstructor(FLASHLIGHT_CONTROLLER_IMPL_CLASS,
                 classLoader,
@@ -104,7 +112,6 @@ public class XSysUIGlobalActions {
                 });
 
         final Class<?> secGlobalActionsDialogBaseClass = XposedHelpers.findClass(SEC_GLOBAL_ACTIONS_DIALOG_BASE, classLoader);
-        prefUnlockKeyguardBeforeActionExecute = prefs.getBoolean(PREF_UNLOCK_KEYGUARD_BEFORE_ACTION_EXECUTE, false);
 
         try {
             if (prefUnlockKeyguardBeforeActionExecute) {
@@ -307,6 +314,14 @@ public class XSysUIGlobalActions {
 
     public static boolean isUnlockKeyguardBeforeActionExecute() {
         return prefUnlockKeyguardBeforeActionExecute;
+    }
+
+    public static String getCustomRecovery() {
+        return prefCustomRecovery;
+    }
+
+    public static String getCustomRecoveryConfirmation() {
+        return prefCustomRecoveryConfirmation;
     }
 
     private static void setActionViewModelDefaults(XC_MethodHook.MethodHookParam param) {
