@@ -2,23 +2,24 @@ package sb.firefds.q.firefdskit.actionViewModels;
 
 import android.content.ComponentName;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 
 import de.robv.android.xposed.XposedBridge;
+import sb.firefds.q.firefdskit.R;
 
+import static sb.firefds.q.firefdskit.XSysUIGlobalActions.getResources;
+import static sb.firefds.q.firefdskit.utils.Constants.SCREEN_RECORD_ACTION;
 import static sb.firefds.q.firefdskit.utils.Packages.SMART_CAPTURE;
 
 public class ScreenRecordActionViewModel extends FirefdsKitActionViewModel {
 
     private static final String SCREEN_RECORDER_SERVICE = "com.samsung.android.app.screenrecorder.ScreenRecorderService";
 
-    ScreenRecordActionViewModel(ActionViewModelDefaults actionViewModelDefaults,
-                                String actionName,
-                                String actionLabel,
-                                String actionDescription,
-                                Drawable actionIcon) {
+    ScreenRecordActionViewModel() {
 
-        super(actionViewModelDefaults, actionName, actionLabel, actionDescription, actionIcon);
+        super();
+        getActionInfo().setName(SCREEN_RECORD_ACTION);
+        getActionInfo().setLabel(getResources().getString(R.string.screen_record));
+        setDrawableIcon(getResources().getDrawable(R.drawable.tw_ic_do_screenrecord_stock, null));
     }
 
     @Override

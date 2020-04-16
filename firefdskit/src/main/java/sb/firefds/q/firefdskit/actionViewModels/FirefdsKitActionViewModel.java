@@ -9,25 +9,19 @@ import com.samsung.android.globalactions.presentation.viewmodel.ActionInfo;
 import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModel;
 import com.samsung.android.globalactions.presentation.viewmodel.ViewType;
 
+import static sb.firefds.q.firefdskit.XSysUIGlobalActions.getActionViewModelDefaults;
+
 public abstract class FirefdsKitActionViewModel implements ActionViewModel {
     private final SecGlobalActions mGlobalActions;
     private ActionInfo mInfo = new ActionInfo();
     private Context mContext;
     private BitmapDrawable mIcon;
 
-    FirefdsKitActionViewModel(ActionViewModelDefaults actionViewModelDefaults,
-                              String actionName,
-                              String actionLabel,
-                              String actionDescription,
-                              Drawable actionIcon) {
+    FirefdsKitActionViewModel() {
 
-        mContext = actionViewModelDefaults.getContext();
-        mGlobalActions = actionViewModelDefaults.getGlobalActions();
-        mInfo.setName(actionName);
-        mInfo.setLabel(actionLabel);
-        mInfo.setDescription(actionDescription);
+        mContext = getActionViewModelDefaults().getContext().get();
+        mGlobalActions = getActionViewModelDefaults().getGlobalActions();
         mInfo.setViewType(ViewType.CENTER_ICON_3P_VIEW);
-        mIcon = (BitmapDrawable) actionIcon;
     }
 
     @Override
@@ -54,6 +48,10 @@ public abstract class FirefdsKitActionViewModel implements ActionViewModel {
     @Override
     public BitmapDrawable getIcon() {
         return mIcon;
+    }
+
+    void setDrawableIcon(Drawable mIcon) {
+        this.mIcon = (BitmapDrawable) mIcon;
     }
 
     SecGlobalActions getmGlobalActions() {

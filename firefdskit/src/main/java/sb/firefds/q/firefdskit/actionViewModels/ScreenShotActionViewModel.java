@@ -1,21 +1,23 @@
 package sb.firefds.q.firefdskit.actionViewModels;
 
-import android.graphics.drawable.Drawable;
 import android.hardware.input.InputManager;
 import android.os.SystemClock;
 import android.view.KeyEvent;
 
 import de.robv.android.xposed.XposedHelpers;
+import sb.firefds.q.firefdskit.R;
+
+import static sb.firefds.q.firefdskit.XSysUIGlobalActions.getResources;
+import static sb.firefds.q.firefdskit.utils.Constants.SCREENSHOT_ACTION;
 
 public class ScreenShotActionViewModel extends FirefdsKitActionViewModel {
 
-    ScreenShotActionViewModel(ActionViewModelDefaults actionViewModelDefaults,
-                              String actionName,
-                              String actionLabel,
-                              String actionDescription,
-                              Drawable actionIcon) {
+    ScreenShotActionViewModel() {
 
-        super(actionViewModelDefaults, actionName, actionLabel, actionDescription, actionIcon);
+        super();
+        getActionInfo().setName(SCREENSHOT_ACTION);
+        getActionInfo().setLabel(getResources().getString(R.string.screenshot));
+        setDrawableIcon(getResources().getDrawable(R.drawable.tw_ic_do_screenshot_stock, null));
     }
 
     @Override

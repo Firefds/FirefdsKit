@@ -33,18 +33,17 @@ import com.samsung.android.globalactions.util.KeyGuardManagerWrapper;
 import com.samsung.android.globalactions.util.SystemConditions;
 import com.samsung.android.globalactions.util.UtilFactory;
 
+import java.lang.ref.WeakReference;
+
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-import sb.firefds.q.firefdskit.actionViewModels.ActionIcons;
-import sb.firefds.q.firefdskit.actionViewModels.ActionStrings;
 import sb.firefds.q.firefdskit.actionViewModels.ActionViewModelDefaults;
-import sb.firefds.q.firefdskit.actionViewModels.FirefdsKitActionViewModel;
-import sb.firefds.q.firefdskit.actionViewModels.FirefdsKitActionViewModelsFactory;
 import sb.firefds.q.firefdskit.utils.Utils;
 
+import static sb.firefds.q.firefdskit.actionViewModels.FirefdsKitActionViewModelsFactory.getActionViewModel;
 import static sb.firefds.q.firefdskit.utils.Constants.DATA_MODE_ACTION;
 import static sb.firefds.q.firefdskit.utils.Constants.DOWNLOAD_ACTION;
 import static sb.firefds.q.firefdskit.utils.Constants.EMERGENCY_ACTION;
@@ -93,12 +92,19 @@ public class XSysUIGlobalActions {
 
     private static SecGlobalActionsPresenter mSecGlobalActionsPresenter;
     private static ActionViewModelDefaults actionViewModelDefaults;
-    private static ActionStrings actionStrings = new ActionStrings();
-    private static ActionIcons actionIcons = new ActionIcons();
     private static Object mFlashlightObject;
     private static boolean prefUnlockKeyguardBeforeActionExecute;
+    private static boolean prefReplaceRecoveryIcon;
+    private static String prefCustomRecovery;
+    private static String prefCustomRecoveryConfirmation;
+    private static Resources resources;
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
+
+        prefUnlockKeyguardBeforeActionExecute = prefs.getBoolean(PREF_UNLOCK_KEYGUARD_BEFORE_ACTION_EXECUTE, false);
+        prefReplaceRecoveryIcon = prefs.getBoolean(PREF_REPLACE_RECOVERY_ICON, false);
+        prefCustomRecovery = prefs.getString(PREF_CUSTOM_RECOVERY, null);
+        prefCustomRecoveryConfirmation = prefs.getString(PREF_CUSTOM_RECOVERY_CONFIRMATION, null);
 
         XposedHelpers.findAndHookConstructor(FLASHLIGHT_CONTROLLER_IMPL_CLASS,
                 classLoader,
@@ -111,7 +117,6 @@ public class XSysUIGlobalActions {
                 });
 
         final Class<?> secGlobalActionsDialogBaseClass = XposedHelpers.findClass(SEC_GLOBAL_ACTIONS_DIALOG_BASE, classLoader);
-        prefUnlockKeyguardBeforeActionExecute = prefs.getBoolean(PREF_UNLOCK_KEYGUARD_BEFORE_ACTION_EXECUTE, false);
 
         if (prefUnlockKeyguardBeforeActionExecute) {
             XC_MethodHook isNeedSecureConfirmHook = new XC_MethodHook() {
@@ -188,30 +193,7 @@ public class XSysUIGlobalActions {
                                 Context ctx = (Context) param.args[0];
                                 Resources res = ctx.getResources();
                                 Context gbContext = Utils.getGbContext(ctx, res.getConfiguration());
-
-                                actionStrings.setRecovery(prefs.getString(PREF_CUSTOM_RECOVERY,
-                                        gbContext.getString(R.string.reboot_recovery)));
-                                actionStrings.setDownload(gbContext.getString(R.string.reboot_download));
-                                actionStrings.setScreenshot(gbContext.getString(R.string.screenshot));
-                                actionStrings.setSwitchUser(gbContext.getString(R.string.switchUser));
-                                actionStrings.setRestartSystemUi(gbContext.getString(R.string.restartUI));
-                                actionStrings.setFlashlight(gbContext.getString(R.string.flashlight));
-                                actionStrings.setScreenRecord(gbContext.getString(R.string.screen_record));
-                                actionStrings.setRebootConfirmRecovery(prefs.getString(PREF_CUSTOM_RECOVERY_CONFIRMATION,
-                                        gbContext.getString(R.string.reboot_confirm_recovery)));
-                                actionStrings.setRebootConfirmDownload(gbContext.getString(R.string.reboot_confirm_download));
-                                actionStrings.setRestartSystemUiConfirm(gbContext.getString(R.string.restartUI));
-                                actionStrings.setFlashlightOn(gbContext.getString(R.string.flashlight_on));
-                                actionStrings.setFlashlightOff(gbContext.getString(R.string.flashlight_off));
-
-                                actionIcons.setRecovery(gbContext.getDrawable(R.drawable.tw_ic_do_recovery_stock));
-                                actionIcons.setDownload(gbContext.getDrawable(R.drawable.tw_ic_do_download_stock));
-                                actionIcons.setScreenshot(gbContext.getDrawable(R.drawable.tw_ic_do_screenshot_stock));
-                                actionIcons.setSwitchUser(gbContext.getDrawable(R.drawable.tw_ic_do_users_stock));
-                                actionIcons.setRestartSystemUi(gbContext.getDrawable(R.drawable.tw_ic_do_restart_ui_stock));
-                                actionIcons.setFlashlight(gbContext.getDrawable(R.drawable.tw_ic_do_torchlight_stock));
-                                actionIcons.setScreenRecord(gbContext.getDrawable(R.drawable.tw_ic_do_screenrecord_stock));
-                                actionIcons.setRestartStock(gbContext.getDrawable(R.drawable.tw_ic_do_restart));
+                                resources = gbContext.getResources();
                             }
                         });
 
@@ -293,16 +275,10 @@ public class XSysUIGlobalActions {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) {
                                 setActionViewModelDefaults(param);
-                                FirefdsKitActionViewModelsFactory.initFactory(mFlashlightObject,
-                                        actionIcons,
-                                        actionStrings,
-                                        actionViewModelDefaults,
-                                        prefUnlockKeyguardBeforeActionExecute,
-                                        prefs.getBoolean(PREF_REPLACE_RECOVERY_ICON, false));
-                                FirefdsKitActionViewModel firefdsKitActionViewModel = FirefdsKitActionViewModelsFactory
-                                        .getActionViewModel((String) param.args[1]);
-                                if (firefdsKitActionViewModel != null) {
-                                    param.setResult(firefdsKitActionViewModel);
+                                ActionViewModel actionViewModel =
+                                        getActionViewModel((String) param.args[1]);
+                                if (actionViewModel != null) {
+                                    param.setResult(actionViewModel);
                                 }
                             }
                         });
@@ -333,13 +309,42 @@ public class XSysUIGlobalActions {
         }
     }
 
+    public static Resources getResources() {
+        return resources;
+    }
+
+    public static ActionViewModelDefaults getActionViewModelDefaults() {
+        return actionViewModelDefaults;
+    }
+
+    public static Object getFlashlightObject() {
+        return mFlashlightObject;
+    }
+
+    public static boolean isUnlockKeyguardBeforeActionExecute() {
+        return prefUnlockKeyguardBeforeActionExecute;
+    }
+
+    public static boolean isReplaceRecoveryIcon() {
+        return prefReplaceRecoveryIcon;
+    }
+
+    public static String getCustomRecovery() {
+        return prefCustomRecovery;
+    }
+
+    public static String getCustomRecoveryConfirmation() {
+        return prefCustomRecoveryConfirmation;
+    }
+
     private static void setActionViewModelDefaults(XC_MethodHook.MethodHookParam param) {
         UtilFactory mUtilFactory = (UtilFactory) XposedHelpers.getObjectField(param.thisObject, "mUtilFactory");
         KeyGuardManagerWrapper mKeyGuardManagerWrapper = (KeyGuardManagerWrapper) XposedHelpers.callMethod(mUtilFactory,
                 "get",
                 KeyGuardManagerWrapper.class);
-
-        actionViewModelDefaults = new ActionViewModelDefaults(XposedHelpers.getObjectField(mKeyGuardManagerWrapper, "mContext"),
+        WeakReference<Context> contextWeakReference =
+                new WeakReference<>((Context) XposedHelpers.getObjectField(mKeyGuardManagerWrapper, "mContext"));
+        actionViewModelDefaults = new ActionViewModelDefaults(contextWeakReference,
                 mSecGlobalActionsPresenter,
                 (FeatureFactory) XposedHelpers.getObjectField(param.thisObject, "mFeatureFactory"),
                 (ConditionChecker) XposedHelpers.getObjectField(param.thisObject, "mConditionChecker"),

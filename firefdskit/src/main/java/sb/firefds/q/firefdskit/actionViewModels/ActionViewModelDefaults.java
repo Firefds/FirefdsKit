@@ -7,15 +7,17 @@ import com.samsung.android.globalactions.presentation.features.FeatureFactory;
 import com.samsung.android.globalactions.util.ConditionChecker;
 import com.samsung.android.globalactions.util.KeyGuardManagerWrapper;
 
+import java.lang.ref.WeakReference;
+
 public class ActionViewModelDefaults {
 
-    private Object context;
+    private WeakReference<Context> context;
     private SecGlobalActionsPresenter globalActions;
     private FeatureFactory featureFactory;
     private ConditionChecker conditionChecker;
     private KeyGuardManagerWrapper keyGuardManagerWrapper;
 
-    public ActionViewModelDefaults(Object context,
+    public ActionViewModelDefaults(WeakReference<Context> context,
                                    SecGlobalActionsPresenter globalActions,
                                    FeatureFactory featureFactory,
                                    ConditionChecker conditionChecker,
@@ -27,8 +29,8 @@ public class ActionViewModelDefaults {
         this.keyGuardManagerWrapper = keyGuardManagerWrapper;
     }
 
-    Context getContext() {
-        return (Context) context;
+    WeakReference<Context> getContext() {
+        return context;
     }
 
     SecGlobalActionsPresenter getGlobalActions() {
