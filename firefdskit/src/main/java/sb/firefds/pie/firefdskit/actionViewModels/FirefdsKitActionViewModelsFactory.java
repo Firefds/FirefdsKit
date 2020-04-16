@@ -1,9 +1,10 @@
 package sb.firefds.pie.firefdskit.actionViewModels;
 
-import androidx.core.util.Supplier;
+import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModel;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import static sb.firefds.pie.firefdskit.utils.Constants.DOWNLOAD_ACTION;
 import static sb.firefds.pie.firefdskit.utils.Constants.FLASHLIGHT_ACTION;
@@ -15,94 +16,42 @@ import static sb.firefds.pie.firefdskit.utils.Constants.SCREEN_RECORD_ACTION;
 
 public class FirefdsKitActionViewModelsFactory {
 
-    private static Object mFlashlightObject;
-    private static ActionIcons actionIcons;
-    private static ActionStrings actionStrings;
-    private static ActionViewModelDefaults actionViewModelDefaults;
-    private static boolean prefUnlockKeyguardBeforeActionExecute;
+    private static final Map<String, Supplier<ActionViewModel>> ACTION_VIEW_MODEL_MAP = new HashMap<>();
 
-    private static final Map<String, Supplier<FirefdsKitActionViewModel>> actionViewModelMap = new HashMap<>();
+    private static final Supplier<ActionViewModel>
+            FLASH_LIGHT_ACTION_VIEW_MODEL = FlashLightActionViewModel::new;
 
-    private static final Supplier<FirefdsKitActionViewModel> flashLightActionViewModel = () ->
-            new FlashLightActionViewModel(actionViewModelDefaults,
-                    FLASHLIGHT_ACTION,
-                    actionStrings.getFlashlight(),
-                    null,
-                    actionIcons.getFlashlight(),
-                    mFlashlightObject,
-                    actionStrings.getFlashlightOn(),
-                    actionStrings.getFlashlightOff());
+    private static final Supplier<ActionViewModel>
+            SCREEN_RECORD_ACTION_VIEW_MODEL = ScreenRecordActionViewModel::new;
 
-    private static final Supplier<FirefdsKitActionViewModel> screenRecordActionViewModel = () ->
-            new ScreenRecordActionViewModel(actionViewModelDefaults,
-                    SCREEN_RECORD_ACTION,
-                    actionStrings.getScreenRecord(),
-                    null,
-                    actionIcons.getScreenRecord());
+    private static final Supplier<ActionViewModel>
+            RESTART_SYSTEM_UI_ACTION_VIEW_MODEL = RestartSystemUiActionViewModel::new;
 
-    private static final Supplier<FirefdsKitActionViewModel> restartSystemUiActionViewModel = () ->
-            new RestartSystemUiActionViewModel(actionViewModelDefaults,
-                    RESTART_UI_ACTION,
-                    actionStrings.getRestartSystemUi(),
-                    actionStrings.getRestartSystemUiConfirm(),
-                    actionIcons.getRestartSystemUi());
+    private static final Supplier<ActionViewModel>
+            MULTIUSER_ACTION_VIEW_MODEL = UserSwitchActionViewModel::new;
 
-    private static final Supplier<FirefdsKitActionViewModel> userSwitchActionViewModel = () ->
-            new UserSwitchActionViewModel(actionViewModelDefaults,
-                    MULTIUSER_ACTION,
-                    actionStrings.getSwitchUser(),
-                    null,
-                    actionIcons.getSwitchUser());
+    private static final Supplier<ActionViewModel>
+            SCREENSHOT_ACTION_VIEW_MODEL = ScreenShotActionViewModel::new;
 
-    private static final Supplier<FirefdsKitActionViewModel> screenShotActionViewModel = () ->
-            new ScreenShotActionViewModel(actionViewModelDefaults,
-                    SCREENSHOT_ACTION,
-                    actionStrings.getScreenshot(),
-                    null,
-                    actionIcons.getScreenshot());
+    private static final Supplier<ActionViewModel>
+            RESTART_DOWNLOAD_ACTION_VIEW_MODEL = RestartDownloadActionViewModel::new;
 
-    private static final Supplier<FirefdsKitActionViewModel> restartDownloadActionViewModel = () ->
-            new RestartActionViewModel(actionViewModelDefaults,
-                    DOWNLOAD_ACTION,
-                    actionStrings.getDownload(),
-                    actionStrings.getRebootConfirmDownload(),
-                    actionIcons.getDownload(),
-                    prefUnlockKeyguardBeforeActionExecute);
-
-    private static final Supplier<FirefdsKitActionViewModel> restartRecoveryActionViewModel = () ->
-            new RestartActionViewModel(actionViewModelDefaults,
-                    RECOVERY_ACTION,
-                    actionStrings.getRecovery(),
-                    actionStrings.getRebootConfirmRecovery(),
-                    actionIcons.getRecovery(),
-                    prefUnlockKeyguardBeforeActionExecute);
-
+    private static final Supplier<ActionViewModel>
+            RESTART_RECOVERY_ACTION_VIEW_MODEL = RestartRecoveryActionViewModel::new;
 
     static {
-        actionViewModelMap.put(FLASHLIGHT_ACTION, flashLightActionViewModel);
-        actionViewModelMap.put(SCREEN_RECORD_ACTION, screenRecordActionViewModel);
-        actionViewModelMap.put(RESTART_UI_ACTION, restartSystemUiActionViewModel);
-        actionViewModelMap.put(MULTIUSER_ACTION, userSwitchActionViewModel);
-        actionViewModelMap.put(SCREENSHOT_ACTION, screenShotActionViewModel);
-        actionViewModelMap.put(DOWNLOAD_ACTION, restartDownloadActionViewModel);
-        actionViewModelMap.put(RECOVERY_ACTION, restartRecoveryActionViewModel);
+        ACTION_VIEW_MODEL_MAP.put(FLASHLIGHT_ACTION, FLASH_LIGHT_ACTION_VIEW_MODEL);
+        ACTION_VIEW_MODEL_MAP.put(SCREEN_RECORD_ACTION, SCREEN_RECORD_ACTION_VIEW_MODEL);
+        ACTION_VIEW_MODEL_MAP.put(RESTART_UI_ACTION, RESTART_SYSTEM_UI_ACTION_VIEW_MODEL);
+        ACTION_VIEW_MODEL_MAP.put(MULTIUSER_ACTION, MULTIUSER_ACTION_VIEW_MODEL);
+        ACTION_VIEW_MODEL_MAP.put(SCREENSHOT_ACTION, SCREENSHOT_ACTION_VIEW_MODEL);
+        ACTION_VIEW_MODEL_MAP.put(DOWNLOAD_ACTION, RESTART_DOWNLOAD_ACTION_VIEW_MODEL);
+        ACTION_VIEW_MODEL_MAP.put(RECOVERY_ACTION, RESTART_RECOVERY_ACTION_VIEW_MODEL);
     }
 
-    public static void initFactory(Object mFlashlightObject,
-                                   ActionIcons actionIcons,
-                                   ActionStrings actionStrings,
-                                   ActionViewModelDefaults actionViewModelDefaults,
-                                   boolean prefUnlockKeyguardBeforeActionExecute) {
+    public static ActionViewModel getActionViewModel(String action) {
 
-        FirefdsKitActionViewModelsFactory.mFlashlightObject = mFlashlightObject;
-        FirefdsKitActionViewModelsFactory.actionIcons = actionIcons;
-        FirefdsKitActionViewModelsFactory.actionStrings = actionStrings;
-        FirefdsKitActionViewModelsFactory.actionViewModelDefaults = actionViewModelDefaults;
-        FirefdsKitActionViewModelsFactory.prefUnlockKeyguardBeforeActionExecute = prefUnlockKeyguardBeforeActionExecute;
-    }
-
-    public static FirefdsKitActionViewModel getActionViewModel(String action) {
-        Supplier<FirefdsKitActionViewModel> actionViewModelSupplier = actionViewModelMap.get(action);
+        Supplier<ActionViewModel> actionViewModelSupplier = ACTION_VIEW_MODEL_MAP.get(action);
         if (actionViewModelSupplier != null) {
             return actionViewModelSupplier.get();
         }
