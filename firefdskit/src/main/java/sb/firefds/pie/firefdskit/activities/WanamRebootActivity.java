@@ -16,19 +16,15 @@ package sb.firefds.pie.firefdskit.activities;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Objects;
 
-import sb.firefds.pie.firefdskit.R;
+import sb.firefds.pie.firefdskit.rebootactions.RebootAction;
+import sb.firefds.pie.firefdskit.rebootactions.RebootActionFactory;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
-import static sb.firefds.pie.firefdskit.utils.Constants.DOWNLOAD_ACTION;
-import static sb.firefds.pie.firefdskit.utils.Constants.QUICK_REBOOT_DEVICE_ACTION;
 import static sb.firefds.pie.firefdskit.utils.Constants.REBOOT_ACTION;
-import static sb.firefds.pie.firefdskit.utils.Constants.REBOOT_DEVICE_ACTION;
-import static sb.firefds.pie.firefdskit.utils.Constants.RECOVERY_ACTION;
 
 public class WanamRebootActivity extends AppCompatActivity {
 
@@ -38,40 +34,12 @@ public class WanamRebootActivity extends AppCompatActivity {
 
         String reboot = Objects.requireNonNull(getIntent().getExtras()).getString(REBOOT_ACTION);
         try {
-            switch (Objects.requireNonNull(reboot)) {
-                case REBOOT_DEVICE_ACTION:
-                    rebootDevice();
-                    break;
-                case QUICK_REBOOT_DEVICE_ACTION:
-                    quickRebootDevice();
-                    break;
-                case RECOVERY_ACTION:
-                    Utils.rebootEPM(RECOVERY_ACTION);
-                    break;
-                case DOWNLOAD_ACTION:
-                    Utils.rebootEPM(DOWNLOAD_ACTION);
-                    break;
+            RebootAction rebootAction = RebootActionFactory.getRebootAction(reboot, this);
+            if (rebootAction != null) {
+                rebootAction.reboot();
             }
-
         } catch (Throwable e) {
             Utils.log(e);
         }
-    }
-
-    private void rebootDevice() throws Throwable {
-        Utils.closeStatusBar(this);
-        showRebootDialog();
-        Utils.reboot();
-    }
-
-    private void quickRebootDevice() throws Throwable {
-        Utils.closeStatusBar(this);
-        showRebootDialog();
-        Utils.performQuickReboot();
-    }
-
-    private void showRebootDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(R.layout.progress_dialog).create().show();
     }
 }
