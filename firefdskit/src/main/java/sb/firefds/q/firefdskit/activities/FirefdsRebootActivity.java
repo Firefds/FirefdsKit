@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Mohamed Karami for XTouchWiz Project (Wanam@xda)
+ * Copyright (C) 2020 Shauli Bracha for Firefds Kit Project (Firefds@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,7 +30,7 @@ import static sb.firefds.q.firefdskit.utils.Constants.REBOOT_ACTION;
 import static sb.firefds.q.firefdskit.utils.Constants.REBOOT_DEVICE_ACTION;
 import static sb.firefds.q.firefdskit.utils.Constants.RECOVERY_ACTION;
 
-public class WanamRebootActivity extends AppCompatActivity {
+public class FirefdsRebootActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +72,6 @@ public class WanamRebootActivity extends AppCompatActivity {
 
     private void showRebootDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(R.layout.progress_dialog).create().show();
+        //builder.setView(R.layout.progress_dialog).create().show();
     }
 }

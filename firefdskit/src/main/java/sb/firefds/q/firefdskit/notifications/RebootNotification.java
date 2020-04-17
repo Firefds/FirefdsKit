@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Mohamed Karami for XTouchWiz Project (Wanam@xda)
+ * Copyright (C) 2020 Shauli Bracha for Firefds Kit Project (Firefds@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,7 +30,7 @@ import java.util.Objects;
 
 import sb.firefds.q.firefdskit.R;
 import sb.firefds.q.firefdskit.FirefdsKitActivity;
-import sb.firefds.q.firefdskit.receivers.WanamRebootReceiver;
+import sb.firefds.q.firefdskit.receivers.FirefdsRebootReceiver;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 import static sb.firefds.q.firefdskit.utils.Constants.REBOOT_DEVICE_ACTION;
@@ -75,7 +75,7 @@ public class RebootNotification {
                         .setSummaryText(context.getString(R.string.pending_changes)))
                 .setAutoCancel(true);
 
-        Intent rebootIntent = new Intent(context, WanamRebootReceiver.class).setAction(REBOOT_DEVICE_ACTION);
+        Intent rebootIntent = new Intent(context, FirefdsRebootReceiver.class).setAction(REBOOT_DEVICE_ACTION);
         builder.addAction(new Notification.Action.Builder(
                 Icon.createWithResource(context, R.drawable.ic_restart_notification),
                 res.getString(R.string.reboot),
@@ -86,7 +86,7 @@ public class RebootNotification {
                 .build());
 
         if (showQuickReboot) {
-            Intent QuickRebootIntent = new Intent(context, WanamRebootReceiver.class)
+            Intent QuickRebootIntent = new Intent(context, FirefdsRebootReceiver.class)
                     .setAction(QUICK_REBOOT_DEVICE_ACTION);
             builder.addAction(new Notification.Action.Builder(
                     Icon.createWithResource(context, R.drawable.ic_restart_notification),

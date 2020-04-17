@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Mohamed Karami for XTouchWiz Project (Wanam@xda)
+ * Copyright (C) 2020 Shauli Bracha for Firefds Kit Project (Firefds@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,14 +21,14 @@ import android.os.Bundle;
 
 import java.util.Objects;
 
-import sb.firefds.q.firefdskit.activities.WanamRebootActivity;
+import sb.firefds.q.firefdskit.activities.FirefdsRebootActivity;
 import sb.firefds.q.firefdskit.notifications.RebootNotification;
 
 import static sb.firefds.q.firefdskit.utils.Constants.REBOOT_ACTION;
 import static sb.firefds.q.firefdskit.utils.Constants.REBOOT_DEVICE_ACTION;
 import static sb.firefds.q.firefdskit.utils.Constants.QUICK_REBOOT_DEVICE_ACTION;
 
-public class WanamRebootReceiver extends BroadcastReceiver {
+public class FirefdsRebootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -36,7 +36,7 @@ public class WanamRebootReceiver extends BroadcastReceiver {
         if (Objects.requireNonNull(action).equalsIgnoreCase(REBOOT_DEVICE_ACTION) ||
                 action.equalsIgnoreCase(QUICK_REBOOT_DEVICE_ACTION)) {
             RebootNotification.cancel(context);
-            Intent rebootIntent = new Intent(context, WanamRebootActivity.class);
+            Intent rebootIntent = new Intent(context, FirefdsRebootActivity.class);
             Bundle b = new Bundle();
             b.putString(REBOOT_ACTION, action);
             rebootIntent.putExtras(b);
