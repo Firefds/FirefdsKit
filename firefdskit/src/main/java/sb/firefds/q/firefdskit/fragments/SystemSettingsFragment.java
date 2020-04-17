@@ -14,7 +14,6 @@
  */
 package sb.firefds.q.firefdskit.fragments;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import sb.firefds.q.firefdskit.R;
@@ -33,10 +32,5 @@ public class SystemSettingsFragment extends FirefdsPreferenceFragment {
     @Override
     public String getFragmentName() {
         return "systemKey";
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        super.onSharedPreferenceChanged(sharedPreferences, key);
     }
 }

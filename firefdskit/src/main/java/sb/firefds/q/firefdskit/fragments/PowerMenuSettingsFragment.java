@@ -18,7 +18,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Keep;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.EditTextPreference;
 
 import java.util.Objects;
@@ -32,15 +31,12 @@ import static sb.firefds.q.firefdskit.utils.Preferences.PREF_CUSTOM_RECOVERY_CON
 @Keep
 public class PowerMenuSettingsFragment extends FirefdsPreferenceFragment {
 
-    private AppCompatActivity activity;
-
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         if (Utils.isDeviceEncrypted()) {
             getPreferenceManager().setStorageDeviceProtected();
         }
         setPreferencesFromResource(R.xml.advanced_power_menu_settings, rootKey);
-        activity = (AppCompatActivity) getActivity();
     }
 
     @Override
@@ -53,11 +49,11 @@ public class PowerMenuSettingsFragment extends FirefdsPreferenceFragment {
         if (key.equals(PREF_CUSTOM_RECOVERY)) {
             if (Objects.equals(sharedPreferences.getString(key, ""), "")) {
                 sharedPreferences.edit()
-                        .putString(key, activity.getString(R.string.reboot_recovery))
+                        .putString(key, getFragmentActivity().getString(R.string.reboot_recovery))
                         .apply();
                 EditTextPreference custom_recovery = findPreference(PREF_CUSTOM_RECOVERY);
                 if (custom_recovery != null) {
-                    custom_recovery.setText(activity.getString(R.string.reboot_recovery));
+                    custom_recovery.setText(getFragmentActivity().getString(R.string.reboot_recovery));
                 }
             }
         }
@@ -65,11 +61,11 @@ public class PowerMenuSettingsFragment extends FirefdsPreferenceFragment {
         if (key.equals(PREF_CUSTOM_RECOVERY_CONFIRMATION)) {
             if (Objects.equals(sharedPreferences.getString(key, ""), "")) {
                 sharedPreferences.edit()
-                        .putString(key, activity.getString(R.string.reboot_confirm_recovery))
+                        .putString(key, getFragmentActivity().getString(R.string.reboot_confirm_recovery))
                         .apply();
                 EditTextPreference custom_recovery_confirmation = findPreference(PREF_CUSTOM_RECOVERY_CONFIRMATION);
                 if (custom_recovery_confirmation != null) {
-                    custom_recovery_confirmation.setText(activity.getString(R.string.reboot_confirm_recovery));
+                    custom_recovery_confirmation.setText(getFragmentActivity().getString(R.string.reboot_confirm_recovery));
                 }
             }
         }
