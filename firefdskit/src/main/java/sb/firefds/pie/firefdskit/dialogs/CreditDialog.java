@@ -14,7 +14,6 @@
  */
 package sb.firefds.pie.firefdskit.dialogs;
 
-
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
