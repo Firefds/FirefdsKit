@@ -20,7 +20,6 @@ import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import sb.firefds.pie.firefdskit.R;
 import sb.firefds.pie.firefdskit.utils.Utils;
@@ -29,15 +28,12 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_NAVIGATION_BAR_CO
 
 public class SystemSettingsFragment extends FirefdsPreferenceFragment {
 
-    private AppCompatActivity activity;
-
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         if (Utils.isDeviceEncrypted()) {
             getPreferenceManager().setStorageDeviceProtected();
         }
         setPreferencesFromResource(R.xml.system_settings, rootKey);
-        activity = (AppCompatActivity) getActivity();
     }
 
     @Override
@@ -47,11 +43,10 @@ public class SystemSettingsFragment extends FirefdsPreferenceFragment {
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        super.onSharedPreferenceChanged(sharedPreferences, key);
 
         if (key.equals(PREF_NAVIGATION_BAR_COLOR)) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            TextView tv = new TextView(activity);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getFragmentActivity());
+            TextView tv = new TextView(getFragmentActivity());
             tv.setMovementMethod(LinkMovementMethod.getInstance());
             tv.setText(R.string.navigation_bar_color_dialog_message);
             tv.setPadding(16, 16, 16, 16);
@@ -60,5 +55,6 @@ public class SystemSettingsFragment extends FirefdsPreferenceFragment {
                     .setNeutralButton("OK", (dialog, id) -> dialog.dismiss())
                     .show();
         }
+        super.onSharedPreferenceChanged(sharedPreferences, key);
     }
 }

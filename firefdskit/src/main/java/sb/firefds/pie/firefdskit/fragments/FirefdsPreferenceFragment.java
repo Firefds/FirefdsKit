@@ -16,7 +16,6 @@ package sb.firefds.pie.firefdskit.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,14 +31,11 @@ import sb.firefds.pie.firefdskit.utils.Utils;
 import static sb.firefds.pie.firefdskit.FirefdsKitActivity.fixPermissions;
 import static sb.firefds.pie.firefdskit.FirefdsKitActivity.getAppContext;
 import static sb.firefds.pie.firefdskit.FirefdsKitActivity.getSharedPreferences;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_HOURS;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_MINUTES;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_SECONDS;
 
 public abstract class FirefdsPreferenceFragment extends PreferenceFragmentCompat
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private static AppCompatActivity fragmentActivity;
+    private AppCompatActivity fragmentActivity;
     private static List<String> changesMade;
 
     @Override
@@ -60,8 +56,6 @@ public abstract class FirefdsPreferenceFragment extends PreferenceFragmentCompat
 
             if (key.equals("forceEnglish"))
                 Toast.makeText(getActivity(), getResources().getText(R.string.language_toast), Toast.LENGTH_SHORT).show();
-
-            setTimeoutPrefs(sharedPreferences, key);
 
             for (String string : litePrefs) {
                 if (key.equalsIgnoreCase(string)) {
@@ -100,18 +94,8 @@ public abstract class FirefdsPreferenceFragment extends PreferenceFragmentCompat
 
     public abstract String getFragmentName();
 
-    private void setTimeoutPrefs(SharedPreferences sharedPreferences, String key) {
-
-        if (key.equals(PREF_SCREEN_TIMEOUT_SECONDS) ||
-                key.equals(PREF_SCREEN_TIMEOUT_MINUTES) ||
-                key.equals(PREF_SCREEN_TIMEOUT_HOURS)) {
-
-            int hour = sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_HOURS, 0) * 3600000;
-            int min = sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_MINUTES, 0) * 60000;
-            int sec = sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_SECONDS, 30) * 1000;
-            int timeoutML = hour + min + sec;
-            Settings.System.putInt(fragmentActivity.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
-        }
+    AppCompatActivity getFragmentActivity() {
+        return fragmentActivity;
     }
 
     private void registerPrefsReceiver() {

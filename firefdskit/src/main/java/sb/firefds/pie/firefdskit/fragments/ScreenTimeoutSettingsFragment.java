@@ -14,12 +14,18 @@
  */
 package sb.firefds.pie.firefdskit.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
 
 import androidx.annotation.Keep;
 
 import sb.firefds.pie.firefdskit.R;
 import sb.firefds.pie.firefdskit.utils.Utils;
+
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_HOURS;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_MINUTES;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_SECONDS;
 
 @Keep
 public class ScreenTimeoutSettingsFragment extends FirefdsPreferenceFragment {
@@ -34,5 +40,17 @@ public class ScreenTimeoutSettingsFragment extends FirefdsPreferenceFragment {
     @Override
     public String getFragmentName() {
         return "screenTimeoutSettings";
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
+        int hour = sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_HOURS, 0) * 3600000;
+        int min = sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_MINUTES, 0) * 60000;
+        int sec = sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_SECONDS, 30) * 1000;
+        int timeoutML = hour + min + sec;
+        Settings.System.putInt(getFragmentActivity().getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, timeoutML);
+
+        super.onSharedPreferenceChanged(sharedPreferences, key);
     }
 }
