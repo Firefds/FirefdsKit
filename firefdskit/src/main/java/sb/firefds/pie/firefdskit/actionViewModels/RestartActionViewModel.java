@@ -31,7 +31,7 @@ import static sb.firefds.pie.firefdskit.utils.Constants.REBOOT_ACTION;
 import static sb.firefds.pie.firefdskit.utils.Packages.FIREFDSKIT;
 
 public abstract class RestartActionViewModel extends FirefdsKitActionViewModel {
-    private static final String REBOOT_ACTIVITY = FIREFDSKIT + ".activities.WanamRebootActivity";
+    private static final String REBOOT_ACTIVITY = FIREFDSKIT + ".activities.FirefdsRebootActivity";
     private String rebootOption;
     private FeatureFactory mFeatureFactory;
     private ConditionChecker mConditionChecker;
