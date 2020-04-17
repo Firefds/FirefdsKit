@@ -37,7 +37,7 @@ public class ScreenShotActionViewModel extends FirefdsKitActionViewModel {
     @Override
     public void onPress() {
 
-        getmGlobalActions().dismissDialog(false);
+        getGlobalActions().dismissDialog(false);
         takeScreenshot();
     }
 

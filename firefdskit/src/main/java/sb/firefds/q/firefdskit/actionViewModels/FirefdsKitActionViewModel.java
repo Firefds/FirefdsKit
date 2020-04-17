@@ -68,11 +68,11 @@ public abstract class FirefdsKitActionViewModel implements ActionViewModel {
         this.mIcon = (BitmapDrawable) mIcon;
     }
 
-    SecGlobalActions getmGlobalActions() {
+    SecGlobalActions getGlobalActions() {
         return mGlobalActions;
     }
 
-    Context getmContext() {
+    Context getContext() {
         return mContext;
     }
 }

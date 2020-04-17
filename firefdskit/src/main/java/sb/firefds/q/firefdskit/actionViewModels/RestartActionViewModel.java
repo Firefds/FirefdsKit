@@ -49,17 +49,17 @@ public abstract class RestartActionViewModel extends FirefdsKitActionViewModel {
     @Override
     public void onPress() {
 
-        if (!getmGlobalActions().isActionConfirming()) {
-            getmGlobalActions().confirmAction(this);
+        if (!getGlobalActions().isActionConfirming()) {
+            getGlobalActions().confirmAction(this);
         } else {
             if (isUnlockKeyguardBeforeActionExecute()) {
                 if (mConditionChecker.isEnabled(SystemConditions.IS_SECURE_KEYGUARD)) {
-                    for (SecureConfirmStrategy strategy3 : mFeatureFactory.createSecureConfirmStrategy(getmGlobalActions(), getActionInfo().getName())) {
-                        strategy3.doActionBeforeSecureConfirm(this, getmGlobalActions());
+                    for (SecureConfirmStrategy strategy3 : mFeatureFactory.createSecureConfirmStrategy(getGlobalActions(), getActionInfo().getName())) {
+                        strategy3.doActionBeforeSecureConfirm(this, getGlobalActions());
                     }
-                    getmGlobalActions().registerSecureConfirmAction(this);
+                    getGlobalActions().registerSecureConfirmAction(this);
                     mKeyGuardManagerWrapper.setPendingIntentAfterUnlock("reboot");
-                    getmGlobalActions().hideDialogOnSecureConfirm();
+                    getGlobalActions().hideDialogOnSecureConfirm();
                 } else {
                     reboot();
                 }
@@ -76,14 +76,14 @@ public abstract class RestartActionViewModel extends FirefdsKitActionViewModel {
 
     private void reboot() {
         try {
-            ((PowerManager) getmContext().getSystemService(Context.POWER_SERVICE)).reboot(rebootOption);
+            ((PowerManager) getContext().getSystemService(Context.POWER_SERVICE)).reboot(rebootOption);
         } catch (SecurityException e) {
             Intent rebootIntent = new Intent().setComponent(new ComponentName(FIREFDSKIT, REBOOT_ACTIVITY));
             Bundle b = new Bundle();
             b.putString(REBOOT_ACTION, rebootOption);
             rebootIntent.putExtras(b);
             rebootIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getmContext().startActivity(rebootIntent);
+            getContext().startActivity(rebootIntent);
         }
     }
 

@@ -35,10 +35,10 @@ public class RestartSystemUiActionViewModel extends FirefdsKitActionViewModel {
 
     @Override
     public void onPress() {
-        if (!getmGlobalActions().isActionConfirming()) {
-            getmGlobalActions().confirmAction(this);
+        if (!getGlobalActions().isActionConfirming()) {
+            getGlobalActions().confirmAction(this);
         } else {
-            getmGlobalActions().dismissDialog(false);
+            getGlobalActions().dismissDialog(false);
             new Handler().postDelayed(this::restartSystemUI, 1000);
         }
     }

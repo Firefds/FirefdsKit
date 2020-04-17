@@ -37,7 +37,7 @@ public class FlashLightActionViewModel extends FirefdsKitActionViewModel {
     @Override
     public void onPress() {
 
-        getmGlobalActions().dismissDialog(false);
+        getGlobalActions().dismissDialog(false);
         switchFlashLight();
     }
 
@@ -53,7 +53,7 @@ public class FlashLightActionViewModel extends FirefdsKitActionViewModel {
         } catch (Throwable e) {
             XposedBridge.log(e);
         }
-        this.getmGlobalActions().dismissDialog(false);
+        this.getGlobalActions().dismissDialog(false);
     }
 
     private void setStateLabel() {

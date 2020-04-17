@@ -35,7 +35,7 @@ public class UserSwitchActionViewModel extends FirefdsKitActionViewModel {
     @Override
     public void onPress() {
 
-        getmGlobalActions().dismissDialog(false);
+        getGlobalActions().dismissDialog(false);
         showUserSwitchScreen();
     }
 
@@ -48,6 +48,6 @@ public class UserSwitchActionViewModel extends FirefdsKitActionViewModel {
         Intent rebootIntent = new Intent("android.settings.USER_SETTINGS")
                 .setPackage(SETTINGS)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        getmContext().startActivity(rebootIntent);
+        getContext().startActivity(rebootIntent);
     }
 }

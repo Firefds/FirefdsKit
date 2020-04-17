@@ -39,7 +39,7 @@ public class ScreenRecordActionViewModel extends FirefdsKitActionViewModel {
     @Override
     public void onPress() {
 
-        getmGlobalActions().dismissDialog(false);
+        getGlobalActions().dismissDialog(false);
         startScreenRecord();
     }
 
@@ -52,7 +52,7 @@ public class ScreenRecordActionViewModel extends FirefdsKitActionViewModel {
         Intent intent = new Intent()
                 .setComponent(new ComponentName(SMART_CAPTURE, SCREEN_RECORDER_SERVICE))
                 .setAction("com.samsung.android.app.screenrecorder.ACTION_START");
-        if (getmContext().startService(intent) == null) {
+        if (getContext().startService(intent) == null) {
             XposedBridge.log("FFK: Service not found - ScreenRecorderService");
         }
     }
