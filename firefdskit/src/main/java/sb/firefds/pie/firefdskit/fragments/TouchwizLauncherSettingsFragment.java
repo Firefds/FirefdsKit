@@ -13,4 +13,9 @@ public class TouchwizLauncherSettingsFragment extends FirefdsPreferenceFragment 
         }
         setPreferencesFromResource(R.xml.touchwiz_launcher_settings, rootKey);
     }
+
+    @Override
+    public String getFragmentName() {
+        return "launcherKey";
+    }
 }

@@ -22,7 +22,7 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_HO
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_MINUTES;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_SECONDS;
 
-public class FirefdsPreferenceFragment extends PreferenceFragmentCompat
+public abstract class FirefdsPreferenceFragment extends PreferenceFragmentCompat
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static AppCompatActivity fragmentActivity;
@@ -68,9 +68,7 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat
     }
 
     @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-
-    }
+    public abstract void onCreatePreferences(Bundle savedInstanceState, String rootKey);
 
     @Override
     public void onResume() {
@@ -85,6 +83,8 @@ public class FirefdsPreferenceFragment extends PreferenceFragmentCompat
         unregisterPrefsReceiver();
         fixPermissions(getAppContext());
     }
+
+    public abstract String getFragmentName();
 
     private void setTimeoutPrefs(SharedPreferences sharedPreferences, String key) {
 

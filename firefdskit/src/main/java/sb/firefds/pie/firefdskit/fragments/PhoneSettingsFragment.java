@@ -13,4 +13,9 @@ public class PhoneSettingsFragment extends FirefdsPreferenceFragment {
         }
         setPreferencesFromResource(R.xml.phone_settings, rootKey);
     }
+
+    @Override
+    public String getFragmentName() {
+        return "phoneKey";
+    }
 }

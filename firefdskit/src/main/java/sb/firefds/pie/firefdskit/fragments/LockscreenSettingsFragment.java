@@ -13,4 +13,9 @@ public class LockscreenSettingsFragment extends FirefdsPreferenceFragment {
         }
         setPreferencesFromResource(R.xml.lockscreen_settings, rootKey);
     }
+
+    @Override
+    public String getFragmentName() {
+        return "lockscreenKey";
+    }
 }

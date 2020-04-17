@@ -13,4 +13,9 @@ public class SoundSettingsFragment extends FirefdsPreferenceFragment {
         }
         setPreferencesFromResource(R.xml.sound_settings, rootKey);
     }
+
+    @Override
+    public String getFragmentName() {
+        return "soundKey";
+    }
 }
