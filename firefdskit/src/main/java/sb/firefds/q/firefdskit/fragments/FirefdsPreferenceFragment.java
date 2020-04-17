@@ -69,7 +69,7 @@ public abstract class FirefdsPreferenceFragment extends PreferenceFragmentCompat
                 changesMade.add(key);
             }
             fixPermissions(getAppContext());
-            RebootNotification.notify(fragmentActivity, changesMade.size(), true);
+            RebootNotification.notify(fragmentActivity, changesMade.size(), false);
         } catch (Throwable e) {
             Utils.log(e);
         }
