@@ -497,8 +497,10 @@ public class FirefdsKitActivity extends AppCompatActivity
     @SuppressLint("SetWorldReadable")
     private static void fixAppPermissions(Context context) {
         File appFolder = context.getFilesDir().getParentFile();
-        appFolder.setExecutable(true, false);
-        appFolder.setReadable(true, false);
+        if (appFolder != null) {
+            appFolder.setExecutable(true, false);
+            appFolder.setReadable(true, false);
+        }
     }
 
     private static void setDefaultPreferences(boolean forceDefault) {
@@ -551,8 +553,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         }
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private class RestoreBackupTask extends AsyncTask<Void, Void, Void> {
+    private static class RestoreBackupTask extends AsyncTask<Void, Void, Void> {
 
         private File backup;
 
@@ -609,7 +610,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            Utils.createSnackbar(findViewById(android.R.id.content),
+            Utils.createSnackbar(activity.findViewById(android.R.id.content),
                     R.string.backup_restored,
                     activity).show();
             RebootNotification.notify(activity, 999, false);
