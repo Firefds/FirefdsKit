@@ -43,14 +43,10 @@
             android:value="Made for stock Samsung devices supporting Android 9.0 Roms by Firefds" />
 
         <receiver
-            android:name=".receivers.WanamRebootReceiver"
+            android:name=".receivers.FirefdsRebootReceiver"
             android:exported="false" />
 
-        <activity
-            android:name=".activities.WanamRebootActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:label="@string/rebooting_"
-            android:theme="@style/Theme.AppCompat.Dialog" />
+        <activity android:name=".activities.FirefdsRebootActivity" />
     </application>
 
 </manifest>

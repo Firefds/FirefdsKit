@@ -17,7 +17,6 @@ package sb.firefds.pie.firefdskit.actionViewModels;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.PowerManager;
 
 import com.samsung.android.globalactions.presentation.features.FeatureFactory;
@@ -79,9 +78,7 @@ public abstract class RestartActionViewModel extends FirefdsKitActionViewModel {
             ((PowerManager) getContext().getSystemService(Context.POWER_SERVICE)).reboot(rebootOption);
         } catch (SecurityException e) {
             Intent rebootIntent = new Intent().setComponent(new ComponentName(FIREFDSKIT, REBOOT_ACTIVITY));
-            Bundle b = new Bundle();
-            b.putString(REBOOT_ACTION, rebootOption);
-            rebootIntent.putExtras(b);
+            rebootIntent.putExtra(REBOOT_ACTION, rebootOption);
             rebootIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(rebootIntent);
         }

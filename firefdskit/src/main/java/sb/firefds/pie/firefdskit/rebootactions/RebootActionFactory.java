@@ -14,12 +14,10 @@
  */
 package sb.firefds.pie.firefdskit.rebootactions;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.arch.core.util.Function;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import static sb.firefds.pie.firefdskit.utils.Constants.DOWNLOAD_ACTION;
 import static sb.firefds.pie.firefdskit.utils.Constants.QUICK_REBOOT_DEVICE_ACTION;
@@ -28,12 +26,12 @@ import static sb.firefds.pie.firefdskit.utils.Constants.RECOVERY_ACTION;
 
 public class RebootActionFactory {
 
-    private static final Map<String, Function<AppCompatActivity, RebootAction>> REBOOT_ACTION_MAP = new HashMap<>();
+    private static final Map<String, Supplier<RebootAction>> REBOOT_ACTION_MAP = new HashMap<>();
 
-    private static final Function<AppCompatActivity, RebootAction> NORMAL_REBOOT_ACTION = NormalRebootDeviceAction::new;
-    private static final Function<AppCompatActivity, RebootAction> QUICK_REBOOT_ACTION = QuickRebootDeviceAction::new;
-    private static final Function<AppCompatActivity, RebootAction> RECOVERY_REBOOT_ACTION = (o) -> new RecoveryRebootAction();
-    private static final Function<AppCompatActivity, RebootAction> DOWNLOAD_REBOOT_ACTION = (o) -> new DownloadRebootAction();
+    private static final Supplier<RebootAction> NORMAL_REBOOT_ACTION = NormalRebootDeviceAction::new;
+    private static final Supplier<RebootAction> QUICK_REBOOT_ACTION = QuickRebootDeviceAction::new;
+    private static final Supplier<RebootAction> RECOVERY_REBOOT_ACTION = RecoveryRebootAction::new;
+    private static final Supplier<RebootAction> DOWNLOAD_REBOOT_ACTION = DownloadRebootAction::new;
 
     static {
         REBOOT_ACTION_MAP.put(REBOOT_DEVICE_ACTION, NORMAL_REBOOT_ACTION);
@@ -42,7 +40,7 @@ public class RebootActionFactory {
         REBOOT_ACTION_MAP.put(DOWNLOAD_ACTION, DOWNLOAD_REBOOT_ACTION);
     }
 
-    public static RebootAction getRebootAction(String rebootAction, AppCompatActivity activity) {
-        return Objects.requireNonNull(REBOOT_ACTION_MAP.get(rebootAction)).apply(activity);
+    public static RebootAction getRebootAction(String rebootAction) {
+        return Objects.requireNonNull(REBOOT_ACTION_MAP.get(rebootAction)).get();
     }
 }

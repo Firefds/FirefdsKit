@@ -30,7 +30,7 @@ import java.util.Objects;
 
 import sb.firefds.pie.firefdskit.R;
 import sb.firefds.pie.firefdskit.FirefdsKitActivity;
-import sb.firefds.pie.firefdskit.receivers.WanamRebootReceiver;
+import sb.firefds.pie.firefdskit.receivers.FirefdsRebootReceiver;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 import static sb.firefds.pie.firefdskit.utils.Constants.REBOOT_DEVICE_ACTION;
@@ -75,7 +75,8 @@ public class RebootNotification {
                         .setSummaryText(context.getString(R.string.pending_changes)))
                 .setAutoCancel(true);
 
-        Intent rebootIntent = new Intent(context, WanamRebootReceiver.class).setAction(REBOOT_DEVICE_ACTION);
+        Intent rebootIntent = new Intent(context, FirefdsRebootReceiver.class)
+                .setAction(REBOOT_DEVICE_ACTION);
         builder.addAction(new Notification.Action.Builder(
                 Icon.createWithResource(context, R.drawable.ic_restart_notification),
                 res.getString(R.string.reboot),
@@ -86,7 +87,7 @@ public class RebootNotification {
                 .build());
 
         if (showQuickReboot) {
-            Intent QuickRebootIntent = new Intent(context, WanamRebootReceiver.class)
+            Intent QuickRebootIntent = new Intent(context, FirefdsRebootReceiver.class)
                     .setAction(QUICK_REBOOT_DEVICE_ACTION);
             builder.addAction(new Notification.Action.Builder(
                     Icon.createWithResource(context, R.drawable.ic_restart_notification),

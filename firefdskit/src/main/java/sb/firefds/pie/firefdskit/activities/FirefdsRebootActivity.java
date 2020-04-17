@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Mohamed Karami for XTouchWiz Project (Wanam@xda)
+ * Copyright (C) 2020 Shauli Bracha for Firefds Kit Project (Firefds@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,28 +18,14 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Objects;
-
-import sb.firefds.pie.firefdskit.rebootactions.RebootAction;
-import sb.firefds.pie.firefdskit.rebootactions.RebootActionFactory;
-import sb.firefds.pie.firefdskit.utils.Utils;
-
+import static sb.firefds.pie.firefdskit.rebootactions.RebootActionFactory.getRebootAction;
 import static sb.firefds.pie.firefdskit.utils.Constants.REBOOT_ACTION;
 
-public class WanamRebootActivity extends AppCompatActivity {
+public class FirefdsRebootActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        String reboot = Objects.requireNonNull(getIntent().getExtras()).getString(REBOOT_ACTION);
-        try {
-            RebootAction rebootAction = RebootActionFactory.getRebootAction(reboot, this);
-            if (rebootAction != null) {
-                rebootAction.reboot();
-            }
-        } catch (Throwable e) {
-            Utils.log(e);
-        }
+        getRebootAction(getIntent().getStringExtra(REBOOT_ACTION)).reboot();
     }
 }
