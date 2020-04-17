@@ -75,7 +75,8 @@ public class RebootNotification {
                         .setSummaryText(context.getString(R.string.pending_changes)))
                 .setAutoCancel(true);
 
-        Intent rebootIntent = new Intent(context, FirefdsRebootReceiver.class).setAction(REBOOT_DEVICE_ACTION);
+        Intent rebootIntent = new Intent(context, FirefdsRebootReceiver.class)
+                .setAction(REBOOT_DEVICE_ACTION);
         builder.addAction(new Notification.Action.Builder(
                 Icon.createWithResource(context, R.drawable.ic_restart_notification),
                 res.getString(R.string.reboot),

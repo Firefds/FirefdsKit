@@ -17,31 +17,18 @@ package sb.firefds.q.firefdskit.receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-
-import java.util.Objects;
 
 import sb.firefds.q.firefdskit.activities.FirefdsRebootActivity;
-import sb.firefds.q.firefdskit.notifications.RebootNotification;
 
 import static sb.firefds.q.firefdskit.utils.Constants.REBOOT_ACTION;
-import static sb.firefds.q.firefdskit.utils.Constants.REBOOT_DEVICE_ACTION;
-import static sb.firefds.q.firefdskit.utils.Constants.QUICK_REBOOT_DEVICE_ACTION;
 
 public class FirefdsRebootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String action = intent.getAction();
-        if (Objects.requireNonNull(action).equalsIgnoreCase(REBOOT_DEVICE_ACTION) ||
-                action.equalsIgnoreCase(QUICK_REBOOT_DEVICE_ACTION)) {
-            RebootNotification.cancel(context);
-            Intent rebootIntent = new Intent(context, FirefdsRebootActivity.class);
-            Bundle b = new Bundle();
-            b.putString(REBOOT_ACTION, action);
-            rebootIntent.putExtras(b);
-            rebootIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(rebootIntent);
-        }
+        Intent rebootIntent = new Intent(context, FirefdsRebootActivity.class);
+        rebootIntent.putExtra(REBOOT_ACTION, intent.getAction());
+        rebootIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(rebootIntent);
     }
 }
