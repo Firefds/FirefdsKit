@@ -54,26 +54,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.function.Function;
 
 import sb.firefds.pie.firefdskit.dialogs.CreditDialog;
 import sb.firefds.pie.firefdskit.dialogs.RestoreDialog;
 import sb.firefds.pie.firefdskit.dialogs.SaveDialog;
-import sb.firefds.pie.firefdskit.fragments.FirefdsKitSettingsFragment;
 import sb.firefds.pie.firefdskit.fragments.FirefdsPreferenceFragment;
-import sb.firefds.pie.firefdskit.fragments.LockscreenSettingsFragment;
-import sb.firefds.pie.firefdskit.fragments.MessagingSettingsFragment;
-import sb.firefds.pie.firefdskit.fragments.NotificationSettingsFragment;
-import sb.firefds.pie.firefdskit.fragments.PhoneSettingsFragment;
 import sb.firefds.pie.firefdskit.fragments.PowerMenuSettingsFragment;
 import sb.firefds.pie.firefdskit.fragments.PreferenceFragmentFactory;
 import sb.firefds.pie.firefdskit.fragments.ScreenTimeoutSettingsFragment;
-import sb.firefds.pie.firefdskit.fragments.SecuritySettingsFragment;
-import sb.firefds.pie.firefdskit.fragments.SoundSettingsFragment;
-import sb.firefds.pie.firefdskit.fragments.SystemSettingsFragment;
-import sb.firefds.pie.firefdskit.fragments.TouchwizLauncherSettingsFragment;
 import sb.firefds.pie.firefdskit.notifications.RebootNotification;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
@@ -102,6 +96,17 @@ public class FirefdsKitActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         RestoreDialog.RestoreDialogListener, PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
+    private final Runnable SHOW_CREDIT_DIALOG = this::showCreditsDialog;
+    private final Runnable SHOW_RECOMMENDED_SETTINGS_DIALOG = this::showRecommendedSettingsDialog;
+    private final Runnable SHOW_SAVE_DIALOG = this::showSaveDialog;
+    private final Runnable SHOW_RESTORE_DIALOG = this::showRestoreDialog;
+    private final Runnable ON_BACK_PRESSED = this::onBackPressed;
+    private final Function<Menu, MenuItem> SHORTCUT_STATUSBAR_ITEM = (m) -> m.findItem(R.id.statusbarKey);
+    private final Function<Menu, MenuItem> SHORTCUT_SYSTEM_ITEM = (m) -> m.findItem(R.id.systemKey);
+    private final Function<Menu, MenuItem> SHORTCUT_PHONE_ITEM = (m) -> m.findItem(R.id.phoneKey);
+    private final Function<Menu, MenuItem> SHORTCUT_SECURITY_ITEM = (m) -> m.findItem(R.id.securityKey);
+    private final Map<Integer, Runnable> OPTIONS_ITEMS = new HashMap<>();
+    private final Map<String, Function<Menu, MenuItem>> SHORTCUTS_ITEMS = new HashMap<>();
     private static SharedPreferences sharedPreferences;
     private static AppCompatActivity activity;
     private static Context appContext;
@@ -109,6 +114,18 @@ public class FirefdsKitActivity extends AppCompatActivity
     private ActionBarDrawerToggle toggle;
     private ActionBarDrawerToggle menuToggle;
     private MenuItem selectedMenuItem;
+
+    {
+        OPTIONS_ITEMS.put(R.id.action_credits, SHOW_CREDIT_DIALOG);
+        OPTIONS_ITEMS.put(R.id.recommended_settings, SHOW_RECOMMENDED_SETTINGS_DIALOG);
+        OPTIONS_ITEMS.put(R.id.action_save, SHOW_SAVE_DIALOG);
+        OPTIONS_ITEMS.put(R.id.action_restore, SHOW_RESTORE_DIALOG);
+        OPTIONS_ITEMS.put(R.id.home, ON_BACK_PRESSED);
+        SHORTCUTS_ITEMS.put(SHORTCUT_STATUSBAR, SHORTCUT_STATUSBAR_ITEM);
+        SHORTCUTS_ITEMS.put(SHORTCUT_SYSTEM, SHORTCUT_SYSTEM_ITEM);
+        SHORTCUTS_ITEMS.put(SHORTCUT_PHONE, SHORTCUT_PHONE_ITEM);
+        SHORTCUTS_ITEMS.put(SHORTCUT_SECURITY, SHORTCUT_SECURITY_ITEM);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,20 +229,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         Menu menuNav = navigationView.getMenu();
         String shortcutAction = getIntent().getAction();
         if (shortcutAction != null) {
-            switch (shortcutAction) {
-                case SHORTCUT_STATUSBAR:
-                    onNavigationItemSelected(menuNav.findItem(R.id.statusbarKey));
-                    break;
-                case SHORTCUT_SYSTEM:
-                    onNavigationItemSelected(menuNav.findItem(R.id.systemKey));
-                    break;
-                case SHORTCUT_PHONE:
-                    onNavigationItemSelected(menuNav.findItem(R.id.phoneKey));
-                    break;
-                case SHORTCUT_SECURITY:
-                    onNavigationItemSelected(menuNav.findItem(R.id.securityKey));
-                    break;
-            }
+            onNavigationItemSelected(Objects.requireNonNull(getMenuItem(shortcutAction, menuNav)));
         }
     }
 
@@ -294,28 +298,8 @@ public class FirefdsKitActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.action_credits:
-                showCreditsDialog();
-                break;
-            case R.id.recommended_settings:
-                showRecommendedSettingsDialog();
-                break;
-            case R.id.action_save:
-                showSaveDialog();
-                break;
-            case R.id.action_restore:
-                showRestoreDialog();
-                break;
-            case android.R.id.home:
-                onBackPressed();
-                break;
-            default:
-                break;
-        }
+        runMenuItemOption(item.getItemId());
         return super.onOptionsItemSelected(item);
-
     }
 
     @Override
@@ -345,6 +329,14 @@ public class FirefdsKitActivity extends AppCompatActivity
         Context tempContext = isDeviceEncrypted() ? newBase.createDeviceProtectedStorageContext() : newBase;
         Context context = checkForceEnglish(newBase, tempContext.getSharedPreferences(PREFS, MODE_PRIVATE));
         super.attachBaseContext(context);
+    }
+
+    private void runMenuItemOption(int menuItemId) {
+        Objects.requireNonNull(OPTIONS_ITEMS.get(menuItemId)).run();
+    }
+
+    private MenuItem getMenuItem(String shortcutAction, Menu menuNav) {
+        return Objects.requireNonNull(SHORTCUTS_ITEMS.get(shortcutAction)).apply(menuNav);
     }
 
     private void showHomePage() {
