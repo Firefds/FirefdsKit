@@ -27,4 +27,9 @@ public class MessagingSettingsFragment extends FirefdsPreferenceFragment {
         }
         setPreferencesFromResource(R.xml.messaging_settings, rootKey);
     }
+
+    @Override
+    public String getFragmentName() {
+        return "messagingKey";
+    }
 }

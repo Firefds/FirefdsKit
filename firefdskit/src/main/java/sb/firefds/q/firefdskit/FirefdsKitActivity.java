@@ -64,17 +64,10 @@ import java.util.Objects;
 import sb.firefds.q.firefdskit.dialogs.CreditDialog;
 import sb.firefds.q.firefdskit.dialogs.RestoreDialog;
 import sb.firefds.q.firefdskit.dialogs.SaveDialog;
-import sb.firefds.q.firefdskit.fragments.FirefdsKitSettingsFragment;
 import sb.firefds.q.firefdskit.fragments.FirefdsPreferenceFragment;
-import sb.firefds.q.firefdskit.fragments.LockscreenSettingsFragment;
-import sb.firefds.q.firefdskit.fragments.MessagingSettingsFragment;
-import sb.firefds.q.firefdskit.fragments.NotificationSettingsFragment;
-import sb.firefds.q.firefdskit.fragments.PhoneSettingsFragment;
 import sb.firefds.q.firefdskit.fragments.PowerMenuSettingsFragment;
+import sb.firefds.q.firefdskit.fragments.PreferenceFragmentFactory;
 import sb.firefds.q.firefdskit.fragments.ScreenTimeoutSettingsFragment;
-import sb.firefds.q.firefdskit.fragments.SecuritySettingsFragment;
-import sb.firefds.q.firefdskit.fragments.SoundSettingsFragment;
-import sb.firefds.q.firefdskit.fragments.SystemSettingsFragment;
 import sb.firefds.q.firefdskit.notifications.RebootNotification;
 import sb.firefds.q.firefdskit.utils.Utils;
 
@@ -304,61 +297,17 @@ public class FirefdsKitActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Fragment newFragment;
+        FirefdsPreferenceFragment newFragment;
 
         CardView cardXposedView = findViewById(R.id.card_xposed_view);
         cardXposedView.setVisibility(View.GONE);
         selectedMenuItem = item;
 
-        switch (item.getItemId()) {
-            case R.id.statusbarKey:
-                newFragment = new NotificationSettingsFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_main, newFragment)
-                        .addToBackStack("statusbarKey").commit();
-                break;
-            case R.id.lockscreenKey:
-                newFragment = new LockscreenSettingsFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_main, newFragment)
-                        .addToBackStack("lockscreenKey").commit();
-                break;
-            case R.id.soundKey:
-                newFragment = new SoundSettingsFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_main, newFragment)
-                        .addToBackStack("soundKey").commit();
-                break;
-            case R.id.systemKey:
-                newFragment = new SystemSettingsFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_main, newFragment)
-                        .addToBackStack("systemKey").commit();
-                break;
-            case R.id.phoneKey:
-                newFragment = new PhoneSettingsFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_main, newFragment)
-                        .addToBackStack("phoneKey").commit();
-                break;
-            case R.id.messagingKey:
-                newFragment = new MessagingSettingsFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_main, newFragment)
-                        .addToBackStack("messagingKey").commit();
-                break;
-            case R.id.securityKey:
-                newFragment = new SecuritySettingsFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_main, newFragment)
-                        .addToBackStack("securityKey").commit();
-                break;
-            case R.id.firefdsKitKey:
-                newFragment = new FirefdsKitSettingsFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_main, newFragment)
-                        .addToBackStack("firefdsKitKey").commit();
-                break;
+        newFragment = PreferenceFragmentFactory.getMenuFragment(item.getItemId());
+        if (newFragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content_main, newFragment)
+                    .addToBackStack(newFragment.getFragmentName()).commit();
         }
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(item.getTitle());

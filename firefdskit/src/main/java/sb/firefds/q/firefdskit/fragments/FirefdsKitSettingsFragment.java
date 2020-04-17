@@ -27,4 +27,9 @@ public class FirefdsKitSettingsFragment extends FirefdsPreferenceFragment {
         }
         setPreferencesFromResource(R.xml.firefds_kit_settings, rootKey);
     }
+
+    @Override
+    public String getFragmentName() {
+        return "firefdsKitKey";
+    }
 }

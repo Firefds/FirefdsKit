@@ -31,6 +31,11 @@ public class SystemSettingsFragment extends FirefdsPreferenceFragment {
     }
 
     @Override
+    public String getFragmentName() {
+        return "systemKey";
+    }
+
+    @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         super.onSharedPreferenceChanged(sharedPreferences, key);
     }

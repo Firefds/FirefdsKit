@@ -27,4 +27,9 @@ public class SecuritySettingsFragment extends FirefdsPreferenceFragment {
         }
         setPreferencesFromResource(R.xml.security_settings, rootKey);
     }
+
+    @Override
+    public String getFragmentName() {
+        return "securityKey";
+    }
 }

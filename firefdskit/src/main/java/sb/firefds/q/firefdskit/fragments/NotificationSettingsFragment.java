@@ -35,6 +35,11 @@ public class NotificationSettingsFragment extends FirefdsPreferenceFragment {
     }
 
     @Override
+    public String getFragmentName() {
+        return "statusbarKey";
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

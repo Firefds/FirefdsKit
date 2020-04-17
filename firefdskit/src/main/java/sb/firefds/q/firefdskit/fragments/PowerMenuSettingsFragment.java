@@ -44,6 +44,11 @@ public class PowerMenuSettingsFragment extends FirefdsPreferenceFragment {
     }
 
     @Override
+    public String getFragmentName() {
+        return "powerMenuSettings";
+    }
+
+    @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(PREF_CUSTOM_RECOVERY)) {
             if (Objects.equals(sharedPreferences.getString(key, ""), "")) {

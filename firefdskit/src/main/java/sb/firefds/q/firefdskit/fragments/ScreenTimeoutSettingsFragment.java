@@ -30,4 +30,9 @@ public class ScreenTimeoutSettingsFragment extends FirefdsPreferenceFragment {
         }
         setPreferencesFromResource(R.xml.screen_timeout_settings, rootKey);
     }
+
+    @Override
+    public String getFragmentName() {
+        return "screenTimeoutSettings";
+    }
 }
