@@ -222,9 +222,8 @@ public class FirefdsKitActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        Optional<Fragment> visibleFragment = getVisibleFragment();
-        if (visibleFragment.isPresent()) {
-            if (((FirefdsPreferenceFragment) visibleFragment.get()).isSubFragment()) {
+        getVisibleFragment().ifPresent(fragment -> {
+            if (((FirefdsPreferenceFragment) fragment).isSubFragment()) {
                 Optional.of(this)
                         .map(AppCompatActivity::getSupportActionBar)
                         .ifPresent(actionBar -> {
@@ -238,7 +237,9 @@ public class FirefdsKitActivity extends AppCompatActivity
             } else {
                 showHomePage();
             }
-        } else {
+        });
+
+        if (!getVisibleFragment().isPresent()) {
             this.finish();
         }
     }
