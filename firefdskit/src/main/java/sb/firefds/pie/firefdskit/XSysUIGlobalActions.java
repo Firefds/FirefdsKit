@@ -265,11 +265,7 @@ public class XSysUIGlobalActions {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) {
                                 setActionViewModelDefaults(param);
-                                ActionViewModel actionViewModel =
-                                        getActionViewModel((String) param.args[1]);
-                                if (actionViewModel != null) {
-                                    param.setResult(actionViewModel);
-                                }
+                                getActionViewModel((String) param.args[1]).ifPresent(param::setResult);
                             }
                         });
 
