@@ -20,6 +20,7 @@ import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModel;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static sb.firefds.q.firefdskit.utils.Constants.DOWNLOAD_ACTION;
 import static sb.firefds.q.firefdskit.utils.Constants.FLASHLIGHT_ACTION;
@@ -64,12 +65,8 @@ public class FirefdsKitActionViewModelsFactory {
         ACTION_VIEW_MODEL_MAP.put(RECOVERY_ACTION, RESTART_RECOVERY_ACTION_VIEW_MODEL);
     }
 
-    public static ActionViewModel getActionViewModel(String action) {
-
-        Supplier<ActionViewModel> actionViewModelSupplier = ACTION_VIEW_MODEL_MAP.get(action);
-        if (actionViewModelSupplier != null) {
-            return actionViewModelSupplier.get();
-        }
-        return null;
+    public static Optional<ActionViewModel> getActionViewModel(String action) {
+        return Optional.ofNullable(ACTION_VIEW_MODEL_MAP.get(action))
+                .map(Supplier::get);
     }
 }
