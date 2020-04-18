@@ -98,42 +98,6 @@ public class Utils {
         return (config == null ? mGbContext : mGbContext.createConfigurationContext(config));
     }
 
-    public static void setTypeface(SharedPreferences prefs, TextView tv) {
-
-        int typeStyle = Typeface.NORMAL;
-        if (!Objects.requireNonNull(prefs.getString("statusbarTextStyle", "Normal"))
-                .equalsIgnoreCase("Normal")) {
-            if (Objects.requireNonNull(prefs.getString("statusbarTextStyle", "Normal"))
-                    .equalsIgnoreCase("Italic")) {
-                typeStyle = Typeface.ITALIC;
-            } else if (Objects.requireNonNull(prefs.getString("statusbarTextStyle", "Normal"))
-                    .equalsIgnoreCase("Bold")) {
-                typeStyle = Typeface.BOLD;
-            }
-        }
-
-        if (!Objects.requireNonNull(prefs.getString("statusbarTextFace", "Regular"))
-                .equalsIgnoreCase("Regular")) {
-            String typeFace = "sans-serif";
-            if (Objects.requireNonNull(prefs.getString("statusbarTextFace", "Regular"))
-                    .equalsIgnoreCase("Light")) {
-                typeFace = "sans-serif-light";
-            }
-            if (Objects.requireNonNull(prefs.getString("statusbarTextFace", "Regular"))
-                    .equalsIgnoreCase("Condensed")) {
-                typeFace = "sans-serif-condensed";
-            }
-            if (Objects.requireNonNull(prefs.getString("statusbarTextFace", "Regular"))
-                    .equalsIgnoreCase("Thin")) {
-                typeFace = "sans-serif-thin";
-            }
-            tv.setTypeface(Typeface.create(typeFace, typeStyle));
-        } else {
-            tv.setTypeface(tv.getTypeface(), typeStyle);
-        }
-
-    }
-
     public static boolean isNotSamsungRom() {
         return !(new File("/system/framework/com.samsung.device.jar").isFile() ||
                 new File("/system/framework/com.samsung.device.lite.jar").isFile());

@@ -21,7 +21,6 @@ import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-import sb.firefds.pie.firefdskit.utils.Utils;
 
 import static sb.firefds.pie.firefdskit.utils.Packages.SYSTEM_UI;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CARRIER_SIZE;
@@ -76,7 +75,6 @@ public class XSysUINotificationPanelPackage {
                                 textSize = 20;
                             }
                             tvCarrier.setTextSize(textSize);
-                            Utils.setTypeface(prefs, tvCarrier);
                         }
                     });
         } catch (Throwable e) {
@@ -101,7 +99,7 @@ public class XSysUINotificationPanelPackage {
                     });
 
         } catch (Exception e) {
-           XposedBridge.log(e);
+            XposedBridge.log(e);
         }
 
         if (prefs.getBoolean(PREF_SHOW_NETWORK_SPEED_MENU, false)) {
