@@ -54,9 +54,6 @@ public abstract class FirefdsPreferenceFragment extends PreferenceFragmentCompat
             // No reboot notification required
             String[] litePrefs = fragmentActivity.getResources().getStringArray(R.array.lite_preferences);
 
-            if (key.equals("forceEnglish"))
-                Toast.makeText(getActivity(), getResources().getText(R.string.language_toast), Toast.LENGTH_SHORT).show();
-
             for (String string : litePrefs) {
                 if (key.equalsIgnoreCase(string)) {
                     fixPermissions(getAppContext());

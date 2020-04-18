@@ -43,6 +43,7 @@ import sb.firefds.pie.firefdskit.R;
 
 import static sb.firefds.pie.firefdskit.FirefdsKitActivity.getAppContext;
 import static sb.firefds.pie.firefdskit.utils.Packages.FIREFDSKIT;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_FORCE_ENGLISH;
 
 public class Utils {
 
@@ -168,7 +169,7 @@ public class Utils {
     public static ContextWrapper checkForceEnglish(Context context, SharedPreferences prefs) {
         LocaleList localeList;
         Configuration config = context.getResources().getConfiguration();
-        if (prefs.getBoolean("forceEnglish", false)) {
+        if (prefs.getBoolean(PREF_FORCE_ENGLISH, false)) {
             config.setLocale(Locale.ENGLISH);
             localeList = new LocaleList(Locale.ENGLISH);
         } else {
