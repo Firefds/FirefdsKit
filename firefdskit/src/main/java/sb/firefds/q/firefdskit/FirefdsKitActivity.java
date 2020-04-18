@@ -56,7 +56,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 
 import sb.firefds.q.firefdskit.dialogs.CreditDialog;
@@ -515,41 +514,34 @@ public class FirefdsKitActivity extends AppCompatActivity
 
         @Override
         protected Void doInBackground(Void... params) {
-            ObjectInputStream input = null;
+            HashMap<?, ?> entries;
             try {
-                input = new ObjectInputStream(new FileInputStream(backup));
-                Editor prefEdit = sharedPreferences.edit();
-                prefEdit.clear();
-                @SuppressWarnings("unchecked")
-                Map<String, ?> entries = (Map<String, ?>) input.readObject();
-                for (Entry<String, ?> entry : entries.entrySet()) {
-                    Object v = entry.getValue();
-                    String key = entry.getKey();
-
-                    if (v instanceof Boolean)
-                        prefEdit.putBoolean(key, (Boolean) v);
-                    else if (v instanceof Float)
-                        prefEdit.putFloat(key, (Float) v);
-                    else if (v instanceof Integer)
-                        prefEdit.putInt(key, (Integer) v);
-                    else if (v instanceof Long)
-                        prefEdit.putLong(key, (Long) v);
-                    else if (v instanceof String)
-                        prefEdit.putString(key, ((String) v));
-                }
-                prefEdit.apply();
-                fixPermissions(appContext);
+                FileInputStream fis = new FileInputStream((backup));
+                ObjectInputStream input = new ObjectInputStream(fis);
+                entries = (HashMap) input.readObject();
+                fis.close();
+                input.close();
             } catch (IOException | ClassNotFoundException e) {
                 log(e);
-            } finally {
-                try {
-                    if (input != null) {
-                        input.close();
-                    }
-                } catch (IOException ex) {
-                    log(ex);
-                }
+                return null;
             }
+            Editor prefEdit = sharedPreferences.edit();
+            prefEdit.clear();
+            entries.forEach((key, value) -> {
+                if (value instanceof Boolean)
+                    prefEdit.putBoolean((String) key, (Boolean) value);
+                else if (value instanceof Float)
+                    prefEdit.putFloat((String) key, (Float) value);
+                else if (value instanceof Integer)
+                    prefEdit.putInt((String) key, (Integer) value);
+                else if (value instanceof Long)
+                    prefEdit.putLong((String) key, (Long) value);
+                else if (value instanceof String)
+                    prefEdit.putString((String) key, ((String) value));
+            });
+            prefEdit.apply();
+            fixPermissions(appContext);
+
             SystemClock.sleep(1500);
             return null;
         }
