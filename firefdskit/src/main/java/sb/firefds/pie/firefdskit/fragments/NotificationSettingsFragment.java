@@ -19,6 +19,8 @@ import android.os.Bundle;
 import androidx.preference.ListPreference;
 import androidx.preference.SwitchPreferenceCompat;
 
+import java.util.Optional;
+
 import sb.firefds.pie.firefdskit.R;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
@@ -48,26 +50,22 @@ public class NotificationSettingsFragment extends FirefdsPreferenceFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ListPreference clock_date_preference = findPreference(PREF_CLOCK_DATE_PREFERENCE);
-        SwitchPreferenceCompat clockDateOnRight = findPreference(PREF_CLOCK_DATE_ON_RIGHT);
-        if (clockDateOnRight != null) {
-            if (clock_date_preference != null) {
-                clockDateOnRight.setEnabled(!clock_date_preference.getValue().equals("disabled"));
+        Optional<ListPreference> clockDatePreference = Optional.ofNullable(findPreference(PREF_CLOCK_DATE_PREFERENCE));
+        Optional<SwitchPreferenceCompat> clockDateOnRight = Optional.ofNullable(findPreference(PREF_CLOCK_DATE_ON_RIGHT));
+        if (clockDatePreference.isPresent() && clockDateOnRight.isPresent()) {
+            clockDateOnRight.get().setEnabled(!clockDatePreference.get().getValue().equals("disabled"));
+        }
+
+        clockDatePreference.ifPresent(listPreference -> listPreference.setOnPreferenceChangeListener((preference, o) -> {
+            if (o.toString().equals("disabled")) {
+                clockDateOnRight.ifPresent(switchPreferenceCompat -> {
+                    switchPreferenceCompat.setEnabled(false);
+                    switchPreferenceCompat.setChecked(false);
+                });
+            } else {
+                clockDateOnRight.ifPresent(switchPreferenceCompat -> switchPreferenceCompat.setEnabled(true));
             }
-        }
-        if (clock_date_preference != null) {
-            clock_date_preference.setOnPreferenceChangeListener((preference, o) -> {
-                if (!o.toString().equals("disabled")) {
-                    if (clockDateOnRight != null) {
-                        clockDateOnRight.setEnabled(true);
-                    }
-                } else {
-                    if (clockDateOnRight != null) {
-                        clockDateOnRight.setEnabled(false);
-                    }
-                }
-                return true;
-            });
-        }
+            return true;
+        }));
     }
 }
