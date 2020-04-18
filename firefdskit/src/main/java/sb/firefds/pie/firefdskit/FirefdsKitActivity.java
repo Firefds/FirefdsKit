@@ -42,7 +42,6 @@ import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -55,10 +54,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 
 import sb.firefds.pie.firefdskit.dialogs.CreditDialog;
@@ -227,29 +225,34 @@ public class FirefdsKitActivity extends AppCompatActivity
         }
 
         Menu menuNav = navigationView.getMenu();
-        String shortcutAction = getIntent().getAction();
-        if (shortcutAction != null) {
-            onNavigationItemSelected(Objects.requireNonNull(getMenuItem(shortcutAction, menuNav)));
-        }
+        Optional.of(getIntent())
+                .map(Intent::getAction)
+                .ifPresent(action -> openMenuItem(action, menuNav));
     }
 
     @Override
     public void onBackPressed() {
-        if (getVisibleFragment() instanceof ScreenTimeoutSettingsFragment ||
-                getVisibleFragment() instanceof PowerMenuSettingsFragment) {
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setTitle(R.string.system);
-                toggle = menuToggle;
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-                toggle.setDrawerIndicatorEnabled(true);
-            }
-            super.onBackPressed();
-        } else {
-            if (getVisibleFragment() instanceof FirefdsPreferenceFragment) {
-                showHomePage();
+        Optional<Fragment> optionalFragment = getVisibleFragment();
+        if (optionalFragment.isPresent()) {
+            if (optionalFragment.get() instanceof ScreenTimeoutSettingsFragment ||
+                    optionalFragment.get() instanceof PowerMenuSettingsFragment) {
+                Optional.of(this)
+                        .map(AppCompatActivity::getSupportActionBar)
+                        .ifPresent(actionBar -> {
+                            actionBar.setTitle(R.string.system);
+                            toggle = menuToggle;
+                            actionBar.setDisplayHomeAsUpEnabled(false);
+                            toggle.setDrawerIndicatorEnabled(true);
+                        });
+
+                super.onBackPressed();
             } else {
-                this.finish();
+                if (optionalFragment.get() instanceof FirefdsPreferenceFragment) {
+                    showHomePage();
+                }
             }
+        } else {
+            this.finish();
         }
     }
 
@@ -277,12 +280,14 @@ public class FirefdsKitActivity extends AppCompatActivity
                 pref.getFragment());
         fragment.setArguments(args);
         fragment.setTargetFragment(caller, 0);
-        if (getSupportActionBar() != null) {
-            toggle.setDrawerIndicatorEnabled(false);
-            toggle.setToolbarNavigationClickListener(v -> onBackPressed());
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(pref.getTitle());
-        }
+        Optional.of(this)
+                .map(AppCompatActivity::getSupportActionBar)
+                .ifPresent(actionBar -> {
+                    toggle.setDrawerIndicatorEnabled(false);
+                    toggle.setToolbarNavigationClickListener(v -> onBackPressed());
+                    actionBar.setDisplayHomeAsUpEnabled(true);
+                    actionBar.setTitle(pref.getTitle());
+                });
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_main, fragment)
                 .addToBackStack(null)
@@ -313,9 +318,9 @@ public class FirefdsKitActivity extends AppCompatActivity
                 .ifPresent(firefdsPreferenceFragment -> getSupportFragmentManager().beginTransaction()
                         .replace(R.id.content_main, firefdsPreferenceFragment)
                         .addToBackStack(firefdsPreferenceFragment.getFragmentName()).commit());
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(item.getTitle());
-        }
+        Optional.of(this)
+                .map(AppCompatActivity::getSupportActionBar)
+                .ifPresent(actionBar -> actionBar.setTitle(item.getTitle()));
         DrawerLayout drawer = findViewById(R.id.firefds_main);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -329,36 +334,37 @@ public class FirefdsKitActivity extends AppCompatActivity
     }
 
     private void runMenuItemOption(int menuItemId) {
-        Objects.requireNonNull(OPTIONS_ITEMS.get(menuItemId)).run();
+        Optional.of(OPTIONS_ITEMS)
+                .map(functionMap -> functionMap.get(menuItemId))
+                .ifPresent(Runnable::run);
     }
 
-    private MenuItem getMenuItem(String shortcutAction, Menu menuNav) {
-        return Objects.requireNonNull(SHORTCUTS_ITEMS.get(shortcutAction)).apply(menuNav);
+    private void openMenuItem(String shortcutAction, Menu menuNav) {
+        Optional.of(SHORTCUTS_ITEMS)
+                .map(functionMap -> functionMap.get(shortcutAction))
+                .map(itemFunction -> itemFunction.apply(menuNav))
+                .ifPresent(this::onNavigationItemSelected);
+
     }
 
     private void showHomePage() {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.app_name);
-        }
+        Optional.of(this)
+                .map(AppCompatActivity::getSupportActionBar)
+                .ifPresent(actionBar -> actionBar.setTitle(R.string.app_name));
         drawer.closeDrawer(GravityCompat.START);
-        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-        }
+        getSupportFragmentManager().getFragments().forEach(fragment ->
+                getSupportFragmentManager().beginTransaction().remove(fragment).commit());
         CardView cardXposedView = findViewById(R.id.card_xposed_view);
         cardXposedView.setVisibility(View.VISIBLE);
-        if (selectedMenuItem != null) {
-            selectedMenuItem.setChecked(false);
-        }
+        Optional.ofNullable(selectedMenuItem)
+                .ifPresent(menuItem -> menuItem.setChecked(false));
+
     }
 
-    private Fragment getVisibleFragment() {
-        FragmentManager fragmentManager = this.getSupportFragmentManager();
-        List<Fragment> fragments = fragmentManager.getFragments();
-        for (Fragment fragment : fragments) {
-            if (fragment != null && fragment.isVisible())
-                return fragment;
-        }
-        return null;
+    private Optional<Fragment> getVisibleFragment() {
+        return getSupportFragmentManager().getFragments().stream()
+                .filter(Fragment::isVisible)
+                .findFirst();
     }
 
     private void showCreditsDialog() {
@@ -449,11 +455,13 @@ public class FirefdsKitActivity extends AppCompatActivity
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("SetWorldReadable")
     private static void fixAppPermissions(Context context) {
-        File appFolder = context.getFilesDir().getParentFile();
-        if (appFolder != null) {
-            appFolder.setExecutable(true, false);
-            appFolder.setReadable(true, false);
-        }
+        Optional.of(context)
+                .map(Context::getFilesDir)
+                .map(File::getParentFile)
+                .ifPresent(folder -> {
+                    folder.setExecutable(true, false);
+                    folder.setReadable(true, false);
+                });
     }
 
     private static void setDefaultPreferences(boolean forceDefault) {
