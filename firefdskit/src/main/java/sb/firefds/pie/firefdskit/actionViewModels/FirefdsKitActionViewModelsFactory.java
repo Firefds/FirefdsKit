@@ -65,8 +65,7 @@ public class FirefdsKitActionViewModelsFactory {
     }
 
     public static Optional<ActionViewModel> getActionViewModel(String action) {
-
-        Optional<Supplier<ActionViewModel>> optional = Optional.ofNullable(ACTION_VIEW_MODEL_MAP.get(action));
-        return optional.map(Supplier::get);
+        return Optional.ofNullable(ACTION_VIEW_MODEL_MAP.get(action))
+                .map(Supplier::get);
     }
 }
