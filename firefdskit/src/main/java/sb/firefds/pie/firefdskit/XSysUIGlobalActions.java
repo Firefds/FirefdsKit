@@ -33,6 +33,7 @@ import com.samsung.android.globalactions.util.SystemConditions;
 import com.samsung.android.globalactions.util.UtilFactory;
 
 import java.lang.ref.WeakReference;
+import java.util.Optional;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -283,9 +284,8 @@ public class XSysUIGlobalActions {
                                         .getObjectField(param.thisObject, "mResourceFactory");
                                 ImageView localImageView = ((View) param.args[0])
                                         .findViewById(resourceFactory.getResourceID("sec_global_actions_icon"));
-                                if (actionViewModel.getIcon() != null) {
-                                    localImageView.setImageDrawable(actionViewModel.getIcon());
-                                }
+                                Optional.ofNullable(actionViewModel.getIcon())
+                                        .ifPresent(localImageView::setImageDrawable);
                             }
                         });
 

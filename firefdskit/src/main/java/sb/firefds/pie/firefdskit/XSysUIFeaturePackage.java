@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.TimeZone;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -278,7 +279,7 @@ public class XSysUIFeaturePackage {
     private static void updateSecondsHandler() {
         if (mClock == null) return;
 
-        if (mClock.getDisplay() != null) {
+        if (Optional.ofNullable(mClock.getDisplay()).isPresent()) {
             updateClock = XposedHelpers.findMethodExact(qsClock, "updateClock");
             mSecondsHandler = new Handler();
             if (mClock.getDisplay().getState() == Display.STATE_ON) {

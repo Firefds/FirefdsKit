@@ -23,6 +23,7 @@ import android.os.Looper;
 import android.os.UserManager;
 
 import java.util.List;
+import java.util.Optional;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -199,17 +200,19 @@ public class XAndroidPackage {
     private static class DLX implements Runnable {
         public void run() {
             try {
-                @SuppressWarnings("deprecation") List runningTasks = ((ActivityManager) mPackageManagerServiceContext
-                        .getSystemService(Context.ACTIVITY_SERVICE))
-                        .getRunningTasks(1);
-                if (runningTasks != null && runningTasks.iterator().hasNext()) {
-                    isFB = ((ActivityManager.RunningTaskInfo) runningTasks
-                            .iterator()
-                            .next())
-                            .topActivity
-                            .getPackageName()
-                            .equals("com.facebook.katana");
-                }
+                Optional<ActivityManager> activityManager =
+                        Optional.ofNullable((ActivityManager) mPackageManagerServiceContext
+                                .getSystemService(Context.ACTIVITY_SERVICE));
+
+                List<ActivityManager.AppTask> runningTasks = activityManager
+                        .map(ActivityManager::getAppTasks)
+                        .get();
+
+                runningTasks.forEach(appTask ->
+                        Optional.ofNullable(appTask.getTaskInfo().topActivity)
+                                .ifPresent(componentName -> isFB = componentName.getPackageName()
+                                        .equals("com.facebook.katana")));
+
             } catch (NullPointerException e) {
                 XposedBridge.log(e);
             }
