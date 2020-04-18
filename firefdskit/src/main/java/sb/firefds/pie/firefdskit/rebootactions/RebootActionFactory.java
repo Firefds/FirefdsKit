@@ -41,7 +41,7 @@ public class RebootActionFactory {
     }
 
     public static Optional<RebootAction> getRebootAction(String rebootAction) {
-        Optional<Supplier<RebootAction>> optional = Optional.ofNullable(REBOOT_ACTION_MAP.get(rebootAction));
-        return optional.map(Supplier::get);
+        return Optional.ofNullable(REBOOT_ACTION_MAP.get(rebootAction))
+                .map(Supplier::get);
     }
 }
