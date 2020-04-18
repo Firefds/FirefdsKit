@@ -63,9 +63,7 @@ import sb.firefds.q.firefdskit.dialogs.CreditDialog;
 import sb.firefds.q.firefdskit.dialogs.RestoreDialog;
 import sb.firefds.q.firefdskit.dialogs.SaveDialog;
 import sb.firefds.q.firefdskit.fragments.FirefdsPreferenceFragment;
-import sb.firefds.q.firefdskit.fragments.PowerMenuSettingsFragment;
 import sb.firefds.q.firefdskit.fragments.PreferenceFragmentFactory;
-import sb.firefds.q.firefdskit.fragments.ScreenTimeoutSettingsFragment;
 import sb.firefds.q.firefdskit.notifications.RebootNotification;
 import sb.firefds.q.firefdskit.utils.Utils;
 
@@ -225,10 +223,9 @@ public class FirefdsKitActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        Optional<Fragment> optionalFragment = getVisibleFragment();
-        if (optionalFragment.isPresent()) {
-            if (optionalFragment.get() instanceof ScreenTimeoutSettingsFragment ||
-                    optionalFragment.get() instanceof PowerMenuSettingsFragment) {
+        Optional<Fragment> visibleFragment = getVisibleFragment();
+        if (visibleFragment.isPresent()) {
+            if (((FirefdsPreferenceFragment) visibleFragment.get()).isSubFragment()) {
                 Optional.of(this)
                         .map(AppCompatActivity::getSupportActionBar)
                         .ifPresent(actionBar -> {
@@ -240,9 +237,7 @@ public class FirefdsKitActivity extends AppCompatActivity
 
                 super.onBackPressed();
             } else {
-                if (optionalFragment.get() instanceof FirefdsPreferenceFragment) {
-                    showHomePage();
-                }
+                showHomePage();
             }
         } else {
             this.finish();

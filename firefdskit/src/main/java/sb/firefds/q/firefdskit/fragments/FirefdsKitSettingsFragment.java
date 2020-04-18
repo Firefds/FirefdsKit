@@ -38,6 +38,11 @@ public class FirefdsKitSettingsFragment extends FirefdsPreferenceFragment {
     }
 
     @Override
+    public boolean isSubFragment() {
+        return false;
+    }
+
+    @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(PREF_FORCE_ENGLISH))
             Toast.makeText(getActivity(), getResources().getText(R.string.language_toast), Toast.LENGTH_SHORT).show();

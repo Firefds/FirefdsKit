@@ -32,4 +32,9 @@ public class LockscreenSettingsFragment extends FirefdsPreferenceFragment {
     public String getFragmentName() {
         return "lockscreenKey";
     }
+
+    @Override
+    public boolean isSubFragment() {
+        return false;
+    }
 }

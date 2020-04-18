@@ -43,6 +43,11 @@ public class ScreenTimeoutSettingsFragment extends FirefdsPreferenceFragment {
     }
 
     @Override
+    public boolean isSubFragment() {
+        return true;
+    }
+
+    @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
         int hour = sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_HOURS, 0) * 3600000;

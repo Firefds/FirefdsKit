@@ -87,6 +87,8 @@ public abstract class FirefdsPreferenceFragment extends PreferenceFragmentCompat
 
     public abstract String getFragmentName();
 
+    public abstract boolean isSubFragment();
+
     AppCompatActivity getFragmentActivity() {
         return fragmentActivity;
     }
