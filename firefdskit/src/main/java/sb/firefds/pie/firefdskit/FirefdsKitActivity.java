@@ -304,18 +304,15 @@ public class FirefdsKitActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        FirefdsPreferenceFragment newFragment;
 
         CardView cardXposedView = findViewById(R.id.card_xposed_view);
         cardXposedView.setVisibility(View.GONE);
         selectedMenuItem = item;
 
-        newFragment = PreferenceFragmentFactory.getMenuFragment(item.getItemId());
-        if (newFragment != null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content_main, newFragment)
-                    .addToBackStack(newFragment.getFragmentName()).commit();
-        }
+        PreferenceFragmentFactory.getMenuFragment(item.getItemId())
+                .ifPresent(firefdsPreferenceFragment -> getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_main, firefdsPreferenceFragment)
+                        .addToBackStack(firefdsPreferenceFragment.getFragmentName()).commit());
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(item.getTitle());
         }

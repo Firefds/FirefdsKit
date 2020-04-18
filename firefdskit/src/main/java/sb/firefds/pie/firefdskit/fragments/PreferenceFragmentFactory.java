@@ -16,7 +16,7 @@ package sb.firefds.pie.firefdskit.fragments;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import sb.firefds.pie.firefdskit.R;
@@ -48,7 +48,8 @@ public class PreferenceFragmentFactory {
         MENU_FRAGMENT_SUPPLIER_MAP.put(R.id.firefdsKitKey, FIREFDS_KIT_SETTINGS_FRAGMENT);
     }
 
-    public static FirefdsPreferenceFragment getMenuFragment(int menuId) {
-        return Objects.requireNonNull(MENU_FRAGMENT_SUPPLIER_MAP.get(menuId)).get();
+    public static Optional<FirefdsPreferenceFragment> getMenuFragment(int menuId) {
+        Optional<Supplier<FirefdsPreferenceFragment>> optional = Optional.ofNullable(MENU_FRAGMENT_SUPPLIER_MAP.get(menuId));
+        return optional.map(Supplier::get);
     }
 }
