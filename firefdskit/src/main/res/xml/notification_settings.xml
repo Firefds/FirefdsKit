@@ -130,8 +130,8 @@
         <androidx.preference.ListPreference
             android:defaultValue="Small"
             android:dependency="hideCarrierLabel"
-            android:entries="@array/clock_size_entries"
-            android:entryValues="@array/clock_size_values"
+            android:entries="@array/carrier_size_entries"
+            android:entryValues="@array/carrier_size_values"
             android:key="carrierSize"
             android:title="@string/carrier_size"
             app:iconSpaceReserved="false"
