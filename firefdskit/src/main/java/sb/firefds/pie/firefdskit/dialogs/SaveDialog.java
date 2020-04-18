@@ -90,23 +90,16 @@ public class SaveDialog {
         File file = new File(dir, string + ".fk");
 
         boolean res = false;
-        ObjectOutputStream output = null;
         try {
-            output = new ObjectOutputStream(new FileOutputStream(file));
+            FileOutputStream fos = new FileOutputStream(file);
+            ObjectOutputStream output = new ObjectOutputStream(fos);
             output.writeObject(FirefdsKitActivity.getSharedPreferences().getAll());
-
+            output.flush();
+            output.close();
+            fos.close();
             res = true;
         } catch (IOException e) {
             Utils.log(e);
-        } finally {
-            try {
-                if (output != null) {
-                    output.flush();
-                    output.close();
-                }
-            } catch (IOException ex) {
-                Utils.log(ex);
-            }
         }
         return res;
     }
