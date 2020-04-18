@@ -40,6 +40,11 @@ public class NotificationSettingsFragment extends FirefdsPreferenceFragment {
     }
 
     @Override
+    public boolean isSubFragment() {
+        return false;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

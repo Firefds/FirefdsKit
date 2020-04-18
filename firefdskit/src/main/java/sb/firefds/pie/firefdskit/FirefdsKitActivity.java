@@ -63,9 +63,7 @@ import sb.firefds.pie.firefdskit.dialogs.CreditDialog;
 import sb.firefds.pie.firefdskit.dialogs.RestoreDialog;
 import sb.firefds.pie.firefdskit.dialogs.SaveDialog;
 import sb.firefds.pie.firefdskit.fragments.FirefdsPreferenceFragment;
-import sb.firefds.pie.firefdskit.fragments.PowerMenuSettingsFragment;
 import sb.firefds.pie.firefdskit.fragments.PreferenceFragmentFactory;
-import sb.firefds.pie.firefdskit.fragments.ScreenTimeoutSettingsFragment;
 import sb.firefds.pie.firefdskit.notifications.RebootNotification;
 import sb.firefds.pie.firefdskit.utils.Utils;
 
@@ -232,10 +230,9 @@ public class FirefdsKitActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        Optional<Fragment> optionalFragment = getVisibleFragment();
-        if (optionalFragment.isPresent()) {
-            if (optionalFragment.get() instanceof ScreenTimeoutSettingsFragment ||
-                    optionalFragment.get() instanceof PowerMenuSettingsFragment) {
+        Optional<Fragment> visibleFragment = getVisibleFragment();
+        if (visibleFragment.isPresent()) {
+            if (((FirefdsPreferenceFragment) visibleFragment.get()).isSubFragment()) {
                 Optional.of(this)
                         .map(AppCompatActivity::getSupportActionBar)
                         .ifPresent(actionBar -> {
@@ -244,12 +241,9 @@ public class FirefdsKitActivity extends AppCompatActivity
                             actionBar.setDisplayHomeAsUpEnabled(false);
                             toggle.setDrawerIndicatorEnabled(true);
                         });
-
                 super.onBackPressed();
             } else {
-                if (optionalFragment.get() instanceof FirefdsPreferenceFragment) {
-                    showHomePage();
-                }
+                showHomePage();
             }
         } else {
             this.finish();

@@ -32,4 +32,9 @@ public class TouchwizLauncherSettingsFragment extends FirefdsPreferenceFragment 
     public String getFragmentName() {
         return "launcherKey";
     }
+
+    @Override
+    public boolean isSubFragment() {
+        return false;
+    }
 }

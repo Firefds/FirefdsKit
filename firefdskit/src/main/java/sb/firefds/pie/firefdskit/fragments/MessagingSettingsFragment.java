@@ -32,4 +32,9 @@ public class MessagingSettingsFragment extends FirefdsPreferenceFragment {
     public String getFragmentName() {
         return "messagingKey";
     }
+
+    @Override
+    public boolean isSubFragment() {
+        return false;
+    }
 }

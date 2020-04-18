@@ -42,6 +42,11 @@ public class SystemSettingsFragment extends FirefdsPreferenceFragment {
     }
 
     @Override
+    public boolean isSubFragment() {
+        return false;
+    }
+
+    @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
         if (key.equals(PREF_NAVIGATION_BAR_COLOR)) {

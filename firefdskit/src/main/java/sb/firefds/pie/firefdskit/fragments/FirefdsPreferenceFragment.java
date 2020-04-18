@@ -16,7 +16,6 @@ package sb.firefds.pie.firefdskit.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
@@ -90,6 +89,8 @@ public abstract class FirefdsPreferenceFragment extends PreferenceFragmentCompat
     }
 
     public abstract String getFragmentName();
+
+    public abstract boolean isSubFragment();
 
     AppCompatActivity getFragmentActivity() {
         return fragmentActivity;

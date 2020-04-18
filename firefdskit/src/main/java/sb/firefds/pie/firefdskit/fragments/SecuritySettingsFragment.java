@@ -32,4 +32,9 @@ public class SecuritySettingsFragment extends FirefdsPreferenceFragment {
     public String getFragmentName() {
         return "securityKey";
     }
+
+    @Override
+    public boolean isSubFragment() {
+        return false;
+    }
 }

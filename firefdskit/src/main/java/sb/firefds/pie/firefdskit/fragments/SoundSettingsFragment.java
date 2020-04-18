@@ -32,4 +32,9 @@ public class SoundSettingsFragment extends FirefdsPreferenceFragment {
     public String getFragmentName() {
         return "soundKey";
     }
+
+    @Override
+    public boolean isSubFragment() {
+        return false;
+    }
 }

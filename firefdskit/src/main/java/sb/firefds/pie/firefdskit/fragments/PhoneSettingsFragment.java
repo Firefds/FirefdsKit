@@ -32,4 +32,9 @@ public class PhoneSettingsFragment extends FirefdsPreferenceFragment {
     public String getFragmentName() {
         return "phoneKey";
     }
+
+    @Override
+    public boolean isSubFragment() {
+        return false;
+    }
 }
