@@ -49,7 +49,7 @@ public class PreferenceFragmentFactory {
     }
 
     public static Optional<FirefdsPreferenceFragment> getMenuFragment(int menuId) {
-        Optional<Supplier<FirefdsPreferenceFragment>> optional = Optional.ofNullable(MENU_FRAGMENT_SUPPLIER_MAP.get(menuId));
-        return optional.map(Supplier::get);
+        return Optional.ofNullable(MENU_FRAGMENT_SUPPLIER_MAP.get(menuId))
+                .map(Supplier::get);
     }
 }
