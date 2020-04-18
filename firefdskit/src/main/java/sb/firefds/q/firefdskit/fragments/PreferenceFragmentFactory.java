@@ -18,7 +18,7 @@ import androidx.core.util.Supplier;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
 
 import sb.firefds.q.firefdskit.R;
 
@@ -47,7 +47,8 @@ public class PreferenceFragmentFactory {
         MENU_FRAGMENT_SUPPLIER_MAP.put(R.id.firefdsKitKey, FIREFDS_KIT_SETTINGS_FRAGMENT);
     }
 
-    public static FirefdsPreferenceFragment getMenuFragment(int menuId) {
-        return Objects.requireNonNull(MENU_FRAGMENT_SUPPLIER_MAP.get(menuId)).get();
+    public static Optional<FirefdsPreferenceFragment> getMenuFragment(int menuId) {
+        return Optional.ofNullable(MENU_FRAGMENT_SUPPLIER_MAP.get(menuId))
+                .map(Supplier::get);
     }
 }
