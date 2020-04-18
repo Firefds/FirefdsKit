@@ -18,7 +18,7 @@ import androidx.core.util.Supplier;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
 
 import static sb.firefds.q.firefdskit.utils.Constants.DOWNLOAD_ACTION;
 import static sb.firefds.q.firefdskit.utils.Constants.QUICK_REBOOT_DEVICE_ACTION;
@@ -40,7 +40,8 @@ public class RebootActionFactory {
         REBOOT_ACTION_MAP.put(DOWNLOAD_ACTION, DOWNLOAD_REBOOT_ACTION);
     }
 
-    public static RebootAction getRebootAction(String rebootAction) {
-        return Objects.requireNonNull(REBOOT_ACTION_MAP.get(rebootAction)).get();
+    public static Optional<RebootAction> getRebootAction(String rebootAction) {
+        return Optional.ofNullable(REBOOT_ACTION_MAP.get(rebootAction))
+                .map(Supplier::get);
     }
 }
