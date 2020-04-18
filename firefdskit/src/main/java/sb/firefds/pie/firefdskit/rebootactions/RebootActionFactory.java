@@ -16,7 +16,7 @@ package sb.firefds.pie.firefdskit.rebootactions;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import static sb.firefds.pie.firefdskit.utils.Constants.DOWNLOAD_ACTION;
@@ -40,7 +40,8 @@ public class RebootActionFactory {
         REBOOT_ACTION_MAP.put(DOWNLOAD_ACTION, DOWNLOAD_REBOOT_ACTION);
     }
 
-    public static RebootAction getRebootAction(String rebootAction) {
-        return Objects.requireNonNull(REBOOT_ACTION_MAP.get(rebootAction)).get();
+    public static Optional<RebootAction> getRebootAction(String rebootAction) {
+        Optional<Supplier<RebootAction>> optional = Optional.ofNullable(REBOOT_ACTION_MAP.get(rebootAction));
+        return optional.map(Supplier::get);
     }
 }
