@@ -460,6 +460,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         PreferenceManager.setDefaultValues(appContext, R.xml.sound_settings, true);
         PreferenceManager.setDefaultValues(appContext, R.xml.system_settings, true);
         PreferenceManager.setDefaultValues(appContext, R.xml.advanced_power_menu_settings, true);
+        PreferenceManager.setDefaultValues(appContext, R.xml.firefds_kit_settings, true);
         if (forceDefault) {
             Editor editor = sharedPreferences.edit();
 
