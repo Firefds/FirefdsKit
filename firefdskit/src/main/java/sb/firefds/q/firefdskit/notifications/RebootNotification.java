@@ -28,13 +28,13 @@ import android.graphics.drawable.Icon;
 
 import java.util.Objects;
 
-import sb.firefds.q.firefdskit.R;
 import sb.firefds.q.firefdskit.FirefdsKitActivity;
+import sb.firefds.q.firefdskit.R;
 import sb.firefds.q.firefdskit.receivers.FirefdsRebootReceiver;
 
 import static androidx.core.content.ContextCompat.getSystemService;
-import static sb.firefds.q.firefdskit.utils.Constants.REBOOT_DEVICE_ACTION;
 import static sb.firefds.q.firefdskit.utils.Constants.QUICK_REBOOT_DEVICE_ACTION;
+import static sb.firefds.q.firefdskit.utils.Constants.REBOOT_DEVICE_ACTION;
 
 public class RebootNotification {
 
