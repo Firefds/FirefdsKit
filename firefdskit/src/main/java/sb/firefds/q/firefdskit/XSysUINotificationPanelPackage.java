@@ -16,6 +16,9 @@ package sb.firefds.q.firefdskit;
 
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
@@ -40,9 +43,23 @@ public class XSysUINotificationPanelPackage {
     private static final String DATA_USAGE_BAR = SYSTEM_UI + ".qs.bar.DataUsageBar";
     private static final String NETSPEED_VIEW = SYSTEM_UI + ".statusbar.policy.NetspeedView";
     private static final String MOBILE_SIGNAL_CONTROLLER_CLASS = SYSTEM_UI + ".statusbar.policy.MobileSignalController";
+    private static final Map<String, Integer> CARRIER_SIZES_MAP = new HashMap<>();
+    private static final Map<String, String> DATA_ICONS_MAP = new HashMap<>();
 
-    private static String dataIconBehavior;
     private static ClassLoader classLoader;
+
+    static {
+        CARRIER_SIZES_MAP.put("Small", 14);
+        CARRIER_SIZES_MAP.put("Medium", 16);
+        CARRIER_SIZES_MAP.put("Large", 18);
+        CARRIER_SIZES_MAP.put("Larger", 19);
+        CARRIER_SIZES_MAP.put("Largest", 20);
+        DATA_ICONS_MAP.put("0", "DEFAULT");
+        DATA_ICONS_MAP.put("1", LTE_INSTEAD_OF_4G);
+        DATA_ICONS_MAP.put("2", FOUR_G_PLUS_INSTEAD_OF_4G);
+        DATA_ICONS_MAP.put("3", FOUR_G_INSTEAD_OF_4G_PLUS);
+        DATA_ICONS_MAP.put("4", FOUR_HALF_G_INSTEAD_OF_4G_PLUS);
+    }
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
@@ -63,17 +80,7 @@ public class XSysUINotificationPanelPackage {
                                 tvCarrier.setText(" ");
                             }
 
-                            int textSize = 14;
-                            String tsPrefVal = prefs.getString(PREF_CARRIER_SIZE, "Small");
-                            if (tsPrefVal.equalsIgnoreCase("Medium")) {
-                                textSize = 16;
-                            } else if (tsPrefVal.equalsIgnoreCase("Large")) {
-                                textSize = 18;
-                            } else if (tsPrefVal.equalsIgnoreCase("Larger")) {
-                                textSize = 19;
-                            } else if (tsPrefVal.equalsIgnoreCase("Largest")) {
-                                textSize = 20;
-                            }
+                            int textSize = getCarrierSizeValue(prefs.getString(PREF_CARRIER_SIZE, "Small"));
                             tvCarrier.setTextSize(textSize);
                         }
                     });
@@ -81,9 +88,10 @@ public class XSysUINotificationPanelPackage {
             XposedBridge.log(e);
         }
 
-        dataIconBehavior = prefs.getString(PREF_DATA_ICON_BEHAVIOR, "0");
-        if (!dataIconBehavior.equals("0")) {
-            changeDataIcon(systemUIRuneClass);
+        String behaviorIndex = prefs.getString(PREF_DATA_ICON_BEHAVIOR, "0");
+        String dataBehavior = getDataIconBehavior(behaviorIndex);
+        if (!dataBehavior.equals("DEFAULT")) {
+            changeDataIcon(systemUIRuneClass, dataBehavior);
         }
 
         try {
@@ -122,25 +130,12 @@ public class XSysUINotificationPanelPackage {
         }
     }
 
-    private static void changeDataIcon(Class<?> aClass) {
+    private static void changeDataIcon(Class<?> aClass, String dataIconBehavior) {
         try {
             XC_MethodHook mobileSignalMethodHook = new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) {
-                    switch (dataIconBehavior) {
-                        case "1":
-                            XposedHelpers.setStaticBooleanField(aClass, LTE_INSTEAD_OF_4G, true);
-                            break;
-                        case "2":
-                            XposedHelpers.setStaticBooleanField(aClass, FOUR_G_PLUS_INSTEAD_OF_4G, true);
-                            break;
-                        case "3":
-                            XposedHelpers.setStaticBooleanField(aClass, FOUR_G_INSTEAD_OF_4G_PLUS, true);
-                            break;
-                        case "4":
-                            XposedHelpers.setStaticBooleanField(aClass, FOUR_HALF_G_INSTEAD_OF_4G_PLUS, true);
-                            break;
-                    }
+                    XposedHelpers.setStaticBooleanField(aClass, dataIconBehavior, true);
                 }
             };
 
@@ -156,5 +151,13 @@ public class XSysUINotificationPanelPackage {
         } catch (Throwable e) {
             XposedBridge.log(e);
         }
+    }
+
+    private static Integer getCarrierSizeValue(String sizeName) {
+        return CARRIER_SIZES_MAP.get(sizeName);
+    }
+
+    private static String getDataIconBehavior(String behaviorIndex) {
+        return DATA_ICONS_MAP.get(behaviorIndex);
     }
 }
