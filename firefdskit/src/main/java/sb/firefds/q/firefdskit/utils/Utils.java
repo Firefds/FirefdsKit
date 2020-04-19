@@ -19,13 +19,11 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Typeface;
 import android.os.LocaleList;
 import android.os.PowerManager;
 import android.os.SystemProperties;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
@@ -36,7 +34,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.util.Locale;
-import java.util.Objects;
 
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.q.firefdskit.R;
@@ -96,42 +93,6 @@ public class Utils {
                     Context.CONTEXT_IGNORE_SECURITY);
         }
         return (config == null ? mGbContext : mGbContext.createConfigurationContext(config));
-    }
-
-    public static void setTypeface(SharedPreferences prefs, TextView tv) {
-
-        int typeStyle = Typeface.NORMAL;
-        if (!Objects.requireNonNull(prefs.getString("statusbarTextStyle", "Normal"))
-                .equalsIgnoreCase("Normal")) {
-            if (Objects.requireNonNull(prefs.getString("statusbarTextStyle", "Normal"))
-                    .equalsIgnoreCase("Italic")) {
-                typeStyle = Typeface.ITALIC;
-            } else if (Objects.requireNonNull(prefs.getString("statusbarTextStyle", "Normal"))
-                    .equalsIgnoreCase("Bold")) {
-                typeStyle = Typeface.BOLD;
-            }
-        }
-
-        if (!Objects.requireNonNull(prefs.getString("statusbarTextFace", "Regular"))
-                .equalsIgnoreCase("Regular")) {
-            String typeFace = "sans-serif";
-            if (Objects.requireNonNull(prefs.getString("statusbarTextFace", "Regular"))
-                    .equalsIgnoreCase("Light")) {
-                typeFace = "sans-serif-light";
-            }
-            if (Objects.requireNonNull(prefs.getString("statusbarTextFace", "Regular"))
-                    .equalsIgnoreCase("Condensed")) {
-                typeFace = "sans-serif-condensed";
-            }
-            if (Objects.requireNonNull(prefs.getString("statusbarTextFace", "Regular"))
-                    .equalsIgnoreCase("Thin")) {
-                typeFace = "sans-serif-thin";
-            }
-            tv.setTypeface(Typeface.create(typeFace, typeStyle));
-        } else {
-            tv.setTypeface(tv.getTypeface(), typeStyle);
-        }
-
     }
 
     public static boolean isNotSamsungRom() {
