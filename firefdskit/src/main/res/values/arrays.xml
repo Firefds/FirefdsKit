@@ -10,14 +10,14 @@
         <item name="screen_on">1</item>
         <item name="screen_off">2</item>
     </string-array>
-    <string-array name="clock_size_entries">
+    <string-array name="carrier_size_entries">
         <item name="small">@string/small</item>
         <item name="medium">@string/medium</item>
         <item name="large">@string/large</item>
         <item name="larger">@string/larger</item>
         <item name="largest">@string/largest</item>
     </string-array>
-    <string-array name="clock_size_values">
+    <string-array name="carrier_size_values">
         <item name="small">Small</item>
         <item name="medium">Medium</item>
         <item name="large">Large</item>
