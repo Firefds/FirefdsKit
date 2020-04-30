@@ -247,4 +247,6 @@
     <string name="fix_contacts_sandhook_crash">تعطيل إصلاح جهاز الاتصال</string>
     <string name="enable_screen_record_tile_summary">تفعيل رز تسجيل الشاشة السريع وخيار الإعدادات</string>
     <string name="enable_screen_record_tile_title">تفعيل زر الضبط السريع لتسجيل الشاشة </string>
+    <string name="am_pm_on_clock_summary">إظهار AM/PM في ساعة شريط الحالة</string>
+    <string name="am_pm_on_clock_title">إظهار AM/PM في الساعة</string>
 </resources>

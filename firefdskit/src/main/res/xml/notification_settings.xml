@@ -86,6 +86,13 @@
             android:summary="@string/seconds_on_clock_summary"
             android:title="@string/seconds_on_clock_title"
             app:iconSpaceReserved="false" />
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:dependency="showClockSeconds"
+            android:key="showAmPm"
+            android:summary="@string/am_pm_on_clock_summary"
+            android:title="@string/am_pm_on_clock_title"
+            app:iconSpaceReserved="false" />
     </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory
         android:title="@string/quick_settings"
