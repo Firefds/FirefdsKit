@@ -15,6 +15,7 @@
 package sb.firefds.q.firefdskit.fragments;
 
 import android.os.Bundle;
+import android.text.format.DateFormat;
 
 import androidx.preference.ListPreference;
 import androidx.preference.SwitchPreferenceCompat;
@@ -26,6 +27,7 @@ import sb.firefds.q.firefdskit.utils.Utils;
 
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_CLOCK_DATE_ON_RIGHT;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_CLOCK_DATE_PREFERENCE;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SHOW_AM_PM;
 
 public class NotificationSettingsFragment extends FirefdsPreferenceFragment {
     @Override
@@ -67,5 +69,11 @@ public class NotificationSettingsFragment extends FirefdsPreferenceFragment {
             }
             return true;
         }));
+
+        Optional<SwitchPreferenceCompat> showAmPmPreference = Optional.ofNullable(findPreference(PREF_SHOW_AM_PM));
+        if (DateFormat.is24HourFormat(getFragmentActivity()) && showAmPmPreference.isPresent()) {
+            showAmPmPreference.get().setEnabled(false);
+            showAmPmPreference.get().setChecked(false);
+        }
     }
 }

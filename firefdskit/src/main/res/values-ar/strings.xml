@@ -218,4 +218,6 @@
     <string name="language_toast">سيتم تغيير اللغة بعد إعادة تشغيل وحدة التطبيق</string>
     <string name="firefds_kit_settings">Firefds Kit إعدادات</string>
     <string name="default_text">الافتراضي</string>
+    <string name="am_pm_on_clock_summary">إظهار AM/PM في ساعة شريط الحالة</string>
+    <string name="am_pm_on_clock_title">إظهار AM/PM في الساعة</string>
 </resources>

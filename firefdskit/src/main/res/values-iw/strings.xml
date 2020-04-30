@@ -218,4 +218,6 @@
     <string name="language_toast">שפת הממשק תשתנה לאחר הפעלת המודל מחדש</string>
     <string name="firefds_kit_settings">הגדרות Firefds Kit</string>
     <string name="default_text">ברירת מחדל</string>
+    <string name="am_pm_on_clock_summary">הצגת AM/PM בשעון שורת המצב</string>
+    <string name="am_pm_on_clock_title">הצגת AM/PM בשעון</string>
 </resources>

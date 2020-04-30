@@ -49,6 +49,7 @@ import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_BIOMETRICS_U
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_SAMSUNG_BLUR;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_HIDE_CHARGING_NOTIFICATION;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_MAX_SUPPORTED_USERS;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SHOW_AM_PM;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SHOW_CLOCK_SECONDS;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_STATUSBAR_DOUBLE_TAP;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE_USERS;
@@ -174,14 +175,20 @@ public class XSysUIFeaturePackage {
                                         }
                                         mClock.setText(mSecondsFormat.format(calendar.getTime()));
                                     }
-                                    String amPm = calendar.getDisplayName(Calendar.AM_PM, Calendar.SHORT, Locale.getDefault());
-                                    int amPmIndex = mClock.getText().toString().indexOf(amPm);
-                                    if (!is24 && amPmIndex == -1) {
-                                        // insert AM/PM if missing
-                                        if (Locale.getDefault().equals(Locale.TAIWAN) || Locale.getDefault().equals(Locale.CHINA)) {
-                                            mClock.setText(amPm + " " + mClock.getText());
-                                        } else {
-                                            mClock.setText(mClock.getText() + " " + amPm);
+                                    if (!is24) {
+                                        String amPm = calendar.getDisplayName(Calendar.AM_PM, Calendar.SHORT, Locale.getDefault());
+                                        int amPmIndex = mClock.getText().toString().indexOf(amPm);
+                                        if (prefs.getBoolean(PREF_SHOW_AM_PM, false) && amPmIndex == -1) {
+                                            if (Locale.getDefault().equals(Locale.TAIWAN) || Locale.getDefault().equals(Locale.CHINA)) {
+                                                mClock.setText(amPm + " " + mClock.getText());
+                                            } else {
+                                                mClock.setText(mClock.getText() + " " + amPm);
+                                            }
+                                        }
+                                        if (!prefs.getBoolean(PREF_SHOW_AM_PM, false) && amPmIndex != -1) {
+                                            mClock.setText(mClock.getText()
+                                                    .toString()
+                                                    .substring(0, amPmIndex - 1));
                                         }
                                     }
                                     String showClockDate =
