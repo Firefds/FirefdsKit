@@ -37,4 +37,15 @@
             android:title="@string/disable_flag_secure_title"
             app:iconSpaceReserved="false" />
     </androidx.preference.PreferenceCategory>
+    <androidx.preference.PreferenceCategory
+        android:title="@string/secure_folder"
+        app:iconSpaceReserved="false">
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="enableSecureFolder"
+        android:summaryOff="@string/secure_folder_disabled"
+        android:summaryOn="@string/secure_folder_enabled"
+        android:title="@string/enable_secure_folder"
+        app:iconSpaceReserved="false" />
+    </androidx.preference.PreferenceCategory>
 </androidx.preference.PreferenceScreen>

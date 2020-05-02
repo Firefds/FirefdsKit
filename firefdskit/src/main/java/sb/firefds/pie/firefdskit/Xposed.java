@@ -15,18 +15,12 @@
 package sb.firefds.pie.firefdskit;
 
 import androidx.annotation.Keep;
-
-import java.io.File;
-
-import de.robv.android.xposed.IXposedHookLoadPackage;
-import de.robv.android.xposed.IXposedHookZygoteInit;
-import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
+import de.robv.android.xposed.*;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 import sb.firefds.pie.firefdskit.utils.Packages;
 import sb.firefds.pie.firefdskit.utils.Utils;
+
+import java.io.File;
 
 import static sb.firefds.pie.firefdskit.utils.Packages.FIREFDSKIT;
 
@@ -176,6 +170,14 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         if (lpparam.packageName.equals(Packages.SMART_CAPTURE)) {
             try {
                 XSmartCapturePackage.doHook(prefs, lpparam);
+            } catch (Exception e) {
+                XposedBridge.log(e);
+            }
+        }
+
+        if (lpparam.packageName.equals(Packages.SECURE_FOLDER)) {
+            try {
+                XSecureFolder.doHook(prefs, lpparam.classLoader);
             } catch (Exception e) {
                 XposedBridge.log(e);
             }

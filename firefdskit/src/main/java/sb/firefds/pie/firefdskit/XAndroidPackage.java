@@ -21,24 +21,12 @@ import android.content.pm.Signature;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.UserManager;
+import de.robv.android.xposed.*;
 
 import java.util.List;
 import java.util.Optional;
 
-import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
-
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DEFAULT_REBOOT_BEHAVIOR;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_SECURE_FLAG;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_SIGNATURE_CHECK;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_HIDE_USB_NOTIFICATION;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_HIDE_VOLTE_ICON;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_MAX_SUPPORTED_USERS;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE_USERS;
+import static sb.firefds.pie.firefdskit.utils.Preferences.*;
 
 public class XAndroidPackage {
 
@@ -53,6 +41,7 @@ public class XAndroidPackage {
     private static final String WIFI_NATIVE_CLASS = "com.android.server.wifi.WifiNative";
     private static final String AP_CONFIG_UTIL_CLASS = "com.android.server.wifi.util.ApConfigUtil";
     private static final String ACTIVITY_MANAGER_SERVICE = "com.android.server.am.ActivityManagerService";
+    private static final String PERSONA_SERVICE_HELPER = "com.android.server.pm.PersonaServiceHelper";
     @SuppressLint("StaticFieldLeak")
     private static Context mPackageManagerServiceContext;
     private static boolean isFB;
@@ -75,6 +64,15 @@ public class XAndroidPackage {
                             }
                         }
                     });
+
+            if (prefs.getBoolean(PREF_ENABLE_SECURE_FOLDER, false)) {
+                XposedHelpers.findAndHookMethod(PERSONA_SERVICE_HELPER,
+                        classLoader,
+                        "shouldBlockUserStart",
+                        Context.class,
+                        int.class,
+                        XC_MethodReplacement.returnConstant(false));
+            }
 
             if (prefs.getBoolean(PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS, false)) {
                 Class<?> wifiNativeClass = XposedHelpers.findClass(WIFI_NATIVE_CLASS, classLoader);

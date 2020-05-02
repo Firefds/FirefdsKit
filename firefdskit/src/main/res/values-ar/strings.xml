@@ -249,4 +249,8 @@
     <string name="enable_screen_record_tile_title">تفعيل زر الضبط السريع لتسجيل الشاشة </string>
     <string name="am_pm_on_clock_summary">إظهار AM/PM في ساعة شريط الحالة</string>
     <string name="am_pm_on_clock_title">إظهار AM/PM في الساعة</string>
+    <string name="secure_folder">مجلد آمن - تجريبي</string>
+    <string name="secure_folder_disabled">مجلد آمن معطّل</string>
+    <string name="secure_folder_enabled">مجلد آمن مفعّل</string>
+    <string name="enable_secure_folder">تفعيل مجلد آمن</string>
 </resources>

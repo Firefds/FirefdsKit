@@ -249,4 +249,8 @@
     <string name="default_text">ברירת מחדל</string>
     <string name="am_pm_on_clock_summary">הצגת AM/PM בשעון שורת המצב</string>
     <string name="am_pm_on_clock_title">הצגת AM/PM בשעון</string>
+    <string name="secure_folder">תיקייה מאובטחת - ניסיוני</string>
+    <string name="secure_folder_disabled">תיקייה מאובטחת כבויה</string>
+    <string name="secure_folder_enabled">תיקייה מאובטחת פועלת</string>
+    <string name="enable_secure_folder">הפעלת תיקייה מאובטחת</string>
 </resources>

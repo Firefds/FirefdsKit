@@ -15,7 +15,6 @@
 package sb.firefds.pie.firefdskit.fragments;
 
 import android.os.Bundle;
-
 import sb.firefds.pie.firefdskit.R;
 import sb.firefds.pie.firefdskit.utils.Utils;
 

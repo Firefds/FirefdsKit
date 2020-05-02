@@ -16,24 +16,17 @@ package sb.firefds.pie.firefdskit;
 
 import android.net.wifi.WifiManager;
 import android.os.PowerManager;
+import android.os.UserManager;
 import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
-
 import com.samsung.android.feature.SemCscFeature;
+import com.samsung.android.feature.SemFloatingFeature;
+import de.robv.android.xposed.*;
 
-import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
-
-import static sb.firefds.pie.firefdskit.utils.Constants.ENABLE_CALL_RECORDING;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DEFAULT_REBOOT_BEHAVIOR;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_SECURE_FLAG;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_CALL_ADD;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_CALL_RECORDING;
+import static sb.firefds.pie.firefdskit.utils.Constants.CONFIG_RECORDING;
+import static sb.firefds.pie.firefdskit.utils.Constants.SUPPORT_UNIFIED_KEY_STORE;
+import static sb.firefds.pie.firefdskit.utils.Preferences.*;
 
 public class XSystemWide {
 
@@ -103,7 +96,7 @@ public class XSystemWide {
                     new XC_MethodHook() {
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) {
-                            if (param.args[0].equals(ENABLE_CALL_RECORDING)) {
+                            if (param.args[0].equals(CONFIG_RECORDING)) {
                                 prefs.reload();
                                 if (prefs.getBoolean(PREF_ENABLE_CALL_RECORDING, false)) {
                                     if (prefs.getBoolean(PREF_ENABLE_CALL_ADD, false)) {
@@ -125,7 +118,7 @@ public class XSystemWide {
                     new XC_MethodHook() {
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) {
-                            if (param.args[0].equals(ENABLE_CALL_RECORDING)) {
+                            if (param.args[0].equals(CONFIG_RECORDING)) {
                                 prefs.reload();
                                 if (prefs.getBoolean(PREF_ENABLE_CALL_RECORDING, false)) {
                                     if (prefs.getBoolean(PREF_ENABLE_CALL_ADD, false)) {
@@ -139,6 +132,35 @@ public class XSystemWide {
                             }
                         }
                     });
+
+            if (prefs.getBoolean(PREF_ENABLE_SECURE_FOLDER, false)) {
+                XposedBridge.hookAllMethods(SemFloatingFeature.class,
+                        "getBoolean",
+                        new XC_MethodHook() {
+                            @Override
+                            protected void beforeHookedMethod(MethodHookParam param) {
+                                if (param.args[0].equals(SUPPORT_UNIFIED_KEY_STORE)) {
+                                    param.setResult(true);
+                                }
+                            }
+                        });
+
+                XposedHelpers.findAndHookMethod(UserManager.class,
+                        "getUserInfo",
+                        int.class,
+                        new XC_MethodHook() {
+                            @Override
+                            protected void afterHookedMethod(MethodHookParam param) {
+                                Object userInfo = param.getResult();
+                                String userInfoName = (String) XposedHelpers.getObjectField(userInfo, "name");
+                                int userInfoAttributes = XposedHelpers.getIntField(userInfo, "attributes");
+                                if (userInfoName.equals("Secure Folder") && userInfoAttributes != 0) {
+                                    XposedHelpers.setIntField(userInfo, "attributes", 0);
+                                    param.setResult(userInfo);
+                                }
+                            }
+                        });
+            }
         } catch (Throwable e) {
             XposedBridge.log(e);
         }
