@@ -16,8 +16,8 @@ android {
         applicationId 'sb.firefds.pie.firefdskit'
         minSdkVersion 28
         targetSdkVersion 29
-        versionCode 1101
-        versionName "1.1.0.1-STABLE-12"
+        versionCode 1102
+        versionName "1.1.0.2-STABLE-13"
         project.ext.set("archivesBaseName", "FirefdsKit_Pie_" + versionName)
     }
     buildTypes {
