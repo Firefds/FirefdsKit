@@ -17,16 +17,17 @@ package sb.firefds.q.firefdskit.receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import sb.firefds.q.firefdskit.activities.FirefdsRebootActivity;
 
-import sb.firefds.q.firefdskit.rebootactions.RebootAction;
-
-import static sb.firefds.q.firefdskit.rebootactions.RebootActionFactory.getRebootAction;
+import static sb.firefds.q.firefdskit.utils.Constants.REBOOT_ACTION;
 
 public class FirefdsRebootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        getRebootAction(intent.getAction())
-                .ifPresent(RebootAction::reboot);
+        Intent rebootIntent = new Intent(context, FirefdsRebootActivity.class);
+        rebootIntent.putExtra(REBOOT_ACTION, intent.getAction());
+        rebootIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(rebootIntent);
     }
 }
