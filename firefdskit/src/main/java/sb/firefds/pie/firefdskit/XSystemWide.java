@@ -152,11 +152,13 @@ public class XSystemWide {
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
                                 Object userInfo = param.getResult();
-                                String userInfoName = (String) XposedHelpers.getObjectField(userInfo, "name");
-                                int userInfoAttributes = XposedHelpers.getIntField(userInfo, "attributes");
-                                if (userInfoName.equals("Secure Folder") && userInfoAttributes != 0) {
-                                    XposedHelpers.setIntField(userInfo, "attributes", 0);
-                                    param.setResult(userInfo);
+                                if (userInfo != null) {
+                                    String userInfoName = (String) XposedHelpers.getObjectField(userInfo, "name");
+                                    int userInfoAttributes = XposedHelpers.getIntField(userInfo, "attributes");
+                                    if (userInfoName.equals("Secure Folder") && userInfoAttributes != 0) {
+                                        XposedHelpers.setIntField(userInfo, "attributes", 0);
+                                        param.setResult(userInfo);
+                                    }
                                 }
                             }
                         });
