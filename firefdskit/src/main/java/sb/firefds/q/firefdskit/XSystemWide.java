@@ -28,7 +28,7 @@ import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
-import static sb.firefds.q.firefdskit.utils.Constants.ENABLE_CALL_RECORDING;
+import static sb.firefds.q.firefdskit.utils.Constants.CONFIG_RECORDING;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DEFAULT_REBOOT_BEHAVIOR;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_SECURE_FLAG;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS;
@@ -95,7 +95,7 @@ public class XSystemWide {
                     new XC_MethodHook() {
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) {
-                            if (param.args[0].equals(ENABLE_CALL_RECORDING)) {
+                            if (param.args[0].equals(CONFIG_RECORDING)) {
                                 prefs.reload();
                                 if (prefs.getBoolean(PREF_ENABLE_CALL_RECORDING, false)) {
                                     if (prefs.getBoolean(PREF_ENABLE_CALL_ADD, false)) {
@@ -117,7 +117,7 @@ public class XSystemWide {
                     new XC_MethodHook() {
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) {
-                            if (param.args[0].equals(ENABLE_CALL_RECORDING)) {
+                            if (param.args[0].equals(CONFIG_RECORDING)) {
                                 prefs.reload();
                                 if (prefs.getBoolean(PREF_ENABLE_CALL_RECORDING, false)) {
                                     if (prefs.getBoolean(PREF_ENABLE_CALL_ADD, false)) {

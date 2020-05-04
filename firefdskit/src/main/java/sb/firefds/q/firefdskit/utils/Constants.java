@@ -29,7 +29,7 @@ public class Constants {
     public static final String DISABLE_SMS_TO_MMS_CONVERSION_BY_TEXT_INPUT =
             "CscFeature_Message_DisableSmsToMmsConversionByTextInput";
     public static final String DISABLE_PHONE_NUMBER_FORMATTING = "CscFeature_Common_DisablePhoneNumberFormatting";
-    public static final String ENABLE_CALL_RECORDING = "CscFeature_VoiceCall_ConfigRecording";
+    public static final String CONFIG_RECORDING = "CscFeature_VoiceCall_ConfigRecording";
 
     public static final String SHORTCUT_STATUSBAR = "STATUSBAR";
     public static final String SHORTCUT_SYSTEM = "SYSTEM";
