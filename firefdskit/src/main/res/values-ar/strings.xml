@@ -253,5 +253,5 @@
     <string name="secure_folder_disabled">مجلد آمن معطّل</string>
     <string name="secure_folder_enabled">مجلد آمن مفعّل</string>
     <string name="enable_secure_folder">تفعيل مجلد آمن</string>
-    <string name="clock_size">Clock size</string>
+    <string name="clock_size">تغيير حجم الساعة</string>
 </resources>
