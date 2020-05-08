@@ -24,6 +24,7 @@ import android.provider.Settings;
 import android.text.format.DateFormat;
 import android.view.Display;
 import android.widget.TextView;
+import de.robv.android.xposed.*;
 
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
@@ -32,28 +33,8 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.TimeZone;
 
-import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
-
 import static sb.firefds.pie.firefdskit.utils.Packages.SYSTEM_UI;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CLOCK_DATE_ON_RIGHT;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CLOCK_DATE_PREFERENCE;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_EYE_STRAIN_DIALOG;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_LOW_BATTERY_SOUND;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_VOLUME_CONTROL_SOUND;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_VOLUME_WARNING;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_BIOMETRICS_UNLOCK;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_FINGERPRINT_UNLOCK;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_SAMSUNG_BLUR;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_HIDE_CHARGING_NOTIFICATION;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_MAX_SUPPORTED_USERS;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SHOW_AM_PM;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SHOW_CLOCK_SECONDS;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_STATUSBAR_DOUBLE_TAP;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE_USERS;
+import static sb.firefds.pie.firefdskit.utils.Preferences.*;
 
 public class XSysUIFeaturePackage {
 
@@ -146,7 +127,8 @@ public class XSysUIFeaturePackage {
             }
 
             if (prefs.getBoolean(PREF_SHOW_CLOCK_SECONDS, false) ||
-                    !prefs.getString(PREF_CLOCK_DATE_PREFERENCE, "disabled").equals("disabled")) {
+                    !prefs.getString(PREF_CLOCK_DATE_PREFERENCE, "disabled").equals("disabled") ||
+                    !prefs.getString(PREF_CLOCK_SIZE, "Small").equals("Small")) {
                 qsClock = XposedHelpers.findClass(QS_CLOCK, classLoader);
                 XposedHelpers.findAndHookMethod(qsClock,
                         "notifyTimeChanged",
@@ -163,6 +145,11 @@ public class XSysUIFeaturePackage {
                                     mClock = (TextView) param.thisObject;
                                     Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
                                     boolean is24 = DateFormat.is24HourFormat(mClock.getContext());
+
+                                    int textSize = XSysUINotificationPanelPackage
+                                            .getCarrierSizeValue(prefs.getString(PREF_CLOCK_SIZE, "Small"));
+                                    mClock.setTextSize(textSize);
+
                                     if (prefs.getBoolean(PREF_SHOW_CLOCK_SECONDS, false)) {
                                         if (mSecondsHandler == null) {
                                             updateSecondsHandler();

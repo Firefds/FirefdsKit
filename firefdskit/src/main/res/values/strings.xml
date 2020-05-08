@@ -253,4 +253,5 @@
     <string name="secure_folder_disabled">Secure Folder disabled</string>
     <string name="secure_folder_enabled">Secure Folder enabled</string>
     <string name="enable_secure_folder">Enable Secure Folder</string>
+    <string name="clock_size">Clock size</string>
 </resources>

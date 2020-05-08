@@ -253,4 +253,5 @@
     <string name="secure_folder_disabled">תיקייה מאובטחת כבויה</string>
     <string name="secure_folder_enabled">תיקייה מאובטחת פועלת</string>
     <string name="enable_secure_folder">הפעלת תיקייה מאובטחת</string>
+    <string name="clock_size">גודל שעון</string>
 </resources>

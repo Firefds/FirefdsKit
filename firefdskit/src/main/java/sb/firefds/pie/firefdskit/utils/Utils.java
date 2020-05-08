@@ -19,27 +19,21 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Typeface;
 import android.os.LocaleList;
 import android.os.PowerManager;
 import android.os.SystemProperties;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
-
 import androidx.core.content.ContextCompat;
-
 import com.google.android.material.snackbar.Snackbar;
+import de.robv.android.xposed.XposedHelpers;
+import sb.firefds.pie.firefdskit.R;
 
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.util.Locale;
-import java.util.Objects;
-
-import de.robv.android.xposed.XposedHelpers;
-import sb.firefds.pie.firefdskit.R;
 
 import static sb.firefds.pie.firefdskit.FirefdsKitActivity.getAppContext;
 import static sb.firefds.pie.firefdskit.utils.Packages.FIREFDSKIT;

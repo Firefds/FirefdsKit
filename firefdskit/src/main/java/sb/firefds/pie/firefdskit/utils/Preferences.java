@@ -16,6 +16,7 @@ public class Preferences {
     public static final String PREF_CLOCK_DATE_ON_RIGHT = "clockDateOnRight";
     public static final String PREF_SHOW_CLOCK_SECONDS = "showClockSeconds";
     public static final String PREF_SHOW_AM_PM = "showAmPm";
+    public static final String PREF_CLOCK_SIZE = "clockSize";
     public static final String PREF_DISABLE_BLUETOOTH_DIALOG = "disableBluetoothScanDialog";
     public static final String PREF_DISABLE_SYNC_DIALOG = "disableSyncDialog";
     public static final String PREF_DATA_USAGE_VIEW = "DataUsageView";
