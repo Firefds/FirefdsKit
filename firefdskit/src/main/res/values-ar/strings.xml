@@ -220,4 +220,5 @@
     <string name="default_text">الافتراضي</string>
     <string name="am_pm_on_clock_summary">إظهار AM/PM في ساعة شريط الحالة</string>
     <string name="am_pm_on_clock_title">إظهار AM/PM في الساعة</string>
+    <string name="clock_size">تغيير حجم الساعة</string>
 </resources>

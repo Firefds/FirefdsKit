@@ -93,6 +93,14 @@
             android:summary="@string/am_pm_on_clock_summary"
             android:title="@string/am_pm_on_clock_title"
             app:iconSpaceReserved="false" />
+        <androidx.preference.ListPreference
+            android:defaultValue="Small"
+            android:entries="@array/carrier_size_entries"
+            android:entryValues="@array/carrier_size_values"
+            android:key="clockSize"
+            android:title="@string/clock_size"
+            app:iconSpaceReserved="false"
+            app:useSimpleSummaryProvider="true" />
     </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory
         android:title="@string/quick_settings"

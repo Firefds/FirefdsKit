@@ -220,4 +220,5 @@
     <string name="default_text">Default</string>
     <string name="am_pm_on_clock_summary">Show AM/PM on status bar clock</string>
     <string name="am_pm_on_clock_title">AM/PM on Clock</string>
+    <string name="clock_size">Clock size</string>
 </resources>

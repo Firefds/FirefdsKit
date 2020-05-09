@@ -129,7 +129,8 @@ public class XSysUIFeaturePackage {
             }
 
             if (prefs.getBoolean(PREF_SHOW_CLOCK_SECONDS, false) ||
-                    !prefs.getString(PREF_CLOCK_DATE_PREFERENCE, "disabled").equals("disabled")) {
+                    !prefs.getString(PREF_CLOCK_DATE_PREFERENCE, "disabled").equals("disabled") ||
+                    !prefs.getString(PREF_CLOCK_SIZE, "Small").equals("Small")) {
                 qsClock = XposedHelpers.findClass(QS_CLOCK, classLoader);
                 XposedHelpers.findAndHookMethod(qsClock,
                         "notifyTimeChanged",
@@ -147,6 +148,11 @@ public class XSysUIFeaturePackage {
                                     mClock = (TextView) param.thisObject;
                                     Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
                                     boolean is24 = DateFormat.is24HourFormat(mClock.getContext());
+
+                                    int textSize = XSysUINotificationPanelPackage
+                                            .getCarrierSizeValue(prefs.getString(PREF_CLOCK_SIZE, "Small"));
+                                    mClock.setTextSize(textSize);
+
                                     if (prefs.getBoolean(PREF_SHOW_CLOCK_SECONDS, false)) {
                                         if (mSecondsHandler == null) {
                                             updateSecondsHandler();
