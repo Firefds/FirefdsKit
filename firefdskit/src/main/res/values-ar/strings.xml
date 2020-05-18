@@ -254,4 +254,6 @@
     <string name="secure_folder_enabled">مجلد آمن مفعّل</string>
     <string name="enable_secure_folder">تفعيل مجلد آمن</string>
     <string name="clock_size">تغيير حجم الساعة</string>
+    <string name="enable_dual_sim_sd_card_summary">Enable sd card while using dual sim cards</string>
+    <string name="enable_dual_sim_sd_card_title">SD Card With Dual Sim</string>
 </resources>

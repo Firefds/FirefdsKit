@@ -42,6 +42,7 @@ public class XAndroidPackage {
     private static final String AP_CONFIG_UTIL_CLASS = "com.android.server.wifi.util.ApConfigUtil";
     private static final String ACTIVITY_MANAGER_SERVICE = "com.android.server.am.ActivityManagerService";
     private static final String PERSONA_SERVICE_HELPER = "com.android.server.pm.PersonaServiceHelper";
+    private static final String STORAGE_MANAGER_SERVICE = "com.android.server.StorageManagerService";
     @SuppressLint("StaticFieldLeak")
     private static Context mPackageManagerServiceContext;
     private static boolean isFB;
@@ -64,6 +65,13 @@ public class XAndroidPackage {
                             }
                         }
                     });
+
+            if (prefs.getBoolean(PREF_ENABLE_DUAL_SIM_SD_CARD, false)) {
+                XposedHelpers.findAndHookMethod(STORAGE_MANAGER_SERVICE,
+                        classLoader,
+                        "isSimSdBlock",
+                        XC_MethodReplacement.returnConstant(Boolean.FALSE));
+            }
 
             if (prefs.getBoolean(PREF_ENABLE_SECURE_FOLDER, false)) {
                 XposedHelpers.findAndHookMethod(PERSONA_SERVICE_HELPER,

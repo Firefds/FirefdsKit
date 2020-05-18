@@ -254,4 +254,6 @@
     <string name="secure_folder_enabled">Secure Folder enabled</string>
     <string name="enable_secure_folder">Enable Secure Folder</string>
     <string name="clock_size">Clock size</string>
+    <string name="enable_dual_sim_sd_card_summary">Enable sd card while using dual sim cards</string>
+    <string name="enable_dual_sim_sd_card_title">SD Card With Dual Sim</string>
 </resources>
