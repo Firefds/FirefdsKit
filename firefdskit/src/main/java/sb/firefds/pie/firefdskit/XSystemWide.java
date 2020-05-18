@@ -24,8 +24,7 @@ import com.samsung.android.feature.SemCscFeature;
 import com.samsung.android.feature.SemFloatingFeature;
 import de.robv.android.xposed.*;
 
-import static sb.firefds.pie.firefdskit.utils.Constants.CONFIG_RECORDING;
-import static sb.firefds.pie.firefdskit.utils.Constants.SUPPORT_UNIFIED_KEY_STORE;
+import static sb.firefds.pie.firefdskit.utils.Constants.*;
 import static sb.firefds.pie.firefdskit.utils.Preferences.*;
 
 public class XSystemWide {
@@ -93,45 +92,13 @@ public class XSystemWide {
             XposedHelpers.findAndHookMethod(SemCscFeature.class,
                     "getString",
                     String.class,
-                    new XC_MethodHook() {
-                        @Override
-                        protected void beforeHookedMethod(MethodHookParam param) {
-                            if (param.args[0].equals(CONFIG_RECORDING)) {
-                                prefs.reload();
-                                if (prefs.getBoolean(PREF_ENABLE_CALL_RECORDING, false)) {
-                                    if (prefs.getBoolean(PREF_ENABLE_CALL_ADD, false)) {
-                                        param.setResult("RecordingAllowedByMenu");
-                                    } else {
-                                        param.setResult("RecordingAllowed");
-                                    }
-                                } else {
-                                    param.setResult("");
-                                }
-                            }
-                        }
-                    });
+                    cscFeatureGetStringHook(prefs));
 
             XposedHelpers.findAndHookMethod(SemCscFeature.class,
                     "getString",
                     String.class,
                     String.class,
-                    new XC_MethodHook() {
-                        @Override
-                        protected void beforeHookedMethod(MethodHookParam param) {
-                            if (param.args[0].equals(CONFIG_RECORDING)) {
-                                prefs.reload();
-                                if (prefs.getBoolean(PREF_ENABLE_CALL_RECORDING, false)) {
-                                    if (prefs.getBoolean(PREF_ENABLE_CALL_ADD, false)) {
-                                        param.setResult("RecordingAllowedByMenu");
-                                    } else {
-                                        param.setResult("RecordingAllowed");
-                                    }
-                                } else {
-                                    param.setResult("");
-                                }
-                            }
-                        }
-                    });
+                    cscFeatureGetStringHook(prefs));
 
             if (prefs.getBoolean(PREF_ENABLE_SECURE_FOLDER, false)) {
                 XposedBridge.hookAllMethods(SemFloatingFeature.class,
@@ -166,5 +133,33 @@ public class XSystemWide {
         } catch (Throwable e) {
             XposedBridge.log(e);
         }
+    }
+
+    private static XC_MethodHook cscFeatureGetStringHook(XSharedPreferences prefs) {
+        return new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) {
+                if (param.args[0].equals(CONFIG_RECORDING)) {
+                    prefs.reload();
+                    if (prefs.getBoolean(PREF_ENABLE_CALL_RECORDING, false)) {
+                        if (prefs.getBoolean(PREF_ENABLE_CALL_ADD, false)) {
+                            param.setResult("RecordingAllowedByMenu");
+                        } else {
+                            param.setResult("RecordingAllowed");
+                        }
+                    } else {
+                        param.setResult("");
+                    }
+                }
+                if (param.args[0].equals(CONFIG_SVC_PROVIDER_FOR_UNKNOWN_NUMBER)) {
+                    prefs.reload();
+                    if (prefs.getBoolean(PREF_ENABLE_SPAM_PROTECTION, true)) {
+                        param.setResult("whitepages,whitepages,whitepages");
+                    } else {
+                        param.setResult(null);
+                    }
+                }
+            }
+        };
     }
 }

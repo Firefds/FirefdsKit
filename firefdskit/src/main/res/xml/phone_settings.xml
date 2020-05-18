@@ -34,5 +34,11 @@
             android:summaryOn="@string/call_number_formatting_disabled"
             android:title="@string/disable_call_number_formatting"
             app:iconSpaceReserved="false" />
+        <SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="enableSpamProtection"
+            android:summary="@string/enable_spam_protection_summary"
+            android:title="@string/enable_spam_protection_title"
+            app:iconSpaceReserved="false" />
     </androidx.preference.PreferenceCategory>
 </androidx.preference.PreferenceScreen>
