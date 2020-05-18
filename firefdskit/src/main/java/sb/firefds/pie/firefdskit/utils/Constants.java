@@ -38,7 +38,7 @@ public class Constants {
     public static final String SHORTCUT_SECURITY = "SECURITY";
 
     public static final String POWER_ACTION = "power";
-    public static final String RESTART_ACATION = "restart";
+    public static final String RESTART_ACTION = "restart";
     public static final String EMERGENCY_ACTION = "emergency";
     public static final String RECOVERY_ACTION = "recovery";
     public static final String DOWNLOAD_ACTION = "download";
