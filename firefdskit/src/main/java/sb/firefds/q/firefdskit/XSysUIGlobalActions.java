@@ -19,7 +19,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.view.View;
 import android.widget.ImageView;
-
 import com.samsung.android.globalactions.presentation.SecGlobalActions;
 import com.samsung.android.globalactions.presentation.SecGlobalActionsPresenter;
 import com.samsung.android.globalactions.presentation.features.FeatureFactory;
@@ -31,49 +30,17 @@ import com.samsung.android.globalactions.util.ConditionChecker;
 import com.samsung.android.globalactions.util.KeyGuardManagerWrapper;
 import com.samsung.android.globalactions.util.SystemConditions;
 import com.samsung.android.globalactions.util.UtilFactory;
+import de.robv.android.xposed.*;
+import sb.firefds.q.firefdskit.actionViewModels.ActionViewModelDefaults;
+import sb.firefds.q.firefdskit.utils.Utils;
 
 import java.lang.ref.WeakReference;
 import java.util.Optional;
 
-import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
-import sb.firefds.q.firefdskit.actionViewModels.ActionViewModelDefaults;
-import sb.firefds.q.firefdskit.utils.Utils;
-
 import static sb.firefds.q.firefdskit.actionViewModels.FirefdsKitActionViewModelsFactory.getActionViewModel;
-import static sb.firefds.q.firefdskit.utils.Constants.DATA_MODE_ACTION;
-import static sb.firefds.q.firefdskit.utils.Constants.DOWNLOAD_ACTION;
-import static sb.firefds.q.firefdskit.utils.Constants.EMERGENCY_ACTION;
-import static sb.firefds.q.firefdskit.utils.Constants.FLASHLIGHT_ACTION;
-import static sb.firefds.q.firefdskit.utils.Constants.MULTIUSER_ACTION;
-import static sb.firefds.q.firefdskit.utils.Constants.POWER_ACTION;
-import static sb.firefds.q.firefdskit.utils.Constants.RECOVERY_ACTION;
-import static sb.firefds.q.firefdskit.utils.Constants.RESTART_ACATION;
-import static sb.firefds.q.firefdskit.utils.Constants.RESTART_UI_ACTION;
-import static sb.firefds.q.firefdskit.utils.Constants.SCREENSHOT_ACTION;
-import static sb.firefds.q.firefdskit.utils.Constants.SCREEN_RECORD_ACTION;
+import static sb.firefds.q.firefdskit.utils.Constants.*;
 import static sb.firefds.q.firefdskit.utils.Packages.SYSTEM_UI;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_CUSTOM_RECOVERY;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_CUSTOM_RECOVERY_CONFIRMATION;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_POWER_MENU_SECURE_LOCKSCREEN;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_RESTART_CONFIRMATION;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_POWER_MENU;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_DATA_MODE;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_DOWNLOAD;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_EMERGENCY_MODE;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_FLASHLIGHT;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_POWER_OFF;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_RECOVERY;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_RESTART;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_RESTART_SYSTEMUI;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_SCREENSHOT;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_SCREEN_RECORD;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_REPLACE_RECOVERY_ICON;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE_USERS;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_UNLOCK_KEYGUARD_BEFORE_ACTION_EXECUTE;
+import static sb.firefds.q.firefdskit.utils.Preferences.*;
 
 public class XSysUIGlobalActions {
 
@@ -210,7 +177,7 @@ public class XSysUIGlobalActions {
                                     mSecGlobalActionsPresenter.clearActions(POWER_ACTION);
                                 }
                                 if (!prefs.getBoolean(PREF_ENABLE_RESTART, true)) {
-                                    mSecGlobalActionsPresenter.clearActions(RESTART_ACATION);
+                                    mSecGlobalActionsPresenter.clearActions(RESTART_ACTION);
                                 }
                                 if (!prefs.getBoolean(PREF_ENABLE_EMERGENCY_MODE, true)) {
                                     mSecGlobalActionsPresenter.clearActions(EMERGENCY_ACTION);
