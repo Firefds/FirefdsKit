@@ -221,4 +221,6 @@
     <string name="am_pm_on_clock_summary">Show AM/PM on status bar clock</string>
     <string name="am_pm_on_clock_title">AM/PM on Clock</string>
     <string name="clock_size">Clock size</string>
+    <string name="enable_dual_sim_sd_card_summary">Enable sd card while using dual sim cards</string>
+    <string name="enable_dual_sim_sd_card_title">SD Card With Dual Sim</string>
 </resources>

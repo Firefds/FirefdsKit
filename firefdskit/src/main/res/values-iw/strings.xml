@@ -221,4 +221,6 @@
     <string name="am_pm_on_clock_summary">הצגת AM/PM בשעון שורת המצב</string>
     <string name="am_pm_on_clock_title">הצגת AM/PM בשעון</string>
     <string name="clock_size">גודל שעון</string>
+    <string name="enable_dual_sim_sd_card_summary">הפעלת כרטיס זיכרון חיצוני בזמן שימוש ב-2 כרטיסי סים</string>
+    <string name="enable_dual_sim_sd_card_title">כרטיס זיכרון עם 2 סים</string>
 </resources>

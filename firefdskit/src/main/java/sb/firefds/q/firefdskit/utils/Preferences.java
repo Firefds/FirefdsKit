@@ -71,6 +71,7 @@ public class Preferences {
     public static final String PREF_NFC_BEHAVIOR = "nfcBehavior";
     public static final String PREF_HIDE_MTP_NOTIFICATION = "hideMTPNotification";
     public static final String PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS = "enableAdvancedHotspotOptions";
+    public static final String PREF_ENABLE_DUAL_SIM_SD_CARD = "enableDualSimSdCard";
     public static final String PREF_DISABLE_TEMPERATURE_CHECKS = "disableTemperatureChecks";
     public static final String PREF_ENABLE_CAMERA_SHUTTER_MENU = "enableCameraShutterMenu";
 
