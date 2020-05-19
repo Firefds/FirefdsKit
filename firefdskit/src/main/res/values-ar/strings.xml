@@ -221,11 +221,11 @@
     <string name="am_pm_on_clock_summary">إظهار AM/PM في ساعة شريط الحالة</string>
     <string name="am_pm_on_clock_title">إظهار AM/PM في الساعة</string>
     <string name="clock_size">تغيير حجم الساعة</string>
-    <string name="enable_dual_sim_sd_card_summary">Enable sd card while using dual sim cards</string>
-    <string name="enable_dual_sim_sd_card_title">SD Card With Dual Sim</string>
-    <string name="enable_spam_protection_summary">Enable Caller ID and spam protection</string>
-    <string name="enable_spam_protection_title">Caller ID and Spam Protection</string>
-    <string name="disable_power_button_quick_panel_title">Disable Quick Panel Power Button</string>
-    <string name="disable_power_button_quick_panel_summary_on">Quick panel power button replaced with search button</string>
-    <string name="disable_power_button_quick_panel_summary_off">Quick panel power button enabled</string>
+    <string name="enable_dual_sim_sd_card_summary">تفعيل ذاكرة SD عند استعمال بطاقة SIM المزدوجة</string>
+    <string name="enable_dual_sim_sd_card_title">ذاكرة SD مع بطاقة SIM المزدوجة</string>
+    <string name="enable_spam_protection_summary">تفعيل معرف المتصِل والحماية من الأرقام العشوائية</string>
+    <string name="enable_spam_protection_title">معرف المتصِل والحماية من الأرقام العشوائية</string>
+    <string name="disable_power_button_quick_panel_title">تعطيل زر الطاقة في لوحة الضبط السريع</string>
+    <string name="disable_power_button_quick_panel_summary_on">تم استبدال زر الطاقة في لوحة الضبط السريع بزر البحث</string>
+    <string name="disable_power_button_quick_panel_summary_off">زر الطاقة في لوحة الضبط السريع مفعّل</string>
 </resources>
