@@ -223,4 +223,6 @@
     <string name="clock_size">Clock size</string>
     <string name="enable_dual_sim_sd_card_summary">Enable sd card while using dual sim cards</string>
     <string name="enable_dual_sim_sd_card_title">SD Card With Dual Sim</string>
+    <string name="enable_spam_protection_summary">Enable Caller ID and spam protection</string>
+    <string name="enable_spam_protection_title">Caller ID and Spam Protection</string>
 </resources>

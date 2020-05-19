@@ -78,6 +78,7 @@ public class Preferences {
     public static final String PREF_ENABLE_CALL_ADD = "enableCallAdd";
     public static final String PREF_ENABLE_CALL_RECORDING = "enableCallRecording";
     public static final String PREF_DISABLE_NUMBER_FORMATTING = "disableNumberFormatting";
+    public static final String PREF_ENABLE_SPAM_PROTECTION = "enableSpamProtection";
 
     public static final String PREF_DISABLE_SMS_TO_MMS = "disableSmsToMmsConversion";
     public static final String PREF_FORCE_MMS_CONNECT = "forceMMSConnect";

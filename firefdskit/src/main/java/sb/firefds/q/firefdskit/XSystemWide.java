@@ -19,21 +19,12 @@ import android.os.PowerManager;
 import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
-
 import com.samsung.android.feature.SemCscFeature;
-
-import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
+import de.robv.android.xposed.*;
 
 import static sb.firefds.q.firefdskit.utils.Constants.CONFIG_RECORDING;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DEFAULT_REBOOT_BEHAVIOR;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_SECURE_FLAG;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_CALL_ADD;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_CALL_RECORDING;
+import static sb.firefds.q.firefdskit.utils.Constants.CONFIG_SVC_PROVIDER_FOR_UNKNOWN_NUMBER;
+import static sb.firefds.q.firefdskit.utils.Preferences.*;
 
 public class XSystemWide {
 
@@ -92,47 +83,43 @@ public class XSystemWide {
             XposedHelpers.findAndHookMethod(SemCscFeature.class,
                     "getString",
                     String.class,
-                    new XC_MethodHook() {
-                        @Override
-                        protected void beforeHookedMethod(MethodHookParam param) {
-                            if (param.args[0].equals(CONFIG_RECORDING)) {
-                                prefs.reload();
-                                if (prefs.getBoolean(PREF_ENABLE_CALL_RECORDING, false)) {
-                                    if (prefs.getBoolean(PREF_ENABLE_CALL_ADD, false)) {
-                                        param.setResult("RecordingAllowedByMenu");
-                                    } else {
-                                        param.setResult("RecordingAllowed");
-                                    }
-                                } else {
-                                    param.setResult("");
-                                }
-                            }
-                        }
-                    });
+                    cscFeatureGetStringHook(prefs));
 
             XposedHelpers.findAndHookMethod(SemCscFeature.class,
                     "getString",
                     String.class,
                     String.class,
-                    new XC_MethodHook() {
-                        @Override
-                        protected void beforeHookedMethod(MethodHookParam param) {
-                            if (param.args[0].equals(CONFIG_RECORDING)) {
-                                prefs.reload();
-                                if (prefs.getBoolean(PREF_ENABLE_CALL_RECORDING, false)) {
-                                    if (prefs.getBoolean(PREF_ENABLE_CALL_ADD, false)) {
-                                        param.setResult("RecordingAllowedByMenu");
-                                    } else {
-                                        param.setResult("RecordingAllowed");
-                                    }
-                                } else {
-                                    param.setResult("");
-                                }
-                            }
-                        }
-                    });
+                    cscFeatureGetStringHook(prefs));
         } catch (Throwable e) {
             XposedBridge.log(e);
         }
+    }
+
+    private static XC_MethodHook cscFeatureGetStringHook(XSharedPreferences prefs) {
+        return new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) {
+                if (param.args[0].equals(CONFIG_RECORDING)) {
+                    prefs.reload();
+                    if (prefs.getBoolean(PREF_ENABLE_CALL_RECORDING, false)) {
+                        if (prefs.getBoolean(PREF_ENABLE_CALL_ADD, false)) {
+                            param.setResult("RecordingAllowedByMenu");
+                        } else {
+                            param.setResult("RecordingAllowed");
+                        }
+                    } else {
+                        param.setResult("");
+                    }
+                }
+                if (param.args[0].equals(CONFIG_SVC_PROVIDER_FOR_UNKNOWN_NUMBER)) {
+                    prefs.reload();
+                    if (prefs.getBoolean(PREF_ENABLE_SPAM_PROTECTION, true)) {
+                        param.setResult("whitepages,whitepages,whitepages");
+                    } else {
+                        param.setResult("");
+                    }
+                }
+            }
+        };
     }
 }

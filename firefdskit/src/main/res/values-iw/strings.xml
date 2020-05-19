@@ -223,4 +223,6 @@
     <string name="clock_size">גודל שעון</string>
     <string name="enable_dual_sim_sd_card_summary">הפעלת כרטיס זיכרון חיצוני בזמן שימוש ב-2 כרטיסי סים</string>
     <string name="enable_dual_sim_sd_card_title">כרטיס זיכרון עם 2 סים</string>
+    <string name="enable_spam_protection_summary">הפעלת שיחה מזוהה והגנת ספאם</string>
+    <string name="enable_spam_protection_title">שיחה מזוהה והגנת ספאם</string>
 </resources>
