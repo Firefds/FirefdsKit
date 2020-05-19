@@ -58,6 +58,16 @@ public class XSysUINotificationPanelPackage {
         final Class<?> systemUIRuneClass = XposedHelpers.findClass(RUNE, classLoader);
 
         try {
+            if (prefs.getBoolean(PREF_DISABLE_POWER_BUTTON_QUICK_PANEL, false)) {
+                XposedHelpers.setStaticBooleanField(systemUIRuneClass,
+                        "QPANEL_SUPPORT_POWER_BUTTON",
+                        false);
+            }
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
+
+        try {
             XposedHelpers.findAndHookMethod(CARRIER_TEXT,
                     classLoader,
                     "onFinishInflate",
