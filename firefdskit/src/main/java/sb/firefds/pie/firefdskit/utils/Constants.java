@@ -30,7 +30,7 @@ public class Constants {
             "CscFeature_Message_DisableSmsToMmsConversionByTextInput";
     public static final String DISABLE_PHONE_NUMBER_FORMATTING = "CscFeature_Common_DisablePhoneNumberFormatting";
     public static final String CONFIG_RECORDING = "CscFeature_VoiceCall_ConfigRecording";
-    public static final String CONFIG_SVC_PROVIDER_FOR_UNKNOWN_NUMBER = "ConfigSvcProviderForUnknownNumber";
+    public static final String CONFIG_SVC_PROVIDER_FOR_UNKNOWN_NUMBER = "CscFeature_Common_ConfigSvcProviderForUnknownNumber";
     public static final String SUPPORT_UNIFIED_KEY_STORE = "SEC_FLOATING_FEATURE_KNOX_SUPPORT_UKS";
 
     public static final String SHORTCUT_STATUSBAR = "STATUSBAR";

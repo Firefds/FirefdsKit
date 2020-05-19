@@ -156,7 +156,7 @@ public class XSystemWide {
                     if (prefs.getBoolean(PREF_ENABLE_SPAM_PROTECTION, true)) {
                         param.setResult("whitepages,whitepages,whitepages");
                     } else {
-                        param.setResult(null);
+                        param.setResult("");
                     }
                 }
             }
