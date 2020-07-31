@@ -15,15 +15,19 @@
 package sb.firefds.q.firefdskit;
 
 import android.content.Context;
+
 import de.robv.android.xposed.*;
 
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_SCREEN_RECORDER_IN_CALL;
 
 public class XSmartCapturePackage {
 
-    private static final String RECORDING_STOP_REASON = "com.samsung.android.app.screenrecorder.ScreenRecorderController.RecordingStopReason";
-    private static final String SCREEN_RECORDER_CONTROLLER = "com.samsung.android.app.screenrecorder.ScreenRecorderController";
-    private static final String SCREEN_RECORDER_CONTROLLER$1 = "com.samsung.android.app.screenrecorder.ScreenRecorderController$1";
+    private static final String RECORDING_STOP_REASON = "com.samsung.android.app.screenrecorder" +
+            ".ScreenRecorderController.RecordingStopReason";
+    private static final String SCREEN_RECORDER_CONTROLLER = "com.samsung.android.app.screenrecorder" +
+            ".ScreenRecorderController";
+    private static final String SCREEN_RECORDER_CONTROLLER$1 = "com.samsung.android.app.screenrecorder" +
+            ".ScreenRecorderController$1";
     private static final String SCREEN_RECORDER_UTILS = "com.samsung.android.app.screenrecorder.util.Utils";
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {

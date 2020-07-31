@@ -14,6 +14,7 @@
  */
 package sb.firefds.q.firefdskit.actionViewModels;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -53,7 +54,9 @@ public abstract class RestartActionViewModel extends FirefdsKitActionViewModel {
         } else {
             if (isUnlockKeyguardBeforeActionExecute()) {
                 if (mConditionChecker.isEnabled(SystemConditions.IS_SECURE_KEYGUARD)) {
-                    for (SecureConfirmStrategy strategy3 : mFeatureFactory.createSecureConfirmStrategy(getGlobalActions(), getActionInfo().getName())) {
+                    for (SecureConfirmStrategy strategy3 :
+                            mFeatureFactory.createSecureConfirmStrategy(getGlobalActions(),
+                                    getActionInfo().getName())) {
                         strategy3.doActionBeforeSecureConfirm(this, getGlobalActions());
                     }
                     getGlobalActions().registerSecureConfirmAction(this);
@@ -73,6 +76,7 @@ public abstract class RestartActionViewModel extends FirefdsKitActionViewModel {
         reboot();
     }
 
+    @SuppressLint("MissingPermission")
     private void reboot() {
         try {
             ((PowerManager) getContext().getSystemService(Context.POWER_SERVICE)).reboot(rebootOption);

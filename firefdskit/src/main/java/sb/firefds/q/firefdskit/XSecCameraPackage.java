@@ -42,7 +42,8 @@ public class XSecCameraPackage {
                         new XC_MethodHook() {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) {
-                                XposedHelpers.setStaticBooleanField(cameraFeatureClass, "SUPPORT_THERMISTOR_TEMPERATURE", false);
+                                XposedHelpers.setStaticBooleanField(cameraFeatureClass,
+                                        "SUPPORT_THERMISTOR_TEMPERATURE", false);
                             }
                         });
             } catch (Throwable e) {

@@ -123,9 +123,13 @@ public class XSecSettingsPackage {
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
                                 Class<?> settingsUtils = XposedHelpers.findClass(SETTINGS_UTILS, classLoader);
-                                XposedHelpers.setStaticBooleanField(settingsUtils, "SUPPORT_MOBILEAP_MAXCLIENT_MENU", true);
+                                XposedHelpers.setStaticBooleanField(settingsUtils,
+                                        "SUPPORT_MOBILEAP_MAXCLIENT_MENU",
+                                        true);
                                 XposedHelpers.setStaticBooleanField(settingsUtils, "SUPPORT_MOBILEAP_5G", true);
-                                XposedHelpers.setStaticBooleanField(settingsUtils, "SUPPORT_MOBILEAP_5G_BASED_ON_COUNTRY", true);
+                                XposedHelpers.setStaticBooleanField(settingsUtils,
+                                        "SUPPORT_MOBILEAP_5G_BASED_ON_COUNTRY",
+                                        true);
                                 XposedHelpers.setStaticObjectField(settingsUtils, "SUPPORT_MOBILEAP_REGION", "NA");
                             }
                         });

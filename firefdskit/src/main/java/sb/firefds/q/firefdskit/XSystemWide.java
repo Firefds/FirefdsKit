@@ -19,7 +19,9 @@ import android.os.PowerManager;
 import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
+
 import com.samsung.android.feature.SemCscFeature;
+
 import de.robv.android.xposed.*;
 
 import static sb.firefds.q.firefdskit.utils.Constants.CONFIG_RECORDING;

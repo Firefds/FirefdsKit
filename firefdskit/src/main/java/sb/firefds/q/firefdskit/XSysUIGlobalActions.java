@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.view.View;
 import android.widget.ImageView;
+
 import com.samsung.android.globalactions.presentation.SecGlobalActions;
 import com.samsung.android.globalactions.presentation.SecGlobalActionsPresenter;
 import com.samsung.android.globalactions.presentation.features.FeatureFactory;
@@ -30,32 +31,73 @@ import com.samsung.android.globalactions.util.ConditionChecker;
 import com.samsung.android.globalactions.util.KeyGuardManagerWrapper;
 import com.samsung.android.globalactions.util.SystemConditions;
 import com.samsung.android.globalactions.util.UtilFactory;
-import de.robv.android.xposed.*;
-import sb.firefds.q.firefdskit.actionViewModels.ActionViewModelDefaults;
-import sb.firefds.q.firefdskit.utils.Utils;
 
 import java.lang.ref.WeakReference;
 import java.util.Optional;
 
+import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
+import de.robv.android.xposed.XSharedPreferences;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedHelpers;
+import sb.firefds.q.firefdskit.actionViewModels.ActionViewModelDefaults;
+import sb.firefds.q.firefdskit.utils.Utils;
+
 import static sb.firefds.q.firefdskit.actionViewModels.FirefdsKitActionViewModelsFactory.getActionViewModel;
-import static sb.firefds.q.firefdskit.utils.Constants.*;
+import static sb.firefds.q.firefdskit.utils.Constants.DATA_MODE_ACTION;
+import static sb.firefds.q.firefdskit.utils.Constants.DOWNLOAD_ACTION;
+import static sb.firefds.q.firefdskit.utils.Constants.EMERGENCY_ACTION;
+import static sb.firefds.q.firefdskit.utils.Constants.FLASHLIGHT_ACTION;
+import static sb.firefds.q.firefdskit.utils.Constants.MULTIUSER_ACTION;
+import static sb.firefds.q.firefdskit.utils.Constants.POWER_ACTION;
+import static sb.firefds.q.firefdskit.utils.Constants.RECOVERY_ACTION;
+import static sb.firefds.q.firefdskit.utils.Constants.RESTART_ACTION;
+import static sb.firefds.q.firefdskit.utils.Constants.RESTART_UI_ACTION;
+import static sb.firefds.q.firefdskit.utils.Constants.SCREENSHOT_ACTION;
+import static sb.firefds.q.firefdskit.utils.Constants.SCREEN_RECORD_ACTION;
 import static sb.firefds.q.firefdskit.utils.Packages.SYSTEM_UI;
-import static sb.firefds.q.firefdskit.utils.Preferences.*;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_CUSTOM_RECOVERY;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_CUSTOM_RECOVERY_CONFIRMATION;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_POWER_MENU_SECURE_LOCKSCREEN;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_RESTART_CONFIRMATION;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_POWER_MENU;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_DATA_MODE;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_DOWNLOAD;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_EMERGENCY_MODE;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_FLASHLIGHT;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_POWER_OFF;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_RECOVERY;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_RESTART;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_RESTART_SYSTEMUI;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_SCREENSHOT;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_SCREEN_RECORD;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_REPLACE_RECOVERY_ICON;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE_USERS;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_UNLOCK_KEYGUARD_BEFORE_ACTION_EXECUTE;
 
 public class XSysUIGlobalActions {
 
     private static final String GLOBAL_ACTIONS_PACKAGE = "com.samsung.android.globalactions.presentation";
     private static final String SEC_GLOBAL_ACTIONS_PRESENTER = GLOBAL_ACTIONS_PACKAGE + ".SecGlobalActionsPresenter";
-    private static final String DEFAULT_ACTION_VIEW_MODEL_FACTORY = GLOBAL_ACTIONS_PACKAGE + ".viewmodel.DefaultActionViewModelFactory";
-    private static final String SEC_GLOBAL_ACTIONS_DIALOG_BASE = GLOBAL_ACTIONS_PACKAGE + ".view.SecGlobalActionsDialogBase";
-    private static final String GLOBAL_ACTION_CONTENT_ITEM_VIEW = GLOBAL_ACTIONS_PACKAGE + ".view.GlobalActionsContentItemView";
-    private static final String FLASHLIGHT_CONTROLLER_IMPL_CLASS = SYSTEM_UI + ".statusbar.policy.FlashlightControllerImpl";
-    private static final String RESTART_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel.RestartActionViewModel";
-    private static final String SAFE_MODE_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel.SafeModeActionViewModel";
+    private static final String DEFAULT_ACTION_VIEW_MODEL_FACTORY = GLOBAL_ACTIONS_PACKAGE + ".viewmodel" +
+            ".DefaultActionViewModelFactory";
+    private static final String SEC_GLOBAL_ACTIONS_DIALOG_BASE = GLOBAL_ACTIONS_PACKAGE + ".view" +
+            ".SecGlobalActionsDialogBase";
+    private static final String GLOBAL_ACTION_CONTENT_ITEM_VIEW = GLOBAL_ACTIONS_PACKAGE + ".view" +
+            ".GlobalActionsContentItemView";
+    private static final String FLASHLIGHT_CONTROLLER_IMPL_CLASS = SYSTEM_UI + ".statusbar.policy" +
+            ".FlashlightControllerImpl";
+    private static final String RESTART_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel" +
+            ".RestartActionViewModel";
+    private static final String SAFE_MODE_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel" +
+            ".SafeModeActionViewModel";
     private static final String POWER_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel.PowerActionViewModel";
-    private static final String EMERGENCY_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel.EmergencyActionViewModel";
-    private static final String SIDE_KEY_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel.SideKeyActionViewModel";
-    private static final String DATA_MODE_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel.DataModeActionViewModel";
+    private static final String EMERGENCY_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel" +
+            ".EmergencyActionViewModel";
+    private static final String SIDE_KEY_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel" +
+            ".SideKeyActionViewModel";
+    private static final String DATA_MODE_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel" +
+            ".DataModeActionViewModel";
 
     private static SecGlobalActionsPresenter mSecGlobalActionsPresenter;
     private static ActionViewModelDefaults actionViewModelDefaults;
@@ -83,7 +125,8 @@ public class XSysUIGlobalActions {
                     }
                 });
 
-        final Class<?> secGlobalActionsDialogBaseClass = XposedHelpers.findClass(SEC_GLOBAL_ACTIONS_DIALOG_BASE, classLoader);
+        final Class<?> secGlobalActionsDialogBaseClass = XposedHelpers.findClass(SEC_GLOBAL_ACTIONS_DIALOG_BASE,
+                classLoader);
 
         if (prefUnlockKeyguardBeforeActionExecute) {
             XC_MethodHook isNeedSecureConfirmHook = new XC_MethodHook() {
@@ -135,7 +178,8 @@ public class XSysUIGlobalActions {
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) {
                             Context context = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
-                            KeyguardManager mKeyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+                            KeyguardManager mKeyguardManager =
+                                    (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
                             if (mKeyguardManager.isKeyguardLocked()) {
                                 param.setResult(null);
                             }

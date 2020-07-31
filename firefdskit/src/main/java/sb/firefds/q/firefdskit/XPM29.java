@@ -25,13 +25,15 @@ public class XPM29 {
     private static final String PERMISSION = "com.android.server.pm.permission";
     private static final String PERMISSION_MANAGER_SERVICE = PERMISSION + ".PermissionManagerService";
     private static final String PACKAGE_PARSER_PACKAGE = "android.content.pm.PackageParser.Package";
-    private static final String PERMISSION_CALLBACK = PERMISSION + ".PermissionManagerServiceInternal.PermissionCallback";
+    private static final String PERMISSION_CALLBACK = PERMISSION + ".PermissionManagerServiceInternal" +
+            ".PermissionCallback";
 
     private static final String REBOOT = "android.permission.REBOOT";
     private static final String WRITE_SETTINGS = "android.permission.WRITE_SETTINGS";
     private static final String STATUSBAR = "android.permission.EXPAND_STATUS_BAR";
     private static final String RECOVERY = "android.permission.RECOVERY";
-    private static final String ACCESS_SCREEN_RECORDER_SVC = "com.samsung.android.app.screenrecorder.permission.ACCESS_SCREEN_RECORDER_SVC";
+    private static final String ACCESS_SCREEN_RECORDER_SVC = "com.samsung.android.app.screenrecorder.permission" +
+            ".ACCESS_SCREEN_RECORDER_SVC";
 
     public static void doHook(ClassLoader classLoader) {
         try {

@@ -34,7 +34,8 @@ import static sb.firefds.q.firefdskit.utils.Packages.FIREFDSKIT;
 public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     private static XSharedPreferences prefs;
-    private static File securePrefFile = new File("/data/user_de/0/sb.firefds.q.firefdskit/shared_prefs/" + FIREFDSKIT + "_preferences.xml");
+    private static File securePrefFile =
+            new File("/data/user_de/0/sb.firefds.q.firefdskit/shared_prefs/" + FIREFDSKIT + "_preferences.xml");
 
     @Override
     public void initZygote(StartupParam startupParam) {
