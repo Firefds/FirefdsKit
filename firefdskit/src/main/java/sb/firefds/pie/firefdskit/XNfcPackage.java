@@ -69,11 +69,14 @@ public class XNfcPackage {
                             }
                             try {
                                 final int currScreenState;
-                                final Object mScreenStateHelper = XposedHelpers.getObjectField(param.thisObject, "mScreenStateHelper");
+                                final Object mScreenStateHelper = XposedHelpers.getObjectField(param.thisObject,
+                                        "mScreenStateHelper");
                                 if (mScreenStateHelper != null) {
-                                    currScreenState = (Integer) XposedHelpers.callMethod(mScreenStateHelper, "checkScreenState");
+                                    currScreenState = (Integer) XposedHelpers.callMethod(mScreenStateHelper,
+                                            "checkScreenState");
                                 } else {
-                                    currScreenState = (Integer) XposedHelpers.callMethod(param.thisObject, "checkScreenState");
+                                    currScreenState = (Integer) XposedHelpers.callMethod(param.thisObject,
+                                            "checkScreenState");
                                 }
                                 if ((currScreenState == SCREEN_STATE_ON_UNLOCKED) ||
                                         (behavior.equals("1") && currScreenState != SCREEN_STATE_ON_LOCKED)) {
@@ -85,7 +88,9 @@ public class XNfcPackage {
                                     XposedHelpers.setAdditionalInstanceField(param.thisObject,
                                             "mOrigScreenState",
                                             XposedHelpers.getIntField(param.thisObject, "mScreenState"));
-                                    XposedHelpers.setIntField(param.thisObject, "mScreenState", SCREEN_STATE_ON_UNLOCKED);
+                                    XposedHelpers.setIntField(param.thisObject,
+                                            "mScreenState",
+                                            SCREEN_STATE_ON_UNLOCKED);
                                 }
                             } catch (Exception e) {
                                 XposedBridge.log(e);
@@ -99,7 +104,8 @@ public class XNfcPackage {
                             }
 
                             final int mOrigScreenState =
-                                    (Integer) XposedHelpers.getAdditionalInstanceField(param.thisObject, "mOrigScreenState");
+                                    (Integer) XposedHelpers.getAdditionalInstanceField(param.thisObject,
+                                            "mOrigScreenState");
                             if (mOrigScreenState == -1)
                                 return;
 

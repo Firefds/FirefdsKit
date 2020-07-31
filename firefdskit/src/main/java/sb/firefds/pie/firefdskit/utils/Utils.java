@@ -24,8 +24,11 @@ import android.os.PowerManager;
 import android.os.SystemProperties;
 import android.util.Log;
 import android.view.View;
+
 import androidx.core.content.ContextCompat;
+
 import com.google.android.material.snackbar.Snackbar;
+
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.R;
 
@@ -69,6 +72,7 @@ public class Utils {
         }
     }
 
+    @SuppressLint("MissingPermission")
     private static void rebootSystem(final String rebootType) {
         try {
             ((PowerManager) getAppContext().getSystemService(Context.POWER_SERVICE)).reboot(rebootType);

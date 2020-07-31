@@ -29,7 +29,8 @@ import static sb.firefds.pie.firefdskit.utils.Packages.SMART_CAPTURE;
 public class ScreenRecordActionViewModel extends FirefdsKitActionViewModel {
 
     private static final String SCREEN_RECORDER_ACTIVITY = "com.sec.app.screenrecorder.activity.LauncherActivity";
-    private static final String SCREEN_RECORDER_SERVICE = "com.samsung.android.app.screenrecorder.ScreenRecorderService";
+    private static final String SCREEN_RECORDER_SERVICE = "com.samsung.android.app.screenrecorder" +
+            ".ScreenRecorderService";
 
     ScreenRecordActionViewModel() {
 

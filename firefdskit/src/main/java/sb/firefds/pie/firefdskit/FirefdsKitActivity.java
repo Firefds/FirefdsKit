@@ -191,7 +191,9 @@ public class FirefdsKitActivity extends AppCompatActivity
 
         if (sharedPreferences.getInt(PREF_NAVIGATION_BAR_COLOR, 0) == 0) {
             try {
-                editor.putInt(PREF_NAVIGATION_BAR_COLOR, Settings.Global.getInt(getContentResolver(), "navigationbar_color")).apply();
+                editor.putInt(PREF_NAVIGATION_BAR_COLOR,
+                        Settings.Global.getInt(getContentResolver(),
+                        "navigationbar_color")).apply();
             } catch (Throwable e) {
                 Utils.log(e);
             }
@@ -477,7 +479,8 @@ public class FirefdsKitActivity extends AppCompatActivity
             editor.putInt(PREF_SCREEN_TIMEOUT_MINUTES, 0).apply();
             editor.putInt(PREF_SCREEN_TIMEOUT_HOURS, 0).apply();
 
-            editor.putInt(PREF_NAVIGATION_BAR_COLOR, activity.getResources().getIntArray(R.array.navigationbar_color_values)[1])
+            editor.putInt(PREF_NAVIGATION_BAR_COLOR,
+                    activity.getResources().getIntArray(R.array.navigationbar_color_values)[1])
                     .apply();
         }
         if ((!sharedPreferences.getBoolean(PREF_FIRST_LAUNCH, false)) || forceDefault) {

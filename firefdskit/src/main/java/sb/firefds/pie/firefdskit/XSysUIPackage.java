@@ -21,11 +21,11 @@ public class XSysUIPackage {
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
-		try {
-			XSysUIFeaturePackage.doHook(prefs, classLoader);
-		} catch (Throwable e) {
-			XposedBridge.log(e);
-		}
+        try {
+            XSysUIFeaturePackage.doHook(prefs, classLoader);
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
 
         try {
             XSysUINotificationPanelPackage.doHook(prefs, classLoader);

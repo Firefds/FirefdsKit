@@ -20,8 +20,10 @@ import android.os.UserManager;
 import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
+
 import com.samsung.android.feature.SemCscFeature;
 import com.samsung.android.feature.SemFloatingFeature;
+
 import de.robv.android.xposed.*;
 
 import static sb.firefds.pie.firefdskit.utils.Constants.*;

@@ -21,12 +21,26 @@ import android.content.pm.Signature;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.UserManager;
-import de.robv.android.xposed.*;
 
 import java.util.List;
 import java.util.Optional;
 
-import static sb.firefds.pie.firefdskit.utils.Preferences.*;
+import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
+import de.robv.android.xposed.XSharedPreferences;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedHelpers;
+
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DEFAULT_REBOOT_BEHAVIOR;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_SECURE_FLAG;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_SIGNATURE_CHECK;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_DUAL_SIM_SD_CARD;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_SECURE_FOLDER;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_HIDE_USB_NOTIFICATION;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_HIDE_VOLTE_ICON;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_MAX_SUPPORTED_USERS;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE_USERS;
 
 public class XAndroidPackage {
 
@@ -102,10 +116,13 @@ public class XAndroidPackage {
                         new XC_MethodHook() {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) {
-                                String mRebootReason = (String) XposedHelpers.getStaticObjectField(shutdownThreadClass, "mRebootReason");
+                                String mRebootReason =
+                                        (String) XposedHelpers.getStaticObjectField(shutdownThreadClass,
+                                                "mRebootReason");
                                 boolean mReboot = XposedHelpers.getStaticBooleanField(shutdownThreadClass, "mReboot");
                                 if (mReboot && mRebootReason.equals("userrequested")) {
-                                    XposedHelpers.setStaticObjectField(shutdownThreadClass, "mRebootReason", "recovery");
+                                    XposedHelpers.setStaticObjectField(shutdownThreadClass, "mRebootReason",
+                                            "recovery");
                                 }
                             }
                         });

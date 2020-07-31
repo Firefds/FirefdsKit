@@ -56,7 +56,8 @@ public class PowerMenuSettingsFragment extends FirefdsPreferenceFragment {
                 sharedPreferences.edit()
                         .putString(key, getFragmentActivity().getString(R.string.reboot_recovery))
                         .apply();
-                Optional<EditTextPreference> custom_recovery = Optional.ofNullable(findPreference(PREF_CUSTOM_RECOVERY));
+                Optional<EditTextPreference> custom_recovery =
+                        Optional.ofNullable(findPreference(PREF_CUSTOM_RECOVERY));
                 custom_recovery.ifPresent(editTextPreference ->
                         editTextPreference.setText(getFragmentActivity().getString(R.string.reboot_recovery)));
             }
@@ -67,7 +68,8 @@ public class PowerMenuSettingsFragment extends FirefdsPreferenceFragment {
                 sharedPreferences.edit()
                         .putString(key, getFragmentActivity().getString(R.string.reboot_confirm_recovery))
                         .apply();
-                Optional<EditTextPreference> custom_recovery_confirmation = Optional.ofNullable(findPreference(PREF_CUSTOM_RECOVERY_CONFIRMATION));
+                Optional<EditTextPreference> custom_recovery_confirmation =
+                        Optional.ofNullable(findPreference(PREF_CUSTOM_RECOVERY_CONFIRMATION));
                 custom_recovery_confirmation.ifPresent(editTextPreference ->
                         editTextPreference.setText(getFragmentActivity().getString(R.string.reboot_confirm_recovery)));
             }

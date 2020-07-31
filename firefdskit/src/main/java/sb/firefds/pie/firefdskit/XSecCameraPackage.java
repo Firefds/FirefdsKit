@@ -42,7 +42,9 @@ public class XSecCameraPackage {
                         new XC_MethodHook() {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) {
-                                XposedHelpers.setStaticBooleanField(cameraFeatureClass, "SUPPORT_THERMISTOR_TEMPERATURE", false);
+                                XposedHelpers.setStaticBooleanField(cameraFeatureClass,
+                                        "SUPPORT_THERMISTOR_TEMPERATURE",
+                                        false);
                             }
                         });
             } catch (Throwable e) {
@@ -60,7 +62,8 @@ public class XSecCameraPackage {
                             prefs.reload();
                             XposedHelpers.setStaticBooleanField(cameraFeatureClass,
                                     "ENABLE_SHUTTER_SOUND_MENU",
-                                    prefs.getBoolean(PREF_ENABLE_CAMERA_SHUTTER_MENU, false));
+                                    prefs.getBoolean(PREF_ENABLE_CAMERA_SHUTTER_MENU,
+                                            false));
                         }
                     });
         } catch (Throwable e) {

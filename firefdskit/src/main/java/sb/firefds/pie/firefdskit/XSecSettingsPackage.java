@@ -52,7 +52,8 @@ public class XSecSettingsPackage {
     private static final String SEC_DEVICE_INFO_UTILS = SAMSUNG_SETTINGS + ".deviceinfo.SecDeviceInfoUtils";
     private static final String STATUS_BAR = SAMSUNG_SETTINGS + ".display.StatusBar";
     private static final String NAVIGATION_BAR_SETTINGS = SAMSUNG_SETTINGS + ".navigationbar.NavigationBarSettings";
-    private static final String NAVIGATIONBAR_COLOR_PREFERENCE = SAMSUNG_SETTINGS + ".navigationbar.NavigationbarColorPreference";
+    private static final String NAVIGATIONBAR_COLOR_PREFERENCE = SAMSUNG_SETTINGS + ".navigationbar" +
+            ".NavigationbarColorPreference";
     private static final String SYSCOPE_STATUS_PREFERENCE_CONTROLLER =
             SAMSUNG_SETTINGS + ".deviceinfo.status.SyscopeStatusPreferenceController";
 
@@ -220,9 +221,11 @@ public class XSecSettingsPackage {
                             Resources res = ctx.getResources();
                             Context gbContext = Utils.getGbContext(ctx, res.getConfiguration());
                             Constructor constructor =
-                                    NavigationBarColorPreference.getDeclaredConstructor(Context.class, AttributeSet.class);
+                                    NavigationBarColorPreference.getDeclaredConstructor(Context.class,
+                                            AttributeSet.class);
 
-                            XmlPullParser parser = gbContext.getResources().getXml(R.xml.org_navigationbar_color_preference);
+                            XmlPullParser parser =
+                                    gbContext.getResources().getXml(R.xml.org_navigationbar_color_preference);
                             parser.next();
                             parser.nextTag();
 

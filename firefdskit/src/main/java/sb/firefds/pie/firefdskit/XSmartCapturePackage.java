@@ -15,19 +15,27 @@
 package sb.firefds.pie.firefdskit;
 
 import android.content.Context;
-import de.robv.android.xposed.*;
-import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 import java.io.File;
+
+import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
+import de.robv.android.xposed.XSharedPreferences;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedHelpers;
+import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_SCREEN_RECORDER_IN_CALL;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_ENABLE_SCREEN_RECORDER_TILE;
 
 public class XSmartCapturePackage {
 
-    private static final String RECORDING_STOP_REASON = "com.samsung.android.app.screenrecorder.ScreenRecorderController.RecordingStopReason";
-    private static final String SCREEN_RECORDER_CONTROLLER = "com.samsung.android.app.screenrecorder.ScreenRecorderController";
-    private static final String SCREEN_RECORDER_CONTROLLER$1 = "com.samsung.android.app.screenrecorder.ScreenRecorderController$1";
+    private static final String RECORDING_STOP_REASON = "com.samsung.android.app.screenrecorder" +
+            ".ScreenRecorderController.RecordingStopReason";
+    private static final String SCREEN_RECORDER_CONTROLLER = "com.samsung.android.app.screenrecorder" +
+            ".ScreenRecorderController";
+    private static final String SCREEN_RECORDER_CONTROLLER$1 = "com.samsung.android.app.screenrecorder" +
+            ".ScreenRecorderController$1";
     private static final String SCREEN_RECORDER_UTILS = "com.samsung.android.app.screenrecorder.util.Utils";
     private static final String SMART_CAPTURE_UTILS = "com.samsung.android.app.util.SmartCaptureUtils";
     private static final String PACKAGE_PARSER = "android.content.pm.PackageParser";

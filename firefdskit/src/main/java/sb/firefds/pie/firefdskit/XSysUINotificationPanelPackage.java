@@ -15,13 +15,22 @@
 package sb.firefds.pie.firefdskit;
 
 import android.widget.TextView;
-import de.robv.android.xposed.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
+import de.robv.android.xposed.XSharedPreferences;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedHelpers;
+
 import static sb.firefds.pie.firefdskit.utils.Packages.SYSTEM_UI;
-import static sb.firefds.pie.firefdskit.utils.Preferences.*;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CARRIER_SIZE;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DATA_ICON_BEHAVIOR;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DATA_USAGE_VIEW;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_HIDE_CARRIER_LABEL;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SHOW_NETWORK_SPEED_MENU;
 
 public class XSysUINotificationPanelPackage {
 

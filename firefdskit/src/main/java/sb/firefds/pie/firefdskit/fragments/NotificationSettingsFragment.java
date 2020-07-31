@@ -53,7 +53,8 @@ public class NotificationSettingsFragment extends FirefdsPreferenceFragment {
         super.onCreate(savedInstanceState);
 
         Optional<ListPreference> clockDatePreference = Optional.ofNullable(findPreference(PREF_CLOCK_DATE_PREFERENCE));
-        Optional<SwitchPreferenceCompat> clockDateOnRight = Optional.ofNullable(findPreference(PREF_CLOCK_DATE_ON_RIGHT));
+        Optional<SwitchPreferenceCompat> clockDateOnRight =
+                Optional.ofNullable(findPreference(PREF_CLOCK_DATE_ON_RIGHT));
         if (clockDatePreference.isPresent() && clockDateOnRight.isPresent()) {
             clockDateOnRight.get().setEnabled(!clockDatePreference.get().getValue().equals("disabled"));
         }
