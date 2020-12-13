@@ -16,8 +16,6 @@ package sb.firefds.pie.firefdskit;
 
 import androidx.annotation.Keep;
 
-import java.io.File;
-
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -34,8 +32,6 @@ import static sb.firefds.pie.firefdskit.utils.Packages.FIREFDSKIT;
 public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     private static XSharedPreferences prefs;
-    private static File securePrefFile = new File("/data/user_de/0/sb.firefds.pie.firefdskit/shared_prefs/"
-            + FIREFDSKIT + "_preferences.xml");
 
     @Override
     public void initZygote(StartupParam startupParam) {
@@ -43,10 +39,7 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         // Do not load if Not a Touchwiz Rom
         if (Utils.isNotSamsungRom()) {
             XposedBridge.log("FFK: com.samsung.device.jar or com.samsung.device.lite.jar not found!");
-            return;
         }
-
-        getModuleSharedPreferences();
     }
 
     @Override
@@ -57,6 +50,8 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             XposedBridge.log("FFK: com.samsung.device.jar or com.samsung.device.lite.jar not found!");
             return;
         }
+
+        getModuleSharedPreferences();
 
         if (lpparam.packageName.equals(FIREFDSKIT)) {
             if (prefs != null) {
@@ -192,10 +187,7 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     private static void getModuleSharedPreferences() {
         if (prefs == null) {
-            prefs = Utils.isDeviceEncrypted() ?
-                    new XSharedPreferences(securePrefFile) :
-                    new XSharedPreferences(BuildConfig.APPLICATION_ID);
-            prefs.makeWorldReadable();
+            prefs = new XSharedPreferences(BuildConfig.APPLICATION_ID);
         } else {
             prefs.reload();
         }

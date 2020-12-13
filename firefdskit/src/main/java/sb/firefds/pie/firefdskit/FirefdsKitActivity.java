@@ -14,7 +14,6 @@
  */
 package sb.firefds.pie.firefdskit;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -193,13 +192,11 @@ public class FirefdsKitActivity extends AppCompatActivity
             try {
                 editor.putInt(PREF_NAVIGATION_BAR_COLOR,
                         Settings.Global.getInt(getContentResolver(),
-                        "navigationbar_color")).apply();
+                                "navigationbar_color")).apply();
             } catch (Throwable e) {
                 Utils.log(e);
             }
         }
-
-        fixAppPermissions(appContext);
 
         if (!XposedChecker.isActive()) {
             setCardStatus(R.drawable.ic_error,
@@ -431,35 +428,6 @@ public class FirefdsKitActivity extends AppCompatActivity
         }
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    @SuppressLint("SetWorldReadable")
-    public static void fixPermissions(Context context) {
-        File sharedPrefsFolder = new File(context.getDataDir().getAbsolutePath() + "/shared_prefs");
-        if (sharedPrefsFolder.exists()) {
-            sharedPrefsFolder.setExecutable(true, false);
-            sharedPrefsFolder.setReadable(true, false);
-            File f = new File(String.format("%s/%s_preferences.xml",
-                    sharedPrefsFolder.getAbsolutePath(),
-                    BuildConfig.APPLICATION_ID));
-            if (f.exists()) {
-                f.setReadable(true, false);
-                f.setExecutable(true, false);
-            }
-        }
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    @SuppressLint("SetWorldReadable")
-    private static void fixAppPermissions(Context context) {
-        Optional.of(context)
-                .map(Context::getFilesDir)
-                .map(File::getParentFile)
-                .ifPresent(folder -> {
-                    folder.setExecutable(true, false);
-                    folder.setReadable(true, false);
-                });
-    }
-
     private static void setDefaultPreferences(boolean forceDefault) {
         upgradePreferences();
         PreferenceManager.setDefaultValues(appContext, R.xml.lockscreen_settings, true);
@@ -496,7 +464,6 @@ public class FirefdsKitActivity extends AppCompatActivity
                     SemCscFeature.getInstance()
                             .getBoolean(FORCE_CONNECT_MMS)).apply();
         }
-        fixPermissions(appContext);
     }
 
     private static void upgradePreferences() {
@@ -556,7 +523,6 @@ public class FirefdsKitActivity extends AppCompatActivity
                     prefEdit.putString((String) key, ((String) value));
             });
             prefEdit.apply();
-            fixPermissions(appContext);
 
             SystemClock.sleep(1500);
             return null;
