@@ -92,6 +92,7 @@ public class Utils {
         if (mGbContext == null) {
             mGbContext = context.createPackageContext(FIREFDSKIT,
                     Context.CONTEXT_IGNORE_SECURITY);
+            mGbContext = mGbContext.createDeviceProtectedStorageContext();
         }
         return (config == null ? mGbContext : mGbContext.createConfigurationContext(config));
     }

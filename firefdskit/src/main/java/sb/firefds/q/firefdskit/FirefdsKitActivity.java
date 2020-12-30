@@ -25,6 +25,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,6 +55,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -110,6 +112,7 @@ public class FirefdsKitActivity extends AppCompatActivity
     private ActionBarDrawerToggle toggle;
     private ActionBarDrawerToggle menuToggle;
     private MenuItem selectedMenuItem;
+    private static String mPreferenceDir;
 
     {
         OPTIONS_ITEMS.put(R.id.action_credits, SHOW_CREDIT_DIALOG);
@@ -423,8 +426,8 @@ public class FirefdsKitActivity extends AppCompatActivity
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SuppressLint("SetWorldReadable")
-    public static void fixPermissions(Context context) {
-        File sharedPrefsFolder = new File(context.getDataDir().getAbsolutePath() + "/shared_prefs");
+    public static void fixPermissions() {
+        File sharedPrefsFolder = new File(getPreferenceDir());
         if (sharedPrefsFolder.exists()) {
             sharedPrefsFolder.setExecutable(true, false);
             sharedPrefsFolder.setReadable(true, false);
@@ -482,7 +485,7 @@ public class FirefdsKitActivity extends AppCompatActivity
                     SemCscFeature.getInstance()
                             .getBoolean(FORCE_CONNECT_MMS)).apply();
         }
-        fixPermissions(appContext);
+        fixPermissions();
     }
 
     private static void upgradePreferences() {
@@ -499,6 +502,24 @@ public class FirefdsKitActivity extends AppCompatActivity
             String uid = String.valueOf(preferences.getInt(PREF_NFC_BEHAVIOR, 0));
             preferences.edit().putString(PREF_NFC_BEHAVIOR, uid).apply();
         }
+    }
+
+    public static String getPreferenceDir() {
+        if (mPreferenceDir == null) {
+            try {
+                SharedPreferences prefs = appContext.getSharedPreferences("dummy", Context.MODE_PRIVATE);
+                prefs.edit().putBoolean("dummy", false).apply();
+                Field f = prefs.getClass().getDeclaredField("mFile");
+                f.setAccessible(true);
+                mPreferenceDir = new File(((File) f.get(prefs)).getParent()).getAbsolutePath();
+                Log.d("FFK", "Preference folder: " + mPreferenceDir);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                Log.e("FFK", "Could not determine preference folder path. Returning default.");
+                e.printStackTrace();
+                mPreferenceDir = appContext.getDataDir() + "/shared_prefs";
+            }
+        }
+        return mPreferenceDir;
     }
 
     private static class RestoreBackupTask extends AsyncTask<Void, Void, Void> {
@@ -542,7 +563,7 @@ public class FirefdsKitActivity extends AppCompatActivity
                     prefEdit.putString((String) key, ((String) value));
             });
             prefEdit.apply();
-            fixPermissions(appContext);
+            fixPermissions();
 
             SystemClock.sleep(1500);
             return null;

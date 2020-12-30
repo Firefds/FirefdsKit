@@ -28,7 +28,6 @@ import sb.firefds.q.firefdskit.notifications.RebootNotification;
 import sb.firefds.q.firefdskit.utils.Utils;
 
 import static sb.firefds.q.firefdskit.FirefdsKitActivity.fixPermissions;
-import static sb.firefds.q.firefdskit.FirefdsKitActivity.getAppContext;
 import static sb.firefds.q.firefdskit.FirefdsKitActivity.getSharedPreferences;
 
 public abstract class FirefdsPreferenceFragment extends PreferenceFragmentCompat
@@ -55,7 +54,7 @@ public abstract class FirefdsPreferenceFragment extends PreferenceFragmentCompat
 
             for (String string : litePrefs) {
                 if (key.equalsIgnoreCase(string)) {
-                    fixPermissions(getAppContext());
+                    fixPermissions();
                     return;
                 }
             }
@@ -64,7 +63,7 @@ public abstract class FirefdsPreferenceFragment extends PreferenceFragmentCompat
             if (!changesMade.contains(key)) {
                 changesMade.add(key);
             }
-            fixPermissions(getAppContext());
+            fixPermissions();
             RebootNotification.notify(fragmentActivity, changesMade.size(), false);
         } catch (Throwable e) {
             Utils.log(e);
@@ -75,14 +74,14 @@ public abstract class FirefdsPreferenceFragment extends PreferenceFragmentCompat
     public void onResume() {
         super.onResume();
         registerPrefsReceiver();
-        fixPermissions(getAppContext());
+        fixPermissions();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         unregisterPrefsReceiver();
-        fixPermissions(getAppContext());
+        fixPermissions();
     }
 
     public abstract String getFragmentName();

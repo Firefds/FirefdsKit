@@ -42,6 +42,10 @@
             android:name="xposeddescription"
             android:value="Made for stock Samsung devices supporting Android 10.0 Roms by Firefds" />
 
+        <meta-data
+            android:name="xposedsharedprefs"
+            android:value="true" />
+
         <receiver
             android:name=".receivers.FirefdsRebootReceiver"
             android:exported="false" />
