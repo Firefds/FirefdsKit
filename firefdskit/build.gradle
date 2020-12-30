@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
 
     signingConfigs {
         release {
@@ -13,12 +13,12 @@ android {
         }
     }
     defaultConfig {
-        applicationId 'sb.firefds.q.firefdskit'
+        applicationId 'sb.firefds.r.firefdskit'
         minSdkVersion 29
-        targetSdkVersion 29
-        versionCode 1013
-        versionName "1.0.1.4-STABLE-6"
-        project.ext.set("archivesBaseName", "FirefdsKit_Q_" + versionName)
+        targetSdkVersion 30
+        versionCode 1000
+        versionName "1.0.0.0-ALPHA-1"
+        project.ext.set("archivesBaseName", "FirefdsKit_R_" + versionName)
     }
     buildTypes {
         release {
