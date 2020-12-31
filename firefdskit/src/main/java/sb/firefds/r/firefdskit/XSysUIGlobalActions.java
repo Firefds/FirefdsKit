@@ -306,8 +306,10 @@ public class XSysUIGlobalActions {
                                         .getObjectField(param.thisObject, "mResourceFactory");
                                 ImageView localImageView = ((View) param.args[0])
                                         .findViewById(resourceFactory.get(ResourceType.ID_ICON));
-                                Optional.ofNullable(actionViewModel.getIcon())
-                                        .ifPresent(localImageView::setImageDrawable);
+                                if (localImageView != null) {
+                                    Optional.ofNullable(actionViewModel.getIcon())
+                                            .ifPresent(localImageView::setImageDrawable);
+                                }
                             }
                         });
 
