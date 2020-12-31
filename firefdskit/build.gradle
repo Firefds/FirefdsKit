@@ -18,7 +18,6 @@ android {
         targetSdkVersion 30
         versionCode 1000
         versionName "1.0.0.0-ALPHA-1"
-        project.ext.set("archivesBaseName", "FirefdsKit_R_" + versionName)
     }
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
