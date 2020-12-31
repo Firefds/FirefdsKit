@@ -51,22 +51,23 @@ public class XPM30 {
                         protected void afterHookedMethod(MethodHookParam param) {
                             final String pkgName = (String) XposedHelpers.callMethod(param.args[0], "getPackageName");
                             if (pkgName.equals(FIREFDSKIT) || pkgName.equals(SYSTEM_UI)) {
-                                XposedBridge.log("FFK: Package Name: " + pkgName);
-                                final Object ps = XposedHelpers.callMethod(param.args[0], "getPermissionsState");
-                                XposedBridge.log("FFK: getPermissionsState: " + ps);
-                                final Object settings = XposedHelpers.getObjectField(param.thisObject, "mSettings");
-                                XposedBridge.log("FFK: mSettings: " + settings);
-                                final Object permissions = XposedHelpers.getObjectField(settings, "mPermissions");
-                                XposedBridge.log("FFK: mPermissions: " + permissions);
+                                final Object mPackageManagerInt = XposedHelpers.getObjectField(param.thisObject,
+                                        "mPackageManagerInt");
+                                final Object packageSettings = XposedHelpers.callMethod(mPackageManagerInt,
+                                        "getPackageSetting", pkgName);
+                                final Object permissionsState = XposedHelpers.callMethod(packageSettings,
+                                        "getPermissionsState");
+                                final Object mSettings = XposedHelpers.getObjectField(param.thisObject, "mSettings");
+                                final Object mPermissions = XposedHelpers.getObjectField(mSettings, "mPermissions");
 
                                 switch (pkgName) {
                                     case FIREFDSKIT:
-                                        grantPermission(ps, permissions, STATUSBAR);
-                                        grantPermission(ps, permissions, WRITE_SETTINGS);
+                                        grantPermission(permissionsState, mPermissions, STATUSBAR);
+                                        grantPermission(permissionsState, mPermissions, WRITE_SETTINGS);
                                     case SYSTEM_UI:
-                                        grantPermission(ps, permissions, REBOOT);
-                                        grantPermission(ps, permissions, RECOVERY);
-                                        grantPermission(ps, permissions, ACCESS_SCREEN_RECORDER_SVC);
+                                        grantPermission(permissionsState, mPermissions, REBOOT);
+                                        grantPermission(permissionsState, mPermissions, RECOVERY);
+                                        grantPermission(permissionsState, mPermissions, ACCESS_SCREEN_RECORDER_SVC);
                                         break;
                                 }
                             }
@@ -77,11 +78,10 @@ public class XPM30 {
         }
     }
 
-    private static void grantPermission(Object ps, Object permissions, String permission) {
-        if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", permission)) {
-            XposedBridge.log("FFK: Inside hasInstallPermission");
+    private static void grantPermission(Object permissionsState, Object permissions, String permission) {
+        if (!(Boolean) XposedHelpers.callMethod(permissionsState, "hasInstallPermission", permission)) {
             final Object pAccess = XposedHelpers.callMethod(permissions, "get", permission);
-            XposedBridge.log("FFK: grantInstallPermission for " + pAccess + "returns " + XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess));
+            XposedHelpers.callMethod(permissionsState, "grantInstallPermission", pAccess);
         }
     }
 }
