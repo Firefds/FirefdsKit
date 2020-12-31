@@ -18,7 +18,11 @@ android {
         targetSdkVersion 29
         versionCode 1104
         versionName "1.1.0.4-STABLE-15"
-        project.ext.set("archivesBaseName", "FirefdsKit_Pie_" + versionName)
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "FirefdsKit_Pie_${defaultConfig.versionName}.apk"
+        }
     }
     buildTypes {
         release {
