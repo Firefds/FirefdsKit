@@ -28,13 +28,6 @@
             android:summary="@string/hide_charging_notification_summary"
             android:title="@string/hide_charging_notification_title"
             app:iconSpaceReserved="false" />
-        <SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:key="disablePowerButtonQuickPanel"
-            android:summaryOn="@string/disable_power_button_quick_panel_summary_on"
-            android:summaryOff="@string/disable_power_button_quick_panel_summary_off"
-            android:title="@string/disable_power_button_quick_panel_title"
-            app:iconSpaceReserved="false" />
     </androidx.preference.PreferenceCategory>
     <androidx.preference.PreferenceCategory
         android:title="@string/status_icons"

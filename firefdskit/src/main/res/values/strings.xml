@@ -225,7 +225,4 @@
     <string name="enable_dual_sim_sd_card_title">SD Card With Dual Sim</string>
     <string name="enable_spam_protection_summary">Enable Caller ID and spam protection</string>
     <string name="enable_spam_protection_title">Caller ID and Spam Protection</string>
-    <string name="disable_power_button_quick_panel_title">Disable Quick Panel Power Button</string>
-    <string name="disable_power_button_quick_panel_summary_on">Quick panel power button replaced with search button</string>
-    <string name="disable_power_button_quick_panel_summary_off">Quick panel power button enabled</string>
 </resources>
