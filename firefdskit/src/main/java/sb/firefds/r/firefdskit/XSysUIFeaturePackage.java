@@ -16,7 +16,6 @@ package sb.firefds.r.firefdskit;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.os.UserManager;
@@ -71,7 +70,7 @@ public class XSysUIFeaturePackage {
     private static final String SETTINGS_HELPER = SYSTEM_UI + ".util.SettingsHelper";
     private static final String SEC_VOLUME_DIALOG_IMPL = SYSTEM_UI + ".volume.SecVolumeDialogImpl";
     private static final String SOUND_POOL_WRAPPER = SYSTEM_UI + ".volume.util";
-    private static final String NOTIFICATION_PLAYER = SYSTEM_UI + ".media.NotificationPlayer";
+    private static final String SOUND_PATH_FINDER = SYSTEM_UI + ".power.SoundPathFinder";
 
     @SuppressLint("StaticFieldLeak")
     private static TextView mClock;
@@ -291,17 +290,11 @@ public class XSysUIFeaturePackage {
             }
 
             if (prefs.getBoolean(PREF_DISABLE_LOW_BATTERY_SOUND, false)) {
-                XposedHelpers.findAndHookConstructor(NOTIFICATION_PLAYER,
+                XposedHelpers.findAndHookMethod(SOUND_PATH_FINDER,
                         classLoader,
-                        String.class,
-                        new XC_MethodHook() {
-                            @Override
-                            protected void afterHookedMethod(MethodHookParam param) {
-                                XposedHelpers.setObjectField(param.thisObject,
-                                        "mLowBatteryUri",
-                                        Uri.parse("file:///system/media/audio/ui/LowBattery.ogg.disabled"));
-                            }
-                        });
+                        "getBatteryCautionPath",
+                        XC_MethodReplacement.returnConstant("system/media/audio/ui/TW_Battery_caution-disabled.ogg")
+                );
             }
         } catch (Throwable e) {
             XposedBridge.log(e);
