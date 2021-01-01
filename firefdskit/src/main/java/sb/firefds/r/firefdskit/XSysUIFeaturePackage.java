@@ -91,12 +91,11 @@ public class XSysUIFeaturePackage {
             if (prefs.getBoolean(PREF_DISABLE_EYE_STRAIN_DIALOG, false)) {
                 XposedHelpers.findAndHookMethod(TOGGLE_SLIDER_VIEW,
                         classLoader,
-                        "updateEyeStrainDialog",
-                        int.class,
+                        "showUsingHighBrightnessDialog",
                         new XC_MethodHook() {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) {
-                                param.args[0] = 1;
+                                param.setResult(null);
                             }
                         });
                 XposedHelpers.findAndHookConstructor(SETTINGS_HELPER,
