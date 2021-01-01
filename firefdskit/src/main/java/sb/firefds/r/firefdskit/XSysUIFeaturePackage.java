@@ -47,6 +47,7 @@ import static sb.firefds.r.firefdskit.utils.Preferences.PREF_DISABLE_LOW_BATTERY
 import static sb.firefds.r.firefdskit.utils.Preferences.PREF_DISABLE_VOLUME_CONTROL_SOUND;
 import static sb.firefds.r.firefdskit.utils.Preferences.PREF_DISABLE_VOLUME_WARNING;
 import static sb.firefds.r.firefdskit.utils.Preferences.PREF_ENABLE_BIOMETRICS_UNLOCK;
+import static sb.firefds.r.firefdskit.utils.Preferences.PREF_ENABLE_SAMSUNG_BLUR;
 import static sb.firefds.r.firefdskit.utils.Preferences.PREF_HIDE_CHARGING_NOTIFICATION;
 import static sb.firefds.r.firefdskit.utils.Preferences.PREF_MAX_SUPPORTED_USERS;
 import static sb.firefds.r.firefdskit.utils.Preferences.PREF_SHOW_AM_PM;
@@ -240,20 +241,20 @@ public class XSysUIFeaturePackage {
                         });
             }
 
-            /*if (prefs.getBoolean(PREF_ENABLE_SAMSUNG_BLUR, true)) {
+            if (prefs.getBoolean(PREF_ENABLE_SAMSUNG_BLUR, true)) {
                 Class<?> stateClass = XposedHelpers.findClass(STATE, classLoader);
 
-                XposedHelpers.findAndHookMethod(STATUS_BAR_WINDOW_CONTROLLER,
+                XposedHelpers.findAndHookMethod(NOTIFICATION_SHADE_WINDOW_CONTROLLER,
                         classLoader,
                         "apply",
                         stateClass,
                         new XC_MethodHook() {
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
-                                XposedHelpers.callMethod(param.thisObject, "applyPanelBlur", 0.15f);
+                                XposedHelpers.callMethod(param.thisObject, "applyPanelBlur", param.args[0]);
                             }
                         });
-            }*/
+            }
 
             if (prefs.getBoolean(PREF_HIDE_CHARGING_NOTIFICATION, false)) {
                 XposedHelpers.findAndHookMethod(POWER_NOTIFICATION_WARNINGS,
