@@ -62,9 +62,11 @@ public class XSysUIFeaturePackage {
     private static final String VOLUME_DIALOG_CONTROLLER_IMPL = SYSTEM_UI + ".volume.VolumeDialogControllerImpl";
     private static final String KEYGUARD_STRONG_AUTH_TRACKER = "com.android.keyguard.KeyguardUpdateMonitor" +
             ".StrongAuthTracker";
-    private static final String QS_CLOCK = SYSTEM_UI + ".statusbar.policy.QSClock";
-    private static final String STATUS_BAR_WINDOW_CONTROLLER = SYSTEM_UI + ".statusbar.phone.StatusBarWindowController";
-    private static final String STATE = STATUS_BAR_WINDOW_CONTROLLER + ".State";
+    private static final String QS_CLOCK_HOME_INDICATOR_VIEW = SYSTEM_UI + ".statusbar.policy.QSClockHomeIndicatorView";
+    private static final String QS_CLOCK_BELL_SOUND = "com.android.systemui.statusbar.policy.QSClockBellSound";
+    private static final String NOTIFICATION_SHADE_WINDOW_CONTROLLER = SYSTEM_UI + ".statusbar.phone" +
+            ".NotificationShadeWindowController";
+    private static final String STATE = NOTIFICATION_SHADE_WINDOW_CONTROLLER + ".State";
     private static final String POWER_NOTIFICATION_WARNINGS = SYSTEM_UI + ".power.PowerNotificationWarnings";
     private static final String SETTINGS_HELPER = SYSTEM_UI + ".util.SettingsHelper";
     private static final String SEC_VOLUME_DIALOG_IMPL = SYSTEM_UI + ".volume.SecVolumeDialogImpl";
@@ -76,6 +78,8 @@ public class XSysUIFeaturePackage {
     private static SimpleDateFormat mSecondsFormat;
     private static Handler mSecondsHandler;
     private static Class<?> qsClock;
+    private static Class<?> qsClockBellSoundClass;
+    private static Object qsClockBellSound;
     private static Method updateClock;
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
@@ -150,18 +154,16 @@ public class XSysUIFeaturePackage {
             if (prefs.getBoolean(PREF_SHOW_CLOCK_SECONDS, false) ||
                     !prefs.getString(PREF_CLOCK_DATE_PREFERENCE, "disabled").equals("disabled") ||
                     !prefs.getString(PREF_CLOCK_SIZE, "Small").equals("Small")) {
-                qsClock = XposedHelpers.findClass(QS_CLOCK, classLoader);
+                qsClock = XposedHelpers.findClass(QS_CLOCK_HOME_INDICATOR_VIEW, classLoader);
+                qsClockBellSoundClass = XposedHelpers.findClass(QS_CLOCK_BELL_SOUND, classLoader);
                 XposedHelpers.findAndHookMethod(qsClock,
                         "notifyTimeChanged",
-                        String.class,
-                        String.class,
-                        boolean.class,
-                        String.class,
-                        String.class,
+                        qsClockBellSoundClass,
                         new XC_MethodHook() {
                             @SuppressLint({"SetTextI18n", "SimpleDateFormat"})
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
+                                qsClockBellSound = param.args[0];
                                 String tag = (String) (XposedHelpers.callMethod(param.thisObject, "getTag"));
                                 if (tag.equals("phone_status_bar_clock")) {
                                     mClock = (TextView) param.thisObject;
@@ -310,7 +312,7 @@ public class XSysUIFeaturePackage {
         if (mClock == null) return;
 
         if (Optional.ofNullable(mClock.getDisplay()).isPresent()) {
-            updateClock = XposedHelpers.findMethodExact(qsClock, "updateClock");
+            updateClock = XposedHelpers.findMethodExact(qsClock, "notifyTimeChanged", qsClockBellSoundClass);
             mSecondsHandler = new Handler();
             if (mClock.getDisplay().getState() == Display.STATE_ON) {
                 mSecondsHandler.postAtTime(mSecondTick, SystemClock.uptimeMillis() / 1000 * 1000 + 1000);
@@ -335,7 +337,7 @@ public class XSysUIFeaturePackage {
     private static void updateClock() {
         try {
             if (mClock != null) {
-                updateClock.invoke(mClock);
+                updateClock.invoke(mClock, qsClockBellSound);
             }
         } catch (Throwable e) {
             XposedBridge.log(e);
