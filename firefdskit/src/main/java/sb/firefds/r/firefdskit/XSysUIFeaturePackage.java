@@ -56,7 +56,7 @@ import static sb.firefds.r.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE_U
 
 public class XSysUIFeaturePackage {
 
-    private static final String CUSTOM_SDK_MONITOR = SYSTEM_UI + ".KnoxStateMonitor.CustomSdkMonitor";
+    private static final String KNOX_STATE_MONITOR_IMPL = SYSTEM_UI + ".knox.KnoxStateMonitorImpl";
     private static final String TOGGLE_SLIDER_VIEW = SYSTEM_UI + ".settings.ToggleSliderView";
     private static final String VOLUME_DIALOG_CONTROLLER_IMPL = SYSTEM_UI + ".volume.VolumeDialogControllerImpl";
     private static final String KEYGUARD_STRONG_AUTH_TRACKER = "com.android.keyguard.KeyguardUpdateMonitor" +
@@ -81,7 +81,7 @@ public class XSysUIFeaturePackage {
 
         try {
             if (prefs.getBoolean(PREF_STATUSBAR_DOUBLE_TAP, false)) {
-                XposedHelpers.findAndHookMethod(CUSTOM_SDK_MONITOR,
+                XposedHelpers.findAndHookMethod(KNOX_STATE_MONITOR_IMPL,
                         classLoader,
                         "isStatusBarDoubleTapEnabled",
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
