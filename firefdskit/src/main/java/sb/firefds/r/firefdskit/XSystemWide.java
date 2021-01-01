@@ -14,19 +14,28 @@
  */
 package sb.firefds.r.firefdskit;
 
-import android.net.wifi.WifiManager;
 import android.os.PowerManager;
 import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.samsung.android.feature.SemCscFeature;
+import com.samsung.android.wifi.SemWifiManager;
 
-import de.robv.android.xposed.*;
+import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
+import de.robv.android.xposed.XSharedPreferences;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedHelpers;
 
 import static sb.firefds.r.firefdskit.utils.Constants.CONFIG_RECORDING;
 import static sb.firefds.r.firefdskit.utils.Constants.CONFIG_SVC_PROVIDER_FOR_UNKNOWN_NUMBER;
-import static sb.firefds.r.firefdskit.utils.Preferences.*;
+import static sb.firefds.r.firefdskit.utils.Preferences.PREF_DEFAULT_REBOOT_BEHAVIOR;
+import static sb.firefds.r.firefdskit.utils.Preferences.PREF_DISABLE_SECURE_FLAG;
+import static sb.firefds.r.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS;
+import static sb.firefds.r.firefdskit.utils.Preferences.PREF_ENABLE_CALL_ADD;
+import static sb.firefds.r.firefdskit.utils.Preferences.PREF_ENABLE_CALL_RECORDING;
+import static sb.firefds.r.firefdskit.utils.Preferences.PREF_ENABLE_SPAM_PROTECTION;
 
 public class XSystemWide {
 
@@ -73,12 +82,12 @@ public class XSystemWide {
             }
 
             if (prefs.getBoolean(PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS, false)) {
-                XposedHelpers.findAndHookMethod(WifiManager.class,
-                        "semSupportWifiAp5GBasedOnCountry",
+                XposedHelpers.findAndHookMethod(SemWifiManager.class,
+                        "supportWifiAp5GBasedOnCountry",
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
 
-                XposedHelpers.findAndHookMethod(WifiManager.class,
-                        "semSupportWifiAp5G",
+                XposedHelpers.findAndHookMethod(SemWifiManager.class,
+                        "supportWifiAp5G",
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
             }
 
