@@ -40,7 +40,8 @@ public class XSecSettingsPackage {
     private static final String BLUETOOTH_SCAN_DIALOG = SAMSUNG_SETTINGS + ".bluetooth.BluetoothScanDialog";
     private static final String SEC_ACCOUNT_TILES = SAMSUNG_SETTINGS + ".qstile.SecAccountTiles";
     private static final String SEC_DEVICE_INFO_UTILS = SAMSUNG_SETTINGS + ".deviceinfo.SecDeviceInfoUtils";
-    private static final String STATUS_BAR = SAMSUNG_SETTINGS + ".notification.StatusBar";
+    private static final String STATUS_BAR_NETWORK_SPEED_CONTROLLER = SAMSUNG_SETTINGS + ".notification" +
+            ".StatusBarNetworkSpeedController";
     private static final String SYSCOPE_STATUS_PREFERENCE_CONTROLLER =
             SAMSUNG_SETTINGS + ".deviceinfo.status.SysScopeStatusPreferenceController";
     private static final String ICDVERIFICATION = "com.sec.icdverification.ICDVerification";
@@ -180,31 +181,18 @@ public class XSecSettingsPackage {
 
     private static void showNetworkSpeedMenu() {
         try {
-            XposedHelpers.findAndHookMethod(STATUS_BAR,
-                    classLoader,
-                    "onCreate",
-                    Bundle.class,
+            Class<?> statusBarNetworkSpeedController = XposedHelpers.findClass(STATUS_BAR_NETWORK_SPEED_CONTROLLER,
+                    classLoader);
+            XposedBridge.hookAllMethods(statusBarNetworkSpeedController,
+                    "displayPreference",
                     new XC_MethodHook() {
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) {
                             XposedHelpers.setStaticBooleanField(param.thisObject.getClass(),
-                                    "isSupportNetworkSpeedFeature",
+                                    "SUPPORT_NETWORK_SPEED",
                                     true);
                         }
                     });
-
-            XposedHelpers.findAndHookMethod(STATUS_BAR,
-                    classLoader,
-                    "onResume",
-                    new XC_MethodHook() {
-                        @Override
-                        protected void beforeHookedMethod(MethodHookParam param) {
-                            XposedHelpers.setStaticBooleanField(param.thisObject.getClass(),
-                                    "isSupportNetworkSpeedFeature",
-                                    true);
-                        }
-                    });
-
         } catch (Throwable e) {
             XposedBridge.log(e);
         }

@@ -39,7 +39,7 @@ public class XSysUINotificationPanelPackage {
     private static final String RUNE = SYSTEM_UI + ".Rune";
     private static final String CARRIER_TEXT = "com.android.keyguard.CarrierText";
     private static final String DATA_USAGE_BAR = SYSTEM_UI + ".qs.bar.DataUsageBar";
-    private static final String NETSPEED_VIEW = SYSTEM_UI + ".statusbar.policy.NetspeedView";
+    private static final String QP_RUNE = SYSTEM_UI + ".QpRune";
     private static final String MOBILE_SIGNAL_CONTROLLER_CLASS = SYSTEM_UI + ".statusbar.policy.MobileSignalController";
     private static final Map<String, Integer> CARRIER_SIZES_MAP = new HashMap<>();
     private static final Map<String, String> DATA_ICONS_MAP = new HashMap<>();
@@ -110,18 +110,8 @@ public class XSysUINotificationPanelPackage {
 
         if (prefs.getBoolean(PREF_SHOW_NETWORK_SPEED_MENU, false)) {
             try {
-                XposedHelpers.findAndHookMethod(NETSPEED_VIEW,
-                        classLoader,
-                        "onAttachedToWindow",
-                        new XC_MethodHook() {
-                            @Override
-                            protected void beforeHookedMethod(MethodHookParam param) {
-                                XposedHelpers.setStaticBooleanField(systemUIRuneClass,
-                                        "STATBAR_SUPPORT_REAL_TIME_NETWORK_SPEED",
-                                        true);
-                            }
-                        });
-
+                Class<?> qpRune = XposedHelpers.findClass(QP_RUNE, classLoader);
+                XposedHelpers.setStaticBooleanField(qpRune, "STATUS_REAL_TIME_NETWORK_SPEED", true);
             } catch (Exception e) {
                 XposedBridge.log(e);
             }
