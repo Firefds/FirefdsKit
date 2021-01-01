@@ -111,9 +111,9 @@ public class XSysUIFeaturePackage {
             }
 
             if (prefs.getBoolean(PREF_DISABLE_VOLUME_WARNING, false)) {
-                XposedHelpers.findAndHookConstructor(VOLUME_DIALOG_CONTROLLER_IMPL,
-                        classLoader,
-                        Context.class,
+                Class<?> volumeDialogControllerImpl = XposedHelpers.findClass(VOLUME_DIALOG_CONTROLLER_IMPL,
+                        classLoader);
+                XposedBridge.hookAllConstructors(volumeDialogControllerImpl,
                         new XC_MethodHook() {
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
