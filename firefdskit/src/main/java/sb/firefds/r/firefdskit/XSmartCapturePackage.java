@@ -28,7 +28,8 @@ public class XSmartCapturePackage {
             ".ScreenRecorderController";
     private static final String SCREEN_RECORDER_CONTROLLER$1 = "com.samsung.android.app.screenrecorder" +
             ".ScreenRecorderController$1";
-    private static final String SCREEN_RECORDER_UTILS = "com.samsung.android.app.screenrecorder.util.Utils";
+    private static final String SCREEN_RECORDER_UTILS = "com.samsung.android.app.screenrecorder.util" +
+            ".ScreenRecorderUtils";
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
@@ -63,12 +64,6 @@ public class XSmartCapturePackage {
                 XposedHelpers.findAndHookMethod(SCREEN_RECORDER_UTILS,
                         classLoader,
                         "isDuringCallState",
-                        Context.class,
-                        XC_MethodReplacement.returnConstant(Boolean.FALSE));
-
-                XposedHelpers.findAndHookMethod(SCREEN_RECORDER_UTILS,
-                        classLoader,
-                        "isReceivingCallState",
                         Context.class,
                         XC_MethodReplacement.returnConstant(Boolean.FALSE));
             } catch (Exception e) {
