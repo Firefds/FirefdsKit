@@ -37,12 +37,15 @@ public class XSysUINotificationPanelPackage {
     private static final String FOUR_G_INSTEAD_OF_4G_PLUS = "STATBAR_DISPLAY_4G_INSTEAD_OF_4G_PLUS_ICON";
     private static final String FOUR_HALF_G_INSTEAD_OF_4G_PLUS = "STATBAR_DISPLAY_4_HALF_G_INSTEAD_OF_4G_PLUS_ICON";
     private static final String RUNE = SYSTEM_UI + ".Rune";
+    private static final String CARRIER_TEXT_CONTROLLER = "com.android.keyguard.CarrierTextController";
+    private static final String CARRIER_TEXT_CALLBACK_INFO = CARRIER_TEXT_CONTROLLER + ".CarrierTextCallbackInfo";
     private static final String CARRIER_TEXT = "com.android.keyguard.CarrierText";
     private static final String DATA_USAGE_BAR = SYSTEM_UI + ".qs.bar.DataUsageBar";
     private static final String QP_RUNE = SYSTEM_UI + ".QpRune";
     private static final String MOBILE_SIGNAL_CONTROLLER_CLASS = SYSTEM_UI + ".statusbar.policy.MobileSignalController";
     private static final Map<String, Integer> CARRIER_SIZES_MAP = new HashMap<>();
     private static final Map<String, String> DATA_ICONS_MAP = new HashMap<>();
+
 
     private static ClassLoader classLoader;
 
@@ -65,21 +68,29 @@ public class XSysUINotificationPanelPackage {
         final Class<?> systemUIRuneClass = XposedHelpers.findClass(RUNE, classLoader);
 
         try {
+            XposedHelpers.findAndHookMethod(CARRIER_TEXT_CONTROLLER,
+                    classLoader,
+                    "postToCallback",
+                    CARRIER_TEXT_CALLBACK_INFO,
+                    new XC_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param) {
+                            prefs.reload();
+                            if (prefs.getBoolean(PREF_HIDE_CARRIER_LABEL, false)) {
+                                XposedHelpers.setObjectField(param.args[0], "carrierText", " ");
+                            }
+                        }
+                    });
+
             XposedHelpers.findAndHookMethod(CARRIER_TEXT,
                     classLoader,
                     "onFinishInflate",
                     new XC_MethodHook() {
                         @Override
                         protected void afterHookedMethod(MethodHookParam param) {
-                            TextView tvCarrier = (TextView) param.thisObject;
-
                             prefs.reload();
-                            if (prefs.getBoolean(PREF_HIDE_CARRIER_LABEL, false)) {
-                                tvCarrier.setText(" ");
-                            }
-
                             int textSize = getCarrierSizeValue(prefs.getString(PREF_CARRIER_SIZE, "Small"));
-                            tvCarrier.setTextSize(textSize);
+                            ((TextView) param.thisObject).setTextSize(textSize);
                         }
                     });
         } catch (Throwable e) {
