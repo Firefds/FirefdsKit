@@ -29,8 +29,6 @@
         <item>screenTimeoutSeconds</item>
         <item>screenTimeoutMinutes</item>
         <item>screenTimeoutHours</item>
-        <item>hideCarrierLabel</item>
-        <item>carrierSize</item>
         <item>enableCallAdd</item>
         <item>disableBluetoothScanDialog</item>
         <item>enableCameraShutterMenu</item>

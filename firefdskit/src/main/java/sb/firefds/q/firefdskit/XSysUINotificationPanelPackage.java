@@ -40,6 +40,8 @@ public class XSysUINotificationPanelPackage {
     private static final String FOUR_G_INSTEAD_OF_4G_PLUS = "STATBAR_DISPLAY_4G_INSTEAD_OF_4G_PLUS_ICON";
     private static final String FOUR_HALF_G_INSTEAD_OF_4G_PLUS = "STATBAR_DISPLAY_4_HALF_G_INSTEAD_OF_4G_PLUS_ICON";
     private static final String RUNE = SYSTEM_UI + ".Rune";
+    private static final String CLASS_CARRIER_TEXT_CTRL = "com.android.keyguard.CarrierTextController";
+    private static final String CARRIER_TEXT_CALLBACK_INFO = CLASS_CARRIER_TEXT_CTRL + ".CarrierTextCallbackInfo";
     private static final String CARRIER_TEXT = "com.android.keyguard.CarrierText";
     private static final String DATA_USAGE_BAR = SYSTEM_UI + ".qs.bar.DataUsageBar";
     private static final String NETSPEED_VIEW = SYSTEM_UI + ".statusbar.policy.NetspeedView";
@@ -78,21 +80,29 @@ public class XSysUINotificationPanelPackage {
         }
 
         try {
+            XposedHelpers.findAndHookMethod(CLASS_CARRIER_TEXT_CTRL,
+                    classLoader,
+                    "postToCallback",
+                    CARRIER_TEXT_CALLBACK_INFO,
+                    new XC_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param) {
+                            prefs.reload();
+                            if (prefs.getBoolean(PREF_HIDE_CARRIER_LABEL, false)) {
+                                XposedHelpers.setObjectField(param.args[0], "carrierText", " ");
+                            }
+                        }
+                    });
+
             XposedHelpers.findAndHookMethod(CARRIER_TEXT,
                     classLoader,
                     "onFinishInflate",
                     new XC_MethodHook() {
                         @Override
                         protected void afterHookedMethod(MethodHookParam param) {
-                            TextView tvCarrier = (TextView) param.thisObject;
-
                             prefs.reload();
-                            if (prefs.getBoolean(PREF_HIDE_CARRIER_LABEL, false)) {
-                                tvCarrier.setText(" ");
-                            }
-
                             int textSize = getCarrierSizeValue(prefs.getString(PREF_CARRIER_SIZE, "Small"));
-                            tvCarrier.setTextSize(textSize);
+                            ((TextView) param.thisObject).setTextSize(textSize);
                         }
                     });
         } catch (Throwable e) {
