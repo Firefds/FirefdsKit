@@ -132,7 +132,6 @@ public class XSysUINotificationPanelPackage {
                     new XC_MethodHook() {
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) {
-                            XposedBridge.log("FFK: Changing data icon to " + dataIconBehavior);
                             param.setResult(Boolean.TRUE);
                         }
                     });

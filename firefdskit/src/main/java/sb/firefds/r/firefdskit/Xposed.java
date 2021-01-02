@@ -64,7 +64,7 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                     XposedBridge.log(e);
                 }
             } else {
-                XposedBridge.log("FFK: Xposed cannot read XTouchWiz preferences!");
+                XposedBridge.log("FFK: Xposed cannot read Firefds Kit preferences!");
             }
         }
 
