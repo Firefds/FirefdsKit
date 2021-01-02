@@ -43,11 +43,9 @@ public class XNfcPackage {
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) {
 
-                            if ((Boolean) XposedHelpers.callMethod(param.thisObject,
-                                    "isNfcEnabled")) {
+                            if ((Boolean) XposedHelpers.callMethod(param.thisObject, "isNfcEnabled")) {
                                 prefs.reload();
-                                param.args[0] =
-                                        !prefs.getBoolean(PREF_HIDE_NFC_ICON, false);
+                                param.args[0] = !prefs.getBoolean(PREF_HIDE_NFC_ICON, false);
                             }
                         }
                     });
