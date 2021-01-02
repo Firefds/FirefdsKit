@@ -58,17 +58,11 @@ public class XMessagingPackage {
         try {
             XposedHelpers.findAndHookMethod(messagingFeatureClass,
                     "getSmsToMmsByThreshold",
+                    int.class,
+                    int.class,
                     XC_MethodReplacement.returnConstant(!disableSmsToMms));
-        } catch (Throwable e) {
-            try {
-                XposedHelpers.findAndHookMethod(messagingFeatureClass,
-                        "getSmsToMmsByThreshold",
-                        int.class,
-                        int.class,
-                        XC_MethodReplacement.returnConstant(!disableSmsToMms));
-            } catch (Throwable e1) {
-                XposedBridge.log(e1);
-            }
+        } catch (Throwable e1) {
+            XposedBridge.log(e1);
         }
 
         try {
