@@ -24,15 +24,14 @@ import static sb.firefds.r.firefdskit.utils.Preferences.PREF_MAKE_OFFICIAL;
 
 public class XFotaAgentPackage {
 
-    private static final String DEVICE_UTILS_OLD = "com.samsung.android.fem.common.util.DeviceUtils";
-    private static final String DEVICE_UTILS_NEW = "com.idm.fotaagent.enabler.utils.DeviceUtils";
+    private static final String DEVICE_UTILS = "com.idm.fotaagent.enabler.utils.DeviceUtils";
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
 
         if (prefs.getBoolean(PREF_MAKE_OFFICIAL, true)) {
             try {
-                XposedHelpers.findAndHookMethod(DEVICE_UTILS_OLD,
+                XposedHelpers.findAndHookMethod(DEVICE_UTILS,
                         classLoader,
                         "isRootingDevice",
                         boolean.class,
@@ -43,23 +42,8 @@ public class XFotaAgentPackage {
                             }
                         });
 
-            } catch (Throwable e) {
-                XposedBridge.log("FFK: " + DEVICE_UTILS_OLD + " not found. Trying " + DEVICE_UTILS_NEW);
-                try {
-                    XposedHelpers.findAndHookMethod(DEVICE_UTILS_NEW,
-                            classLoader,
-                            "isRootingDevice",
-                            boolean.class,
-                            new XC_MethodHook() {
-                                @Override
-                                protected void afterHookedMethod(MethodHookParam param) {
-                                    param.setResult(false);
-                                }
-                            });
-
-                } catch (Throwable e1) {
-                    XposedBridge.log(e1);
-                }
+            } catch (Throwable e1) {
+                XposedBridge.log(e1);
             }
         }
     }
