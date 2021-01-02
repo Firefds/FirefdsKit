@@ -19,7 +19,6 @@ import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
-import static sb.firefds.r.firefdskit.utils.Packages.CAMERA;
 import static sb.firefds.r.firefdskit.utils.Packages.SAMSUNG_CAMERA;
 import static sb.firefds.r.firefdskit.utils.Preferences.PREF_DISABLE_TEMPERATURE_CHECKS;
 import static sb.firefds.r.firefdskit.utils.Preferences.PREF_ENABLE_CAMERA_SHUTTER_MENU;
@@ -27,23 +26,23 @@ import static sb.firefds.r.firefdskit.utils.Preferences.PREF_ENABLE_CAMERA_SHUTT
 public class XSecCameraPackage {
 
     private static final String FEATURE = SAMSUNG_CAMERA + ".feature.Feature";
-    private static final String CAMERA_TEMPERATURE_MANAGER = CAMERA + ".provider.CameraTemperatureManager";
-    private static final String PREFERENCE_SETTING_FRAGMENT = CAMERA + ".setting.PreferenceSettingFragment";
+    private static final String BOOLEAN_TAG = SAMSUNG_CAMERA + ".feature.BooleanTag";
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
-        final Class<?> cameraFeatureClass = XposedHelpers.findClass(FEATURE, classLoader);
-
         if (prefs.getBoolean(PREF_DISABLE_TEMPERATURE_CHECKS, false)) {
             try {
-                XposedHelpers.findAndHookMethod(CAMERA_TEMPERATURE_MANAGER,
+                XposedHelpers.findAndHookMethod(FEATURE,
                         classLoader,
-                        "start",
+                        "get",
+                        BOOLEAN_TAG,
                         new XC_MethodHook() {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) {
-                                XposedHelpers.setStaticBooleanField(cameraFeatureClass,
-                                        "SUPPORT_THERMISTOR_TEMPERATURE", false);
+                                String booleanTagName = (String) XposedHelpers.callMethod(param.args[0], "name");
+                                if (booleanTagName.equals("SUPPORT_THERMISTOR_TEMPERATURE")) {
+                                    param.setResult(false);
+                                }
                             }
                         });
             } catch (Throwable e) {
@@ -51,21 +50,24 @@ public class XSecCameraPackage {
             }
         }
 
-        try {
-            XposedHelpers.findAndHookMethod(PREFERENCE_SETTING_FRAGMENT,
-                    classLoader,
-                    "updateFeaturedPreference",
-                    new XC_MethodHook() {
-                        @Override
-                        protected void beforeHookedMethod(MethodHookParam param) {
-                            prefs.reload();
-                            XposedHelpers.setStaticBooleanField(cameraFeatureClass,
-                                    "ENABLE_SHUTTER_SOUND_MENU",
-                                    prefs.getBoolean(PREF_ENABLE_CAMERA_SHUTTER_MENU, false));
-                        }
-                    });
-        } catch (Throwable e) {
-            XposedBridge.log(e);
+        if (prefs.getBoolean(PREF_ENABLE_CAMERA_SHUTTER_MENU, false)) {
+            try {
+                XposedHelpers.findAndHookMethod(FEATURE,
+                        classLoader,
+                        "get",
+                        BOOLEAN_TAG,
+                        new XC_MethodHook() {
+                            @Override
+                            protected void beforeHookedMethod(MethodHookParam param) {
+                                String booleanTagName = (String) XposedHelpers.callMethod(param.args[0], "name");
+                                if (booleanTagName.equals("SUPPORT_SHUTTER_SOUND_MENU")) {
+                                    param.setResult(true);
+                                }
+                            }
+                        });
+            } catch (Throwable e) {
+                XposedBridge.log(e);
+            }
         }
     }
 }
