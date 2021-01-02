@@ -32,22 +32,19 @@ import static sb.firefds.r.firefdskit.utils.Preferences.PREF_SHOW_NETWORK_SPEED_
 
 public class XSysUINotificationPanelPackage {
 
-    private static final String LTE_INSTEAD_OF_4G = "STATBAR_DISPLAY_LTE_INSTEAD_OF_4G_ICON";
-    private static final String FOUR_G_PLUS_INSTEAD_OF_4G = "STATBAR_DISPLAY_4G_PLUS_INSTEAD_OF_4G_ICON";
-    private static final String FOUR_G_INSTEAD_OF_4G_PLUS = "STATBAR_DISPLAY_4G_INSTEAD_OF_4G_PLUS_ICON";
-    private static final String FOUR_HALF_G_INSTEAD_OF_4G_PLUS = "STATBAR_DISPLAY_4_HALF_G_INSTEAD_OF_4G_PLUS_ICON";
-    private static final String RUNE = SYSTEM_UI + ".Rune";
+    private static final String LTE_INSTEAD_OF_4G = "useLteInsteadOf4G";
+    private static final String FOUR_G_PLUS_INSTEAD_OF_4G = "use4GPlusInsteadOf4G";
+    private static final String FOUR_G_INSTEAD_OF_4G_PLUS = "use4GInstead4GPlus";
+    private static final String FOUR_HALF_G_INSTEAD_OF_4G_PLUS = "use4HalfGInsteadOf4GPlus";
+    private static final String OPERATOR = SYSTEM_UI + ".Operator";
     private static final String CARRIER_TEXT_CONTROLLER = "com.android.keyguard.CarrierTextController";
     private static final String CARRIER_TEXT_CALLBACK_INFO = CARRIER_TEXT_CONTROLLER + ".CarrierTextCallbackInfo";
     private static final String CARRIER_TEXT = "com.android.keyguard.CarrierText";
     private static final String DATA_USAGE_BAR = SYSTEM_UI + ".qs.bar.DataUsageBar";
     private static final String QP_RUNE = SYSTEM_UI + ".QpRune";
-    private static final String MOBILE_SIGNAL_CONTROLLER_CLASS = SYSTEM_UI + ".statusbar.policy.MobileSignalController";
     private static final Map<String, Integer> CARRIER_SIZES_MAP = new HashMap<>();
     private static final Map<String, String> DATA_ICONS_MAP = new HashMap<>();
 
-
-    private static ClassLoader classLoader;
 
     static {
         CARRIER_SIZES_MAP.put("Small", 14);
@@ -64,8 +61,7 @@ public class XSysUINotificationPanelPackage {
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
-        XSysUINotificationPanelPackage.classLoader = classLoader;
-        final Class<?> systemUIRuneClass = XposedHelpers.findClass(RUNE, classLoader);
+        final Class<?> operatorClass = XposedHelpers.findClass(OPERATOR, classLoader);
 
         try {
             XposedHelpers.findAndHookMethod(CARRIER_TEXT_CONTROLLER,
@@ -100,7 +96,7 @@ public class XSysUINotificationPanelPackage {
         String behaviorIndex = prefs.getString(PREF_DATA_ICON_BEHAVIOR, "0");
         String dataBehavior = getDataIconBehavior(behaviorIndex);
         if (!dataBehavior.equals("DEFAULT")) {
-            changeDataIcon(systemUIRuneClass, dataBehavior);
+            changeDataIcon(operatorClass, dataBehavior);
         }
 
         /*try {
@@ -131,22 +127,15 @@ public class XSysUINotificationPanelPackage {
 
     private static void changeDataIcon(Class<?> aClass, String dataIconBehavior) {
         try {
-            XC_MethodHook mobileSignalMethodHook = new XC_MethodHook() {
-                @Override
-                protected void afterHookedMethod(MethodHookParam param) {
-                    XposedHelpers.setStaticBooleanField(aClass, dataIconBehavior, true);
-                }
-            };
-
-            XposedHelpers.findAndHookMethod(MOBILE_SIGNAL_CONTROLLER_CLASS,
-                    classLoader,
-                    "updateMobileIconGroup",
-                    mobileSignalMethodHook);
-            XposedHelpers.findAndHookMethod(MOBILE_SIGNAL_CONTROLLER_CLASS,
-                    classLoader,
-                    "updateTelephony",
-                    mobileSignalMethodHook);
-
+            XposedHelpers.findAndHookMethod(aClass,
+                    dataIconBehavior,
+                    new XC_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param) {
+                            XposedBridge.log("FFK: Changing data icon to " + dataIconBehavior);
+                            param.setResult(Boolean.TRUE);
+                        }
+                    });
         } catch (Throwable e) {
             XposedBridge.log(e);
         }
