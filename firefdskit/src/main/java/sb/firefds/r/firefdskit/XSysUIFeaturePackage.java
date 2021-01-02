@@ -69,7 +69,7 @@ public class XSysUIFeaturePackage {
     private static final String POWER_NOTIFICATION_WARNINGS = SYSTEM_UI + ".power.PowerNotificationWarnings";
     private static final String SETTINGS_HELPER = SYSTEM_UI + ".util.SettingsHelper";
     private static final String SEC_VOLUME_DIALOG_IMPL = SYSTEM_UI + ".volume.SecVolumeDialogImpl";
-    private static final String SOUND_POOL_WRAPPER = SYSTEM_UI + ".volume.util";
+    private static final String SOUND_POOL_WRAPPER = SYSTEM_UI + ".volume.util.SoundPoolWrapper";
     private static final String SOUND_PATH_FINDER = SYSTEM_UI + ".power.SoundPathFinder";
 
     @SuppressLint("StaticFieldLeak")
@@ -135,9 +135,10 @@ public class XSysUIFeaturePackage {
                 XposedHelpers.findAndHookMethod(KEYGUARD_STRONG_AUTH_TRACKER,
                         classLoader,
                         "isUnlockingWithBiometricAllowed",
+                        boolean.class,
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
 
-                XposedHelpers.findAndHookMethod("com.android.keyguard.KeyguardUpdateMonitor$20",
+                XposedHelpers.findAndHookMethod("com.android.keyguard.KeyguardUpdateMonitor$16",
                         classLoader,
                         "onAuthenticationError",
                         int.class,
@@ -266,17 +267,6 @@ public class XSysUIFeaturePackage {
 
             if (prefs.getBoolean(PREF_DISABLE_VOLUME_CONTROL_SOUND, false)) {
                 try {
-                    XposedHelpers.findAndHookMethod(SEC_VOLUME_DIALOG_IMPL,
-                            classLoader,
-                            "makeSound",
-                            new XC_MethodHook() {
-                                @Override
-                                protected void beforeHookedMethod(MethodHookParam param) {
-                                    param.setResult(null);
-                                }
-                            });
-                } catch (Exception e) {
-                    XposedBridge.log("FFK: " + SEC_VOLUME_DIALOG_IMPL + " not found. trying " + SOUND_POOL_WRAPPER);
                     XposedHelpers.findAndHookMethod(SOUND_POOL_WRAPPER,
                             classLoader,
                             "makeSound",
@@ -286,6 +276,8 @@ public class XSysUIFeaturePackage {
                                     param.setResult(null);
                                 }
                             });
+                } catch (Exception e) {
+                    XposedBridge.log(e);
                 }
             }
 
