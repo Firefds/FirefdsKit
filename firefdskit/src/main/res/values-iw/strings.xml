@@ -62,7 +62,7 @@
     <string name="recommended_settings">הגדרות מומלצות</string>
     <string name="set_recommended_settings">להחיל הגדרות מומלצות?</string>
     <string name="recommended_restored">הגדרות מומלצות שוחזרו</string>
-    <string name="firefds_xposed_disclaimer">יישום זה נבדק על מכשיר גלקסי S8 עם קושחה מקורית. חלק מהתכונות עלולות לא לעבוד כמו שצריך על מכשירים מדגמים אחרים\n\nאני לא לוקח שום אחריות על כל נזק שיגרם על ידי יישום זה, השימוש הוא על אחריותך!</string>
+    <string name="firefds_xposed_disclaimer">יישום זה נבדק על מכשיר גלקסי S20 עם קושחה מקורית. חלק מהתכונות עלולות לא לעבוד כמו שצריך על מכשירים מדגמים אחרים\n\nאני לא לוקח שום אחריות על כל נזק שיגרם על ידי יישום זה, השימוש הוא על אחריותך!</string>
     <string name="nfc_behavior">התנהגות NFC</string>
     <string name="unlocked">כאשר לא נעול (ברית מחדל)</string>
     <string name="screen_on">כאשר המסך דלוק ונעול</string>
@@ -221,8 +221,6 @@
     <string name="am_pm_on_clock_summary">הצגת AM/PM בשעון שורת המצב</string>
     <string name="am_pm_on_clock_title">הצגת AM/PM בשעון</string>
     <string name="clock_size">גודל שעון</string>
-    <string name="enable_dual_sim_sd_card_summary">הפעלת כרטיס זיכרון חיצוני בזמן שימוש ב-2 כרטיסי סים</string>
-    <string name="enable_dual_sim_sd_card_title">כרטיס זיכרון עם 2 סים</string>
     <string name="enable_spam_protection_summary">הפעלת שיחה מזוהה והגנת ספאם</string>
     <string name="enable_spam_protection_title">שיחה מזוהה והגנת ספאם</string>
 </resources>

@@ -65,7 +65,7 @@
     <string name="recommended_settings">الإعدادات المقترحة</string>
     <string name="set_recommended_settings">توافق بتطبيق الإعداد المقترحة؟</string>
     <string name="recommended_restored">تم استعادة الإعدادات المقترحة</string>
-    <string name="firefds_xposed_disclaimer">تم اختبار هذا التطبيق على سامسونغ جالاكيس S10 اكسينوي بالنظام الأصلي. بعض الميزات قد لا تعمل بشكل صحيح على الموديلات الأخرى.\n\n\nأنا لا أتحمل أي مسؤولية عن أي ضرر ناتج عن استعمال هذا التطبيق‫.‬ إنك تستعمله على مسؤوليتك الخاصة‫!‬</string>
+    <string name="firefds_xposed_disclaimer">تم اختبار هذا التطبيق على سامسونغ جالاكيس S20 اكسينوي بالنظام الأصلي. بعض الميزات قد لا تعمل بشكل صحيح على الموديلات الأخرى.\n\n\nأنا لا أتحمل أي مسؤولية عن أي ضرر ناتج عن استعمال هذا التطبيق‫.‬ إنك تستعمله على مسؤوليتك الخاصة‫!‬</string>
     <string name="nfc_behavior">NFC تصرف</string>
     <string name="unlocked">عند فتح القفل (افتراضي)</string>
     <string name="screen_on">عندما تكون الشاشة مشتعلة ومقفلة</string>
@@ -221,8 +221,6 @@
     <string name="am_pm_on_clock_summary">إظهار AM/PM في ساعة شريط الحالة</string>
     <string name="am_pm_on_clock_title">إظهار AM/PM في الساعة</string>
     <string name="clock_size">تغيير حجم الساعة</string>
-    <string name="enable_dual_sim_sd_card_summary">تفعيل ذاكرة SD عند استعمال بطاقة SIM المزدوجة</string>
-    <string name="enable_dual_sim_sd_card_title">ذاكرة SD مع بطاقة SIM المزدوجة</string>
     <string name="enable_spam_protection_summary">تفعيل معرف المتصِل والحماية من الأرقام العشوائية</string>
     <string name="enable_spam_protection_title">معرف المتصِل والحماية من الأرقام العشوائية</string>
 </resources>

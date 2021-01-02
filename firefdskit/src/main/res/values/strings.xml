@@ -65,7 +65,7 @@
     <string name="recommended_settings">Recommended settings</string>
     <string name="set_recommended_settings">Apply recommended settings?</string>
     <string name="recommended_restored">Recommended settings restored</string>
-    <string name="firefds_xposed_disclaimer">This application has been tested on the Samsung Galaxy S10 Exynos with stock firmware. some features may not work properly on other device models\n\nI do NOT take any responsibility of any damage caused by this application, you are using it at your own risk!</string>
+    <string name="firefds_xposed_disclaimer">This application has been tested on the Samsung Galaxy S20 Exynos with stock firmware. some features may not work properly on other device models\n\nI do NOT take any responsibility of any damage caused by this application, you are using it at your own risk!</string>
     <string name="nfc_behavior">NFC Behavior</string>
     <string name="unlocked">When unlocked (default)</string>
     <string name="screen_on">When screen on and locked</string>
@@ -221,8 +221,6 @@
     <string name="am_pm_on_clock_summary">Show AM/PM on status bar clock</string>
     <string name="am_pm_on_clock_title">AM/PM on Clock</string>
     <string name="clock_size">Clock size</string>
-    <string name="enable_dual_sim_sd_card_summary">Enable sd card while using dual sim cards</string>
-    <string name="enable_dual_sim_sd_card_title">SD Card With Dual Sim</string>
     <string name="enable_spam_protection_summary">Enable Caller ID and spam protection</string>
     <string name="enable_spam_protection_title">Caller ID and Spam Protection</string>
 </resources>
