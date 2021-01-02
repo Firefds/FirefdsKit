@@ -2,7 +2,7 @@
 
 Xposed module for Samsung R devices.
 
-XDA Discussion thread: https://forum.xda-developers.com/xposed/modules/xposed-firefds-kit-0-0-1-0-alpha-1-t4044757
+XDA Discussion thread: https://forum.xda-developers.com/t/xposed-r-firefds-kit-1-0-0-0-alpha-1-customize-samsung-oneui-3-0-02-01-21.4212051/
 
 ## Features
 The module has the following features:
