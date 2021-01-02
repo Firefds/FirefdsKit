@@ -78,7 +78,7 @@ To install this module you need the following apps and modules installed on your
 
 ## Known Issues
 
-- Some features are removed on purpose. Since GravityBox has been working on Samsung Oreo devices without much issues, I only implemented features that need special Samsung coding. You can check [GravityBox for Q](https://forum.xda-developers.com/xposed/modules/app-gravitybox-v10-0-0-beta-1-android-10-t3974497) for additional features.
+- Some features are removed on purpose. Since GravityBox has been working on Samsung Oreo devices without much issues, I only implemented features that need special Samsung coding. You can check You can check GravityBox for R, when it will become available, for additional features.
 
 ## External Libraries
 
