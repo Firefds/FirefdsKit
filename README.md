@@ -1,6 +1,6 @@
 # Firefds Kit [Q]
 
-Xposed module for Samsung Q devices.
+Xposed, EdXposed 4 and EdXposed 5 module for Samsung Q devices.
 
 XDA Discussion thread: https://forum.xda-developers.com/xposed/modules/xposed-firefds-kit-0-0-1-0-alpha-1-t4044757
 
@@ -81,7 +81,7 @@ To install this module you need the following apps and modules installed on your
 ## Known Issues
 
 - Some features are removed on purpose. Since GravityBox has been working on Samsung Oreo devices without much issues, I only implemented features that need special Samsung coding. You can check [GravityBox for Q](https://forum.xda-developers.com/xposed/modules/app-gravitybox-v10-0-0-beta-1-android-10-t3974497) for additional features.
-
+- Changes between EdXposed versions 4xxx and 5xxx will result in app settings lost.
 ## External Libraries
 
 The project uses the following libraries:

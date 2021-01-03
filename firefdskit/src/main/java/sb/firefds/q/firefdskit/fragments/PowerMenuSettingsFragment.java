@@ -23,7 +23,6 @@ import androidx.preference.EditTextPreference;
 import java.util.Optional;
 
 import sb.firefds.q.firefdskit.R;
-import sb.firefds.q.firefdskit.utils.Utils;
 
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_CUSTOM_RECOVERY;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_CUSTOM_RECOVERY_CONFIRMATION;
@@ -33,9 +32,7 @@ public class PowerMenuSettingsFragment extends FirefdsPreferenceFragment {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        if (Utils.isDeviceEncrypted()) {
-            getPreferenceManager().setStorageDeviceProtected();
-        }
+        getPreferenceManager().setStorageDeviceProtected();
         setPreferencesFromResource(R.xml.advanced_power_menu_settings, rootKey);
     }
 

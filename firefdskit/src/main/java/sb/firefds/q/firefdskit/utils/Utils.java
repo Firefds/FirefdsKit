@@ -21,7 +21,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.LocaleList;
 import android.os.PowerManager;
-import android.os.SystemProperties;
 import android.util.Log;
 import android.view.View;
 
@@ -100,10 +99,6 @@ public class Utils {
     public static boolean isNotSamsungRom() {
         return !(new File("/system/framework/com.samsung.device.jar").isFile() ||
                 new File("/system/framework/com.samsung.device.lite.jar").isFile());
-    }
-
-    public static boolean isDeviceEncrypted() {
-        return SystemProperties.get("ro.crypto.state").equals("encrypted");
     }
 
     public static void performQuickReboot() {

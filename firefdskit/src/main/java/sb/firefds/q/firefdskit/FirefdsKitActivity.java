@@ -76,6 +76,7 @@ import static sb.firefds.q.firefdskit.utils.Constants.SHORTCUT_PHONE;
 import static sb.firefds.q.firefdskit.utils.Constants.SHORTCUT_SECURITY;
 import static sb.firefds.q.firefdskit.utils.Constants.SHORTCUT_STATUSBAR;
 import static sb.firefds.q.firefdskit.utils.Constants.SHORTCUT_SYSTEM;
+import static sb.firefds.q.firefdskit.utils.Packages.FIREFDSKIT;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DATA_ICON_BEHAVIOR;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_NUMBER_FORMATTING;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_SMS_TO_MMS;
@@ -86,7 +87,6 @@ import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_HOUR
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_MINUTES;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_SECONDS;
 import static sb.firefds.q.firefdskit.utils.Utils.checkForceEnglish;
-import static sb.firefds.q.firefdskit.utils.Utils.isDeviceEncrypted;
 import static sb.firefds.q.firefdskit.utils.Utils.isNotSamsungRom;
 import static sb.firefds.q.firefdskit.utils.Utils.log;
 
@@ -130,7 +130,7 @@ public class FirefdsKitActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        appContext = isDeviceEncrypted() ? createDeviceProtectedStorageContext() : this;
+        appContext = !this.isDeviceProtectedStorage() ? createDeviceProtectedStorageContext() : this;
         sharedPreferences = appContext.getSharedPreferences(PREFS, 0);
         activity = this;
         verifyStoragePermissions(this);
@@ -319,7 +319,7 @@ public class FirefdsKitActivity extends AppCompatActivity
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        Context tempContext = isDeviceEncrypted() ? newBase.createDeviceProtectedStorageContext() : newBase;
+        Context tempContext = !newBase.isDeviceProtectedStorage() ? newBase.createDeviceProtectedStorageContext() : newBase;
         Context context = checkForceEnglish(newBase, tempContext.getSharedPreferences(PREFS, MODE_PRIVATE));
         super.attachBaseContext(context);
     }
@@ -433,7 +433,7 @@ public class FirefdsKitActivity extends AppCompatActivity
             sharedPrefsFolder.setReadable(true, false);
             File f = new File(String.format("%s/%s_preferences.xml",
                     sharedPrefsFolder.getAbsolutePath(),
-                    BuildConfig.APPLICATION_ID));
+                    FIREFDSKIT));
             if (f.exists()) {
                 f.setReadable(true, false);
                 f.setExecutable(true, false);
@@ -509,14 +509,13 @@ public class FirefdsKitActivity extends AppCompatActivity
             try {
                 SharedPreferences prefs = appContext.getSharedPreferences("dummy", Context.MODE_PRIVATE);
                 prefs.edit().putBoolean("dummy", false).apply();
-                Field f = prefs.getClass().getDeclaredField("mFile");
-                f.setAccessible(true);
-                mPreferenceDir = new File(((File) f.get(prefs)).getParent()).getAbsolutePath();
+                Field field = prefs.getClass().getDeclaredField("mFile");
+                field.setAccessible(true);
+                mPreferenceDir = new File(((File) field.get(prefs)).getParent()).getAbsolutePath();
                 Log.d("FFK", "Preference folder: " + mPreferenceDir);
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 Log.e("FFK", "Could not determine preference folder path. Returning default.");
-                e.printStackTrace();
-                mPreferenceDir = appContext.getDataDir() + "/shared_prefs";
+                mPreferenceDir = appContext.getDataDir().getAbsolutePath() + "/shared_prefs";
             }
         }
         return mPreferenceDir;
