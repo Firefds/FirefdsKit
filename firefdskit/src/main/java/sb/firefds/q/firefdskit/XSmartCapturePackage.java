@@ -16,7 +16,11 @@ package sb.firefds.q.firefdskit;
 
 import android.content.Context;
 
-import de.robv.android.xposed.*;
+import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
+import de.robv.android.xposed.XSharedPreferences;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedHelpers;
 
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_SCREEN_RECORDER_IN_CALL;
 

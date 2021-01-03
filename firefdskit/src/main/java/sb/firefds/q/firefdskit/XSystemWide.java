@@ -22,11 +22,20 @@ import android.view.WindowManager;
 
 import com.samsung.android.feature.SemCscFeature;
 
-import de.robv.android.xposed.*;
+import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
+import de.robv.android.xposed.XSharedPreferences;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedHelpers;
 
 import static sb.firefds.q.firefdskit.utils.Constants.CONFIG_RECORDING;
 import static sb.firefds.q.firefdskit.utils.Constants.CONFIG_SVC_PROVIDER_FOR_UNKNOWN_NUMBER;
-import static sb.firefds.q.firefdskit.utils.Preferences.*;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DEFAULT_REBOOT_BEHAVIOR;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_DISABLE_SECURE_FLAG;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_CALL_ADD;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_CALL_RECORDING;
+import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_SPAM_PROTECTION;
 
 public class XSystemWide {
 

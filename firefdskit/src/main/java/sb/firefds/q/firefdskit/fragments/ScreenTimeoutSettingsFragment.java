@@ -21,7 +21,6 @@ import android.provider.Settings;
 import androidx.annotation.Keep;
 
 import sb.firefds.q.firefdskit.R;
-import sb.firefds.q.firefdskit.utils.Utils;
 
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_HOURS;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_MINUTES;
@@ -31,9 +30,7 @@ import static sb.firefds.q.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_SECO
 public class ScreenTimeoutSettingsFragment extends FirefdsPreferenceFragment {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        if (Utils.isDeviceEncrypted()) {
-            getPreferenceManager().setStorageDeviceProtected();
-        }
+        getPreferenceManager().setStorageDeviceProtected();
         setPreferencesFromResource(R.xml.screen_timeout_settings, rootKey);
     }
 
