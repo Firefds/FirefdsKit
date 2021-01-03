@@ -14,6 +14,7 @@
  */
 package sb.firefds.pie.firefdskit;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,6 +25,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,6 +54,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -73,6 +76,7 @@ import static sb.firefds.pie.firefdskit.utils.Constants.SHORTCUT_PHONE;
 import static sb.firefds.pie.firefdskit.utils.Constants.SHORTCUT_SECURITY;
 import static sb.firefds.pie.firefdskit.utils.Constants.SHORTCUT_STATUSBAR;
 import static sb.firefds.pie.firefdskit.utils.Constants.SHORTCUT_SYSTEM;
+import static sb.firefds.pie.firefdskit.utils.Packages.FIREFDSKIT;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DATA_ICON_BEHAVIOR;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_NUMBER_FORMATTING;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DISABLE_SMS_TO_MMS;
@@ -84,7 +88,6 @@ import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_HO
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_MINUTES;
 import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_SECONDS;
 import static sb.firefds.pie.firefdskit.utils.Utils.checkForceEnglish;
-import static sb.firefds.pie.firefdskit.utils.Utils.isDeviceEncrypted;
 
 public class FirefdsKitActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -108,6 +111,7 @@ public class FirefdsKitActivity extends AppCompatActivity
     private ActionBarDrawerToggle toggle;
     private ActionBarDrawerToggle menuToggle;
     private MenuItem selectedMenuItem;
+    private static String mPreferenceDir;
 
     {
         OPTIONS_ITEMS.put(R.id.action_credits, SHOW_CREDIT_DIALOG);
@@ -125,7 +129,7 @@ public class FirefdsKitActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        appContext = isDeviceEncrypted() ? createDeviceProtectedStorageContext() : this;
+        appContext = !isDeviceProtectedStorage() ? createDeviceProtectedStorageContext() : this;
         sharedPreferences = appContext.getSharedPreferences(PREFS, MODE_PRIVATE);
         activity = this;
         verifyStoragePermissions(this);
@@ -197,6 +201,8 @@ public class FirefdsKitActivity extends AppCompatActivity
                 Utils.log(e);
             }
         }
+
+        fixAppPermissions(appContext);
 
         if (!XposedChecker.isActive()) {
             setCardStatus(R.drawable.ic_error,
@@ -321,7 +327,8 @@ public class FirefdsKitActivity extends AppCompatActivity
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        Context tempContext = isDeviceEncrypted() ? newBase.createDeviceProtectedStorageContext() : newBase;
+        Context tempContext = !newBase.isDeviceProtectedStorage() ? newBase.createDeviceProtectedStorageContext() :
+                newBase;
         Context context = checkForceEnglish(newBase, tempContext.getSharedPreferences(PREFS, MODE_PRIVATE));
         super.attachBaseContext(context);
     }
@@ -428,6 +435,35 @@ public class FirefdsKitActivity extends AppCompatActivity
         }
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @SuppressLint("SetWorldReadable")
+    public static void fixPermissions() {
+        File sharedPrefsFolder = new File(getPreferenceDir());
+        if (sharedPrefsFolder.exists()) {
+            sharedPrefsFolder.setExecutable(true, false);
+            sharedPrefsFolder.setReadable(true, false);
+            File f = new File(String.format("%s/%s_preferences.xml",
+                    sharedPrefsFolder.getAbsolutePath(),
+                    FIREFDSKIT));
+            if (f.exists()) {
+                f.setReadable(true, false);
+                f.setExecutable(true, false);
+            }
+        }
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @SuppressLint("SetWorldReadable")
+    private static void fixAppPermissions(Context context) {
+        Optional.of(context)
+                .map(Context::getFilesDir)
+                .map(File::getParentFile)
+                .ifPresent(folder -> {
+                    folder.setExecutable(true, false);
+                    folder.setReadable(true, false);
+                });
+    }
+
     private static void setDefaultPreferences(boolean forceDefault) {
         upgradePreferences();
         PreferenceManager.setDefaultValues(appContext, R.xml.lockscreen_settings, true);
@@ -464,6 +500,7 @@ public class FirefdsKitActivity extends AppCompatActivity
                     SemCscFeature.getInstance()
                             .getBoolean(FORCE_CONNECT_MMS)).apply();
         }
+        fixPermissions();
     }
 
     private static void upgradePreferences() {
@@ -480,6 +517,23 @@ public class FirefdsKitActivity extends AppCompatActivity
             String uid = String.valueOf(preferences.getInt(PREF_NFC_BEHAVIOR, 0));
             preferences.edit().putString(PREF_NFC_BEHAVIOR, uid).apply();
         }
+    }
+
+    public static String getPreferenceDir() {
+        if (mPreferenceDir == null) {
+            try {
+                SharedPreferences prefs = appContext.getSharedPreferences("dummy", Context.MODE_PRIVATE);
+                prefs.edit().putBoolean("dummy", false).apply();
+                Field field = prefs.getClass().getDeclaredField("mFile");
+                field.setAccessible(true);
+                mPreferenceDir = new File(((File) field.get(prefs)).getParent()).getAbsolutePath();
+                Log.d("FFK", "Preference folder: " + mPreferenceDir);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                Log.e("FFK", "Could not determine preference folder path. Returning default.");
+                mPreferenceDir = appContext.getDataDir().getAbsolutePath() + "/shared_prefs";
+            }
+        }
+        return mPreferenceDir;
     }
 
     private static class RestoreBackupTask extends AsyncTask<Void, Void, Void> {
@@ -523,6 +577,7 @@ public class FirefdsKitActivity extends AppCompatActivity
                     prefEdit.putString((String) key, ((String) value));
             });
             prefEdit.apply();
+            fixPermissions();
 
             SystemClock.sleep(1500);
             return null;

@@ -14,7 +14,11 @@
  */
 package sb.firefds.pie.firefdskit;
 
+import android.os.Build;
+
 import androidx.annotation.Keep;
+
+import java.io.File;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
@@ -39,7 +43,24 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         // Do not load if Not a Touchwiz Rom
         if (Utils.isNotSamsungRom()) {
             XposedBridge.log("FFK: com.samsung.device.jar or com.samsung.device.lite.jar not found!");
+            return;
         }
+
+        if (Build.VERSION.SDK_INT != 28) {
+            XposedBridge.log("FFK: this version is not designed for Android SDK " + Build.VERSION.SDK_INT + " !!!");
+            return;
+        }
+
+        if (prefs == null) {
+            if (XposedBridge.getXposedVersion() < 93) {
+                File securePrefFile = new File("/data/user_de/0/sb.firefds.pie.firefdskit/shared_prefs/" + FIREFDSKIT + "_preferences.xml");
+                prefs = new XSharedPreferences(securePrefFile);
+            } else {
+                prefs = new XSharedPreferences(FIREFDSKIT);
+            }
+        }
+        prefs.makeWorldReadable();
+        prefs.reload();
     }
 
     @Override
@@ -51,7 +72,10 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             return;
         }
 
-        getModuleSharedPreferences();
+        if (Build.VERSION.SDK_INT != 28) {
+            XposedBridge.log("FFK: this version is not designed for Android SDK " + Build.VERSION.SDK_INT + " !!!");
+            return;
+        }
 
         if (lpparam.packageName.equals(FIREFDSKIT)) {
             if (prefs != null) {
@@ -182,14 +206,6 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             } catch (Exception e) {
                 XposedBridge.log(e);
             }
-        }
-    }
-
-    private static void getModuleSharedPreferences() {
-        if (prefs == null) {
-            prefs = new XSharedPreferences(BuildConfig.APPLICATION_ID);
-        } else {
-            prefs.reload();
         }
     }
 }

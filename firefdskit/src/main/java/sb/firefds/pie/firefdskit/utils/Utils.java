@@ -21,7 +21,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.LocaleList;
 import android.os.PowerManager;
-import android.os.SystemProperties;
 import android.util.Log;
 import android.view.View;
 
@@ -29,14 +28,14 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import de.robv.android.xposed.XposedHelpers;
-import sb.firefds.pie.firefdskit.R;
-
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.util.Locale;
+
+import de.robv.android.xposed.XposedHelpers;
+import sb.firefds.pie.firefdskit.R;
 
 import static sb.firefds.pie.firefdskit.FirefdsKitActivity.getAppContext;
 import static sb.firefds.pie.firefdskit.utils.Packages.FIREFDSKIT;
@@ -92,6 +91,7 @@ public class Utils {
         if (mGbContext == null) {
             mGbContext = context.createPackageContext(FIREFDSKIT,
                     Context.CONTEXT_IGNORE_SECURITY);
+            mGbContext = mGbContext.createDeviceProtectedStorageContext();
         }
         return (config == null ? mGbContext : mGbContext.createConfigurationContext(config));
     }
@@ -99,10 +99,6 @@ public class Utils {
     public static boolean isNotSamsungRom() {
         return !(new File("/system/framework/com.samsung.device.jar").isFile() ||
                 new File("/system/framework/com.samsung.device.lite.jar").isFile());
-    }
-
-    public static boolean isDeviceEncrypted() {
-        return SystemProperties.get("ro.crypto.state").equals("encrypted");
     }
 
     public static void performQuickReboot() {

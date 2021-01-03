@@ -37,10 +37,14 @@
             android:value="true" />
         <meta-data
             android:name="xposedminversion"
-            android:value="93" />
+            android:value="90" />
         <meta-data
             android:name="xposeddescription"
             android:value="Made for stock Samsung devices supporting Android 9.0 Roms by Firefds" />
+
+        <meta-data
+            android:name="xposedsharedprefs"
+            android:value="true" />
 
         <receiver
             android:name=".receivers.FirefdsRebootReceiver"
