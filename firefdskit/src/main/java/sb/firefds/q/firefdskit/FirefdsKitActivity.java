@@ -319,7 +319,8 @@ public class FirefdsKitActivity extends AppCompatActivity
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        Context tempContext = !newBase.isDeviceProtectedStorage() ? newBase.createDeviceProtectedStorageContext() : newBase;
+        Context tempContext = !newBase.isDeviceProtectedStorage() ? newBase.createDeviceProtectedStorageContext() :
+                newBase;
         Context context = checkForceEnglish(newBase, tempContext.getSharedPreferences(PREFS, MODE_PRIVATE));
         super.attachBaseContext(context);
     }

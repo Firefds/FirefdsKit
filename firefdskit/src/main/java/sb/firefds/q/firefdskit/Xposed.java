@@ -31,7 +31,6 @@ import sb.firefds.q.firefdskit.utils.Packages;
 import sb.firefds.q.firefdskit.utils.Utils;
 
 import static sb.firefds.q.firefdskit.utils.Packages.FIREFDSKIT;
-import static sb.firefds.q.firefdskit.utils.Preferences.PREF_ENABLE_BIOMETRICS_UNLOCK;
 
 @Keep
 public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
@@ -48,13 +47,15 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         }
 
         if (Build.VERSION.SDK_INT != 29) {
-            XposedBridge.log("FFK: this version is not designed for " + "Android SDK " + Build.VERSION.SDK_INT + " !!!");
+            XposedBridge.log("FFK: this version is not designed for Android SDK " + Build.VERSION.SDK_INT + " !!!");
             return;
         }
 
         if (prefs == null) {
             if (XposedBridge.getXposedVersion() < 93) {
-                File securePrefFile = new File("/data/user_de/0/sb.firefds.q.firefdskit/shared_prefs/" + FIREFDSKIT + "_preferences.xml");
+                File securePrefFile =
+                        new File("/data/user_de/0/sb.firefds.q.firefdskit/shared_prefs/" + FIREFDSKIT + "_preferences" +
+                                ".xml");
                 prefs = new XSharedPreferences(securePrefFile);
             } else {
                 prefs = new XSharedPreferences(FIREFDSKIT);
@@ -74,7 +75,7 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         }
 
         if (Build.VERSION.SDK_INT != 29) {
-            XposedBridge.log("FFK: this version is not designed for " + "Android SDK " + Build.VERSION.SDK_INT + " !!!");
+            XposedBridge.log("FFK: this version is not designed for Android SDK " + Build.VERSION.SDK_INT + " !!!");
             return;
         }
 
