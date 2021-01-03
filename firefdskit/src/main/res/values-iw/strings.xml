@@ -82,7 +82,7 @@
     <string name="disable_temperature_warnings_on_the_recording">ביטול התראות טמפרטורה בעת הקלטה ושימוש בהבזק. שימוש רק במקרה שצריך!</string>
     <string name="call_recording">הקלטת שיחות</string>
     <string name="call_recording_summary">הפעלת הקלטת שיחות והגדרות הקלטה בהגדרות טלפון</string>
-    <string name="firefds_kit_is_not_active">Firefds Kit לא פועל! יש לוודא:\n- ליישום זה דרושות השראות Root\n- מסגרת Xposed מתוקנת\n- מודל זה מופעל ב Xposed installer ואז הפעלה מחדש.</string>
+    <string name="firefds_kit_is_not_active">Firefds Kit לא פועל! יש לוודא:\n- מסגרת Xposed מתוקנת\n- מודל זה מופעל ב Xposed installer ואז הפעלה מחדש.</string>
     <string name="screenshot">צילום מסך</string>
     <string name="add_screenshot_to_power_menu">הוספת צילום מסך לתפריט כיבוי</string>
     <string name="advanced_power_menu_title">תפריט כיבוי מורחב</string>

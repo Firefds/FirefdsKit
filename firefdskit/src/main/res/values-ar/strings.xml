@@ -85,7 +85,7 @@
     <string name="disable_temperature_warnings_on_the_recording">تعطيل تحذيرات درجة الحرارة في المسجّل وعند استعمال الفلاش‫.‬ استعمل هذا فقط عند الحاجة‫!‬</string>
     <string name="call_recording">تسجيل المكالمة</string>
     <string name="call_recording_summary">تفعيل تسجيل المكالمة وإعدادات تسجيل المكالمة في إعدادت الهاتف</string>
-    <string name="firefds_kit_is_not_active">لم يتم تفعيل Firefds Kit! تأكد من أن‫:‬ \n\n-هذا التطبيق له ترخيص صلاحيات الجذر\n\nXposed framework تم تثبيت-\n\n-هذه الوحدة مفعلة في المثبت Xposed. ثم قم بإعادة التشغيل</string>
+    <string name="firefds_kit_is_not_active">لم يتم تفعيل Firefds Kit! تأكد من أن‫:‬ \n- Xposed framework تم تثبيت-\n- هذه الوحدة مفعلة في المثبت Xposed. ثم قم بإعادة التشغيل</string>
     <string name="screenshot">لقطة الشاشة</string>
     <string name="add_screenshot_to_power_menu">تفعيل لقطة الشاشة في قائمة الطاقة</string>
     <string name="advanced_power_menu_title">قائمة الطاقة المتقدمة</string>
