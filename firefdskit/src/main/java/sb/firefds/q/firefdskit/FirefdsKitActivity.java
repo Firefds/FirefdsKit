@@ -271,7 +271,6 @@ public class FirefdsKitActivity extends AppCompatActivity
                 getClassLoader(),
                 pref.getFragment());
         fragment.setArguments(args);
-        fragment.setTargetFragment(caller, 0);
         Optional.of(this)
                 .map(AppCompatActivity::getSupportActionBar)
                 .ifPresent(actionBar -> {
@@ -525,7 +524,7 @@ public class FirefdsKitActivity extends AppCompatActivity
 
     private static class RestoreBackupTask extends AsyncTask<Void, Void, Void> {
 
-        private File backup;
+        private final File backup;
 
         RestoreBackupTask(File backup) {
             this.backup = backup;
@@ -542,7 +541,7 @@ public class FirefdsKitActivity extends AppCompatActivity
             try {
                 FileInputStream fis = new FileInputStream((backup));
                 ObjectInputStream input = new ObjectInputStream(fis);
-                entries = (HashMap) input.readObject();
+                entries = (HashMap<?, ?>) input.readObject();
                 fis.close();
                 input.close();
             } catch (IOException | ClassNotFoundException e) {
