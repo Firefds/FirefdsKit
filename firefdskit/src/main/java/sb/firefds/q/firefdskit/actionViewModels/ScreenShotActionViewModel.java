@@ -18,6 +18,8 @@ import android.hardware.input.InputManager;
 import android.os.SystemClock;
 import android.view.KeyEvent;
 
+import androidx.core.content.res.ResourcesCompat;
+
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.q.firefdskit.R;
 
@@ -31,7 +33,7 @@ public class ScreenShotActionViewModel extends FirefdsKitActionViewModel {
         super();
         getActionInfo().setName(SCREENSHOT_ACTION);
         getActionInfo().setLabel(getResources().getString(R.string.screenshot));
-        setDrawableIcon(getResources().getDrawable(R.drawable.tw_ic_do_screenshot_stock, null));
+        setDrawableIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.tw_ic_do_screenshot_stock, null));
     }
 
     @Override

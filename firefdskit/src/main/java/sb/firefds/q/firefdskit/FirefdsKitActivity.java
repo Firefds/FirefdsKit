@@ -41,6 +41,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.arch.core.util.Function;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -411,7 +412,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         TextView statusText = activity.findViewById(R.id.xposed_status_text);
 
         statusContainerLayout.setBackgroundColor(activity.getColor(statusColorId));
-        statusIcon.setImageDrawable(activity.getDrawable(statusIconId));
+        statusIcon.setImageDrawable(ContextCompat.getDrawable(activity, statusIconId));
         statusText.setText(statusTextId);
         statusText.setTextColor(Color.WHITE);
     }
