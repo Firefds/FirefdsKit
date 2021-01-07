@@ -32,7 +32,6 @@ import com.google.android.material.snackbar.Snackbar;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.lang.reflect.Method;
 import java.util.Locale;
 
 import de.robv.android.xposed.XposedHelpers;
@@ -44,17 +43,8 @@ import static sb.firefds.r.firefdskit.utils.Preferences.PREF_FORCE_ENGLISH;
 
 public class Utils {
 
-    private static final String STATUSBAR_SERVICE = "statusbar";
-
     @SuppressLint("StaticFieldLeak")
     private static Context mGbContext;
-
-    public static void closeStatusBar(Context context) throws Throwable {
-        @SuppressLint("WrongConstant") Object sbservice = context.getSystemService(STATUSBAR_SERVICE);
-        @SuppressLint("PrivateApi") Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
-        Method showsb = statusbarManager.getMethod("collapsePanels");
-        showsb.invoke(sbservice);
-    }
 
     public static void reboot() {
         try {
@@ -79,13 +69,6 @@ public class Utils {
         } catch (Exception e) {
             log(e);
         }
-    }
-
-    public static synchronized Context getGbContext(Context context) throws Throwable {
-        if (mGbContext == null) {
-            mGbContext = context.createPackageContext(FIREFDSKIT, Context.CONTEXT_IGNORE_SECURITY);
-        }
-        return mGbContext;
     }
 
     public static synchronized Context getGbContext(Context context, Configuration config) throws Throwable {

@@ -106,9 +106,4 @@ public class RebootNotification {
         final NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(NOTIFICATION_TAG, 0, notification);
     }
-
-    public static void cancel(final Context context) {
-        final NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.cancel(NOTIFICATION_TAG, 0);
-    }
 }

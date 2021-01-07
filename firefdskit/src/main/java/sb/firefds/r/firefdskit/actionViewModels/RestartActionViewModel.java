@@ -35,9 +35,9 @@ import static sb.firefds.r.firefdskit.utils.Packages.FIREFDSKIT;
 public abstract class RestartActionViewModel extends FirefdsKitActionViewModel {
     private static final String REBOOT_ACTIVITY = FIREFDSKIT + ".activities.FirefdsRebootActivity";
     private String rebootOption;
-    private FeatureFactory mFeatureFactory;
-    private ConditionChecker mConditionChecker;
-    private KeyGuardManagerWrapper mKeyGuardManagerWrapper;
+    private final FeatureFactory mFeatureFactory;
+    private final ConditionChecker mConditionChecker;
+    private final KeyGuardManagerWrapper mKeyGuardManagerWrapper;
 
     RestartActionViewModel() {
 

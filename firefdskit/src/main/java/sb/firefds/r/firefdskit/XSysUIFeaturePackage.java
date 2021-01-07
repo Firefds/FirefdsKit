@@ -68,7 +68,6 @@ public class XSysUIFeaturePackage {
     private static final String STATE = NOTIFICATION_SHADE_WINDOW_CONTROLLER + ".State";
     private static final String POWER_NOTIFICATION_WARNINGS = SYSTEM_UI + ".power.PowerNotificationWarnings";
     private static final String SETTINGS_HELPER = SYSTEM_UI + ".util.SettingsHelper";
-    private static final String SEC_VOLUME_DIALOG_IMPL = SYSTEM_UI + ".volume.SecVolumeDialogImpl";
     private static final String SOUND_POOL_WRAPPER = SYSTEM_UI + ".volume.util.SoundPoolWrapper";
     private static final String SOUND_PATH_FINDER = SYSTEM_UI + ".power.SoundPathFinder";
 

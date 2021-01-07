@@ -17,6 +17,8 @@ package sb.firefds.r.firefdskit.actionViewModels;
 import android.os.Handler;
 import android.os.Process;
 
+import androidx.core.content.res.ResourcesCompat;
+
 import sb.firefds.r.firefdskit.R;
 
 import static sb.firefds.r.firefdskit.XSysUIGlobalActions.getResources;
@@ -30,7 +32,7 @@ public class RestartSystemUiActionViewModel extends FirefdsKitActionViewModel {
         getActionInfo().setName(RESTART_UI_ACTION);
         getActionInfo().setLabel(getResources().getString(R.string.restartUI));
         getActionInfo().setDescription(getResources().getString(R.string.restartUI));
-        setDrawableIcon(getResources().getDrawable(R.drawable.tw_ic_do_restart_ui_stock, null));
+        setDrawableIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.tw_ic_do_restart_ui_stock, null));
     }
 
     @Override
