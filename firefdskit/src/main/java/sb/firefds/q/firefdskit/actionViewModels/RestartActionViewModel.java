@@ -19,6 +19,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager;
+import android.util.Log;
 
 import com.samsung.android.globalactions.presentation.features.FeatureFactory;
 import com.samsung.android.globalactions.presentation.strategies.SecureConfirmStrategy;
@@ -32,7 +33,7 @@ import static sb.firefds.q.firefdskit.utils.Constants.REBOOT_ACTION;
 import static sb.firefds.q.firefdskit.utils.Packages.FIREFDSKIT;
 
 public abstract class RestartActionViewModel extends FirefdsKitActionViewModel {
-    private static final String REBOOT_ACTIVITY = FIREFDSKIT + ".activities.WanamRebootActivity";
+    private static final String REBOOT_ACTIVITY = FIREFDSKIT + ".activities.FirefdsRebootActivity";
     private String rebootOption;
     private FeatureFactory mFeatureFactory;
     private ConditionChecker mConditionChecker;
@@ -81,6 +82,7 @@ public abstract class RestartActionViewModel extends FirefdsKitActionViewModel {
         try {
             ((PowerManager) getContext().getSystemService(Context.POWER_SERVICE)).reboot(rebootOption);
         } catch (SecurityException e) {
+            Log.e("FFK", e.getMessage());
             Intent rebootIntent = new Intent().setComponent(new ComponentName(FIREFDSKIT, REBOOT_ACTIVITY));
             rebootIntent.putExtra(REBOOT_ACTION, rebootOption);
             rebootIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
