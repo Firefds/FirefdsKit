@@ -27,7 +27,6 @@
     <string name="reboot_required">يرجى إعادة التشغيل لتطبيق التغييرات.</string>
     <string name="reboot_required_title">تم طلب إعادة التشغيل</string>
     <string name="reboot_required_message">يحتاج Firefds Kit إلى إعادة التشغيل لتطبيق التغييرات</string>
-    <string name="rebooting">جار إعادة التشغيل‫…‬</string>
     <string name="credit_details">\nالشكر لـ Rovo89 على إنشاء Xposed framework.\n\nالشكر لـC3C076, RikkaW, solohsu, MlgmXyysd على مساهماتهم في Xposed framework والوحدات.\n\n\nالمطور: <a href="http://forum.xda-developers.com/member.php?u=3844620">Firefds firefds@Xda-Developers</a>\n\n\nاستنادا إلى XTouchWiz من طرف  :\n\n\\<a href="http://forum.xda-developers.com/member.php?u=3562083">Wanam @Xda-Developers</a></string>
     <string name="restore">استعادة نسخة احتياطية</string>
     <string name="save">حفظ نسخة احتياطية</string>
@@ -54,9 +53,6 @@
     <string name="status_custom">تم تعيين الحالة إلى مخصص</string>
     <string name="status_official">تم تعيين الحالة إلى رسمي</string>
     <string name="fake_system_status">حالة النظام الوهمية</string>
-    <string name="call_recording_menu_disabled">قائمة تسجيل المكالمة معطّلة</string>
-    <string name="call_recording_menu_enabled">قائمة تسجيل المكالمة مفعّلة</string>
-    <string name="enable_call_recording_menu">تفعيل قائمة تسجيل المكالمة</string>
     <string name="quick_settings_disable_bluetooth_scan_dialog">تعطيل منبثقة مبدّل البلوتوث</string>
     <string name="quick_settings_disable_bluetooth_scan_dialog_sum">تعطيل نافذة المسح بعد تفعيل البلوتوث</string>
     <string name="quick_settings_disable_sync_dialog">تعطيل منبثقة مبدّل المزامنة</string>
@@ -77,7 +73,6 @@
     <string name="disable_volume_control_sound">تعطيل رنّة التحكم في الصوت</string>
     <string name="disable_volume_control_sound_while_changing_sounds">تعطيل رنّة التحكم في حجم الصوت عند تعديل حجم الصوت</string>
     <string name="disable_low_battery_sound">تعطيل رنّة شحن البطارية ضعيف</string>
-    <string name="rebooting_">جار إعادة التشغيل‫…‬</string>
     <string name="pending_changes">تعديلات معلقة</string>
     <string name="force_mms_connect">MMS فرض اتصال</string>
     <string name="force_mms_connect_to_receive_mms">فرض اتصال MMS، من أجل الحصول على MMS دون تفعيل بيانات الجوال يدويا</string>
