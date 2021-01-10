@@ -14,8 +14,10 @@
  */
 package sb.firefds.pie.firefdskit.rebootactions;
 
+import android.content.Context;
+
 public interface RebootAction {
 
-    void reboot();
+    void reboot(Context context);
 
 }
