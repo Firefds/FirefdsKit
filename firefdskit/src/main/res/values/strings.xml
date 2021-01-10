@@ -27,7 +27,6 @@
     <string name="reboot_required">Please reboot to apply changes.</string>
     <string name="reboot_required_title">Reboot requested</string>
     <string name="reboot_required_message">Firefds Kit requires a reboot to apply changes</string>
-    <string name="rebooting">Rebooting now…</string>
     <string name="credit_details">\nThanks to Rovo89 for creating Xposed framework.\n\nThanks to C3C076, RikkaW, solohsu, MlgmXyysd for their contribution on Xposed framework and modules.\n\nDeveloper: <a href="http://forum.xda-developers.com/member.php?u=3844620">Firefds firefds@Xda-Developers</a>\n\nBased on XTouchWiz by:\n\<a href="http://forum.xda-developers.com/member.php?u=3562083">Wanam @Xda-Developers</a></string>
     <string name="restore">Restore a backup</string>
     <string name="save">Save a backup</string>
@@ -54,9 +53,6 @@
     <string name="status_custom">Status set to Custom</string>
     <string name="status_official">Status set to Official</string>
     <string name="fake_system_status">Fake system status</string>
-    <string name="call_recording_menu_disabled">Call recording menu disabled</string>
-    <string name="call_recording_menu_enabled">Call recording menu enabled</string>
-    <string name="enable_call_recording_menu">Enable call recording menu</string>
     <string name="quick_settings_disable_bluetooth_scan_dialog">Disable bluetooth toggle popup</string>
     <string name="quick_settings_disable_bluetooth_scan_dialog_sum">Disable the scan dialog after enabling bluetooth</string>
     <string name="quick_settings_disable_sync_dialog">Disable sync toggle popup</string>
@@ -77,7 +73,6 @@
     <string name="disable_volume_control_sound">Disable volume control sound</string>
     <string name="disable_volume_control_sound_while_changing_sounds">Disable volume control sound while changing sounds volume</string>
     <string name="disable_low_battery_sound">Disable low battery sound</string>
-    <string name="rebooting_">Rebooting…</string>
     <string name="pending_changes">Pending changes</string>
     <string name="force_mms_connect">Force MMS connect</string>
     <string name="force_mms_connect_to_receive_mms">Force MMS connect, to receive MMS without manually enabling mobile data</string>

@@ -220,7 +220,7 @@ public class XSecSettingsPackage {
                             Context ctx = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
                             Resources res = ctx.getResources();
                             Context gbContext = Utils.getGbContext(ctx, res.getConfiguration());
-                            Constructor constructor =
+                            Constructor<?> constructor =
                                     NavigationBarColorPreference.getDeclaredConstructor(Context.class,
                                             AttributeSet.class);
 

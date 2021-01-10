@@ -25,11 +25,11 @@ import java.lang.ref.WeakReference;
 
 public class ActionViewModelDefaults {
 
-    private WeakReference<Context> context;
-    private SecGlobalActionsPresenter globalActions;
-    private FeatureFactory featureFactory;
-    private ConditionChecker conditionChecker;
-    private KeyGuardManagerWrapper keyGuardManagerWrapper;
+    private final WeakReference<Context> context;
+    private final SecGlobalActionsPresenter globalActions;
+    private final FeatureFactory featureFactory;
+    private final ConditionChecker conditionChecker;
+    private final KeyGuardManagerWrapper keyGuardManagerWrapper;
 
     public ActionViewModelDefaults(WeakReference<Context> context,
                                    SecGlobalActionsPresenter globalActions,

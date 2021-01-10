@@ -14,6 +14,8 @@
  */
 package sb.firefds.pie.firefdskit.actionViewModels;
 
+import androidx.core.content.res.ResourcesCompat;
+
 import sb.firefds.pie.firefdskit.R;
 
 import static sb.firefds.pie.firefdskit.XSysUIGlobalActions.getCustomRecovery;
@@ -32,7 +34,7 @@ class RestartRecoveryActionViewModel extends RestartActionViewModel {
         getActionInfo().setDescription(getCustomRecoveryConfirmation() == null ?
                 getResources().getString(R.string.reboot_confirm_recovery)
                 : getCustomRecoveryConfirmation());
-        setDrawableIcon(getResources().getDrawable(R.drawable.tw_ic_do_recovery_stock, null));
+        setDrawableIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.tw_ic_do_recovery_stock, null));
         setRebootOption(RECOVERY_ACTION);
     }
 }

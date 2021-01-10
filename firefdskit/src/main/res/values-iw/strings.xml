@@ -26,7 +26,6 @@
     <string name="reboot_required">אנא הפעל מחדש על מנת להחיל את השינויים</string>
     <string name="reboot_required_title">נדרשת הפעלה מחדש</string>
     <string name="reboot_required_message">Firefds Kit דורש הפעלה מחדש</string>
-    <string name="rebooting">מפעיל מחדש…</string>
     <string name="credit_details">"\nתודה ל Rovo89 על יצירת מסגרת ה Xposed.\n\nתודה ל C3C076, RikkaW, solohsu, MlgmXyysd על התרומה שלהם ליצירת Xposed ומודלים.\n\nמפתח: <a href="http://forum.xda-developers.com/member.php?u=3844620">Firefds firefds@Xda-Developers</a>\n\nמבוסס על XTouchWiz של:\n\n<a href="http://forum.xda-developers.com/member.php?u=3562083">Wanam @Xda-Developers</a>"</string>
     <string name="restore">שיחזור גיבוי</string>
     <string name="save">שמירת גיבוי</string>
@@ -53,9 +52,6 @@
     <string name="status_custom">סטטוס הוגדר כשונה</string>
     <string name="status_official">סטטוס הוגדר כרשמי</string>
     <string name="fake_system_status">זיוף סטטוס המערכת</string>
-    <string name="call_recording_menu_disabled">תפריט הקלטת שיחה מבוטל</string>
-    <string name="call_recording_menu_enabled">תפריט הקלטת שיחה מופעל</string>
-    <string name="enable_call_recording_menu">הפעלת תפריט הקלטת שיחה</string>
     <string name="quick_settings_disable_bluetooth_scan_dialog">ביטול קפיצת חלון בהפעלת Bluetooth</string>
     <string name="quick_settings_disable_bluetooth_scan_dialog_sum">ביטול דיאלוג הסריקה אחרי הפעלת Bluetooth</string>
     <string name="camera_and_gallery">מצלמה וגלריה</string>
@@ -74,7 +70,6 @@
     <string name="disable_volume_control_sound">ביטול צליל שליטה בעוצמת שמע</string>
     <string name="disable_volume_control_sound_while_changing_sounds">ביטול צליל שינוי עוצמת השמע בעת שינוי העוצמה</string>
     <string name="disable_low_battery_sound">ביטול צליל סוללה נמוכה</string>
-    <string name="rebooting_">מפעיל מחדש…</string>
     <string name="pending_changes">שינויים ממתינים</string>
     <string name="force_mms_connect">דחיפת MMS בכוח</string>
     <string name="force_mms_connect_to_receive_mms">דחיפת MMS בכוח, על מנת לקבל הודעות MMS מבלי להתחבר ידנית לנתונים ניידים</string>

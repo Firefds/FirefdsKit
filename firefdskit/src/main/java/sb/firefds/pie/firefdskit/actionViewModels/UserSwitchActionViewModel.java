@@ -16,6 +16,8 @@ package sb.firefds.pie.firefdskit.actionViewModels;
 
 import android.content.Intent;
 
+import androidx.core.content.res.ResourcesCompat;
+
 import sb.firefds.pie.firefdskit.R;
 
 import static sb.firefds.pie.firefdskit.XSysUIGlobalActions.getResources;
@@ -29,7 +31,7 @@ public class UserSwitchActionViewModel extends FirefdsKitActionViewModel {
         super();
         getActionInfo().setName(MULTIUSER_ACTION);
         getActionInfo().setLabel(getResources().getString(R.string.switchUser));
-        setDrawableIcon(getResources().getDrawable(R.drawable.tw_ic_do_users_stock, null));
+        setDrawableIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.tw_ic_do_users_stock, null));
     }
 
     @Override

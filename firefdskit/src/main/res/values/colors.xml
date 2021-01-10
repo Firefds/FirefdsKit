@@ -2,9 +2,6 @@
     <color name="primaryColor">#0f94b4</color>
     <color name="primaryLightColor">#5bc5e6</color>
     <color name="primaryDarkColor">#006684</color>
-    <color name="secondaryColor">#0f94b4</color>
-    <color name="secondaryLightColor">#5bc5e6</color>
-    <color name="secondaryDarkColor">#006684</color>
     <color name="colorAccent">@color/primaryLightColor</color>
     <color name="ic_launcher_startColor">@color/primaryLightColor</color>
     <color name="ic_launcher_centerColor">@color/primaryColor</color>

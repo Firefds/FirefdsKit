@@ -14,6 +14,8 @@
  */
 package sb.firefds.pie.firefdskit.actionViewModels;
 
+import androidx.core.content.res.ResourcesCompat;
+
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.pie.firefdskit.R;
@@ -30,7 +32,7 @@ public class FlashLightActionViewModel extends FirefdsKitActionViewModel {
         super();
         getActionInfo().setName(FLASHLIGHT_ACTION);
         getActionInfo().setLabel(getResources().getString(R.string.flashlight));
-        setDrawableIcon(getResources().getDrawable(R.drawable.tw_ic_do_torchlight_stock, null));
+        setDrawableIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.tw_ic_do_torchlight_stock, null));
         setStateLabel();
     }
 

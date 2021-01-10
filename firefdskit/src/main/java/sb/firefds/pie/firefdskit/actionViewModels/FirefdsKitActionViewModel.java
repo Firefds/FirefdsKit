@@ -28,7 +28,7 @@ import static sb.firefds.pie.firefdskit.XSysUIGlobalActions.getActionViewModelDe
 public abstract class FirefdsKitActionViewModel implements ActionViewModel {
     private final SecGlobalActions mGlobalActions;
     private ActionInfo mInfo = new ActionInfo();
-    private Context mContext;
+    private final Context mContext;
     private BitmapDrawable mIcon;
 
     FirefdsKitActionViewModel() {

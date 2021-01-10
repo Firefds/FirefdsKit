@@ -49,11 +49,7 @@ public class SaveDialog {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (count == 0) {
-                    dialog.getButton(Dialog.BUTTON_POSITIVE).setEnabled(false);
-                } else {
-                    dialog.getButton(Dialog.BUTTON_POSITIVE).setEnabled(true);
-                }
+                dialog.getButton(Dialog.BUTTON_POSITIVE).setEnabled(count != 0);
             }
 
             @Override
