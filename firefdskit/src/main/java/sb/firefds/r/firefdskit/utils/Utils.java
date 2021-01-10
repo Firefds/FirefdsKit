@@ -37,7 +37,6 @@ import java.util.Locale;
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.r.firefdskit.R;
 
-import static sb.firefds.r.firefdskit.FirefdsKitActivity.getAppContext;
 import static sb.firefds.r.firefdskit.utils.Packages.FIREFDSKIT;
 import static sb.firefds.r.firefdskit.utils.Preferences.PREF_FORCE_ENGLISH;
 
@@ -46,26 +45,26 @@ public class Utils {
     @SuppressLint("StaticFieldLeak")
     private static Context mGbContext;
 
-    public static void reboot() {
+    public static void reboot(Context context) {
         try {
-            rebootSystem(null);
+            rebootSystem(context, null);
         } catch (Throwable e) {
             log(e);
         }
     }
 
-    public static void rebootEPM(String rebootType) {
+    public static void rebootEPM(Context context, String rebootType) {
         try {
-            rebootSystem(rebootType);
+            rebootSystem(context, rebootType);
         } catch (Throwable e) {
             log(e);
         }
     }
 
     @SuppressLint("MissingPermission")
-    private static void rebootSystem(final String rebootType) {
+    private static void rebootSystem(Context context, final String rebootType) {
         try {
-            ((PowerManager) getAppContext().getSystemService(Context.POWER_SERVICE)).reboot(rebootType);
+            ((PowerManager) context.getSystemService(Context.POWER_SERVICE)).reboot(rebootType);
         } catch (Exception e) {
             log(e);
         }

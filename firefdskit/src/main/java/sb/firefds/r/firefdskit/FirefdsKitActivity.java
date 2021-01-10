@@ -397,10 +397,6 @@ public class FirefdsKitActivity extends AppCompatActivity
         return sharedPreferences;
     }
 
-    public static Context getAppContext() {
-        return appContext;
-    }
-
     private static void setCardStatus(int statusIconId,
                                       int statusTextId,
                                       int statusColorId) {

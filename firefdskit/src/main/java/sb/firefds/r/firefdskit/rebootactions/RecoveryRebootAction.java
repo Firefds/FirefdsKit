@@ -14,6 +14,8 @@
  */
 package sb.firefds.r.firefdskit.rebootactions;
 
+import android.content.Context;
+
 import sb.firefds.r.firefdskit.utils.Utils;
 
 import static sb.firefds.r.firefdskit.utils.Constants.RECOVERY_ACTION;
@@ -21,7 +23,7 @@ import static sb.firefds.r.firefdskit.utils.Constants.RECOVERY_ACTION;
 public class RecoveryRebootAction implements RebootAction {
 
     @Override
-    public void reboot() {
-        Utils.rebootEPM(RECOVERY_ACTION);
+    public void reboot(Context context) {
+        Utils.rebootEPM(context, RECOVERY_ACTION);
     }
 }

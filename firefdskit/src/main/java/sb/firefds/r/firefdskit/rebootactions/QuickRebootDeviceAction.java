@@ -14,12 +14,14 @@
  */
 package sb.firefds.r.firefdskit.rebootactions;
 
+import android.content.Context;
+
 import sb.firefds.r.firefdskit.utils.Utils;
 
 public class QuickRebootDeviceAction implements RebootAction {
 
     @Override
-    public void reboot() {
+    public void reboot(Context context) {
         Utils.performQuickReboot();
     }
 }

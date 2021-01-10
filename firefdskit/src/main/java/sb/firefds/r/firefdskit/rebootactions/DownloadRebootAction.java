@@ -14,6 +14,8 @@
  */
 package sb.firefds.r.firefdskit.rebootactions;
 
+import android.content.Context;
+
 import sb.firefds.r.firefdskit.utils.Utils;
 
 import static sb.firefds.r.firefdskit.utils.Constants.DOWNLOAD_ACTION;
@@ -21,7 +23,7 @@ import static sb.firefds.r.firefdskit.utils.Constants.DOWNLOAD_ACTION;
 public class DownloadRebootAction implements RebootAction {
 
     @Override
-    public void reboot() {
-        Utils.rebootEPM(DOWNLOAD_ACTION);
+    public void reboot(Context context) {
+        Utils.rebootEPM(context, DOWNLOAD_ACTION);
     }
 }
