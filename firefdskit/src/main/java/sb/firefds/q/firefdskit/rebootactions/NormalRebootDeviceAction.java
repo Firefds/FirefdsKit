@@ -14,12 +14,14 @@
  */
 package sb.firefds.q.firefdskit.rebootactions;
 
+import android.content.Context;
+
 import sb.firefds.q.firefdskit.utils.Utils;
 
 public class NormalRebootDeviceAction implements RebootAction {
 
     @Override
-    public void reboot() {
-        Utils.reboot();
+    public void reboot(Context context) {
+        Utils.reboot(context);
     }
 }

@@ -18,8 +18,6 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import sb.firefds.q.firefdskit.rebootactions.RebootAction;
-
 import static sb.firefds.q.firefdskit.rebootactions.RebootActionFactory.getRebootAction;
 import static sb.firefds.q.firefdskit.utils.Constants.REBOOT_ACTION;
 
@@ -28,6 +26,7 @@ public class FirefdsRebootActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getRebootAction(getIntent().getStringExtra(REBOOT_ACTION)).ifPresent(RebootAction::reboot);
+        getRebootAction(getIntent().getStringExtra(REBOOT_ACTION))
+                .ifPresent(rebootAction -> rebootAction.reboot(getApplicationContext()));
     }
 }
