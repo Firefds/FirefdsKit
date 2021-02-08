@@ -40,11 +40,15 @@
             android:value="93" />
         <meta-data
             android:name="xposeddescription"
-            android:value="Made for stock Samsung devices supporting Android 10.0 Roms by Firefds" />
+            android:value="Made for stock Samsung devices supporting Android 11.0 Roms by Firefds" />
 
         <meta-data
             android:name="xposedsharedprefs"
             android:value="true" />
+
+        <meta-data
+            android:name="xposedscope"
+            android:resource="@array/module_scope" />
 
         <receiver
             android:name="sb.firefds.r.firefdskit.receivers.FirefdsRebootReceiver"
