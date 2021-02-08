@@ -66,4 +66,18 @@
         <item>MMM d</item>
         <item>d</item>
     </string-array>
+    <string-array name="module_scope" translatable="false">
+        <item>android</item>
+        <item>com.samsung.android.incallui</item>
+        <item>com.sec.android.app.camera</item>
+        <item>com.samsung.android.app.contacts</item>
+        <item>com.samsung.android.email.provider</item>
+        <item>com.samsung.android.messaging</item>
+        <item>com.samsung.android.MtpApplication</item>
+        <item>com.android.nfc</item>
+        <item>com.android.settings</item>
+        <item>com.sec.android.soagent</item>
+        <item>com.android.systemui</item>
+        <item>com.samsung.android.app.smartcapture</item>
+    </string-array>
 </resources>

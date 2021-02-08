@@ -46,6 +46,10 @@
             android:name="xposedsharedprefs"
             android:value="true" />
 
+        <meta-data
+            android:name="xposedscope"
+            android:resource="@array/module_scope" />
+
         <receiver
             android:name=".receivers.FirefdsRebootReceiver"
             android:exported="false" />
