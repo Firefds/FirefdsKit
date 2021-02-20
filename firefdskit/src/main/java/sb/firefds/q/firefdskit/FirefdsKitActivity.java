@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -134,7 +133,6 @@ public class FirefdsKitActivity extends AppCompatActivity
         appContext = !this.isDeviceProtectedStorage() ? createDeviceProtectedStorageContext() : this;
         sharedPreferences = appContext.getSharedPreferences(PREFS, 0);
         activity = this;
-        verifyStoragePermissions(this);
 
         if (isNotSamsungRom()) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -414,15 +412,6 @@ public class FirefdsKitActivity extends AppCompatActivity
         statusIcon.setImageDrawable(ContextCompat.getDrawable(activity, statusIconId));
         statusText.setText(statusTextId);
         statusText.setTextColor(Color.WHITE);
-    }
-
-    private static void verifyStoragePermissions(AppCompatActivity activity) {
-        // Check if we have write settings permission
-        if (!Settings.System.canWrite(activity)) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-            intent.setData(Uri.parse("package:" + activity.getPackageName()));
-            activity.startActivity(intent);
-        }
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
