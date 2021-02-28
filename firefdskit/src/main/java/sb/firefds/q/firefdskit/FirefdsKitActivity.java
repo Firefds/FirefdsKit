@@ -14,11 +14,13 @@
  */
 package sb.firefds.q.firefdskit;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -56,7 +58,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -134,6 +138,8 @@ public class FirefdsKitActivity extends AppCompatActivity
         sharedPreferences = appContext.getSharedPreferences(PREFS, 0);
         activity = this;
 
+        List<String> permissionDeniedList = checkPermissions();
+
         if (isNotSamsungRom()) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setTitle(getString(R.string.samsung_rom_warning));
@@ -199,9 +205,15 @@ public class FirefdsKitActivity extends AppCompatActivity
                     R.string.firefds_kit_is_not_active,
                     R.color.error);
         } else {
-            setCardStatus(R.drawable.ic_check_circle,
-                    R.string.xposed_status,
-                    R.color.active);
+            if (permissionDeniedList.size() > 0) {
+                setCardStatus(R.drawable.ic_error,
+                        R.string.no_permissions,
+                        R.color.no_permissions);
+            } else {
+                setCardStatus(R.drawable.ic_check_circle,
+                        R.string.xposed_status,
+                        R.color.active);
+            }
 
             if (!sharedPreferences.getBoolean(PREF_FIRST_LAUNCH, false)) {
                 new AlertDialog.Builder(activity)
@@ -220,6 +232,26 @@ public class FirefdsKitActivity extends AppCompatActivity
         Optional.of(getIntent())
                 .map(Intent::getAction)
                 .ifPresent(action -> openMenuItem(action, menuNav));
+    }
+
+    private List<String> checkPermissions() {
+        List<String> permissionDeniedList = new ArrayList<>();
+        if (ContextCompat.checkSelfPermission(appContext, Manifest.permission.REBOOT) !=
+                PackageManager.PERMISSION_GRANTED) {
+            permissionDeniedList.add(Manifest.permission.REBOOT);
+            Log.d("FFK", Manifest.permission.REBOOT + " was not granted");
+        }
+        if (ContextCompat.checkSelfPermission(appContext, Manifest.permission.WRITE_SETTINGS) !=
+                PackageManager.PERMISSION_GRANTED) {
+            permissionDeniedList.add(Manifest.permission.WRITE_SETTINGS);
+            Log.d("FFK", Manifest.permission.WRITE_SETTINGS + " was not granted");
+        }
+        if (ContextCompat.checkSelfPermission(appContext, "android.permission.RECOVERY") !=
+                PackageManager.PERMISSION_GRANTED) {
+            permissionDeniedList.add("android.permission.RECOVERY");
+            Log.d("FFK", "Manifest.permission.REBOOT was not granted");
+        }
+        return permissionDeniedList;
     }
 
     @Override
