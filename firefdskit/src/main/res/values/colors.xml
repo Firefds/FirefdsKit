@@ -8,4 +8,5 @@
     <color name="ic_launcher_endColor">@color/primaryDarkColor</color>
     <color name="active">@color/primaryDarkColor</color>
     <color name="error">#ba000d</color>
+    <color name="no_permissions">#FFC300</color>
 </resources>

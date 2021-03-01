@@ -62,12 +62,13 @@ public class XPM30 {
 
                                 switch (pkgName) {
                                     case FIREFDSKIT:
-                                        grantPermission(permissionsState, mPermissions, STATUSBAR);
-                                        grantPermission(permissionsState, mPermissions, WRITE_SETTINGS);
+                                        grantPermission(pkgName, permissionsState, mPermissions, STATUSBAR);
+                                        grantPermission(pkgName, permissionsState, mPermissions, WRITE_SETTINGS);
                                     case SYSTEM_UI:
-                                        grantPermission(permissionsState, mPermissions, REBOOT);
-                                        grantPermission(permissionsState, mPermissions, RECOVERY);
-                                        grantPermission(permissionsState, mPermissions, ACCESS_SCREEN_RECORDER_SVC);
+                                        grantPermission(pkgName, permissionsState, mPermissions, REBOOT);
+                                        grantPermission(pkgName, permissionsState, mPermissions, RECOVERY);
+                                        grantPermission(pkgName, permissionsState, mPermissions,
+                                                ACCESS_SCREEN_RECORDER_SVC);
                                         break;
                                 }
                             }
@@ -78,10 +79,16 @@ public class XPM30 {
         }
     }
 
-    private static void grantPermission(Object permissionsState, Object permissions, String permission) {
+    private static void grantPermission(String pkgName,
+                                        Object permissionsState,
+                                        Object permissions,
+                                        String permission) {
         if (!(Boolean) XposedHelpers.callMethod(permissionsState, "hasInstallPermission", permission)) {
             final Object pAccess = XposedHelpers.callMethod(permissions, "get", permission);
             XposedHelpers.callMethod(permissionsState, "grantInstallPermission", pAccess);
+            XposedBridge.log("FFK: Granting " + permission + " to " + pkgName);
+        } else {
+            XposedBridge.log("FFK: " + permission + " already granted to" + pkgName);
         }
     }
 }
