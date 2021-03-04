@@ -111,6 +111,10 @@ public class Utils {
         Log.e("FFK", errors.toString());
     }
 
+    public static void log(String msg) {
+        Log.d("FFK", msg);
+    }
+
     public static ContextWrapper checkForceEnglish(Context context, SharedPreferences prefs) {
 
         LocaleList localeList;
