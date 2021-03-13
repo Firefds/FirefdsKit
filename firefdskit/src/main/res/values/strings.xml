@@ -218,5 +218,5 @@
     <string name="clock_size">Clock size</string>
     <string name="enable_spam_protection_summary">Enable Caller ID and spam protection</string>
     <string name="enable_spam_protection_title">Caller ID and Spam Protection</string>
-    <string name="no_permissions">Firefds Kit is active, but some permissions were not granted.\nSome features will not work correctly.\nPlease check your Xposed configuration.</string>
+    <string name="no_permissions">Firefds Kit is active, but SEPolicy is not loaded properly.\nSome features will not work correctly.\nPlease check your Magisk installation.</string>
 </resources>
