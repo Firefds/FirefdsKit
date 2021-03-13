@@ -72,16 +72,18 @@ public class XAndroidPackage {
 
             if (prefs.getBoolean(PREF_DEFAULT_REBOOT_BEHAVIOR, false)) {
                 Class<?> shutdownThreadClass = XposedHelpers.findClass(SHUTDOWN_THREAD, classLoader);
-
-                XposedHelpers.getStaticObjectField(shutdownThreadClass, "mReason");
-                XposedBridge.hookAllMethods(shutdownThreadClass,
-                        "reboot",
+                XposedHelpers.findAndHookMethod(shutdownThreadClass,
+                        "rebootOrShutdown",
+                        Context.class,
+                        boolean.class,
+                        String.class,
                         new XC_MethodHook() {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) {
-                                String reason = (String) param.args[1];
-                                if (reason.equals("userrequested")) {
-                                    param.args[1] = "recovery";
+                                boolean reboot = (boolean) param.args[1];
+                                String reason = (String) param.args[2];
+                                if (reboot && reason.equals("userrequested")) {
+                                    param.args[2] = "recovery";
                                 }
                             }
                         });
