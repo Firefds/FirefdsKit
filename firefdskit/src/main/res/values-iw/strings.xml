@@ -223,4 +223,5 @@
     <string name="disable_power_button_quick_panel_title">הסתרת כפתור כיבוי בהגדרות מהירות</string>
     <string name="disable_power_button_quick_panel_summary_on">כפתור כיבוי בהגדרות מהירות מוחלף בחיפוש</string>
     <string name="disable_power_button_quick_panel_summary_off">כפתור כיבוי בהגדרות מהירות מוצג</string>
+    <string name="no_permissions">המודל פועל אך SEPolicy לא הוטען כהלכה.\nחלק מהאפשרויות לא יעבדו כמו שצריך.\nיש לבדוק את התקנת Magisk.</string>
 </resources>

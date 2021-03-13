@@ -58,12 +58,12 @@ public class XPM29 {
 
                                 switch (pkgName) {
                                     case FIREFDSKIT:
-                                        grantPermission(pkgName, ps, permissions, STATUSBAR);
-                                        grantPermission(pkgName, ps, permissions, WRITE_SETTINGS);
+                                        grantPermission(ps, permissions, STATUSBAR);
+                                        grantPermission(ps, permissions, WRITE_SETTINGS);
                                     case SYSTEM_UI:
-                                        grantPermission(pkgName, ps, permissions, REBOOT);
-                                        grantPermission(pkgName, ps, permissions, RECOVERY);
-                                        grantPermission(pkgName, ps, permissions, ACCESS_SCREEN_RECORDER_SVC);
+                                        grantPermission(ps, permissions, REBOOT);
+                                        grantPermission(ps, permissions, RECOVERY);
+                                        grantPermission(ps, permissions, ACCESS_SCREEN_RECORDER_SVC);
                                         break;
                                 }
                             }
@@ -74,13 +74,10 @@ public class XPM29 {
         }
     }
 
-    private static void grantPermission(String pkgName, Object ps, Object permissions, String permission) {
+    private static void grantPermission(Object ps, Object permissions, String permission) {
         if (!(Boolean) XposedHelpers.callMethod(ps, "hasInstallPermission", permission)) {
             final Object pAccess = XposedHelpers.callMethod(permissions, "get", permission);
             XposedHelpers.callMethod(ps, "grantInstallPermission", pAccess);
-            XposedBridge.log("FFK: Granting " + pkgName + " " + permission);
-        } else {
-            XposedBridge.log("FFK: " + pkgName + " already has" + permission);
         }
     }
 }
