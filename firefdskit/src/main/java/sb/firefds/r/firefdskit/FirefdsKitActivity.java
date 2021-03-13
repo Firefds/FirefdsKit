@@ -200,7 +200,7 @@ public class FirefdsKitActivity extends AppCompatActivity
                     R.string.firefds_kit_is_not_active,
                     R.color.error);
         } else {
-            if (SELinux.checkSELinuxAccess("u:r:system_server:s0", "u:r:system_server:s0", "process", "execmem")) {
+            if (!SELinux.checkSELinuxAccess("u:r:system_server:s0", "u:r:system_server:s0", "process", "execmem")) {
                 Log.e("FFK", "sepolicy was not loaded properly, will not hook into android package");
                 setCardStatus(R.drawable.ic_error,
                         R.string.no_permissions,
