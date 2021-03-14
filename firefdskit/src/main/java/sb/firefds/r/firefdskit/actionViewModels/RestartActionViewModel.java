@@ -27,9 +27,12 @@ import com.samsung.android.globalactions.util.ConditionChecker;
 import com.samsung.android.globalactions.util.KeyGuardManagerWrapper;
 import com.samsung.android.globalactions.util.SystemConditions;
 
+import java.util.Objects;
+
 import static sb.firefds.r.firefdskit.XSysUIGlobalActions.getActionViewModelDefaults;
 import static sb.firefds.r.firefdskit.XSysUIGlobalActions.isUnlockKeyguardBeforeActionExecute;
 import static sb.firefds.r.firefdskit.utils.Constants.REBOOT_ACTION;
+import static sb.firefds.r.firefdskit.utils.Constants.TAG;
 import static sb.firefds.r.firefdskit.utils.Packages.FIREFDSKIT;
 
 public abstract class RestartActionViewModel extends FirefdsKitActionViewModel {
@@ -82,7 +85,7 @@ public abstract class RestartActionViewModel extends FirefdsKitActionViewModel {
         try {
             ((PowerManager) getContext().getSystemService(Context.POWER_SERVICE)).reboot(rebootOption);
         } catch (SecurityException e) {
-            Log.e("FFK", e.getMessage());
+            Log.e(TAG, Objects.requireNonNull(e.getMessage()));
             Intent rebootIntent = new Intent().setComponent(new ComponentName(FIREFDSKIT, REBOOT_ACTIVITY));
             rebootIntent.putExtra(REBOOT_ACTION, rebootOption);
             rebootIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

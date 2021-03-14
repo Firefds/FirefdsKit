@@ -37,6 +37,7 @@ import java.util.Locale;
 import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.r.firefdskit.R;
 
+import static sb.firefds.r.firefdskit.utils.Constants.TAG;
 import static sb.firefds.r.firefdskit.utils.Packages.FIREFDSKIT;
 import static sb.firefds.r.firefdskit.utils.Preferences.PREF_FORCE_ENGLISH;
 
@@ -108,11 +109,11 @@ public class Utils {
     public static void log(Throwable e) {
         StringWriter errors = new StringWriter();
         e.printStackTrace(new PrintWriter(errors));
-        Log.e("FFK", errors.toString());
+        Log.e(TAG, errors.toString());
     }
 
-    public static void log(String msg) {
-        Log.d("FFK", msg);
+    public static void log(String message) {
+        Log.d(TAG, message);
     }
 
     public static ContextWrapper checkForceEnglish(Context context, SharedPreferences prefs) {

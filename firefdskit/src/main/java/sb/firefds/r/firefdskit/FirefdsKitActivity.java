@@ -536,9 +536,9 @@ public class FirefdsKitActivity extends AppCompatActivity
                 Field f = prefs.getClass().getDeclaredField("mFile");
                 f.setAccessible(true);
                 mPreferenceDir = new File(((File) f.get(prefs)).getParent()).getAbsolutePath();
-                Log.d("FFK", "Preference folder: " + mPreferenceDir);
+                log("Preference folder: " + mPreferenceDir);
             } catch (NoSuchFieldException | IllegalAccessException e) {
-                Log.e("FFK", "Could not determine preference folder path. Returning default.");
+                log("Could not determine preference folder path. Returning default.");
                 e.printStackTrace();
                 mPreferenceDir = appContext.getDataDir() + "/shared_prefs";
             }
