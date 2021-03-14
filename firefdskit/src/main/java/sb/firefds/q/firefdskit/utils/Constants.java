@@ -18,6 +18,8 @@ import static sb.firefds.q.firefdskit.utils.Packages.FIREFDSKIT;
 
 public class Constants {
 
+    public static final String TAG = "FFK";
+
     public static final String BACKUP_DIR = "FirefdsKitBackup";
     public static final String PREFS = FIREFDSKIT + "_preferences";
 
