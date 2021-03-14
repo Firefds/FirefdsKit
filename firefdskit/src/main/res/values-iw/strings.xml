@@ -218,5 +218,5 @@
     <string name="clock_size">גודל שעון</string>
     <string name="enable_spam_protection_summary">הפעלת שיחה מזוהה והגנת ספאם</string>
     <string name="enable_spam_protection_title">שיחה מזוהה והגנת ספאם</string>
-    <string name="no_permissions">Firefds Kit פועל אך SEPolicy לא הוטען כהלכה.\nחלק מהאפשרויות לא יעבדו כמו שצריך.\nיש לבדוק את התקנת Magisk</string>
+    <string name="no_permissions">מודל Firefds Kit פועל אך לא קיבל את כל ההרשאות.\nחלק מהאפשרויות לא יעבדו כמו שצריך.\nיש לבדוק את התקנת Magisk</string>
 </resources>
