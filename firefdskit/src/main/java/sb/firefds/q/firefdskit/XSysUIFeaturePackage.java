@@ -68,7 +68,7 @@ public class XSysUIFeaturePackage {
     private static final String POWER_NOTIFICATION_WARNINGS = SYSTEM_UI + ".power.PowerNotificationWarnings";
     private static final String SETTINGS_HELPER = SYSTEM_UI + ".util.SettingsHelper";
     private static final String SEC_VOLUME_DIALOG_IMPL = SYSTEM_UI + ".volume.SecVolumeDialogImpl";
-    private static final String SOUND_POOL_WRAPPER = SYSTEM_UI + ".volume.util";
+    private static final String SOUND_POOL_WRAPPER = SYSTEM_UI + ".volume.util.SoundPoolWrapper";
     private static final String NOTIFICATION_PLAYER = SYSTEM_UI + ".media.NotificationPlayer";
 
     @SuppressLint("StaticFieldLeak")
