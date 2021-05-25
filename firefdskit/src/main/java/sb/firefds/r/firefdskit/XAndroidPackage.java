@@ -16,6 +16,7 @@ package sb.firefds.r.firefdskit;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.Signature;
 import android.os.Handler;
@@ -33,6 +34,7 @@ import de.robv.android.xposed.XposedHelpers;
 
 import static sb.firefds.r.firefdskit.utils.Preferences.PREF_DEFAULT_REBOOT_BEHAVIOR;
 import static sb.firefds.r.firefdskit.utils.Preferences.PREF_DISABLE_SIGNATURE_CHECK;
+import static sb.firefds.r.firefdskit.utils.Preferences.PREF_ENABLE_DUAL_SIM_SD_CARD;
 import static sb.firefds.r.firefdskit.utils.Preferences.PREF_HIDE_USB_NOTIFICATION;
 import static sb.firefds.r.firefdskit.utils.Preferences.PREF_HIDE_VOLTE_ICON;
 import static sb.firefds.r.firefdskit.utils.Preferences.PREF_MAX_SUPPORTED_USERS;
@@ -47,6 +49,8 @@ public class XAndroidPackage {
     private static final String USB_HANDLER = "com.android.server.usb.UsbDeviceManager.UsbHandler";
     private static final String SHUTDOWN_THREAD = "com.android.server.power.ShutdownThread";
     private static final String ACTIVITY_MANAGER_SERVICE = "com.android.server.am.ActivityManagerService";
+    private static final String DEVICE_POLICY_MANAGER_SERVICE = "com.android.server.devicepolicy" +
+            ".DevicePolicyManagerService";
     @SuppressLint("StaticFieldLeak")
     private static Context mPackageManagerServiceContext;
     private static boolean isFB;
@@ -69,6 +73,15 @@ public class XAndroidPackage {
                             }
                         }
                     });
+
+            if (prefs.getBoolean(PREF_ENABLE_DUAL_SIM_SD_CARD, false)) {
+                XposedHelpers.findAndHookMethod(DEVICE_POLICY_MANAGER_SERVICE,
+                        classLoader,
+                        "semGetAllowStorageCard",
+                        ComponentName.class,
+                        int.class,
+                        XC_MethodReplacement.returnConstant(Boolean.TRUE));
+            }
 
             if (prefs.getBoolean(PREF_DEFAULT_REBOOT_BEHAVIOR, false)) {
                 Class<?> shutdownThreadClass = XposedHelpers.findClass(SHUTDOWN_THREAD, classLoader);

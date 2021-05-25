@@ -218,4 +218,6 @@
     <string name="clock_size">تغيير حجم الساعة</string>
     <string name="enable_spam_protection_summary">تفعيل معرف المتصِل والحماية من الأرقام العشوائية</string>
     <string name="enable_spam_protection_title">معرف المتصِل والحماية من الأرقام العشوائية</string>
+    <string name="enable_dual_sim_sd_card_summary">تفعيل ذاكرة SD عند استعمال بطاقة SIM المزدوجة</string>
+    <string name="enable_dual_sim_sd_card_title">ذاكرة SD مع بطاقة SIM المزدوجة</string>
 </resources>
