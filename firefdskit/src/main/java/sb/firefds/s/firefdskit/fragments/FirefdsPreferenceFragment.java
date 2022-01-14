@@ -14,6 +14,9 @@
  */
 package sb.firefds.s.firefdskit.fragments;
 
+import static sb.firefds.s.firefdskit.FirefdsKitActivity.fixPermissions;
+import static sb.firefds.s.firefdskit.FirefdsKitActivity.getSharedPreferences;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -26,9 +29,6 @@ import java.util.List;
 import sb.firefds.s.firefdskit.R;
 import sb.firefds.s.firefdskit.notifications.RebootNotification;
 import sb.firefds.s.firefdskit.utils.Utils;
-
-import static sb.firefds.s.firefdskit.FirefdsKitActivity.fixPermissions;
-import static sb.firefds.s.firefdskit.FirefdsKitActivity.getSharedPreferences;
 
 public abstract class FirefdsPreferenceFragment extends PreferenceFragmentCompat
         implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -53,7 +53,7 @@ public abstract class FirefdsPreferenceFragment extends PreferenceFragmentCompat
             String[] litePrefs = fragmentActivity.getResources().getStringArray(R.array.lite_preferences);
 
             for (String string : litePrefs) {
-                if (key.equalsIgnoreCase(string)) {
+                if (key != null && key.equalsIgnoreCase(string)) {
                     fixPermissions();
                     return;
                 }
