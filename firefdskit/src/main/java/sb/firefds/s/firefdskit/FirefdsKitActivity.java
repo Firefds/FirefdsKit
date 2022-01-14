@@ -14,6 +14,28 @@
  */
 package sb.firefds.s.firefdskit;
 
+import static sb.firefds.s.firefdskit.utils.Constants.DISABLE_PHONE_NUMBER_FORMATTING;
+import static sb.firefds.s.firefdskit.utils.Constants.DISABLE_SMS_TO_MMS_CONVERSION_BY_TEXT_INPUT;
+import static sb.firefds.s.firefdskit.utils.Constants.FORCE_CONNECT_MMS;
+import static sb.firefds.s.firefdskit.utils.Constants.PREFS;
+import static sb.firefds.s.firefdskit.utils.Constants.SHORTCUT_PHONE;
+import static sb.firefds.s.firefdskit.utils.Constants.SHORTCUT_SECURITY;
+import static sb.firefds.s.firefdskit.utils.Constants.SHORTCUT_STATUSBAR;
+import static sb.firefds.s.firefdskit.utils.Constants.SHORTCUT_SYSTEM;
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_DATA_ICON_BEHAVIOR;
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_DISABLE_NUMBER_FORMATTING;
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_DISABLE_SMS_TO_MMS;
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_FIRST_LAUNCH;
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_FORCE_MMS_CONNECT;
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_NFC_BEHAVIOR;
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_HOURS;
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_MINUTES;
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_SECONDS;
+import static sb.firefds.s.firefdskit.utils.Utils.checkForceEnglish;
+import static sb.firefds.s.firefdskit.utils.Utils.isDeviceEncrypted;
+import static sb.firefds.s.firefdskit.utils.Utils.isNotSamsungRom;
+import static sb.firefds.s.firefdskit.utils.Utils.log;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -71,28 +93,6 @@ import sb.firefds.s.firefdskit.fragments.FirefdsPreferenceFragment;
 import sb.firefds.s.firefdskit.fragments.PreferenceFragmentFactory;
 import sb.firefds.s.firefdskit.notifications.RebootNotification;
 import sb.firefds.s.firefdskit.utils.Utils;
-
-import static sb.firefds.s.firefdskit.utils.Constants.DISABLE_PHONE_NUMBER_FORMATTING;
-import static sb.firefds.s.firefdskit.utils.Constants.DISABLE_SMS_TO_MMS_CONVERSION_BY_TEXT_INPUT;
-import static sb.firefds.s.firefdskit.utils.Constants.FORCE_CONNECT_MMS;
-import static sb.firefds.s.firefdskit.utils.Constants.PREFS;
-import static sb.firefds.s.firefdskit.utils.Constants.SHORTCUT_PHONE;
-import static sb.firefds.s.firefdskit.utils.Constants.SHORTCUT_SECURITY;
-import static sb.firefds.s.firefdskit.utils.Constants.SHORTCUT_STATUSBAR;
-import static sb.firefds.s.firefdskit.utils.Constants.SHORTCUT_SYSTEM;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_DATA_ICON_BEHAVIOR;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_DISABLE_NUMBER_FORMATTING;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_DISABLE_SMS_TO_MMS;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_FIRST_LAUNCH;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_FORCE_MMS_CONNECT;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_NFC_BEHAVIOR;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_HOURS;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_MINUTES;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_SCREEN_TIMEOUT_SECONDS;
-import static sb.firefds.s.firefdskit.utils.Utils.checkForceEnglish;
-import static sb.firefds.s.firefdskit.utils.Utils.isDeviceEncrypted;
-import static sb.firefds.s.firefdskit.utils.Utils.isNotSamsungRom;
-import static sb.firefds.s.firefdskit.utils.Utils.log;
 
 public class FirefdsKitActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -546,6 +546,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         return mPreferenceDir;
     }
 
+    @SuppressWarnings("deprecation")
     private static class RestoreBackupTask extends AsyncTask<Void, Void, Void> {
 
         private final File backup;
