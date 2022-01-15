@@ -14,6 +14,10 @@
  */
 package sb.firefds.s.firefdskit.notifications;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+import static sb.firefds.s.firefdskit.utils.Constants.QUICK_REBOOT_DEVICE_ACTION;
+import static sb.firefds.s.firefdskit.utils.Constants.REBOOT_DEVICE_ACTION;
+
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -31,10 +35,6 @@ import java.util.Objects;
 import sb.firefds.s.firefdskit.FirefdsKitActivity;
 import sb.firefds.s.firefdskit.R;
 import sb.firefds.s.firefdskit.receivers.FirefdsRebootReceiver;
-
-import static androidx.core.content.ContextCompat.getSystemService;
-import static sb.firefds.s.firefdskit.utils.Constants.QUICK_REBOOT_DEVICE_ACTION;
-import static sb.firefds.s.firefdskit.utils.Constants.REBOOT_DEVICE_ACTION;
 
 public class RebootNotification {
 
@@ -68,7 +68,7 @@ public class RebootNotification {
                 .setContentIntent(PendingIntent.getActivity(context,
                         0,
                         new Intent(context, FirefdsKitActivity.class),
-                        PendingIntent.FLAG_UPDATE_CURRENT))
+                        PendingIntent.FLAG_IMMUTABLE))
                 .setStyle(new Notification.BigTextStyle()
                         .bigText(text)
                         .setBigContentTitle(title)
@@ -83,7 +83,7 @@ public class RebootNotification {
                 PendingIntent.getBroadcast(context,
                         1337,
                         rebootIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT))
+                        PendingIntent.FLAG_IMMUTABLE))
                 .build());
 
         if (showQuickReboot) {
@@ -95,7 +95,7 @@ public class RebootNotification {
                     PendingIntent.getBroadcast(context,
                             1337,
                             QuickRebootIntent,
-                            PendingIntent.FLAG_UPDATE_CURRENT))
+                            PendingIntent.FLAG_IMMUTABLE))
                     .build());
         }
 
