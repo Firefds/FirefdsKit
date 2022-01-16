@@ -14,6 +14,13 @@
  */
 package sb.firefds.s.firefdskit;
 
+import static sb.firefds.s.firefdskit.utils.Packages.SYSTEM_UI;
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_CARRIER_SIZE;
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_DATA_ICON_BEHAVIOR;
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_DATA_USAGE_VIEW;
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_HIDE_CARRIER_LABEL;
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_SHOW_NETWORK_SPEED_MENU;
+
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -24,13 +31,6 @@ import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
-import static sb.firefds.s.firefdskit.utils.Packages.SYSTEM_UI;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_CARRIER_SIZE;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_DATA_ICON_BEHAVIOR;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_DATA_USAGE_VIEW;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_HIDE_CARRIER_LABEL;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_SHOW_NETWORK_SPEED_MENU;
-
 public class XSysUINotificationPanelPackage {
 
     private static final String LTE_INSTEAD_OF_4G = "useLteInsteadOf4G";
@@ -38,8 +38,8 @@ public class XSysUINotificationPanelPackage {
     private static final String FOUR_G_INSTEAD_OF_4G_PLUS = "use4GInstead4GPlus";
     private static final String FOUR_HALF_G_INSTEAD_OF_4G_PLUS = "use4HalfGInsteadOf4GPlus";
     private static final String OPERATOR = SYSTEM_UI + ".Operator";
-    private static final String CARRIER_TEXT_CONTROLLER = "com.android.keyguard.CarrierTextController";
-    private static final String CARRIER_TEXT_CALLBACK_INFO = CARRIER_TEXT_CONTROLLER + ".CarrierTextCallbackInfo";
+    private static final String CARRIER_TEXT_MANAGER = "com.android.keyguard.CarrierTextManager";
+    private static final String CARRIER_TEXT_CALLBACK_INFO = CARRIER_TEXT_MANAGER + ".CarrierTextCallbackInfo";
     private static final String CARRIER_TEXT = "com.android.keyguard.CarrierText";
     private static final String QP_RUNE = SYSTEM_UI + ".QpRune";
     private static final Map<String, Integer> CARRIER_SIZES_MAP = new HashMap<>();
@@ -63,7 +63,7 @@ public class XSysUINotificationPanelPackage {
         final Class<?> operatorClass = XposedHelpers.findClass(OPERATOR, classLoader);
 
         try {
-            XposedHelpers.findAndHookMethod(CARRIER_TEXT_CONTROLLER,
+            XposedHelpers.findAndHookMethod(CARRIER_TEXT_MANAGER,
                     classLoader,
                     "postToCallback",
                     CARRIER_TEXT_CALLBACK_INFO,
