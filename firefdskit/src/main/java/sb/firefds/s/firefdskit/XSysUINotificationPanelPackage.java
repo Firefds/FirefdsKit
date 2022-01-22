@@ -112,8 +112,8 @@ public class XSysUINotificationPanelPackage {
 
         if (prefs.getBoolean(PREF_SHOW_NETWORK_SPEED_MENU, false)) {
             try {
-                Class<?> qpRune = XposedHelpers.findClass(BASIC_RUNE, classLoader);
-                XposedHelpers.setStaticBooleanField(qpRune, "STATUS_REAL_TIME_NETWORK_SPEED", true);
+                Class<?> basicRune = XposedHelpers.findClass(BASIC_RUNE, classLoader);
+                XposedHelpers.setStaticBooleanField(basicRune, "STATUS_REAL_TIME_NETWORK_SPEED", true);
             } catch (Exception e) {
                 XposedBridge.log(e);
             }
