@@ -104,7 +104,7 @@ public class XSysUINotificationPanelPackage {
         if (prefs.getBoolean(PREF_DATA_USAGE_VIEW, false)) {
             try {
                 Class<?> qpRune = XposedHelpers.findClass(QP_RUNE, classLoader);
-                XposedHelpers.setStaticBooleanField(qpRune, "STATUS_CARRIERINFO_DATAUSAGE", true);
+                XposedHelpers.setStaticBooleanField(qpRune, "PANEL_CARRIERINFO_DATAUSAGE", true);
             } catch (Exception e) {
                 XposedBridge.log(e);
             }
