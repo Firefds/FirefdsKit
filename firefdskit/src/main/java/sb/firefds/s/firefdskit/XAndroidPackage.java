@@ -44,7 +44,8 @@ public class XAndroidPackage {
 
     private static final String PACKAGE_MANAGER_SERVICE_UTILS = "com.android.server.pm.PackageManagerServiceUtils";
     private static final String PACKAGE_MANAGER_SERVICE = "com.android.server.pm.PackageManagerService";
-    private static final String INSTALLER = "com.android.server.pm.Installer";
+    private static final String INJECTOR = PACKAGE_MANAGER_SERVICE + ".Injector";
+    private static final String TEST_PARAMS = PACKAGE_MANAGER_SERVICE + ".TestParams";
     private static final String STATUS_BAR_MANAGER_SERVICE = "com.android.server.statusbar.StatusBarManagerService";
     private static final String USB_HANDLER = "com.android.server.usb.UsbDeviceManager.UsbHandler";
     private static final String SHUTDOWN_THREAD = "com.android.server.power.ShutdownThread";
@@ -88,17 +89,17 @@ public class XAndroidPackage {
 
             if (prefs.getBoolean(PREF_DISABLE_SIGNATURE_CHECK, false)) {
                 if (mPackageManagerServiceContext == null) {
-                    Class<?> installer = XposedHelpers.findClass(INSTALLER, classLoader);
+                    Class<?> injector = XposedHelpers.findClass(INJECTOR, classLoader);
+                    Class<?> testParams = XposedHelpers.findClass(TEST_PARAMS, classLoader);
                     XposedHelpers.findAndHookConstructor(PACKAGE_MANAGER_SERVICE,
                             classLoader,
-                            Context.class,
-                            installer,
-                            boolean.class,
-                            boolean.class,
+                            injector,
+                            testParams,
                             new XC_MethodHook() {
                                 @Override
                                 protected void afterHookedMethod(MethodHookParam param) {
-                                    mPackageManagerServiceContext = (Context) param.args[0];
+                                    mPackageManagerServiceContext =
+                                            (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
                                 }
                             });
                 }
