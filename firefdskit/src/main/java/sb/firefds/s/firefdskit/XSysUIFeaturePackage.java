@@ -23,7 +23,6 @@ import static sb.firefds.s.firefdskit.utils.Preferences.PREF_DISABLE_LOW_BATTERY
 import static sb.firefds.s.firefdskit.utils.Preferences.PREF_DISABLE_VOLUME_CONTROL_SOUND;
 import static sb.firefds.s.firefdskit.utils.Preferences.PREF_DISABLE_VOLUME_WARNING;
 import static sb.firefds.s.firefdskit.utils.Preferences.PREF_ENABLE_BIOMETRICS_UNLOCK;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_ENABLE_SAMSUNG_BLUR;
 import static sb.firefds.s.firefdskit.utils.Preferences.PREF_HIDE_CHARGING_NOTIFICATION;
 import static sb.firefds.s.firefdskit.utils.Preferences.PREF_MAX_SUPPORTED_USERS;
 import static sb.firefds.s.firefdskit.utils.Preferences.PREF_SHOW_AM_PM;
@@ -63,9 +62,6 @@ public class XSysUIFeaturePackage {
             ".StrongAuthTracker";
     private static final String QS_CLOCK_HOME_INDICATOR_VIEW = SYSTEM_UI + ".statusbar.policy.QSClockHomeIndicatorView";
     private static final String QS_CLOCK_BELL_SOUND = "com.android.systemui.statusbar.policy.QSClockBellSound";
-    private static final String NOTIFICATION_SHADE_WINDOW_CONTROLLER = SYSTEM_UI + ".statusbar.phone" +
-            ".NotificationShadeWindowController";
-    private static final String STATE = NOTIFICATION_SHADE_WINDOW_CONTROLLER + ".State";
     private static final String POWER_NOTIFICATION_WARNINGS = SYSTEM_UI + ".power.PowerNotificationWarnings";
     private static final String SETTINGS_HELPER = SYSTEM_UI + ".util.SettingsHelper";
     private static final String SOUND_POOL_WRAPPER = SYSTEM_UI + ".volume.util.SoundPoolWrapper";
@@ -237,21 +233,6 @@ public class XSysUIFeaturePackage {
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
                                 param.setResult(prefs.getInt(PREF_MAX_SUPPORTED_USERS, 3));
-                            }
-                        });
-            }
-
-            if (prefs.getBoolean(PREF_ENABLE_SAMSUNG_BLUR, true)) {
-                Class<?> stateClass = XposedHelpers.findClass(STATE, classLoader);
-
-                XposedHelpers.findAndHookMethod(NOTIFICATION_SHADE_WINDOW_CONTROLLER,
-                        classLoader,
-                        "apply",
-                        stateClass,
-                        new XC_MethodHook() {
-                            @Override
-                            protected void afterHookedMethod(MethodHookParam param) {
-                                XposedHelpers.callMethod(param.thisObject, "applyPanelBlur", param.args[0]);
                             }
                         });
             }
