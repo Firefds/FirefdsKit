@@ -14,6 +14,15 @@
  */
 package sb.firefds.s.firefdskit;
 
+import static sb.firefds.s.firefdskit.utils.Packages.SAMSUNG_SETTINGS;
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_DISABLE_BLUETOOTH_DIALOG;
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_DISABLE_SYNC_DIALOG;
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS;
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_MAKE_OFFICIAL;
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_MAX_SUPPORTED_USERS;
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_SHOW_NETWORK_SPEED_MENU;
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE_USERS;
+
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -25,15 +34,6 @@ import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-
-import static sb.firefds.s.firefdskit.utils.Packages.SAMSUNG_SETTINGS;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_DISABLE_BLUETOOTH_DIALOG;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_DISABLE_SYNC_DIALOG;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_MAKE_OFFICIAL;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_MAX_SUPPORTED_USERS;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_SHOW_NETWORK_SPEED_MENU;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE_USERS;
 
 public class XSecSettingsPackage {
 
