@@ -56,7 +56,7 @@ import de.robv.android.xposed.XposedHelpers;
 public class XSysUIFeaturePackage {
 
     private static final String KNOX_STATE_MONITOR_IMPL = SYSTEM_UI + ".knox.KnoxStateMonitorImpl";
-    private static final String TOGGLE_SLIDER_VIEW = SYSTEM_UI + ".settings.ToggleSliderView";
+    private static final String BRIGHTNESS_SLIDER = SYSTEM_UI + ".settings.brightness.BrightnessSlider";
     private static final String VOLUME_DIALOG_CONTROLLER_IMPL = SYSTEM_UI + ".volume.VolumeDialogControllerImpl";
     private static final String KEYGUARD_STRONG_AUTH_TRACKER = "com.android.keyguard.KeyguardUpdateMonitor" +
             ".StrongAuthTracker";
@@ -87,7 +87,7 @@ public class XSysUIFeaturePackage {
             }
 
             if (prefs.getBoolean(PREF_DISABLE_EYE_STRAIN_DIALOG, false)) {
-                XposedHelpers.findAndHookMethod(TOGGLE_SLIDER_VIEW,
+                XposedHelpers.findAndHookMethod(BRIGHTNESS_SLIDER,
                         classLoader,
                         "showUsingHighBrightnessDialog",
                         new XC_MethodHook() {
