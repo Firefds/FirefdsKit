@@ -14,11 +14,15 @@
  */
 package sb.firefds.s.firefdskit;
 
+import static sb.firefds.s.firefdskit.utils.Preferences.PREF_ENABLE_SCREEN_RECORDER_IN_CALL;
+
 import android.content.Context;
 
-import de.robv.android.xposed.*;
-
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_ENABLE_SCREEN_RECORDER_IN_CALL;
+import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
+import de.robv.android.xposed.XSharedPreferences;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedHelpers;
 
 public class XSmartCapturePackage {
 
@@ -60,10 +64,30 @@ public class XSmartCapturePackage {
                                 }
                             }
                         });
+            } catch (Exception e) {
+                XposedBridge.log(e);
+            }
 
+            try {
                 XposedHelpers.findAndHookMethod(SCREEN_RECORDER_UTILS,
                         classLoader,
                         "isDuringCallState",
+                        Context.class,
+                        XC_MethodReplacement.returnConstant(Boolean.FALSE));
+            } catch (Exception e) {
+                XposedBridge.log(e);
+            }
+
+            try {
+                XposedHelpers.findAndHookMethod(SCREEN_RECORDER_UTILS,
+                        classLoader,
+                        "isDuringCsCallState",
+                        Context.class,
+                        XC_MethodReplacement.returnConstant(Boolean.FALSE));
+
+                XposedHelpers.findAndHookMethod(SCREEN_RECORDER_UTILS,
+                        classLoader,
+                        "isDuringPsCallState",
                         Context.class,
                         XC_MethodReplacement.returnConstant(Boolean.FALSE));
             } catch (Exception e) {
