@@ -11,6 +11,7 @@
         <item name="screen_off">2</item>
     </string-array>
     <string-array name="carrier_size_entries">
+        <item name="tiny">@string/tiny</item>
         <item name="small">@string/small</item>
         <item name="medium">@string/medium</item>
         <item name="large">@string/large</item>
