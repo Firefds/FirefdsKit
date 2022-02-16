@@ -52,6 +52,7 @@ public class XSysUINotificationPanelPackage {
     private static ClassLoader classLoader;
 
     static {
+        CARRIER_SIZES_MAP.put("Tiny", 12);
         CARRIER_SIZES_MAP.put("Small", 14);
         CARRIER_SIZES_MAP.put("Medium", 16);
         CARRIER_SIZES_MAP.put("Large", 18);
