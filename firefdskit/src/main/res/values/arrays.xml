@@ -12,6 +12,7 @@
     </string-array>
     <string-array name="carrier_size_entries">
         <item name="tiny">@string/tiny</item>
+        <item name="smaller">@string/smaller</item>
         <item name="small">@string/small</item>
         <item name="medium">@string/medium</item>
         <item name="large">@string/large</item>
@@ -19,6 +20,8 @@
         <item name="largest">@string/largest</item>
     </string-array>
     <string-array name="carrier_size_values">
+        <item name="tiny">Tiny</item>
+        <item name="smaller">Smaller</item>
         <item name="small">Small</item>
         <item name="medium">Medium</item>
         <item name="large">Large</item>
