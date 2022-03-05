@@ -85,6 +85,8 @@
     <string name="add_screenshot_to_power_menu">Enable Screenshot in power menu</string>
     <string name="advanced_power_menu_title">Advanced Power Menu</string>
     <string name="advanced_power_menu">Power menu</string>
+    <string name="tiny">Tiny</string>
+    <string name="smaller">Smaller</string>
     <string name="small">Small</string>
     <string name="medium">Medium</string>
     <string name="large">Large</string>

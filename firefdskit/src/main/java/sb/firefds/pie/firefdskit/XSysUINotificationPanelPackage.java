@@ -14,6 +14,13 @@
  */
 package sb.firefds.pie.firefdskit;
 
+import static sb.firefds.pie.firefdskit.utils.Packages.SYSTEM_UI;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CARRIER_SIZE;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DATA_ICON_BEHAVIOR;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DATA_USAGE_VIEW;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_HIDE_CARRIER_LABEL;
+import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SHOW_NETWORK_SPEED_MENU;
+
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -24,13 +31,6 @@ import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-
-import static sb.firefds.pie.firefdskit.utils.Packages.SYSTEM_UI;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_CARRIER_SIZE;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DATA_ICON_BEHAVIOR;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_DATA_USAGE_VIEW;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_HIDE_CARRIER_LABEL;
-import static sb.firefds.pie.firefdskit.utils.Preferences.PREF_SHOW_NETWORK_SPEED_MENU;
 
 public class XSysUINotificationPanelPackage {
 
@@ -49,6 +49,8 @@ public class XSysUINotificationPanelPackage {
     private static ClassLoader classLoader;
 
     static {
+        CARRIER_SIZES_MAP.put("Tiny", 10);
+        CARRIER_SIZES_MAP.put("Smaller", 12);
         CARRIER_SIZES_MAP.put("Small", 14);
         CARRIER_SIZES_MAP.put("Medium", 16);
         CARRIER_SIZES_MAP.put("Large", 18);
