@@ -14,35 +14,6 @@
  */
 package sb.firefds.s.firefdskit;
 
-import android.app.KeyguardManager;
-import android.content.Context;
-import android.content.res.Resources;
-import android.view.View;
-import android.widget.ImageView;
-
-import com.samsung.android.globalactions.presentation.SamsungGlobalActions;
-import com.samsung.android.globalactions.presentation.SamsungGlobalActionsPresenter;
-import com.samsung.android.globalactions.presentation.features.FeatureFactory;
-import com.samsung.android.globalactions.presentation.view.ResourceFactory;
-import com.samsung.android.globalactions.presentation.view.ResourceType;
-import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModel;
-import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModelFactory;
-import com.samsung.android.globalactions.util.ConditionChecker;
-import com.samsung.android.globalactions.util.KeyGuardManagerWrapper;
-import com.samsung.android.globalactions.util.SystemConditions;
-import com.samsung.android.globalactions.util.UtilFactory;
-
-import java.lang.ref.WeakReference;
-import java.util.Optional;
-
-import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
-import sb.firefds.s.firefdskit.actionViewModels.ActionViewModelDefaults;
-import sb.firefds.s.firefdskit.utils.Utils;
-
 import static sb.firefds.s.firefdskit.actionViewModels.FirefdsKitActionViewModelsFactory.getActionViewModel;
 import static sb.firefds.s.firefdskit.utils.Constants.DATA_MODE_ACTION;
 import static sb.firefds.s.firefdskit.utils.Constants.DOWNLOAD_ACTION;
@@ -74,6 +45,35 @@ import static sb.firefds.s.firefdskit.utils.Preferences.PREF_ENABLE_SCREEN_RECOR
 import static sb.firefds.s.firefdskit.utils.Preferences.PREF_REPLACE_RECOVERY_ICON;
 import static sb.firefds.s.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE_USERS;
 import static sb.firefds.s.firefdskit.utils.Preferences.PREF_UNLOCK_KEYGUARD_BEFORE_ACTION_EXECUTE;
+
+import android.app.KeyguardManager;
+import android.content.Context;
+import android.content.res.Resources;
+import android.view.View;
+import android.widget.ImageView;
+
+import com.samsung.android.globalactions.presentation.SamsungGlobalActions;
+import com.samsung.android.globalactions.presentation.SamsungGlobalActionsPresenter;
+import com.samsung.android.globalactions.presentation.features.FeatureFactory;
+import com.samsung.android.globalactions.presentation.view.ResourceFactory;
+import com.samsung.android.globalactions.presentation.view.ResourceType;
+import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModel;
+import com.samsung.android.globalactions.presentation.viewmodel.ActionViewModelFactory;
+import com.samsung.android.globalactions.util.ConditionChecker;
+import com.samsung.android.globalactions.util.KeyGuardManagerWrapper;
+import com.samsung.android.globalactions.util.SystemConditions;
+import com.samsung.android.globalactions.util.UtilFactory;
+
+import java.lang.ref.WeakReference;
+import java.util.Optional;
+
+import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
+import de.robv.android.xposed.XSharedPreferences;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedHelpers;
+import sb.firefds.s.firefdskit.actionViewModels.ActionViewModelDefaults;
+import sb.firefds.s.firefdskit.utils.Utils;
 
 public class XSysUIGlobalActions {
 
@@ -162,10 +162,14 @@ public class XSysUIGlobalActions {
                     "isNeedSecureConfirm",
                     isNeedSecureConfirmHook);
 
-            XposedHelpers.findAndHookMethod(SIDE_KEY_ACTION_VIEW_MODEL,
-                    classLoader,
-                    "isNeedSecureConfirm",
-                    isNeedSecureConfirmHook);
+            try {
+                XposedHelpers.findAndHookMethod(SIDE_KEY_ACTION_VIEW_MODEL,
+                        classLoader,
+                        "isNeedSecureConfirm",
+                        isNeedSecureConfirmHook);
+            } catch (Exception e) {
+                XposedBridge.log(e);
+            }
 
             XposedHelpers.findAndHookMethod(DATA_MODE_ACTION_VIEW_MODEL,
                     classLoader,
