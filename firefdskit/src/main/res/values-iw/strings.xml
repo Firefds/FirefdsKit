@@ -82,6 +82,8 @@
     <string name="add_screenshot_to_power_menu">הוספת צילום מסך לתפריט כיבוי</string>
     <string name="advanced_power_menu_title">תפריט כיבוי מורחב</string>
     <string name="advanced_power_menu">תפריט כיבוי</string>
+    <string name="tiny">קטנטן</string>
+    <string name="smaller">קטן יותר</string>
     <string name="small">קטן</string>
     <string name="medium">בינוני</string>
     <string name="large">גדול</string>

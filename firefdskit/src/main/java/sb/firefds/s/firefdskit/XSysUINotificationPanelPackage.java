@@ -51,6 +51,8 @@ public class XSysUINotificationPanelPackage {
     private static final Map<String, String> DATA_ICONS_MAP = new HashMap<>();
 
     static {
+        CARRIER_SIZES_MAP.put("Tiny", 10);
+        CARRIER_SIZES_MAP.put("Smaller", 12);
         CARRIER_SIZES_MAP.put("Small", 14);
         CARRIER_SIZES_MAP.put("Medium", 16);
         CARRIER_SIZES_MAP.put("Large", 18);
