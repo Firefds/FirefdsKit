@@ -1,8 +1,6 @@
-# Firefds Kit [R]
+# Firefds Kit [S]
 
-Xposed module for Samsung R devices.
-
-XDA Discussion thread: https://forum.xda-developers.com/t/xposed-r-firefds-kit-1-0-0-0-alpha-1-customize-samsung-oneui-3-0-02-01-21.4212051/
+Xposed module for Samsung S (Android 12) devices.
 
 ## Features
 The module has the following features:
@@ -61,24 +59,30 @@ The module has the following features:
 - Disable secure flag
 
 ## Attention
-This version was tested by the community and not by me, as I don't have an Android 11 Samsung device.
+This version was tested by the community and not by me, as I don't have an Android 12 Samsung device.
 **THERE COULD BE BUGS/CRASHES/BOOTLOOPS**, but it's pretty stable.
 Please upload any xposed logs when you encounter any issue. I can't help you without the logs!
 Confirmed working on:
+- Galaxy S21
 - Galaxy S20
+- Galaxy S10
 
 ## Installation
 
 To install this module you need the following apps and modules installed on your device:
-1. Magisk v21.2 and above - https://github.com/topjohnwu/Magisk/releases
-2. Magisk Manager v8.0.4 and above - https://github.com/topjohnwu/Magisk/releases
-3. Riru Magisk module v23.1 and above - https://github.com/RikkaApps/Riru/releases
-4. EdXposed Magisk module v0.5.1.4  and above - https://github.com/ElderDrivers/EdXposed/releases
-5. EdXposed Installer v4.5.7 and above - https://github.com/ElderDrivers/EdXp...nager/releases
+1. Magisk v24.0 and above - https://github.com/topjohnwu/Magisk/releases
+
+### Option 1 - Zygisk
+1. LSPosed Magisk Zygisk Release module v1.7.2 and above - https://github.com/LSPosed/LSPosed/releases
+
+### Option 2 - Riru
+1. LSPosed Magisk module v1.6.0 and above - https://github.com/LSPosed/LSPosed/releases
+2. Riru Magisk module v25.0.0 and above - https://github.com/RikkaApps/Riru/releases
+
 
 ## Known Issues
 
-- Some features are removed on purpose. Since GravityBox has been working on Samsung Oreo devices without much issues, I only implemented features that need special Samsung coding. You can check You can check GravityBox for R, when it will become available, for additional features.
+- Some features are removed on purpose. Since GravityBox has been working on Samsung devices for a while without much issues, I only implemented features that need special Samsung coding. You can check You can check GravityBox for R, when it will become available, for additional features.
 
 ## External Libraries
 
