@@ -44,7 +44,9 @@ public class XSysUINotificationPanelPackage {
     private static final String CARRIER_TEXT = "com.android.keyguard.CarrierText";
     private static final String QP_RUNE = SYSTEM_UI + ".QpRune";
     private static final String BASIC_RUNE = SYSTEM_UI + ".BasicRune";
-    private static final String LS_RUNE = SYSTEM_UI + ".LsRune";
+    private static final String NOTIFICATION_SHADE_WINDOW_CONTROLLER_IMPL = SYSTEM_UI + ".statusbar.phone" +
+            ".NotificationShadeWindowControllerImpl";
+    private static final String STATE = NOTIFICATION_SHADE_WINDOW_CONTROLLER_IMPL + ".State";
     private static final Map<String, Integer> CARRIER_SIZES_MAP = new HashMap<>();
     private static final Map<String, String> DATA_ICONS_MAP = new HashMap<>();
 
@@ -121,8 +123,18 @@ public class XSysUINotificationPanelPackage {
 
         if (prefs.getBoolean(PREF_ENABLE_SAMSUNG_BLUR, true)) {
             try {
-                Class<?> lsRune = XposedHelpers.findClass(LS_RUNE, classLoader);
-                XposedHelpers.setStaticBooleanField(lsRune, "SECURITY_BOUNCER_WINDOW", true);
+                Class<?> stateClass = XposedHelpers.findClass(STATE, classLoader);
+
+                XposedHelpers.findAndHookMethod(NOTIFICATION_SHADE_WINDOW_CONTROLLER_IMPL,
+                        classLoader,
+                        "apply",
+                        stateClass,
+                        new XC_MethodHook() {
+                            @Override
+                            protected void afterHookedMethod(MethodHookParam param) {
+                                XposedHelpers.callMethod(param.thisObject, "applyBouncer", param.args[0]);
+                            }
+                        });
             } catch (Exception e) {
                 XposedBridge.log(e);
             }
