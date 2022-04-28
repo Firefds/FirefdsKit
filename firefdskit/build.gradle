@@ -16,8 +16,8 @@ android {
         applicationId 'sb.firefds.pie.firefdskit'
         minSdkVersion 28
         targetSdkVersion 31
-        versionCode 9207
-        versionName "9.1.0.7-STABLE-17"
+        versionCode 9208
+        versionName "9.1.0.8-STABLE-18"
     }
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
