@@ -46,12 +46,12 @@
             android:summaryOn="@string/hide_volte_icon_on"
             android:title="@string/hide_volte_icon"
             app:iconSpaceReserved="false" />
-        <SwitchPreferenceCompat
+        <!--<SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="showNetworkSpeedMenu"
             android:summary="@string/network_speed_summary"
             android:title="@string/network_speed_title"
-            app:iconSpaceReserved="false" />
+            app:iconSpaceReserved="false" />-->
         <androidx.preference.ListPreference
             android:defaultValue="0"
             android:entries="@array/data_icon_entries"

@@ -20,7 +20,6 @@ import static sb.firefds.s.firefdskit.utils.Preferences.PREF_DATA_ICON_BEHAVIOR;
 import static sb.firefds.s.firefdskit.utils.Preferences.PREF_DATA_USAGE_VIEW;
 import static sb.firefds.s.firefdskit.utils.Preferences.PREF_ENABLE_SAMSUNG_BLUR;
 import static sb.firefds.s.firefdskit.utils.Preferences.PREF_HIDE_CARRIER_LABEL;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_SHOW_NETWORK_SPEED_MENU;
 
 import android.widget.TextView;
 
@@ -114,14 +113,15 @@ public class XSysUINotificationPanelPackage {
             }
         }
 
-        if (prefs.getBoolean(PREF_SHOW_NETWORK_SPEED_MENU, false)) {
+        //Temp disable until fix is found
+        /*if (prefs.getBoolean(PREF_SHOW_NETWORK_SPEED_MENU, false)) {
             try {
                 Class<?> basicRune = XposedHelpers.findClass(BASIC_RUNE, classLoader);
                 XposedHelpers.setStaticBooleanField(basicRune, "STATUS_REAL_TIME_NETWORK_SPEED", true);
             } catch (Exception e) {
                 XposedBridge.log(e);
             }
-        }
+        }*/
 
         if (prefs.getBoolean(PREF_ENABLE_SAMSUNG_BLUR, true)) {
             try {

@@ -20,7 +20,6 @@ import static sb.firefds.s.firefdskit.utils.Preferences.PREF_DISABLE_SYNC_DIALOG
 import static sb.firefds.s.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS;
 import static sb.firefds.s.firefdskit.utils.Preferences.PREF_MAKE_OFFICIAL;
 import static sb.firefds.s.firefdskit.utils.Preferences.PREF_MAX_SUPPORTED_USERS;
-import static sb.firefds.s.firefdskit.utils.Preferences.PREF_SHOW_NETWORK_SPEED_MENU;
 import static sb.firefds.s.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE_USERS;
 
 import android.annotation.SuppressLint;
@@ -58,9 +57,10 @@ public class XSecSettingsPackage {
             makeOfficial();
         }
 
-        if (prefs.getBoolean(PREF_SHOW_NETWORK_SPEED_MENU, false)) {
+        //Temp disable until fix is found
+        /*if (prefs.getBoolean(PREF_SHOW_NETWORK_SPEED_MENU, false)) {
             showNetworkSpeedMenu();
-        }
+        }*/
 
         try {
             XposedHelpers.findAndHookMethod(
