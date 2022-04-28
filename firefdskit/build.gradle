@@ -16,8 +16,8 @@ android {
         applicationId 'sb.firefds.q.firefdskit'
         minSdkVersion 29
         targetSdkVersion 31
-        versionCode 10030
-        versionName "10.0.3.0-STABLE-11"
+        versionCode 10040
+        versionName "10.0.4.0-STABLE-12"
     }
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
