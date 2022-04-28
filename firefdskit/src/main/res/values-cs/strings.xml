@@ -222,8 +222,5 @@
     <string name="enable_dual_sim_sd_card_title">SD karta při dvou SIM</string>
     <string name="enable_spam_protection_summary">Povolit identifikaci volajícího a ochrana proti spamu</string>
     <string name="enable_spam_protection_title">Identifikace volajícího a ochrana proti spamu</string>
-    <string name="disable_power_button_quick_panel_title">Zakázat tlačítko napájení v panelu rychlého nastavení</string>
-    <string name="disable_power_button_quick_panel_summary_on">Nahradit tlačítko napájení tlačítkem hledání v panelu rychlého nastavení</string>
-    <string name="disable_power_button_quick_panel_summary_off">Tlačítko napájení v panelu rychlého nastavení povoleno</string>
     <string name="no_permissions">Firefds Kit je aktivní, ale nejsou udělena některá oprávnění.\nNěkteré funkce nemusí fungovat správně.\nSkontrolujte instalaci Magisk (sepolicy not granted).</string>
 </resources>
