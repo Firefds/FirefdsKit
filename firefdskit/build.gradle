@@ -21,7 +21,7 @@ android {
     }
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            outputFileName = "FirefdsKit_S_${defaultConfig.versionName}.apk"
+            outputFileName = "FirefdsKit_T_${defaultConfig.versionName}.apk"
         }
     }
     buildTypes {
