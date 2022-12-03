@@ -85,5 +85,6 @@
         <item>com.sec.android.soagent</item>
         <item>com.android.systemui</item>
         <item>com.samsung.android.app.smartcapture</item>
+        <item>com.samsung.android.incallui</item>
     </string-array>
 </resources>
