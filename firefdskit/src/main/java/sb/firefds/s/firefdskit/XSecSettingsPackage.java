@@ -36,14 +36,14 @@ import de.robv.android.xposed.XposedHelpers;
 
 public class XSecSettingsPackage {
 
-    private static final String BLUETOOTH_SCAN_DIALOG = SAMSUNG_SETTINGS + ".bluetooth.BluetoothScanDialog";
+    private static final String BLUETOOTH_SCAN_DIALOG = SAMSUNG_SETTINGS + ".bluetooth" +
+            ".BluetoothScanDialog";
     private static final String SEC_ACCOUNT_TILES = SAMSUNG_SETTINGS + ".qstile.SecAccountTiles";
-    private static final String SEC_DEVICE_INFO_UTILS = SAMSUNG_SETTINGS + ".deviceinfo.SecDeviceInfoUtils";
-    private static final String STATUS_BAR_NETWORK_SPEED_CONTROLLER = SAMSUNG_SETTINGS + ".notification" +
+    private static final String SEC_DEVICE_INFO_UTILS = SAMSUNG_SETTINGS + ".deviceinfo" +
+            ".SecDeviceInfoUtils";
+    private static final String STATUS_BAR_NETWORK_SPEED_CONTROLLER = SAMSUNG_SETTINGS +
+            ".notification" +
             ".StatusBarNetworkSpeedController";
-    private static final String SYSCOPE_STATUS_PREFERENCE_CONTROLLER =
-            SAMSUNG_SETTINGS + ".deviceinfo.status.SysScopeStatusPreferenceController";
-    private static final String ICDVERIFICATION = "com.sec.icdverification.ICDVerification";
     private static final String SETTINGS_UTILS = "com.android.settings.Utils";
 
 
@@ -123,15 +123,18 @@ public class XSecSettingsPackage {
                         new XC_MethodHook() {
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
-                                Class<?> settingsUtils = XposedHelpers.findClass(SETTINGS_UTILS, classLoader);
+                                Class<?> settingsUtils = XposedHelpers.findClass(SETTINGS_UTILS,
+                                        classLoader);
                                 XposedHelpers.setStaticBooleanField(settingsUtils,
                                         "SUPPORT_MOBILEAP_MAXCLIENT_MENU",
                                         true);
-                                XposedHelpers.setStaticBooleanField(settingsUtils, "SUPPORT_MOBILEAP_5G", true);
+                                XposedHelpers.setStaticBooleanField(settingsUtils,
+                                        "SUPPORT_MOBILEAP_5G", true);
                                 XposedHelpers.setStaticBooleanField(settingsUtils,
                                         "SUPPORT_MOBILEAP_5G_BASED_ON_COUNTRY",
                                         true);
-                                XposedHelpers.setStaticObjectField(settingsUtils, "SUPPORT_MOBILEAP_REGION", "NA");
+                                XposedHelpers.setStaticObjectField(settingsUtils,
+                                        "SUPPORT_MOBILEAP_REGION", "NA");
                             }
                         });
             }
@@ -142,23 +145,6 @@ public class XSecSettingsPackage {
     }
 
     private static void makeOfficial() {
-        try {
-            XposedHelpers.findAndHookMethod(ICDVERIFICATION,
-                    classLoader,
-                    "check",
-                    XC_MethodReplacement.returnConstant(1));
-        } catch (Throwable e) {
-            XposedBridge.log(e);
-        }
-        try {
-            XposedHelpers.findAndHookMethod(SYSCOPE_STATUS_PREFERENCE_CONTROLLER,
-                    classLoader,
-                    "getICDVerification",
-                    XC_MethodReplacement.returnConstant(1));
-        } catch (Throwable e) {
-            XposedBridge.log(e);
-        }
-
         try {
             XposedHelpers.findAndHookMethod(SEC_DEVICE_INFO_UTILS,
                     classLoader,
@@ -181,7 +167,8 @@ public class XSecSettingsPackage {
 
     private static void showNetworkSpeedMenu() {
         try {
-            Class<?> statusBarNetworkSpeedController = XposedHelpers.findClass(STATUS_BAR_NETWORK_SPEED_CONTROLLER,
+            Class<?> statusBarNetworkSpeedController =
+                    XposedHelpers.findClass(STATUS_BAR_NETWORK_SPEED_CONTROLLER,
                     classLoader);
             XposedBridge.hookAllMethods(statusBarNetworkSpeedController,
                     "displayPreference",
