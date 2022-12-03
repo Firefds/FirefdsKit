@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Firefds Kit [Q]</string>
+    <string name="app_name">Firefds Kit [Tiramisu]</string>
     <string name="samsung_rom_warning">Vyžaduje se Samsung ROM</string>
     <string name="samsung_rom_warning_msg">Vše ROM nevypadá jako Samsung ROM\nTato aplikace nepodporuje CM nebo AOSP ROM.</string>
     <string name="disable_loud_volume_enabled">Upozornění na vysokou hlasitost je povoleno</string>

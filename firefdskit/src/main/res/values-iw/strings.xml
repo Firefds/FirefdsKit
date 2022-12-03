@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Firefds Kit [S]</string>
+    <string name="app_name">Firefds Kit [Tiramisu]</string>
     <string name="samsung_rom_warning">יש צורך ברום של סמסונג</string>
     <string name="samsung_rom_warning_msg">הרום שלך לא נראה כרום של סמסונג. האפליקציה הזו לא תומכת ברומים מסוג AOSP ו CM</string>
     <string name="disable_loud_volume_enabled">התראת עוצמת שמע גבוהה פועלת</string>

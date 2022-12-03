@@ -13,11 +13,11 @@ android {
         }
     }
     defaultConfig {
-        applicationId 'sb.firefds.s.firefdskit'
-        minSdkVersion 31
-        targetSdkVersion 31
-        versionCode 12002
-        versionName "12.0.0.2-ALPHA-2"
+        applicationId 'sb.firefds.t.firefdskit'
+        minSdkVersion 33
+        targetSdkVersion 33
+        versionCode 13001
+        versionName "13.0.0.1-ALPHA-1"
     }
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
@@ -39,7 +39,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
-    namespace 'sb.firefds.s.firefdskit'
+    namespace 'sb.firefds.t.firefdskit'
 }
 
 dependencies {

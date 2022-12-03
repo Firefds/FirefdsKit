@@ -1,6 +1,6 @@
-# Firefds Kit [S]
+# Firefds Kit [Tiramisu]
 
-Xposed module for Samsung S (Android 12) devices.
+Xposed module for Samsung S (Android 13) devices.
 
 ## Features
 The module has the following features:
@@ -59,7 +59,6 @@ The module has the following features:
 - Disable secure flag
 
 ## Attention
-This version was tested by the community and not by me, as I don't have an Android 12 Samsung device.
 **THERE COULD BE BUGS/CRASHES/BOOTLOOPS**, but it's pretty stable.
 Please upload any xposed logs when you encounter any issue. I can't help you without the logs!
 Confirmed working on:
