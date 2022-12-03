@@ -95,8 +95,6 @@ public class XSysUIGlobalActions {
     private static final String POWER_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel.PowerActionViewModel";
     private static final String EMERGENCY_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel" +
             ".EmergencyActionViewModel";
-    private static final String SIDE_KEY_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel" +
-            ".SideKeyActionViewModel";
     private static final String DATA_MODE_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel" +
             ".DataModeActionViewModel";
 
@@ -161,15 +159,6 @@ public class XSysUIGlobalActions {
                     classLoader,
                     "isNeedSecureConfirm",
                     isNeedSecureConfirmHook);
-
-            try {
-                XposedHelpers.findAndHookMethod(SIDE_KEY_ACTION_VIEW_MODEL,
-                        classLoader,
-                        "isNeedSecureConfirm",
-                        isNeedSecureConfirmHook);
-            } catch (Exception e) {
-                XposedBridge.log(e);
-            }
 
             XposedHelpers.findAndHookMethod(DATA_MODE_ACTION_VIEW_MODEL,
                     classLoader,
