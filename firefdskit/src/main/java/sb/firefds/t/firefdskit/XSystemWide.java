@@ -16,12 +16,14 @@ package sb.firefds.t.firefdskit;
 
 import static sb.firefds.t.firefdskit.utils.Constants.CONFIG_RECORDING;
 import static sb.firefds.t.firefdskit.utils.Constants.CONFIG_SVC_PROVIDER_FOR_UNKNOWN_NUMBER;
+import static sb.firefds.t.firefdskit.utils.Constants.SAMSUNG_BLUR;
 import static sb.firefds.t.firefdskit.utils.Constants.SUPPORT_REAL_TIME_NETWORK_SPEED;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_DEFAULT_REBOOT_BEHAVIOR;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_DISABLE_SECURE_FLAG;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_ENABLE_CALL_ADD;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_ENABLE_CALL_RECORDING;
+import static sb.firefds.t.firefdskit.utils.Preferences.PREF_ENABLE_SAMSUNG_BLUR;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_ENABLE_SPAM_PROTECTION;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_SHOW_NETWORK_SPEED_MENU;
 
@@ -31,6 +33,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.samsung.android.feature.SemCscFeature;
+import com.samsung.android.feature.SemFloatingFeature;
 import com.samsung.android.wifi.SemWifiManager;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -104,6 +107,11 @@ public class XSystemWide {
                     String.class,
                     cscFeatureGetStringHook(prefs));
 
+            XposedHelpers.findAndHookMethod(SemFloatingFeature.class,
+                    "getBoolean",
+                    String.class,
+                    cscFeatureGetBooleanHook(prefs));
+
             XposedHelpers.findAndHookMethod(SemCscFeature.class,
                     "getBoolean",
                     String.class,
@@ -153,6 +161,12 @@ public class XSystemWide {
             protected void beforeHookedMethod(MethodHookParam param) {
                 if (param.args[0].equals(SUPPORT_REAL_TIME_NETWORK_SPEED)) {
                     param.setResult(prefs.getBoolean(PREF_SHOW_NETWORK_SPEED_MENU, false));
+                }
+                if (param.args[0].equals(SUPPORT_REAL_TIME_NETWORK_SPEED)) {
+                    param.setResult(prefs.getBoolean(PREF_SHOW_NETWORK_SPEED_MENU, false));
+                }
+                if (param.args[0].equals(SAMSUNG_BLUR)) {
+                    param.setResult(prefs.getBoolean(PREF_ENABLE_SAMSUNG_BLUR, false));
                 }
             }
         };

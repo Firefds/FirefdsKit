@@ -17,7 +17,6 @@ package sb.firefds.t.firefdskit;
 import static sb.firefds.t.firefdskit.utils.Packages.SYSTEM_UI;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_CARRIER_SIZE;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_DATA_ICON_BEHAVIOR;
-import static sb.firefds.t.firefdskit.utils.Preferences.PREF_ENABLE_SAMSUNG_BLUR;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_HIDE_CARRIER_LABEL;
 
 import java.util.HashMap;
@@ -38,9 +37,6 @@ public class XSysUINotificationPanelPackage {
     private static final String CARRIER_TEXT_MANAGER = "com.android.keyguard.CarrierTextManager";
     private static final String CARRIER_TEXT_CALLBACK_INFO = CARRIER_TEXT_MANAGER + ".CarrierTextCallbackInfo";
     private static final String CARRIER_TEXT = "com.android.keyguard.CarrierText";
-    private static final String NOTIFICATION_SHADE_WINDOW_CONTROLLER_IMPL = SYSTEM_UI + ".statusbar.phone" +
-            ".NotificationShadeWindowControllerImpl";
-    private static final String STATE = NOTIFICATION_SHADE_WINDOW_CONTROLLER_IMPL + ".State";
     private static final Map<String, Float> CARRIER_SIZES_MAP = new HashMap<>();
     private static final Map<String, Integer> CLOCK_SIZES_MAP = new HashMap<>();
     private static final Map<String, String> DATA_ICONS_MAP = new HashMap<>();
@@ -105,25 +101,6 @@ public class XSysUINotificationPanelPackage {
         String dataBehavior = getDataIconBehavior(behaviorIndex);
         if (!dataBehavior.equals("DEFAULT")) {
             changeDataIcon(operatorClass, dataBehavior);
-        }
-
-        if (prefs.getBoolean(PREF_ENABLE_SAMSUNG_BLUR, false)) {
-            try {
-                Class<?> stateClass = XposedHelpers.findClass(STATE, classLoader);
-
-                XposedHelpers.findAndHookMethod(NOTIFICATION_SHADE_WINDOW_CONTROLLER_IMPL,
-                        classLoader,
-                        "apply",
-                        stateClass,
-                        new XC_MethodHook() {
-                            @Override
-                            protected void afterHookedMethod(MethodHookParam param) {
-                                XposedHelpers.callMethod(param.thisObject, "applyBouncer", param.args[0]);
-                            }
-                        });
-            } catch (Exception e) {
-                XposedBridge.log(e);
-            }
         }
     }
 
