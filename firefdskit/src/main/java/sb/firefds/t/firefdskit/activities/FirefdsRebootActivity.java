@@ -15,7 +15,6 @@
 package sb.firefds.t.firefdskit.activities;
 
 import static sb.firefds.t.firefdskit.rebootactions.RebootActionFactory.getRebootAction;
-import static sb.firefds.t.firefdskit.utils.Constants.REBOOT_ACTION;
 
 import android.os.Bundle;
 
@@ -26,7 +25,7 @@ public class FirefdsRebootActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getRebootAction(getIntent().getStringExtra(REBOOT_ACTION))
+        getRebootAction(getIntent().getAction())
                 .ifPresent(rebootAction -> rebootAction.reboot(getApplicationContext()));
     }
 }

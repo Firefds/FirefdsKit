@@ -30,11 +30,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Icon;
 
+import androidx.core.app.TaskStackBuilder;
+
 import java.util.Objects;
 
 import sb.firefds.t.firefdskit.FirefdsKitActivity;
 import sb.firefds.t.firefdskit.R;
-import sb.firefds.t.firefdskit.receivers.FirefdsRebootReceiver;
+import sb.firefds.t.firefdskit.activities.FirefdsRebootActivity;
 
 public class RebootNotification {
 
@@ -75,29 +77,18 @@ public class RebootNotification {
                         .setSummaryText(context.getString(R.string.pending_changes)))
                 .setAutoCancel(true);
 
-        Intent rebootIntent = new Intent(context, FirefdsRebootReceiver.class)
-                .setAction(REBOOT_DEVICE_ACTION);
+        Intent rebootIntent = new Intent(context, FirefdsRebootActivity.class)
+                .setAction(showQuickReboot ? QUICK_REBOOT_DEVICE_ACTION : REBOOT_DEVICE_ACTION);
+
+        PendingIntent rebootPendingIntent = TaskStackBuilder.create(context)
+                .addNextIntentWithParentStack(rebootIntent)
+                .getPendingIntent(1337, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
         builder.addAction(new Notification.Action.Builder(
                 Icon.createWithResource(context, R.drawable.ic_restart_notification),
-                res.getString(R.string.reboot),
-                PendingIntent.getBroadcast(context,
-                        1337,
-                        rebootIntent,
-                        PendingIntent.FLAG_IMMUTABLE))
+                showQuickReboot ? res.getString(R.string.quick_reboot) : res.getString(R.string.reboot),
+                rebootPendingIntent)
                 .build());
-
-        if (showQuickReboot) {
-            Intent QuickRebootIntent = new Intent(context, FirefdsRebootReceiver.class)
-                    .setAction(QUICK_REBOOT_DEVICE_ACTION);
-            builder.addAction(new Notification.Action.Builder(
-                    Icon.createWithResource(context, R.drawable.ic_restart_notification),
-                    res.getString(R.string.quick_reboot),
-                    PendingIntent.getBroadcast(context,
-                            1337,
-                            QuickRebootIntent,
-                            PendingIntent.FLAG_IMMUTABLE))
-                    .build());
-        }
 
         notify(context, builder.build());
     }

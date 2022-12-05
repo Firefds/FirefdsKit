@@ -16,7 +16,6 @@ package sb.firefds.t.firefdskit.actionViewModels;
 
 import static sb.firefds.t.firefdskit.XSysUIGlobalActions.getActionViewModelDefaults;
 import static sb.firefds.t.firefdskit.XSysUIGlobalActions.isUnlockKeyguardBeforeActionExecute;
-import static sb.firefds.t.firefdskit.utils.Constants.REBOOT_ACTION;
 import static sb.firefds.t.firefdskit.utils.Constants.TAG;
 import static sb.firefds.t.firefdskit.utils.Packages.FIREFDSKIT;
 
@@ -87,7 +86,7 @@ public abstract class RestartActionViewModel extends FirefdsKitActionViewModel {
         } catch (SecurityException e) {
             Log.e(TAG, Objects.requireNonNull(e.getMessage()));
             Intent rebootIntent = new Intent().setComponent(new ComponentName(FIREFDSKIT, REBOOT_ACTIVITY));
-            rebootIntent.putExtra(REBOOT_ACTION, rebootOption);
+            rebootIntent.setAction(rebootOption);
             rebootIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(rebootIntent);
         }

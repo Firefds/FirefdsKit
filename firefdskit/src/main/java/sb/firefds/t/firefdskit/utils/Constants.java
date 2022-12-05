@@ -23,7 +23,6 @@ public class Constants {
     public static final String BACKUP_DIR = "FirefdsKitBackup";
     public static final String PREFS = FIREFDSKIT + "_preferences";
 
-    public static final String REBOOT_ACTION = "REBOOT_ACTION";
     public static final String REBOOT_DEVICE_ACTION = "REBOOT_DEVICE";
     public static final String QUICK_REBOOT_DEVICE_ACTION = "QUICK_REBOOT_DEVICE";
 

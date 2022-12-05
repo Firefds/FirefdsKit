@@ -12,10 +12,10 @@
         <activity
             android:name="sb.firefds.t.firefdskit.activities.SplashScreenActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"
-            tools:ignore="LockedOrientationActivity"
-            android:exported="true">
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,10 +47,6 @@
         <meta-data
             android:name="xposedscope"
             android:resource="@array/module_scope" />
-
-        <receiver
-            android:name="sb.firefds.t.firefdskit.receivers.FirefdsRebootReceiver"
-            android:exported="false" />
 
         <activity android:name="sb.firefds.t.firefdskit.activities.FirefdsRebootActivity" />
     </application>
