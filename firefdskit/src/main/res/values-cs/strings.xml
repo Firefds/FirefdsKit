@@ -106,7 +106,7 @@
     <string name="screen_timeout_hours">Časový limit obrazovky v hodinách</string>
     <string name="enable_camera_shutter_menu">Povolit nastavení zvuku závěrky</string>
     <string name="enable_camera_shutter_menu_summary">Povolit nastavení zvuku závěrky v nabídce fotoaparátu</string>
-    <string name="data_icon_behavior_title">Ikona dat</string>
+    <string name="four_g_data_icon_behavior_title">4G Ikona dat</string>
     <string name="lte_4g">LTE místo 4G</string>
     <string name="four_g_plus_4g">4G Plus místo 4G</string>
     <string name="four_g_4g_plus">4G místo 4G Plus</string>

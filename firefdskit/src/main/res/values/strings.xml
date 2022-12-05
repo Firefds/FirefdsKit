@@ -106,11 +106,14 @@
     <string name="screen_timeout_hours">Screen Timeout Hours</string>
     <string name="enable_camera_shutter_menu">Enable Shutter Sound Menu</string>
     <string name="enable_camera_shutter_menu_summary">Enable shutter sound menu in camera app</string>
-    <string name="data_icon_behavior_title">Data Icon Symbol</string>
+    <string name="four_g_data_icon_behavior_title">4G Data Icon Symbol</string>
+    <string name="five_g_data_icon_behavior_title">5G Data Icon Symbol</string>
     <string name="lte_4g">LTE instead of 4G</string>
     <string name="four_g_plus_4g">4G Plus instead of 4G</string>
     <string name="four_g_4g_plus">4G instead of 4G Plus</string>
     <string name="four_half_g_4g_plus">4.5G instead of 4G Plus</string>
+    <string name="five_g_one">5G One Shaped Icon</string>
+    <string name="five_g_plus">5G Plus Shaped Icon</string>
     <string name="enable_data_mode_switch_summary">Enable Data Mode switch in power menu</string>
     <string name="enable_data_mode_switch_title">Data Mode Switch</string>
     <string name="quick_settings_data_usage_view_summary">Show data usage view in quick panel</string>

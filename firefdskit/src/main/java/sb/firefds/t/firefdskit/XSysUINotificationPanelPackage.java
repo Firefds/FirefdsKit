@@ -15,8 +15,9 @@
 package sb.firefds.t.firefdskit;
 
 import static sb.firefds.t.firefdskit.utils.Packages.SYSTEM_UI;
+import static sb.firefds.t.firefdskit.utils.Preferences.PREF_4G_DATA_ICON_BEHAVIOR;
+import static sb.firefds.t.firefdskit.utils.Preferences.PREF_5G_DATA_ICON_BEHAVIOR;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_CARRIER_SIZE;
-import static sb.firefds.t.firefdskit.utils.Preferences.PREF_DATA_ICON_BEHAVIOR;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_HIDE_CARRIER_LABEL;
 
 import java.util.HashMap;
@@ -29,17 +30,19 @@ import de.robv.android.xposed.XposedHelpers;
 
 public class XSysUINotificationPanelPackage {
 
-    private static final String LTE_INSTEAD_OF_4G = "useLteInsteadOf4G";
+    private static final String LTE_INSTEAD_OF_4G = "useLTEInsteadOf4G";
     private static final String FOUR_G_PLUS_INSTEAD_OF_4G = "use4GPlusInsteadOf4G";
-    private static final String FOUR_G_INSTEAD_OF_4G_PLUS = "use4GInstead4GPlus";
     private static final String FOUR_HALF_G_INSTEAD_OF_4G_PLUS = "use4HalfGInsteadOf4GPlus";
-    private static final String OPERATOR = SYSTEM_UI + ".Operator";
+    private static final String FIVE_G_ONE_SHAPED_ICON = "use5gOneShapedIcon";
+    private static final String FIVE_G_PLUS_ICON = "use5gPlusIcon";
+    private static final String MOBILE_DATA_UTIL = SYSTEM_UI + ".statusbar.utils.carrier.MobileDataUtil";
     private static final String CARRIER_TEXT_MANAGER = "com.android.keyguard.CarrierTextManager";
     private static final String CARRIER_TEXT_CALLBACK_INFO = CARRIER_TEXT_MANAGER + ".CarrierTextCallbackInfo";
     private static final String CARRIER_TEXT = "com.android.keyguard.CarrierText";
     private static final Map<String, Float> CARRIER_SIZES_MAP = new HashMap<>();
     private static final Map<String, Integer> CLOCK_SIZES_MAP = new HashMap<>();
-    private static final Map<String, String> DATA_ICONS_MAP = new HashMap<>();
+    private static final Map<String, String> FOUR_G_DATA_ICONS_MAP = new HashMap<>();
+    private static final Map<String, String> FIVE_G_DATA_ICONS_MAP = new HashMap<>();
 
     static {
         CLOCK_SIZES_MAP.put("Tiny", 10);
@@ -56,16 +59,18 @@ public class XSysUINotificationPanelPackage {
         CARRIER_SIZES_MAP.put("Large", 59f);
         CARRIER_SIZES_MAP.put("Larger", 69f);
         CARRIER_SIZES_MAP.put("Largest", 79f);
-        DATA_ICONS_MAP.put("0", "DEFAULT");
-        DATA_ICONS_MAP.put("1", LTE_INSTEAD_OF_4G);
-        DATA_ICONS_MAP.put("2", FOUR_G_PLUS_INSTEAD_OF_4G);
-        DATA_ICONS_MAP.put("3", FOUR_G_INSTEAD_OF_4G_PLUS);
-        DATA_ICONS_MAP.put("4", FOUR_HALF_G_INSTEAD_OF_4G_PLUS);
+        FOUR_G_DATA_ICONS_MAP.put("0", "DEFAULT");
+        FOUR_G_DATA_ICONS_MAP.put("1", LTE_INSTEAD_OF_4G);
+        FOUR_G_DATA_ICONS_MAP.put("2", FOUR_G_PLUS_INSTEAD_OF_4G);
+        FOUR_G_DATA_ICONS_MAP.put("3", FOUR_HALF_G_INSTEAD_OF_4G_PLUS);
+        FIVE_G_DATA_ICONS_MAP.put("0", "DEFAULT");
+        FIVE_G_DATA_ICONS_MAP.put("1", FIVE_G_ONE_SHAPED_ICON);
+        FIVE_G_DATA_ICONS_MAP.put("2", FIVE_G_PLUS_ICON);
     }
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
-        final Class<?> operatorClass = XposedHelpers.findClass(OPERATOR, classLoader);
+        final Class<?> mobileDataUtilClass = XposedHelpers.findClass(MOBILE_DATA_UTIL, classLoader);
 
         try {
             XposedHelpers.findAndHookMethod(CARRIER_TEXT_MANAGER,
@@ -97,10 +102,16 @@ public class XSysUINotificationPanelPackage {
             XposedBridge.log(e);
         }
 
-        String behaviorIndex = prefs.getString(PREF_DATA_ICON_BEHAVIOR, "0");
-        String dataBehavior = getDataIconBehavior(behaviorIndex);
-        if (!dataBehavior.equals("DEFAULT")) {
-            changeDataIcon(operatorClass, dataBehavior);
+        String behaviorIndex4g = prefs.getString(PREF_4G_DATA_ICON_BEHAVIOR, "0");
+        String dataBehavior4g = get4gDataIconBehavior(behaviorIndex4g);
+        if (!dataBehavior4g.equals("DEFAULT")) {
+            changeDataIcon(mobileDataUtilClass, dataBehavior4g);
+        }
+
+        String behaviorIndex5g = prefs.getString(PREF_5G_DATA_ICON_BEHAVIOR, "0");
+        String dataBehavior5g = get5gDataIconBehavior(behaviorIndex5g);
+        if (!dataBehavior5g.equals("DEFAULT")) {
+            changeDataIcon(mobileDataUtilClass, dataBehavior5g);
         }
     }
 
@@ -108,6 +119,7 @@ public class XSysUINotificationPanelPackage {
         try {
             XposedHelpers.findAndHookMethod(aClass,
                     dataIconBehavior,
+                    int.class,
                     new XC_MethodHook() {
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) {
@@ -127,7 +139,11 @@ public class XSysUINotificationPanelPackage {
         return CLOCK_SIZES_MAP.get(sizeName);
     }
 
-    private static String getDataIconBehavior(String behaviorIndex) {
-        return DATA_ICONS_MAP.get(behaviorIndex);
+    private static String get4gDataIconBehavior(String behaviorIndex) {
+        return FOUR_G_DATA_ICONS_MAP.get(behaviorIndex);
+    }
+
+    private static String get5gDataIconBehavior(String behaviorIndex) {
+        return FIVE_G_DATA_ICONS_MAP.get(behaviorIndex);
     }
 }

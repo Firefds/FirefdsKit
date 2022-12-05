@@ -22,7 +22,8 @@ import static sb.firefds.t.firefdskit.utils.Constants.SHORTCUT_PHONE;
 import static sb.firefds.t.firefdskit.utils.Constants.SHORTCUT_SECURITY;
 import static sb.firefds.t.firefdskit.utils.Constants.SHORTCUT_STATUSBAR;
 import static sb.firefds.t.firefdskit.utils.Constants.SHORTCUT_SYSTEM;
-import static sb.firefds.t.firefdskit.utils.Preferences.PREF_DATA_ICON_BEHAVIOR;
+import static sb.firefds.t.firefdskit.utils.Preferences.PREF_4G_DATA_ICON_BEHAVIOR;
+import static sb.firefds.t.firefdskit.utils.Preferences.PREF_5G_DATA_ICON_BEHAVIOR;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_DISABLE_NUMBER_FORMATTING;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_DISABLE_SMS_TO_MMS;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_FIRST_LAUNCH;
@@ -520,10 +521,16 @@ public class FirefdsKitActivity extends AppCompatActivity
     private static void upgradePreferences() {
         SharedPreferences preferences = getSharedPreferences();
         try {
-            preferences.getString(PREF_DATA_ICON_BEHAVIOR, "0");
+            preferences.getString(PREF_4G_DATA_ICON_BEHAVIOR, "0");
         } catch (ClassCastException e) {
-            String uid = String.valueOf(preferences.getInt(PREF_DATA_ICON_BEHAVIOR, 0));
-            preferences.edit().putString(PREF_DATA_ICON_BEHAVIOR, uid).apply();
+            String uid = String.valueOf(preferences.getInt(PREF_4G_DATA_ICON_BEHAVIOR, 0));
+            preferences.edit().putString(PREF_4G_DATA_ICON_BEHAVIOR, uid).apply();
+        }
+        try {
+            preferences.getString(PREF_5G_DATA_ICON_BEHAVIOR, "0");
+        } catch (ClassCastException e) {
+            String uid = String.valueOf(preferences.getInt(PREF_5G_DATA_ICON_BEHAVIOR, 0));
+            preferences.edit().putString(PREF_5G_DATA_ICON_BEHAVIOR, uid).apply();
         }
         try {
             preferences.getString(PREF_NFC_BEHAVIOR, "0");

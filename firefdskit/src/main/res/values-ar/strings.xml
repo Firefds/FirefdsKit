@@ -104,7 +104,7 @@
     <string name="screen_timeout_hours">ساعات مهلة الشاشة</string>
     <string name="enable_camera_shutter_menu">تفعيل قائمة صوت الغالق</string>
     <string name="enable_camera_shutter_menu_summary">تفعيل قائمة صوت الغالق في تطبيق الكاميرا</string>
-    <string name="data_icon_behavior_title">رمز أيقون البيانات</string>
+    <string name="four_g_data_icon_behavior_title">رمز أيقون البيانات 4G</string>
     <string name="lte_4g">عرض LTE بدلا من 4G</string>
     <string name="four_g_plus_4g">عرض 4G Plus بدلا من 4G</string>
     <string name="four_g_4g_plus">عرض 4G بدلا من 4G Plus</string>

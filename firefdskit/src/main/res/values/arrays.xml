@@ -39,19 +39,27 @@
         <item>enableCameraShutterMenu</item>
         <item>forceEnglish</item>
     </string-array>
-    <string-array name="data_icon_entries">
+    <string-array name="four_g_data_icon_entries">
         <item name="Default">@string/default_text</item>
         <item name="LTE">@string/lte_4g</item>
         <item name="4GPlus">@string/four_g_plus_4g</item>
-        <item name="4G">@string/four_g_4g_plus</item>
         <item name="4.5G">@string/four_half_g_4g_plus</item>
     </string-array>
-    <string-array name="data_icon_values">
+    <string-array name="four_g_data_icon_values">
         <item name="Default">0</item>
         <item name="LTE">1</item>
         <item name="4GPlus">2</item>
-        <item name="4G">3</item>
-        <item name="4.5G">4</item>
+        <item name="4.5G">3</item>
+    </string-array>
+    <string-array name="five_g_data_icon_entries">
+        <item name="Default">@string/default_text</item>
+        <item name="5GOneShaped">@string/five_g_one</item>
+        <item name="5GPlusIcon">@string/five_g_plus</item>
+    </string-array>
+    <string-array name="five_g_data_icon_values">
+        <item name="Default">0</item>
+        <item name="5GOneShaped">1</item>
+        <item name="5GPlusIcon">2</item>
     </string-array>
     <string-array name="clock_date_entries">
         <item>@string/clock_date_disabled</item>

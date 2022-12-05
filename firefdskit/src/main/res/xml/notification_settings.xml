@@ -54,10 +54,18 @@
             app:iconSpaceReserved="false" />
         <androidx.preference.ListPreference
             android:defaultValue="0"
-            android:entries="@array/data_icon_entries"
-            android:entryValues="@array/data_icon_values"
-            android:key="dataIconBehavior"
-            android:title="@string/data_icon_behavior_title"
+            android:entries="@array/four_g_data_icon_entries"
+            android:entryValues="@array/four_g_data_icon_values"
+            android:key="4gDataIconBehavior"
+            android:title="@string/four_g_data_icon_behavior_title"
+            app:iconSpaceReserved="false"
+            app:useSimpleSummaryProvider="true" />
+        <androidx.preference.ListPreference
+            android:defaultValue="0"
+            android:entries="@array/five_g_data_icon_entries"
+            android:entryValues="@array/five_g_data_icon_values"
+            android:key="5gDataIconBehavior"
+            android:title="@string/five_g_data_icon_behavior_title"
             app:iconSpaceReserved="false"
             app:useSimpleSummaryProvider="true" />
     </androidx.preference.PreferenceCategory>
