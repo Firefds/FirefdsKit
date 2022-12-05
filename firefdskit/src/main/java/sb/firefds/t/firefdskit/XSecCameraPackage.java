@@ -14,7 +14,6 @@
  */
 package sb.firefds.t.firefdskit;
 
-import static sb.firefds.t.firefdskit.utils.Packages.SAMSUNG_CAMERA;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_DISABLE_TEMPERATURE_CHECKS;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_ENABLE_CAMERA_SHUTTER_MENU;
 
@@ -25,8 +24,8 @@ import de.robv.android.xposed.XposedHelpers;
 
 public class XSecCameraPackage {
 
-    private static final String FEATURE = SAMSUNG_CAMERA + ".feature.Feature";
-    private static final String BOOLEAN_TAG = SAMSUNG_CAMERA + ".feature.BooleanTag";
+    private static final String FEATURE = "m3.c";
+    private static final String BOOLEAN_TAG = "m3.a";
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
@@ -34,7 +33,7 @@ public class XSecCameraPackage {
             try {
                 XposedHelpers.findAndHookMethod(FEATURE,
                         classLoader,
-                        "get",
+                        "e",
                         BOOLEAN_TAG,
                         new XC_MethodHook() {
                             @Override
@@ -54,7 +53,7 @@ public class XSecCameraPackage {
             try {
                 XposedHelpers.findAndHookMethod(FEATURE,
                         classLoader,
-                        "get",
+                        "e",
                         BOOLEAN_TAG,
                         new XC_MethodHook() {
                             @Override

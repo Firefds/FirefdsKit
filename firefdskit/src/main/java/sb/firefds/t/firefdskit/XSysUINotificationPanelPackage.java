@@ -17,7 +17,6 @@ package sb.firefds.t.firefdskit;
 import static sb.firefds.t.firefdskit.utils.Packages.SYSTEM_UI;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_CARRIER_SIZE;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_DATA_ICON_BEHAVIOR;
-import static sb.firefds.t.firefdskit.utils.Preferences.PREF_DATA_USAGE_VIEW;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_ENABLE_SAMSUNG_BLUR;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_HIDE_CARRIER_LABEL;
 
@@ -39,22 +38,28 @@ public class XSysUINotificationPanelPackage {
     private static final String CARRIER_TEXT_MANAGER = "com.android.keyguard.CarrierTextManager";
     private static final String CARRIER_TEXT_CALLBACK_INFO = CARRIER_TEXT_MANAGER + ".CarrierTextCallbackInfo";
     private static final String CARRIER_TEXT = "com.android.keyguard.CarrierText";
-    private static final String QP_RUNE = SYSTEM_UI + ".QpRune";
-    private static final String BASIC_RUNE = SYSTEM_UI + ".BasicRune";
     private static final String NOTIFICATION_SHADE_WINDOW_CONTROLLER_IMPL = SYSTEM_UI + ".statusbar.phone" +
             ".NotificationShadeWindowControllerImpl";
     private static final String STATE = NOTIFICATION_SHADE_WINDOW_CONTROLLER_IMPL + ".State";
-    private static final Map<String, Integer> CARRIER_SIZES_MAP = new HashMap<>();
+    private static final Map<String, Float> CARRIER_SIZES_MAP = new HashMap<>();
+    private static final Map<String, Integer> CLOCK_SIZES_MAP = new HashMap<>();
     private static final Map<String, String> DATA_ICONS_MAP = new HashMap<>();
 
     static {
-        CARRIER_SIZES_MAP.put("Tiny", 19);
-        CARRIER_SIZES_MAP.put("Smaller", 29);
-        CARRIER_SIZES_MAP.put("Small", 39);
-        CARRIER_SIZES_MAP.put("Medium", 49);
-        CARRIER_SIZES_MAP.put("Large", 59);
-        CARRIER_SIZES_MAP.put("Larger", 69);
-        CARRIER_SIZES_MAP.put("Largest", 79);
+        CLOCK_SIZES_MAP.put("Tiny", 10);
+        CLOCK_SIZES_MAP.put("Smaller", 12);
+        CLOCK_SIZES_MAP.put("Small", 14);
+        CLOCK_SIZES_MAP.put("Medium", 16);
+        CLOCK_SIZES_MAP.put("Large", 18);
+        CLOCK_SIZES_MAP.put("Larger", 19);
+        CLOCK_SIZES_MAP.put("Largest", 20);
+        CARRIER_SIZES_MAP.put("Tiny", 19f);
+        CARRIER_SIZES_MAP.put("Smaller", 29f);
+        CARRIER_SIZES_MAP.put("Small", 39f);
+        CARRIER_SIZES_MAP.put("Medium", 49f);
+        CARRIER_SIZES_MAP.put("Large", 59f);
+        CARRIER_SIZES_MAP.put("Larger", 69f);
+        CARRIER_SIZES_MAP.put("Largest", 79f);
         DATA_ICONS_MAP.put("0", "DEFAULT");
         DATA_ICONS_MAP.put("1", LTE_INSTEAD_OF_4G);
         DATA_ICONS_MAP.put("2", FOUR_G_PLUS_INSTEAD_OF_4G);
@@ -89,9 +94,7 @@ public class XSysUINotificationPanelPackage {
                     new XC_MethodHook() {
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) {
-                            prefs.reload();
-                            int textSize = getCarrierSizeValue(prefs.getString(PREF_CARRIER_SIZE, "Small"));
-                            param.args[1] = textSize;
+                            param.args[1] = getCarrierSizeValue(prefs.getString(PREF_CARRIER_SIZE, "Small"));
                         }
                     });
         } catch (Throwable e) {
@@ -104,26 +107,7 @@ public class XSysUINotificationPanelPackage {
             changeDataIcon(operatorClass, dataBehavior);
         }
 
-        if (prefs.getBoolean(PREF_DATA_USAGE_VIEW, false)) {
-            try {
-                Class<?> qpRune = XposedHelpers.findClass(QP_RUNE, classLoader);
-                XposedHelpers.setStaticBooleanField(qpRune, "PANEL_CARRIERINFO_DATAUSAGE", true);
-            } catch (Exception e) {
-                XposedBridge.log(e);
-            }
-        }
-
-        //Temp disable until fix is found
-        /*if (prefs.getBoolean(PREF_SHOW_NETWORK_SPEED_MENU, false)) {
-            try {
-                Class<?> basicRune = XposedHelpers.findClass(BASIC_RUNE, classLoader);
-                XposedHelpers.setStaticBooleanField(basicRune, "STATUS_REAL_TIME_NETWORK_SPEED", true);
-            } catch (Exception e) {
-                XposedBridge.log(e);
-            }
-        }*/
-
-        if (prefs.getBoolean(PREF_ENABLE_SAMSUNG_BLUR, true)) {
+        if (prefs.getBoolean(PREF_ENABLE_SAMSUNG_BLUR, false)) {
             try {
                 Class<?> stateClass = XposedHelpers.findClass(STATE, classLoader);
 
@@ -158,8 +142,12 @@ public class XSysUINotificationPanelPackage {
         }
     }
 
-    public static Integer getCarrierSizeValue(String sizeName) {
+    public static Float getCarrierSizeValue(String sizeName) {
         return CARRIER_SIZES_MAP.get(sizeName);
+    }
+
+    public static Integer getClockSizeValue(String sizeName) {
+        return CLOCK_SIZES_MAP.get(sizeName);
     }
 
     private static String getDataIconBehavior(String behaviorIndex) {

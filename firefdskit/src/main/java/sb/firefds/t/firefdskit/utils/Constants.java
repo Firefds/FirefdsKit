@@ -34,6 +34,7 @@ public class Constants {
     public static final String CONFIG_RECORDING = "CscFeature_VoiceCall_ConfigRecording";
     public static final String CONFIG_SVC_PROVIDER_FOR_UNKNOWN_NUMBER =
             "CscFeature_Common_ConfigSvcProviderForUnknownNumber";
+    public static final String SUPPORT_REAL_TIME_NETWORK_SPEED = "CscFeature_Setting_SupportRealTimeNetworkSpeed";
 
     public static final String SHORTCUT_STATUSBAR = "STATUSBAR";
     public static final String SHORTCUT_SYSTEM = "SYSTEM";

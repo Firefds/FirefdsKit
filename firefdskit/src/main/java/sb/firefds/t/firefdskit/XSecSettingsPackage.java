@@ -16,14 +16,11 @@ package sb.firefds.t.firefdskit;
 
 import static sb.firefds.t.firefdskit.utils.Packages.SAMSUNG_SETTINGS;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_DISABLE_BLUETOOTH_DIALOG;
-import static sb.firefds.t.firefdskit.utils.Preferences.PREF_DISABLE_SYNC_DIALOG;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_MAKE_OFFICIAL;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_MAX_SUPPORTED_USERS;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE_USERS;
 
-import android.annotation.SuppressLint;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.UserManager;
@@ -36,14 +33,8 @@ import de.robv.android.xposed.XposedHelpers;
 
 public class XSecSettingsPackage {
 
-    private static final String BLUETOOTH_SCAN_DIALOG = SAMSUNG_SETTINGS + ".bluetooth" +
-            ".BluetoothScanDialog";
-    private static final String SEC_ACCOUNT_TILES = SAMSUNG_SETTINGS + ".qstile.SecAccountTiles";
-    private static final String SEC_DEVICE_INFO_UTILS = SAMSUNG_SETTINGS + ".deviceinfo" +
-            ".SecDeviceInfoUtils";
-    private static final String STATUS_BAR_NETWORK_SPEED_CONTROLLER = SAMSUNG_SETTINGS +
-            ".notification" +
-            ".StatusBarNetworkSpeedController";
+    private static final String BLUETOOTH_SCAN_DIALOG = SAMSUNG_SETTINGS + ".bluetooth.BluetoothScanDialog";
+    private static final String SEC_DEVICE_INFO_UTILS = SAMSUNG_SETTINGS + ".deviceinfo.SecDeviceInfoUtils";
     private static final String SETTINGS_UTILS = "com.android.settings.Utils";
 
 
@@ -56,11 +47,6 @@ public class XSecSettingsPackage {
         if (prefs.getBoolean(PREF_MAKE_OFFICIAL, true)) {
             makeOfficial();
         }
-
-        //Temp disable until fix is found
-        /*if (prefs.getBoolean(PREF_SHOW_NETWORK_SPEED_MENU, false)) {
-            showNetworkSpeedMenu();
-        }*/
 
         try {
             XposedHelpers.findAndHookMethod(
@@ -82,21 +68,6 @@ public class XSecSettingsPackage {
         }
 
         try {
-            XposedHelpers.findAndHookMethod(SEC_ACCOUNT_TILES,
-                    classLoader,
-                    "showConfirmPopup",
-                    boolean.class,
-                    new XC_MethodHook() {
-                        @SuppressLint("MissingPermission")
-                        @Override
-                        protected void beforeHookedMethod(MethodHookParam param) {
-                            if (prefs.getBoolean(PREF_DISABLE_SYNC_DIALOG, false)) {
-                                ContentResolver.setMasterSyncAutomatically((Boolean) param.args[0]);
-                                param.setResult(null);
-                            }
-                        }
-                    });
-
             if (prefs.getBoolean(PREF_SUPPORTS_MULTIPLE_USERS, false)) {
                 XposedHelpers.findAndHookMethod(UserManager.class, "supportsMultipleUsers",
                         new XC_MethodHook() {
@@ -160,26 +131,6 @@ public class XSecSettingsPackage {
                     "isSupportRootBadge",
                     Context.class,
                     XC_MethodReplacement.returnConstant(Boolean.FALSE));
-        } catch (Throwable e) {
-            XposedBridge.log(e);
-        }
-    }
-
-    private static void showNetworkSpeedMenu() {
-        try {
-            Class<?> statusBarNetworkSpeedController =
-                    XposedHelpers.findClass(STATUS_BAR_NETWORK_SPEED_CONTROLLER,
-                    classLoader);
-            XposedBridge.hookAllMethods(statusBarNetworkSpeedController,
-                    "displayPreference",
-                    new XC_MethodHook() {
-                        @Override
-                        protected void beforeHookedMethod(MethodHookParam param) {
-                            XposedHelpers.setStaticBooleanField(param.thisObject.getClass(),
-                                    "SUPPORT_NETWORK_SPEED",
-                                    true);
-                        }
-                    });
         } catch (Throwable e) {
             XposedBridge.log(e);
         }

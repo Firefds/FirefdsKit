@@ -33,7 +33,6 @@ public class Preferences {
     public static final String PREF_CLOCK_SIZE = "clockSize";
     public static final String PREF_DISABLE_BLUETOOTH_DIALOG = "disableBluetoothScanDialog";
     public static final String PREF_DISABLE_SYNC_DIALOG = "disableSyncDialog";
-    public static final String PREF_DATA_USAGE_VIEW = "DataUsageView";
     public static final String PREF_DISABLE_EYE_STRAIN_DIALOG = "setEyeStrainDialogEnabled";
     public static final String PREF_HIDE_CARRIER_LABEL = "hideCarrierLabel";
     public static final String PREF_CARRIER_SIZE = "carrierSize";

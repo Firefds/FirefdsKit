@@ -20,6 +20,7 @@ import static sb.firefds.t.firefdskit.utils.Preferences.PREF_CLOCK_DATE_PREFEREN
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_CLOCK_SIZE;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_DISABLE_EYE_STRAIN_DIALOG;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_DISABLE_LOW_BATTERY_SOUND;
+import static sb.firefds.t.firefdskit.utils.Preferences.PREF_DISABLE_SYNC_DIALOG;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_DISABLE_VOLUME_CONTROL_SOUND;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_DISABLE_VOLUME_WARNING;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_ENABLE_BIOMETRICS_UNLOCK;
@@ -31,8 +32,10 @@ import static sb.firefds.t.firefdskit.utils.Preferences.PREF_STATUSBAR_DOUBLE_TA
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_SUPPORTS_MULTIPLE_USERS;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.os.UserManager;
 import android.provider.Settings;
@@ -56,16 +59,19 @@ import de.robv.android.xposed.XposedHelpers;
 public class XSysUIFeaturePackage {
 
     private static final String KNOX_STATE_MONITOR_IMPL = SYSTEM_UI + ".knox.KnoxStateMonitorImpl";
-    private static final String BRIGHTNESS_SLIDER = SYSTEM_UI + ".settings.brightness.BrightnessSlider";
+    private static final String SHOW_USING_HIGH_BRIGHTNESS_DIALOG = SYSTEM_UI + ".settings.brightness" +
+            ".BrightnessSliderController";
     private static final String VOLUME_DIALOG_CONTROLLER_IMPL = SYSTEM_UI + ".volume.VolumeDialogControllerImpl";
     private static final String KEYGUARD_STRONG_AUTH_TRACKER = "com.android.keyguard.KeyguardUpdateMonitor" +
             ".StrongAuthTracker";
-    private static final String QS_CLOCK_HOME_INDICATOR_VIEW = SYSTEM_UI + ".statusbar.policy.QSClockHomeIndicatorView";
+    private static final String QS_CLOCK_INDICATOR_VIEW = SYSTEM_UI + ".statusbar.policy.QSClockIndicatorView";
     private static final String QS_CLOCK_BELL_SOUND = "com.android.systemui.statusbar.policy.QSClockBellSound";
-    private static final String POWER_NOTIFICATION_WARNINGS = SYSTEM_UI + ".power.PowerNotificationWarnings";
+    private static final String CHARGING_NOTIFICATION = SYSTEM_UI + ".power.notification.ChargingNotification";
     private static final String SETTINGS_HELPER = SYSTEM_UI + ".util.SettingsHelper";
+    private static final String DUMP_MANAGER = SYSTEM_UI + ".dump.DumpManager";
     private static final String SOUND_POOL_WRAPPER = SYSTEM_UI + ".volume.util.SoundPoolWrapper";
-    private static final String SOUND_PATH_FINDER = SYSTEM_UI + ".power.SoundPathFinder";
+    private static final String SOUND_PATH_FINDER = SYSTEM_UI + ".power.sound.SoundPathFinder";
+    private static final String SYNC_TILE = SYSTEM_UI + ".qs.tiles.SyncTile";
 
     @SuppressLint("StaticFieldLeak")
     private static TextView mClock;
@@ -85,9 +91,14 @@ public class XSysUIFeaturePackage {
                         "isStatusBarDoubleTapEnabled",
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
             }
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
 
+        try {
             if (prefs.getBoolean(PREF_DISABLE_EYE_STRAIN_DIALOG, false)) {
-                XposedHelpers.findAndHookMethod(BRIGHTNESS_SLIDER,
+                Class<?> dumpManager = XposedHelpers.findClass(DUMP_MANAGER, classLoader);
+                XposedHelpers.findAndHookMethod(SHOW_USING_HIGH_BRIGHTNESS_DIALOG,
                         classLoader,
                         "showUsingHighBrightnessDialog",
                         new XC_MethodHook() {
@@ -99,6 +110,7 @@ public class XSysUIFeaturePackage {
                 XposedHelpers.findAndHookConstructor(SETTINGS_HELPER,
                         classLoader,
                         Context.class,
+                        dumpManager,
                         new XC_MethodHook() {
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
@@ -107,7 +119,11 @@ public class XSysUIFeaturePackage {
                             }
                         });
             }
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
 
+        try {
             if (prefs.getBoolean(PREF_DISABLE_VOLUME_WARNING, false)) {
                 Class<?> volumeDialogControllerImpl = XposedHelpers.findClass(VOLUME_DIALOG_CONTROLLER_IMPL,
                         classLoader);
@@ -120,7 +136,11 @@ public class XSysUIFeaturePackage {
                             }
                         });
             }
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
 
+        try {
             if (prefs.getBoolean(PREF_ENABLE_BIOMETRICS_UNLOCK, false)) {
                 XposedHelpers.findAndHookMethod(KEYGUARD_STRONG_AUTH_TRACKER,
                         classLoader,
@@ -133,7 +153,7 @@ public class XSysUIFeaturePackage {
                         boolean.class,
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
 
-                XposedHelpers.findAndHookMethod("com.android.keyguard.KeyguardUpdateMonitor$16",
+                XposedHelpers.findAndHookMethod("com.android.keyguard.KeyguardUpdateMonitor$12",
                         classLoader,
                         "onAuthenticationError",
                         int.class,
@@ -145,11 +165,15 @@ public class XSysUIFeaturePackage {
                             }
                         });
             }
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
 
+        try {
             if (prefs.getBoolean(PREF_SHOW_CLOCK_SECONDS, false) ||
                     !prefs.getString(PREF_CLOCK_DATE_PREFERENCE, "disabled").equals("disabled") ||
                     !prefs.getString(PREF_CLOCK_SIZE, "Small").equals("Small")) {
-                qsClock = XposedHelpers.findClass(QS_CLOCK_HOME_INDICATOR_VIEW, classLoader);
+                qsClock = XposedHelpers.findClass(QS_CLOCK_INDICATOR_VIEW, classLoader);
                 qsClockBellSoundClass = XposedHelpers.findClass(QS_CLOCK_BELL_SOUND, classLoader);
                 XposedHelpers.findAndHookMethod(qsClock,
                         "notifyTimeChanged",
@@ -159,66 +183,67 @@ public class XSysUIFeaturePackage {
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
                                 qsClockBellSound = param.args[0];
-                                String tag = (String) (XposedHelpers.callMethod(param.thisObject, "getTag"));
-                                if (tag.equals("phone_status_bar_clock")) {
-                                    mClock = (TextView) param.thisObject;
-                                    Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
-                                    boolean is24 = DateFormat.is24HourFormat(mClock.getContext());
+                                mClock = (TextView) param.thisObject;
+                                Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+                                boolean is24 = DateFormat.is24HourFormat(mClock.getContext());
 
-                                    int textSize = XSysUINotificationPanelPackage
-                                            .getCarrierSizeValue(prefs.getString(PREF_CLOCK_SIZE, "Small"));
-                                    mClock.setTextSize(textSize);
+                                int textSize = XSysUINotificationPanelPackage
+                                        .getClockSizeValue(prefs.getString(PREF_CLOCK_SIZE, "Small"));
+                                mClock.setTextSize(textSize);
 
-                                    if (prefs.getBoolean(PREF_SHOW_CLOCK_SECONDS, false)) {
-                                        if (mSecondsHandler == null) {
-                                            updateSecondsHandler();
-                                        }
-                                        if (mSecondsFormat == null) {
-                                            mSecondsFormat = new SimpleDateFormat(
-                                                    DateFormat.getBestDateTimePattern(
-                                                            Locale.getDefault(), is24 ? "Hms" : "hms"));
-                                        }
-                                        mClock.setText(mSecondsFormat.format(calendar.getTime()));
+                                if (prefs.getBoolean(PREF_SHOW_CLOCK_SECONDS, false)) {
+                                    if (mSecondsHandler == null) {
+                                        updateSecondsHandler();
                                     }
-                                    if (!is24) {
-                                        String amPm = calendar.getDisplayName(Calendar.AM_PM,
-                                                Calendar.SHORT,
-                                                Locale.getDefault());
-                                        int amPmIndex = mClock.getText().toString().indexOf(amPm);
-                                        if (prefs.getBoolean(PREF_SHOW_AM_PM, false) && amPmIndex == -1) {
-                                            if (Locale.getDefault().equals(Locale.TAIWAN) || Locale.getDefault().equals(Locale.CHINA)) {
-                                                mClock.setText(amPm + " " + mClock.getText());
-                                            } else {
-                                                mClock.setText(mClock.getText() + " " + amPm);
-                                            }
-                                        }
-                                        if (!prefs.getBoolean(PREF_SHOW_AM_PM, false) && amPmIndex != -1) {
-                                            mClock.setText(mClock.getText()
-                                                    .toString()
-                                                    .substring(0, amPmIndex - 1));
-                                        }
+                                    if (mSecondsFormat == null) {
+                                        mSecondsFormat = new SimpleDateFormat(
+                                                DateFormat.getBestDateTimePattern(
+                                                        Locale.getDefault(), is24 ? "Hms" : "hms"));
                                     }
-                                    String showClockDate =
-                                            prefs.getString(PREF_CLOCK_DATE_PREFERENCE, "disabled");
-                                    if (!showClockDate.equals("disabled")) {
-                                        CharSequence date;
-                                        SimpleDateFormat df = (SimpleDateFormat) SimpleDateFormat
-                                                .getDateInstance(SimpleDateFormat.SHORT);
-                                        String pattern = showClockDate.equals("localized") ?
-                                                df.toLocalizedPattern().replaceAll(".?[Yy].?", "") :
-                                                showClockDate;
-                                        date = new SimpleDateFormat(pattern, Locale.getDefault()).format(calendar.getTime());
-                                        if (prefs.getBoolean(PREF_CLOCK_DATE_ON_RIGHT, false)) {
-                                            mClock.setText(mClock.getText().toString() + " " + date);
+                                    mClock.setText(mSecondsFormat.format(calendar.getTime()));
+                                }
+                                if (!is24) {
+                                    String amPm = calendar.getDisplayName(Calendar.AM_PM,
+                                            Calendar.SHORT,
+                                            Locale.getDefault());
+                                    int amPmIndex = mClock.getText().toString().indexOf(amPm);
+                                    if (prefs.getBoolean(PREF_SHOW_AM_PM, false) && amPmIndex == -1) {
+                                        if (Locale.getDefault().equals(Locale.TAIWAN) || Locale.getDefault().equals(Locale.CHINA)) {
+                                            mClock.setText(amPm + " " + mClock.getText());
                                         } else {
-                                            mClock.setText(date + " " + mClock.getText().toString());
+                                            mClock.setText(mClock.getText() + " " + amPm);
                                         }
+                                    }
+                                    if (!prefs.getBoolean(PREF_SHOW_AM_PM, false) && amPmIndex != -1) {
+                                        mClock.setText(mClock.getText()
+                                                .toString()
+                                                .substring(0, amPmIndex - 1));
+                                    }
+                                }
+                                String showClockDate =
+                                        prefs.getString(PREF_CLOCK_DATE_PREFERENCE, "disabled");
+                                if (!showClockDate.equals("disabled")) {
+                                    CharSequence date;
+                                    SimpleDateFormat df = (SimpleDateFormat) SimpleDateFormat
+                                            .getDateInstance(SimpleDateFormat.SHORT);
+                                    String pattern = showClockDate.equals("localized") ?
+                                            df.toLocalizedPattern().replaceAll(".?[Yy].?", "") :
+                                            showClockDate;
+                                    date = new SimpleDateFormat(pattern, Locale.getDefault()).format(calendar.getTime());
+                                    if (prefs.getBoolean(PREF_CLOCK_DATE_ON_RIGHT, false)) {
+                                        mClock.setText(mClock.getText().toString() + " " + date);
+                                    } else {
+                                        mClock.setText(date + " " + mClock.getText().toString());
                                     }
                                 }
                             }
                         });
             }
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
 
+        try {
             if (prefs.getBoolean(PREF_SUPPORTS_MULTIPLE_USERS, false)) {
                 XposedHelpers.findAndHookMethod(UserManager.class, "supportsMultipleUsers",
                         new XC_MethodHook() {
@@ -236,15 +261,22 @@ public class XSysUIFeaturePackage {
                             }
                         });
             }
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
 
+        try {
             if (prefs.getBoolean(PREF_HIDE_CHARGING_NOTIFICATION, false)) {
-                XposedHelpers.findAndHookMethod(POWER_NOTIFICATION_WARNINGS,
+                XposedHelpers.findAndHookMethod(CHARGING_NOTIFICATION,
                         classLoader,
-                        "showChargingNotification",
-                        int.class,
+                        "showNotification",
                         XC_MethodReplacement.returnConstant(null));
             }
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
 
+        try {
             if (prefs.getBoolean(PREF_DISABLE_VOLUME_CONTROL_SOUND, false)) {
                 try {
                     XposedHelpers.findAndHookMethod(SOUND_POOL_WRAPPER,
@@ -260,7 +292,11 @@ public class XSysUIFeaturePackage {
                     XposedBridge.log(e);
                 }
             }
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
 
+        try {
             if (prefs.getBoolean(PREF_DISABLE_LOW_BATTERY_SOUND, false)) {
                 XposedHelpers.findAndHookMethod(SOUND_PATH_FINDER,
                         classLoader,
@@ -271,6 +307,25 @@ public class XSysUIFeaturePackage {
         } catch (Throwable e) {
             XposedBridge.log(e);
         }
+
+        try {
+            XposedHelpers.findAndHookMethod(SYNC_TILE,
+                    classLoader,
+                    "showConfirmPopup",
+                    boolean.class,
+                    new XC_MethodHook() {
+                        @SuppressLint("MissingPermission")
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param) {
+                            if (prefs.getBoolean(PREF_DISABLE_SYNC_DIALOG, false)) {
+                                ContentResolver.setMasterSyncAutomatically((Boolean) param.args[0]);
+                                param.setResult(null);
+                            }
+                        }
+                    });
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
     }
 
     private static void updateSecondsHandler() {
@@ -278,7 +333,7 @@ public class XSysUIFeaturePackage {
 
         if (Optional.ofNullable(mClock.getDisplay()).isPresent()) {
             updateClock = XposedHelpers.findMethodExact(qsClock, "notifyTimeChanged", qsClockBellSoundClass);
-            mSecondsHandler = new Handler();
+            mSecondsHandler = new Handler(Looper.getMainLooper());
             if (mClock.getDisplay().getState() == Display.STATE_ON) {
                 mSecondsHandler.postAtTime(mSecondTick, SystemClock.uptimeMillis() / 1000 * 1000 + 1000);
             }
