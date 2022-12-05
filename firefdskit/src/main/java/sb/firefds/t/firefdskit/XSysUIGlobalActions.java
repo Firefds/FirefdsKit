@@ -18,6 +18,7 @@ import static sb.firefds.t.firefdskit.actionViewModels.FirefdsKitActionViewModel
 import static sb.firefds.t.firefdskit.utils.Constants.DATA_MODE_ACTION;
 import static sb.firefds.t.firefdskit.utils.Constants.DOWNLOAD_ACTION;
 import static sb.firefds.t.firefdskit.utils.Constants.EMERGENCY_ACTION;
+import static sb.firefds.t.firefdskit.utils.Constants.EMERGENCY_CALL_ACTION;
 import static sb.firefds.t.firefdskit.utils.Constants.FLASHLIGHT_ACTION;
 import static sb.firefds.t.firefdskit.utils.Constants.MULTIUSER_ACTION;
 import static sb.firefds.t.firefdskit.utils.Constants.POWER_ACTION;
@@ -211,6 +212,8 @@ public class XSysUIGlobalActions {
                             protected void afterHookedMethod(MethodHookParam param) {
                                 ActionViewModelFactory actionViewModelFactory = (ActionViewModelFactory) XposedHelpers
                                         .getObjectField(param.thisObject, "mViewModelFactory");
+                                ConditionChecker mSystemCondition = (ConditionChecker) XposedHelpers
+                                        .getObjectField(param.thisObject, "mSystemCondition");
                                 mSamsungGlobalActionsPresenter = (SamsungGlobalActionsPresenter) param.thisObject;
                                 if (!prefs.getBoolean(PREF_ENABLE_POWER_OFF, true)) {
                                     mSamsungGlobalActionsPresenter.clearActions(POWER_ACTION);
@@ -219,7 +222,13 @@ public class XSysUIGlobalActions {
                                     mSamsungGlobalActionsPresenter.clearActions(RESTART_ACTION);
                                 }
                                 if (!prefs.getBoolean(PREF_ENABLE_EMERGENCY_MODE, true)) {
-                                    mSamsungGlobalActionsPresenter.clearActions(EMERGENCY_ACTION);
+                                    if (mSystemCondition.isEnabled(SystemConditions.IS_SUPPORT_EMERGENCY_CALL)) {
+                                        mSamsungGlobalActionsPresenter.clearActions(EMERGENCY_CALL_ACTION);
+                                    }
+
+                                    if (mSystemCondition.isEnabled(SystemConditions.IS_SUPPORT_EMERGENCY_MODE)) {
+                                        mSamsungGlobalActionsPresenter.clearActions(EMERGENCY_ACTION);
+                                    }
                                 }
                                 if (prefs.getBoolean(PREF_ENABLE_RECOVERY, true)) {
                                     mSamsungGlobalActionsPresenter

@@ -14,15 +14,15 @@
  */
 package sb.firefds.t.firefdskit;
 
-import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
-
 import static sb.firefds.t.firefdskit.utils.Packages.SAMSUNG_MESSAGING;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_DISABLE_SMS_TO_MMS;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_ENABLE_BLOCKED_PHRASES;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_FORCE_MMS_CONNECT;
+
+import de.robv.android.xposed.XC_MethodReplacement;
+import de.robv.android.xposed.XSharedPreferences;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedHelpers;
 
 public class XMessagingPackage {
 
@@ -37,10 +37,6 @@ public class XMessagingPackage {
             try {
                 XposedHelpers.findAndHookMethod(messagingFeatureClass,
                         "getEnableSpamReport4Kor",
-                        XC_MethodReplacement.returnConstant(Boolean.TRUE));
-
-                XposedHelpers.findAndHookMethod(messagingFeatureClass,
-                        "isKorModel",
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
             } catch (Throwable e) {
                 XposedBridge.log(e);
