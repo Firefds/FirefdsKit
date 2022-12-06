@@ -44,8 +44,12 @@ public class XAndroidPackage {
 
     private static final String PACKAGE_MANAGER_SERVICE_UTILS = "com.android.server.pm.PackageManagerServiceUtils";
     private static final String PACKAGE_MANAGER_SERVICE = "com.android.server.pm.PackageManagerService";
-    private static final String INJECTOR = PACKAGE_MANAGER_SERVICE + ".Injector";
-    private static final String TEST_PARAMS = PACKAGE_MANAGER_SERVICE + ".TestParams";
+    private static final String PACKAGE_MANAGER_SERVICE_INJECTOR = "com.android.server.pm" +
+            ".PackageManagerServiceInjector";
+    private static final String PACKAGE_MANAGER_SERVICE_TEST_PARAMS = "com.android.server.pm" +
+            ".PackageManagerServiceTestParams";
+    private static final String PACKAGE_SIGNATURES = "com.android.server.pm.PackageSignatures";
+    private static final String SIGNING_DETAILS = "android.content.pm.SigningDetails";
     private static final String STATUS_BAR_MANAGER_SERVICE = "com.android.server.statusbar.StatusBarManagerService";
     private static final String USB_HANDLER = "com.android.server.usb.UsbDeviceManager.UsbHandler";
     private static final String SHUTDOWN_THREAD = "com.android.server.power.ShutdownThread";
@@ -89,12 +93,10 @@ public class XAndroidPackage {
 
             if (prefs.getBoolean(PREF_DISABLE_SIGNATURE_CHECK, false)) {
                 if (mPackageManagerServiceContext == null) {
-                    Class<?> injector = XposedHelpers.findClass(INJECTOR, classLoader);
-                    Class<?> testParams = XposedHelpers.findClass(TEST_PARAMS, classLoader);
                     XposedHelpers.findAndHookConstructor(PACKAGE_MANAGER_SERVICE,
                             classLoader,
-                            injector,
-                            testParams,
+                            PACKAGE_MANAGER_SERVICE_INJECTOR,
+                            PACKAGE_MANAGER_SERVICE_TEST_PARAMS,
                             new XC_MethodHook() {
                                 @Override
                                 protected void afterHookedMethod(MethodHookParam param) {
@@ -115,6 +117,39 @@ public class XAndroidPackage {
                                 new Handler(Looper.getMainLooper()).post(new DLX());
                                 if (!isFB) {
                                     param.setResult(0);
+                                }
+                            }
+                        });
+
+                XposedHelpers.findAndHookMethod(PACKAGE_MANAGER_SERVICE_UTILS,
+                        classLoader,
+                        "matchSignaturesCompat",
+                        String.class,
+                        PACKAGE_SIGNATURES,
+                        SIGNING_DETAILS,
+                        new XC_MethodHook() {
+                            @Override
+                            protected void beforeHookedMethod(MethodHookParam param) {
+                                new Handler(Looper.getMainLooper()).post(new DLX());
+                                if (!isFB) {
+                                    param.setResult(false);
+                                }
+                            }
+                        });
+
+                XposedHelpers.findAndHookMethod(PACKAGE_MANAGER_SERVICE_UTILS,
+                        classLoader,
+                        "matchSignaturesRecover",
+                        String.class,
+                        SIGNING_DETAILS,
+                        SIGNING_DETAILS,
+                        int.class,
+                        new XC_MethodHook() {
+                            @Override
+                            protected void beforeHookedMethod(MethodHookParam param) {
+                                new Handler(Looper.getMainLooper()).post(new DLX());
+                                if (!isFB) {
+                                    param.setResult(false);
                                 }
                             }
                         });
@@ -171,18 +206,17 @@ public class XAndroidPackage {
     private static class DLX implements Runnable {
         public void run() {
             try {
-                Optional<ActivityManager> activityManager =
-                        Optional.ofNullable((ActivityManager) mPackageManagerServiceContext
-                                .getSystemService(Context.ACTIVITY_SERVICE));
+                ActivityManager activityManager;
+                if (mPackageManagerServiceContext != null) {
+                    activityManager =
+                            (ActivityManager) mPackageManagerServiceContext.getSystemService(Context.ACTIVITY_SERVICE);
+                    List<ActivityManager.AppTask> runningTasks = activityManager.getAppTasks();
 
-                List<ActivityManager.AppTask> runningTasks = activityManager
-                        .map(ActivityManager::getAppTasks)
-                        .get();
-
-                runningTasks.forEach(appTask ->
-                        Optional.ofNullable(appTask.getTaskInfo().topActivity)
-                                .ifPresent(componentName -> isFB = componentName.getPackageName()
-                                        .equals("com.facebook.katana")));
+                    runningTasks.forEach(appTask ->
+                            Optional.ofNullable(appTask.getTaskInfo().topActivity)
+                                    .ifPresent(componentName -> isFB = componentName.getPackageName()
+                                            .equals("com.facebook.katana")));
+                }
             } catch (NullPointerException e) {
                 XposedBridge.log(e);
             }
