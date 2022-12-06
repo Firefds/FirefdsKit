@@ -226,4 +226,6 @@
     <string name="no_permissions">Firefds Kit is active, but some permissions were not granted.\nSome features will not work correctly.\nPlease check your Magisk installation (sepolicy not granted).</string>
     <string name="enable_dual_sim_sd_card_summary">Enable sd card while using dual sim cards</string>
     <string name="enable_dual_sim_sd_card_title">SD Card With Dual Sim</string>
+    <string name="enable_quick_reply_on_secure_lockscreen_summary">Enable quick reply while on a secure lockscreen</string>
+    <string name="enable_quick_reply_on_secure_lockscreen_title">Quick Reply on Secure Lockscreen</string>
 </resources>

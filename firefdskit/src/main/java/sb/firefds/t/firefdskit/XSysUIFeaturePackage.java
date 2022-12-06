@@ -24,6 +24,7 @@ import static sb.firefds.t.firefdskit.utils.Preferences.PREF_DISABLE_SYNC_DIALOG
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_DISABLE_VOLUME_CONTROL_SOUND;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_DISABLE_VOLUME_WARNING;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_ENABLE_BIOMETRICS_UNLOCK;
+import static sb.firefds.t.firefdskit.utils.Preferences.PREF_ENABLE_QUICK_REPLY_ON_SECURE_LOCKSCREEN;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_HIDE_CHARGING_NOTIFICATION;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_MAX_SUPPORTED_USERS;
 import static sb.firefds.t.firefdskit.utils.Preferences.PREF_SHOW_AM_PM;
@@ -72,6 +73,8 @@ public class XSysUIFeaturePackage {
     private static final String SOUND_POOL_WRAPPER = SYSTEM_UI + ".volume.util.SoundPoolWrapper";
     private static final String SOUND_PATH_FINDER = SYSTEM_UI + ".power.sound.SoundPathFinder";
     private static final String SYNC_TILE = SYSTEM_UI + ".qs.tiles.SyncTile";
+    private static final String NOTIFICATION_LOCKSCREEN_USER_MANAGER_IMPL = SYSTEM_UI + ".statusbar" +
+            ".NotificationLockscreenUserManagerImpl";
 
     @SuppressLint("StaticFieldLeak")
     private static TextView mClock;
@@ -303,6 +306,26 @@ public class XSysUIFeaturePackage {
                         "getBatteryCautionPath",
                         XC_MethodReplacement.returnConstant("system/media/audio/ui/TW_Battery_caution-disabled.ogg")
                 );
+            }
+        } catch (Throwable e) {
+            XposedBridge.log(e);
+        }
+
+        try {
+            if (prefs.getBoolean(PREF_ENABLE_QUICK_REPLY_ON_SECURE_LOCKSCREEN, false)) {
+                Class<?> notificationLockscreenUserManagerImplClass =
+                        XposedHelpers.findClass(NOTIFICATION_LOCKSCREEN_USER_MANAGER_IMPL, classLoader);
+                Method setLockscreenAllowRemoteInput =
+                        XposedHelpers.findMethodBestMatch(notificationLockscreenUserManagerImplClass,
+                                "setLockscreenAllowRemoteInput",
+                                boolean.class);
+                XposedBridge.hookMethod(setLockscreenAllowRemoteInput,
+                        new XC_MethodHook() {
+                            @Override
+                            protected void beforeHookedMethod(MethodHookParam param) {
+                                param.args[0] = true;
+                            }
+                        });
             }
         } catch (Throwable e) {
             XposedBridge.log(e);

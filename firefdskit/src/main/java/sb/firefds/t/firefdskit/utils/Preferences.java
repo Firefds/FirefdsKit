@@ -39,6 +39,7 @@ public class Preferences {
     public static final String PREF_CARRIER_SIZE = "carrierSize";
 
     public static final String PREF_ENABLE_BIOMETRICS_UNLOCK = "enableBiometricsUnlock";
+    public static final String PREF_ENABLE_QUICK_REPLY_ON_SECURE_LOCKSCREEN = "enableQuickReplyOnSecureLockscreen";
 
     public static final String PREF_DISABLE_VOLUME_WARNING = "disableLoudVolumeWarning";
     public static final String PREF_DISABLE_VOLUME_CONTROL_SOUND = "disableVolumeControlSound";

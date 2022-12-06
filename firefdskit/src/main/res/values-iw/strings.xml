@@ -223,4 +223,6 @@
     <string name="no_permissions">מודל Firefds Kit פועל אך לא קיבל את כל ההרשאות.\nחלק מהאפשרויות לא יעבדו כמו שצריך.\nיש לבדוק את התקנת Magisk</string>
     <string name="enable_dual_sim_sd_card_summary">הפעלת כרטיס זיכרון חיצוני בזמן שימוש ב-2 כרטיסי סים</string>
     <string name="enable_dual_sim_sd_card_title">כרטיס זיכרון עם 2 סים</string>
+    <string name="enable_quick_reply_on_secure_lockscreen_summary">הפעלת תשובה מהירה במסך נעילה מאובטח</string>
+    <string name="enable_quick_reply_on_secure_lockscreen_title">תשובה מהירה במסך נעילה מאובטח</string>
 </resources>
