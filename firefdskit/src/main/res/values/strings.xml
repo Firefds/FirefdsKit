@@ -226,4 +226,6 @@
     <string name="disable_power_button_quick_panel_summary_on">Quick panel power button replaced with search button</string>
     <string name="disable_power_button_quick_panel_summary_off">Quick panel power button enabled</string>
     <string name="no_permissions">Firefds Kit is active, but some permissions were not granted.\nSome features will not work correctly.\nPlease check your Magisk installation (sepolicy not granted).</string>
+    <string name="doubleTapLockScreen_summary">enable double tap on the lockscreen (keyguard)</string>
+    <string name="doubleTapLockScreen_title">double tap on the lockscreen</string>
 </resources>
