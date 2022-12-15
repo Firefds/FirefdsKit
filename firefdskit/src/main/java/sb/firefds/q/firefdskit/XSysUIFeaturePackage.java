@@ -37,6 +37,9 @@ import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
+import sb.firefds.q.firefdskit.features.Feature;
+import sb.firefds.q.firefdskit.features.Utils;
+import sb.firefds.q.firefdskit.utils.Preferences;
 
 import static sb.firefds.q.firefdskit.utils.Packages.SYSTEM_UI;
 import static sb.firefds.q.firefdskit.utils.Preferences.PREF_CLOCK_DATE_ON_RIGHT;
@@ -80,12 +83,20 @@ public class XSysUIFeaturePackage {
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
+        Utils utils = new Utils();
         try {
             if (prefs.getBoolean(PREF_STATUSBAR_DOUBLE_TAP, false)) {
                 XposedHelpers.findAndHookMethod(CUSTOM_SDK_MONITOR,
                         classLoader,
                         "isStatusBarDoubleTapEnabled",
                         XC_MethodReplacement.returnConstant(Boolean.TRUE));
+            }
+
+           if (prefs.getBoolean(Preferences.PREF_LOCKSCREEN_DOUBLE_TAP, false)) {
+                Feature feature = FeatureFactory.createFeature(Preferences.PREF_LOCKSCREEN_DOUBLE_TAP);
+                if (feature != null) {
+                    feature.inject(classLoader, prefs, utils);
+                }
             }
 
             if (prefs.getBoolean(PREF_DISABLE_EYE_STRAIN_DIALOG, false)) {

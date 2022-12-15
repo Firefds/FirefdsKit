@@ -19,6 +19,7 @@ public class Preferences {
     public static final String PREF_FIRST_LAUNCH = "isFirefdsKitFirstLaunch";
 
     public static final String PREF_STATUSBAR_DOUBLE_TAP = "isStatusBarDoubleTapEnabled";
+    public static final String PREF_LOCKSCREEN_DOUBLE_TAP = "doubleTapLockScreen";
     public static final String PREF_ENABLE_SAMSUNG_BLUR = "enableSamsungBlur";
     public static final String PREF_HIDE_USB_NOTIFICATION = "hideUsbNotification";
     public static final String PREF_HIDE_CHARGING_NOTIFICATION = "hideChargingNotification";

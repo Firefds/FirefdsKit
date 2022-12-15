@@ -1,3 +1,8 @@
+#### Fork from evermind-zz
+added goto sleep on double tap on lockscreen
+
+#### original readme content below:
+
 # Firefds Kit [Q]
 
 Xposed, EdXposed 4 and EdXposed 5 module for Samsung Q devices.
