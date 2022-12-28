@@ -1,9 +1,11 @@
 # Firefds Kit [Tiramisu]
 
-Xposed module for Samsung S (Android 13) devices.
+Xposed module for Samsung Tiramisu (Android 13) devices.
 
 ## Features
+
 The module has the following features:
+
 - Fake system status to Official
 - Custom advanced power menu options:
   - Power off
@@ -13,7 +15,7 @@ The module has the following features:
   - Download
   - Data mode switch
   - Screenshot
-  - Switch User (when multi user is enabled)
+  - Switch User (when multi-user is enabled)
   - SystemUI restart
   - Flashlight
   - Screen Recorder (requires Samsung screen recorder app installed)
@@ -27,7 +29,7 @@ The module has the following features:
 - Hide persistent charging notification
 - Enable block phrases in messages app settings
 - Enable native blur on notification panel pull down
-- Enable multi user toggle
+- Enable multi-user toggle
 - Set max user value selector
 - Show seconds in status bar clock toggle
 - Show clock date on right of clock toggle
@@ -40,7 +42,7 @@ The module has the following features:
 - Hide NFC icon
 - Disable Bluetooth toggle popup
 - Disable sync toggle popup
-- Disable high level brightness poup
+- Disable high-level brightness poup
 - Hide carrier label
 - Carrier label size selection
 - Disable loud volume warning
@@ -59,9 +61,11 @@ The module has the following features:
 - Disable secure flag
 
 ## Attention
+
 **THERE COULD BE BUGS/CRASHES/BOOTLOOPS**, but it's pretty stable.
 Please upload any xposed logs when you encounter any issue. I can't help you without the logs!
 Confirmed working on:
+
 - Galaxy S21
 - Galaxy S20
 - Galaxy S10
@@ -69,29 +73,34 @@ Confirmed working on:
 ## Installation
 
 To install this module you need the following apps and modules installed on your device:
+
 1. Magisk v24.0 and above - https://github.com/topjohnwu/Magisk/releases
 
 ### Option 1 - Zygisk
+
 1. LSPosed Magisk Zygisk Release module v1.7.2 and above - https://github.com/LSPosed/LSPosed/releases
 
 ### Option 2 - Riru
+
 1. LSPosed Magisk module v1.6.0 and above - https://github.com/LSPosed/LSPosed/releases
 2. Riru Magisk module v25.0.0 and above - https://github.com/RikkaApps/Riru/releases
 
-
 ## Known Issues
 
-- Some features are removed on purpose. Since GravityBox has been working on Samsung devices for a while without much issues, I only implemented features that need special Samsung coding. You can check You can check GravityBox for R, when it will become available, for additional features.
+- Some features are removed on purpose. Since GravityBox has been working on Samsung devices for a while without much issues, I only implemented features that need special Samsung coding. You can check GravityBox for R, when it will become available, for additional features.
 
 ## External Libraries
 
 The project uses the following libraries:
+
 1. https://github.com/rovo89/XposedBridge
 2. https://github.com/rovo89/XposedMods/tree/master/XposedLibrary
 3. Samsung framework libraries which are used for compile only
 
 ## Credits
+
 This module wouldn't have been here without the following people:
+
 - [RikkaW](https://github.com/RikkaApps) - Creator of Riru Magisk module, which provides a way to inject codes into zygote process
 - [rovo89](https://github.com/rovo89) - Creator of the original Xposed framework APIs
 - [solohsu](https://github.com/solohsu) and [MlgmXyysd](https://github.com/MlgmXyysd) - Creators of the EdXposed Magisk module and Installer that made all of this possible
@@ -99,10 +108,11 @@ This module wouldn't have been here without the following people:
 - [Wanam](https://github.com/wanam) - Creator of the original XTouchWiz module, which this module is based on.
 - [topjohnwu](https://github.com/topjohnwu) - Creator of Magisk
 - [AbrahamGC](https://forum.xda-developers.com/member.php?u=7393522) - [For the Extended Power Menu - Pie - Odex framework Smali guide](https://forum.xda-developers.com/showpost.php?p=78910083&postcount=944)
-- Big thank you to [m8980](https://forum.xda-developers.com/m/m8980.1614889) and [ianmacd](https://forum.xda-developers.com/m/ianmacd.7187684) for testing countless versions and sending xposed logs
+- Big thank you to [m8980](https://forum.xda-developers.com/m/m8980.1614889) and [ianmacd](https://forum.xda-developers.com/m/ianmacd.7187684) for testing countless versions and sending Xposed logs
 
-This is a moded version of Wanam's XTouchWiz:
+This is a modded version of Wanam's XTouchWiz:
 https://github.com/wanam/XTouchWiz
 
 ## Telegram
-Announcements and pre release versions - https://t.me/firefdskit
+
+Announcements and pre-release versions - https://t.me/firefdskit
