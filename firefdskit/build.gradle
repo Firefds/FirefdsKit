@@ -4,20 +4,20 @@ android {
     compileSdk 33
     buildToolsVersion '33.0.0'
 
-    signingConfigs {
-        release {
-            storeFile file(STORE_FILE)
-            storePassword STORE_PASSWORD
-            keyAlias KEY_ALIAS
-            keyPassword KEY_PASSWORD
-        }
-    }
+    //signingConfigs {
+    //    release {
+    //        storeFile file(STORE_FILE)
+    //        storePassword STORE_PASSWORD
+    //        keyAlias KEY_ALIAS
+    //        keyPassword KEY_PASSWORD
+    //    }
+    //}
     defaultConfig {
         applicationId 'sb.firefds.t.firefdskit'
         minSdkVersion 33
         targetSdkVersion 33
-        versionCode 13001
-        versionName "13.0.0.1-ALPHA-1"
+        versionCode 13002
+        versionName "13.0.0.1-ALPHA-2"
     }
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
@@ -28,7 +28,7 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            //signingConfig signingConfigs.release
         }
         debug {
         }
@@ -48,7 +48,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.preference:preference:1.2.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.appcompat:appcompat:1.6.0-rc01'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.7.0'
     compileOnly 'de.robv.android.xposed:api:82'
