@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Firefds Kit [Tiramisu]</string>
+    <string name="app_name">Firefds Kit [UDC]</string>
     <string name="samsung_rom_warning">يحتاج إلى ورم سامسونغ</string>
     <string name="samsung_rom_warning_msg">يبدو أن الروم الحالي ليس بروم سامسونغ\n.AOSPو CM هذا التطبيق لا يدعم رومات</string>
     <string name="disable_loud_volume_enabled">تحذير لصوت عال مفعّل</string>

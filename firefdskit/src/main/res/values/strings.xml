@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Firefds Kit [Tiramisu]</string>
+    <string name="app_name">Firefds Kit [UDC]</string>
     <string name="samsung_rom_warning">Samsung ROM required</string>
     <string name="samsung_rom_warning_msg">Your ROM doesn\'t seem to be a Samsung ROM\nThis application doesn\'t support CM or AOSP ROMs.</string>
     <string name="disable_loud_volume_enabled">Loud volume warning is enabled</string>
@@ -61,7 +61,7 @@
     <string name="recommended_settings">Recommended settings</string>
     <string name="set_recommended_settings">Apply recommended settings?</string>
     <string name="recommended_restored">Recommended settings restored</string>
-    <string name="firefds_xposed_disclaimer">This application has been tested on the Samsung Galaxy S20 Exynos with stock firmware. some features may not work properly on other device models\n\nI do NOT take any responsibility of any damage caused by this application, you are using it at your own risk!</string>
+    <string name="firefds_xposed_disclaimer">This application has been tested on the Samsung Galaxy S21 FE Exynos with stock firmware. some features may not work properly on other device models\n\nI do NOT take any responsibility of any damage caused by this application, you are using it at your own risk!</string>
     <string name="nfc_behavior">NFC Behavior</string>
     <string name="unlocked">When unlocked (default)</string>
     <string name="screen_on">When screen on and locked</string>
@@ -228,4 +228,6 @@
     <string name="enable_dual_sim_sd_card_title">SD Card With Dual Sim</string>
     <string name="enable_quick_reply_on_secure_lockscreen_summary">Enable quick reply while on a secure lockscreen</string>
     <string name="enable_quick_reply_on_secure_lockscreen_title">Quick Reply on Secure Lockscreen</string>
+    <string name="skip_tracks_with_volume_keys_summary">Skip tracks with volume keys</string>
+    <string name="skip_tracks_with_volume_keys_title">Skip Tracks with Volume Keys</string>
 </resources>

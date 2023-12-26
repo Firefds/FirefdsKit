@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Firefds Kit [Tiramisu]</string>
+    <string name="app_name">Firefds Kit [UDC]</string>
     <string name="samsung_rom_warning">Vyžaduje se Samsung ROM</string>
     <string name="samsung_rom_warning_msg">Vše ROM nevypadá jako Samsung ROM\nTato aplikace nepodporuje CM nebo AOSP ROM.</string>
     <string name="disable_loud_volume_enabled">Upozornění na vysokou hlasitost je povoleno</string>
@@ -61,7 +61,7 @@
     <string name="recommended_settings">Doporučená nastavení</string>
     <string name="set_recommended_settings">Použít doporučená nastavení?</string>
     <string name="recommended_restored">Doporučená nastavení obnovena</string>
-    <string name="firefds_xposed_disclaimer">This application has been tested on the Samsung Galaxy S10 Exynos with stock firmware. some features may not work properly on other device models\n\nI do NOT take any responsibility of any damage caused by this application, you are using it at your own risk!</string>
+    <string name="firefds_xposed_disclaimer">This application has been tested on the Samsung Galaxy S21 FE Exynos with stock firmware. some features may not work properly on other device models\n\nI do NOT take any responsibility of any damage caused by this application, you are using it at your own risk!</string>
     <string name="nfc_behavior">Správání NFC</string>
     <string name="unlocked">Je-li odblokováno (předvoleno)</string>
     <string name="screen_on">Je-li zamčeno a obrazovka zapnuta</string>

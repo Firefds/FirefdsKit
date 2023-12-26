@@ -16,7 +16,7 @@
             android:key="powerMenuSettings"
             android:summary="@string/power_menu_options_summary"
             android:title="@string/power_menu_options_title"
-            app:fragment="sb.firefds.t.firefdskit.fragments.PowerMenuSettingsFragment"
+            app:fragment="sb.firefds.u.firefdskit.fragments.PowerMenuSettingsFragment"
             app:iconSpaceReserved="false" />
         <SwitchPreferenceCompat
             android:defaultValue="false"
@@ -68,7 +68,7 @@
         <androidx.preference.PreferenceScreen
             android:key="screenTimeoutSettings"
             android:title="@string/screen_timeout_title"
-            app:fragment="sb.firefds.t.firefdskit.fragments.ScreenTimeoutSettingsFragment"
+            app:fragment="sb.firefds.u.firefdskit.fragments.ScreenTimeoutSettingsFragment"
             app:iconSpaceReserved="false" />
         <androidx.preference.ListPreference
             android:defaultValue="0"

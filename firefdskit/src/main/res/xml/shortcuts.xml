@@ -8,8 +8,8 @@
         android:shortcutShortLabel="@string/statusbar">
         <intent
             android:action="STATUSBAR"
-            android:targetClass="sb.firefds.t.firefdskit.FirefdsKitActivity"
-            android:targetPackage="sb.firefds.t.firefdskit" />
+            android:targetClass="sb.firefds.u.firefdskit.FirefdsKitActivity"
+            android:targetPackage="sb.firefds.u.firefdskit" />
     </shortcut>
     <shortcut
         android:enabled="true"
@@ -19,8 +19,8 @@
         android:shortcutShortLabel="@string/system">
         <intent
             android:action="SYSTEM"
-            android:targetClass="sb.firefds.t.firefdskit.FirefdsKitActivity"
-            android:targetPackage="sb.firefds.t.firefdskit" />
+            android:targetClass="sb.firefds.u.firefdskit.FirefdsKitActivity"
+            android:targetPackage="sb.firefds.u.firefdskit" />
     </shortcut>
     <shortcut
         android:enabled="true"
@@ -30,8 +30,8 @@
         android:shortcutShortLabel="@string/phone">
         <intent
             android:action="PHONE"
-            android:targetClass="sb.firefds.t.firefdskit.FirefdsKitActivity"
-            android:targetPackage="sb.firefds.t.firefdskit" />
+            android:targetClass="sb.firefds.u.firefdskit.FirefdsKitActivity"
+            android:targetPackage="sb.firefds.u.firefdskit" />
     </shortcut>
     <shortcut
         android:enabled="true"
@@ -41,7 +41,7 @@
         android:shortcutShortLabel="@string/security">
         <intent
             android:action="SECURITY"
-            android:targetClass="sb.firefds.t.firefdskit.FirefdsKitActivity"
-            android:targetPackage="sb.firefds.t.firefdskit" />
+            android:targetClass="sb.firefds.u.firefdskit.FirefdsKitActivity"
+            android:targetPackage="sb.firefds.u.firefdskit" />
     </shortcut>
 </shortcuts>

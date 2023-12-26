@@ -1,6 +1,6 @@
-# Firefds Kit [Tiramisu]
+# Firefds Kit [UDC]
 
-Xposed module for Samsung S (Android 13) devices.
+Xposed module for Samsung U (Android 14) devices.
 
 ## Features
 The module has the following features:
