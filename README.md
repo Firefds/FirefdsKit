@@ -20,6 +20,7 @@ The module has the following features:
 - Disable restart confirmation
 - Enable call recording
 - Replace add call button instead of call recording
+- Skip tracks with volume buttons
 - Enable call recording from menu
 - Auto call recording
 - Hide VoLTE icon in status bar
@@ -62,26 +63,26 @@ The module has the following features:
 **THERE COULD BE BUGS/CRASHES/BOOTLOOPS**, but it's pretty stable.
 Please upload any xposed logs when you encounter any issue. I can't help you without the logs!
 Confirmed working on:
-- Galaxy S21
-- Galaxy S20
-- Galaxy S10
+- Galaxy S21 FE
 
 ## Installation
 
 To install this module you need the following apps and modules installed on your device:
-1. Magisk v24.0 and above - https://github.com/topjohnwu/Magisk/releases
+1. Magisk v26.0 and above - https://github.com/topjohnwu/Magisk/releases
 
-### Option 1 - Zygisk
-1. LSPosed Magisk Zygisk Release module v1.7.2 and above - https://github.com/LSPosed/LSPosed/releases
+### Option 1 - Zygisk - Recommended
+1. LSPosed Magisk Zygisk Release module v1.9.2 and above - https://github.com/LSPosed/LSPosed/releases
 
 ### Option 2 - Riru
-1. LSPosed Magisk module v1.6.0 and above - https://github.com/LSPosed/LSPosed/releases
-2. Riru Magisk module v25.0.0 and above - https://github.com/RikkaApps/Riru/releases
+1. LSPosed Magisk module v1.9.2 and above - https://github.com/LSPosed/LSPosed/releases
+2. Riru Magisk module v26.1.7 and above - https://github.com/RikkaApps/Riru/releases
 
 
 ## Known Issues
 
 - Some features are removed on purpose. Since GravityBox has been working on Samsung devices for a while without much issues, I only implemented features that need special Samsung coding. You can check You can check GravityBox for R, when it will become available, for additional features.
+- Double tap for sleep not working.
+- Data icon symbol selection not working.
 
 ## External Libraries
 
@@ -92,6 +93,7 @@ The project uses the following libraries:
 
 ## Credits
 This module wouldn't have been here without the following people:
+- The people behind [LSPosed](https://github.com/LSPosed/LSPosed) for their amazing work!
 - [RikkaW](https://github.com/RikkaApps) - Creator of Riru Magisk module, which provides a way to inject codes into zygote process
 - [rovo89](https://github.com/rovo89) - Creator of the original Xposed framework APIs
 - [solohsu](https://github.com/solohsu) and [MlgmXyysd](https://github.com/MlgmXyysd) - Creators of the EdXposed Magisk module and Installer that made all of this possible
