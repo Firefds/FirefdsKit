@@ -64,7 +64,6 @@ public class XAndroidPackage {
     private static final String DEVICE_POLICY_MANAGER_SERVICE = "com.android.server.devicepolicy" +
             ".DevicePolicyManagerService";
     public static final String PHONE_WINDOW_MANAGER = "com.android.server.policy.PhoneWindowManager";
-    public static final String I_WINDOW_MANAGER = "android.view.IWindowManager";
     public static final String WINDOW_MANAGER_FUNCS = "com.android.server.policy.WindowManagerPolicy" +
             ".WindowManagerFuncs";
     @SuppressLint("StaticFieldLeak")
@@ -222,7 +221,6 @@ public class XAndroidPackage {
                         classLoader,
                         "init",
                         Context.class,
-                        I_WINDOW_MANAGER,
                         WINDOW_MANAGER_FUNCS,
                         new XC_MethodHook() {
                             @Override

@@ -43,7 +43,6 @@ public class XSmartCapturePackage {
                         classLoader,
                         "onCallStateChanged",
                         int.class,
-                        String.class,
                         new XC_MethodHook() {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) {

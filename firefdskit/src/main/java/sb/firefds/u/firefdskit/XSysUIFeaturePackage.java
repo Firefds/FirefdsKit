@@ -70,7 +70,7 @@ public class XSysUIFeaturePackage {
     private static final String CHARGING_NOTIFICATION = SYSTEM_UI + ".power.notification.ChargingNotification";
     private static final String SETTINGS_HELPER = SYSTEM_UI + ".util.SettingsHelper";
     private static final String DUMP_MANAGER = SYSTEM_UI + ".dump.DumpManager";
-    private static final String SOUND_POOL_WRAPPER = SYSTEM_UI + ".volume.util.SoundPoolWrapper";
+    private static final String SOUND_POOL_WRAPPER$MAKE_SOUND$1 = SYSTEM_UI + ".volume.util.SoundPoolWrapper$makeSound$1";
     private static final String SOUND_PATH_FINDER = SYSTEM_UI + ".power.sound.SoundPathFinder";
     private static final String SYNC_TILE = SYSTEM_UI + ".qs.tiles.SyncTile.SyncDetailAdapter";
     private static final String NOTIFICATION_LOCKSCREEN_USER_MANAGER_IMPL = SYSTEM_UI + ".statusbar" +
@@ -103,11 +103,12 @@ public class XSysUIFeaturePackage {
                 Class<?> dumpManager = XposedHelpers.findClass(DUMP_MANAGER, classLoader);
                 XposedHelpers.findAndHookMethod(SHOW_USING_HIGH_BRIGHTNESS_DIALOG,
                         classLoader,
-                        "showUsingHighBrightnessDialog",
+                        "updateUsingHighBrightnessDialog",
+                        boolean.class,
                         new XC_MethodHook() {
                             @Override
                             protected void beforeHookedMethod(MethodHookParam param) {
-                                param.setResult(null);
+                                param.args[0] = false;
                             }
                         });
                 XposedHelpers.findAndHookConstructor(SETTINGS_HELPER,
@@ -282,9 +283,9 @@ public class XSysUIFeaturePackage {
         try {
             if (prefs.getBoolean(PREF_DISABLE_VOLUME_CONTROL_SOUND, false)) {
                 try {
-                    XposedHelpers.findAndHookMethod(SOUND_POOL_WRAPPER,
+                    XposedHelpers.findAndHookMethod(SOUND_POOL_WRAPPER$MAKE_SOUND$1,
                             classLoader,
-                            "makeSound",
+                            "run",
                             new XC_MethodHook() {
                                 @Override
                                 protected void beforeHookedMethod(MethodHookParam param) {
@@ -303,7 +304,9 @@ public class XSysUIFeaturePackage {
             if (prefs.getBoolean(PREF_DISABLE_LOW_BATTERY_SOUND, false)) {
                 XposedHelpers.findAndHookMethod(SOUND_PATH_FINDER,
                         classLoader,
-                        "getBatteryCautionPath",
+                        "getSystemSoundPath",
+                        String.class,
+                        String.class,
                         XC_MethodReplacement.returnConstant("system/media/audio/ui/TW_Battery_caution-disabled.ogg")
                 );
             }
@@ -317,13 +320,12 @@ public class XSysUIFeaturePackage {
                         XposedHelpers.findClass(NOTIFICATION_LOCKSCREEN_USER_MANAGER_IMPL, classLoader);
                 Method setLockscreenAllowRemoteInput =
                         XposedHelpers.findMethodBestMatch(notificationLockscreenUserManagerImplClass,
-                                "setLockscreenAllowRemoteInput",
-                                boolean.class);
+                                "updateLockscreenNotificationSetting");
                 XposedBridge.hookMethod(setLockscreenAllowRemoteInput,
                         new XC_MethodHook() {
                             @Override
-                            protected void beforeHookedMethod(MethodHookParam param) {
-                                param.args[0] = true;
+                            protected void afterHookedMethod(MethodHookParam param) {
+                                XposedHelpers.setObjectField(param.thisObject, "mAllowLockscreenRemoteInput", true);
                             }
                         });
             }

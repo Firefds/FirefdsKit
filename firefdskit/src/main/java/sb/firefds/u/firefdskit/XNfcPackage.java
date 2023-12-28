@@ -15,10 +15,10 @@
 package sb.firefds.u.firefdskit;
 
 import static sb.firefds.u.firefdskit.utils.Packages.NFC;
-import static sb.firefds.u.firefdskit.utils.Preferences.PREF_HIDE_NFC_ICON;
 import static sb.firefds.u.firefdskit.utils.Preferences.PREF_NFC_BEHAVIOR;
 
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
@@ -31,22 +31,20 @@ public class XNfcPackage {
     private static String behavior;
 
     private static final String NFC_SERVICE = NFC + ".NfcService";
+    private static final String NFC_ICON = "com.samsung.android.nfc.ui.NfcIcon";
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
         try {
-            XposedHelpers.findAndHookMethod(NFC_SERVICE,
+            XposedHelpers.findAndHookMethod(NFC_ICON,
                     classLoader,
                     "showIcon",
-                    boolean.class,
-                    new XC_MethodHook() {
+                    new XC_MethodReplacement() {
                         @Override
-                        protected void beforeHookedMethod(MethodHookParam param) {
-
-                            if ((Boolean) XposedHelpers.callMethod(param.thisObject, "isNfcEnabled")) {
-                                prefs.reload();
-                                param.args[0] = !prefs.getBoolean(PREF_HIDE_NFC_ICON, false);
-                            }
+                        protected Object replaceHookedMethod(MethodHookParam param) {
+                            Object mStatusBarManager = XposedHelpers.getObjectField(param.thisObject, "mStatusBarManager");
+                            XposedHelpers.callMethod(mStatusBarManager, "removeIcon", "nfc");
+                            return null;
                         }
                     });
         } catch (Throwable e) {
