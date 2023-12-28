@@ -70,16 +70,6 @@ public class XSmartCapturePackage {
             try {
                 XposedHelpers.findAndHookMethod(SCREEN_RECORDER_UTILS,
                         classLoader,
-                        "isDuringCallState",
-                        Context.class,
-                        XC_MethodReplacement.returnConstant(Boolean.FALSE));
-            } catch (Exception e) {
-                XposedBridge.log(e);
-            }
-
-            try {
-                XposedHelpers.findAndHookMethod(SCREEN_RECORDER_UTILS,
-                        classLoader,
                         "isDuringCsCallState",
                         Context.class,
                         XC_MethodReplacement.returnConstant(Boolean.FALSE));

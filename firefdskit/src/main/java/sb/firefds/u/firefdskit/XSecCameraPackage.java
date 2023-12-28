@@ -24,8 +24,8 @@ import de.robv.android.xposed.XposedHelpers;
 
 public class XSecCameraPackage {
 
-    private static final String FEATURE = "m3.Feature";
-    private static final String BOOLEAN_TAG = "m3.a";
+    private static final String FEATURE = "d4.c";
+    private static final String BOOLEAN_TAG = "d4.b";
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
