@@ -125,7 +125,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         OPTIONS_ITEMS.put(R.id.recommended_settings, SHOW_RECOMMENDED_SETTINGS_DIALOG);
         OPTIONS_ITEMS.put(R.id.action_save, SHOW_SAVE_DIALOG);
         OPTIONS_ITEMS.put(R.id.action_restore, SHOW_RESTORE_DIALOG);
-        OPTIONS_ITEMS.put(R.id.home, ON_BACK_PRESSED);
+        OPTIONS_ITEMS.put(androidx.appcompat.R.id.home, ON_BACK_PRESSED);
         SHORTCUTS_ITEMS.put(SHORTCUT_STATUSBAR, SHORTCUT_STATUSBAR_ITEM);
         SHORTCUTS_ITEMS.put(SHORTCUT_SYSTEM, SHORTCUT_SYSTEM_ITEM);
         SHORTCUTS_ITEMS.put(SHORTCUT_PHONE, SHORTCUT_PHONE_ITEM);
