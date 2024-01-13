@@ -74,18 +74,17 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.navigation.NavigationView;
-import com.samsung.android.converter.BuildConfig;
 import com.samsung.android.feature.SemCscFeature;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import sb.firefds.u.firefdskit.dialogs.CreditDialog;
@@ -118,7 +117,6 @@ public class FirefdsKitActivity extends AppCompatActivity
     private ActionBarDrawerToggle toggle;
     private ActionBarDrawerToggle menuToggle;
     private MenuItem selectedMenuItem;
-    private static String mPreferenceDir;
 
     {
         OPTIONS_ITEMS.put(R.id.action_credits, SHOW_CREDIT_DIALOG);
@@ -132,12 +130,14 @@ public class FirefdsKitActivity extends AppCompatActivity
         SHORTCUTS_ITEMS.put(SHORTCUT_SECURITY, SHORTCUT_SECURITY_ITEM);
     }
 
+    @SuppressLint("WorldReadableFiles")
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         appContext = isDeviceEncrypted() ? createDeviceProtectedStorageContext() : this;
-        sharedPreferences = appContext.getSharedPreferences(PREFS, 0);
+        sharedPreferences = appContext.getSharedPreferences(PREFS, MODE_WORLD_READABLE);
         activity = this;
 
         List<String> permissionDeniedList = checkPermissions();
@@ -199,8 +199,6 @@ public class FirefdsKitActivity extends AppCompatActivity
             editor.putInt(PREF_SCREEN_TIMEOUT_MINUTES, min).apply();
             editor.putInt(PREF_SCREEN_TIMEOUT_SECONDS, seconds).apply();
         }
-
-        fixAppPermissions(appContext);
 
         if (!XposedChecker.isActive()) {
             setCardStatus(R.drawable.ic_error,
@@ -268,6 +266,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         return permissionDeniedList;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onBackPressed() {
         getVisibleFragment().ifPresent(fragment -> {
@@ -287,7 +286,7 @@ public class FirefdsKitActivity extends AppCompatActivity
             }
         });
 
-        if (!getVisibleFragment().isPresent()) {
+        if (getVisibleFragment().isEmpty()) {
             this.finish();
         }
     }
@@ -303,17 +302,19 @@ public class FirefdsKitActivity extends AppCompatActivity
         RebootNotification.notify(activity, 999, false);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onRestoreBackup(final File backup) {
         new RestoreBackupTask(backup).execute();
     }
 
     @Override
-    public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
+    public boolean onPreferenceStartFragment(@NonNull PreferenceFragmentCompat caller,
+                                             @NonNull Preference pref) {
         final Bundle args = pref.getExtras();
         final Fragment fragment = getSupportFragmentManager().getFragmentFactory().instantiate(
                 getClassLoader(),
-                pref.getFragment());
+                Objects.requireNonNull(pref.getFragment()));
         fragment.setArguments(args);
         Optional.of(this)
                 .map(AppCompatActivity::getSupportActionBar)
@@ -361,10 +362,12 @@ public class FirefdsKitActivity extends AppCompatActivity
         return true;
     }
 
+    @SuppressLint("WorldReadableFiles")
+    @SuppressWarnings("deprecation")
     @Override
     protected void attachBaseContext(Context newBase) {
         Context tempContext = isDeviceEncrypted() ? newBase.createDeviceProtectedStorageContext() : newBase;
-        Context context = checkForceEnglish(newBase, tempContext.getSharedPreferences(PREFS, MODE_PRIVATE));
+        Context context = checkForceEnglish(newBase, tempContext.getSharedPreferences(PREFS, MODE_WORLD_READABLE));
         super.attachBaseContext(context);
     }
 
@@ -455,35 +458,6 @@ public class FirefdsKitActivity extends AppCompatActivity
         statusText.setTextColor(Color.WHITE);
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    @SuppressLint("SetWorldReadable")
-    public static void fixPermissions() {
-        File sharedPrefsFolder = new File(getPreferenceDir());
-        if (sharedPrefsFolder.exists()) {
-            sharedPrefsFolder.setExecutable(true, false);
-            sharedPrefsFolder.setReadable(true, false);
-            File f = new File(String.format("%s/%s_preferences.xml",
-                    sharedPrefsFolder.getAbsolutePath(),
-                    BuildConfig.APPLICATION_ID));
-            if (f.exists()) {
-                f.setReadable(true, false);
-                f.setExecutable(true, false);
-            }
-        }
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    @SuppressLint("SetWorldReadable")
-    private static void fixAppPermissions(Context context) {
-        Optional.of(context)
-                .map(Context::getFilesDir)
-                .map(File::getParentFile)
-                .ifPresent(folder -> {
-                    folder.setExecutable(true, false);
-                    folder.setReadable(true, false);
-                });
-    }
-
     private static void setDefaultPreferences(boolean forceDefault) {
         upgradePreferences();
         PreferenceManager.setDefaultValues(appContext, R.xml.lockscreen_settings, true);
@@ -516,7 +490,6 @@ public class FirefdsKitActivity extends AppCompatActivity
                     SemCscFeature.getInstance()
                             .getBoolean(FORCE_CONNECT_MMS)).apply();
         }
-        fixPermissions();
     }
 
     private static void upgradePreferences() {
@@ -539,24 +512,6 @@ public class FirefdsKitActivity extends AppCompatActivity
             String uid = String.valueOf(preferences.getInt(PREF_NFC_BEHAVIOR, 0));
             preferences.edit().putString(PREF_NFC_BEHAVIOR, uid).apply();
         }
-    }
-
-    public static String getPreferenceDir() {
-        if (mPreferenceDir == null) {
-            try {
-                SharedPreferences prefs = appContext.getSharedPreferences("dummy", Context.MODE_PRIVATE);
-                prefs.edit().putBoolean("dummy", false).apply();
-                Field f = prefs.getClass().getDeclaredField("mFile");
-                f.setAccessible(true);
-                mPreferenceDir = new File(((File) f.get(prefs)).getParent()).getAbsolutePath();
-                log("Preference folder: " + mPreferenceDir);
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                log("Could not determine preference folder path. Returning default.");
-                e.printStackTrace();
-                mPreferenceDir = appContext.getDataDir() + "/shared_prefs";
-            }
-        }
-        return mPreferenceDir;
     }
 
     @SuppressWarnings("deprecation")
@@ -601,7 +556,6 @@ public class FirefdsKitActivity extends AppCompatActivity
                     prefEdit.putString((String) key, ((String) value));
             });
             prefEdit.apply();
-            fixPermissions();
 
             SystemClock.sleep(1500);
             return null;

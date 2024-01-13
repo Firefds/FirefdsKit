@@ -35,6 +35,7 @@ public class RestartSystemUiActionViewModel extends FirefdsKitActionViewModel {
         setDrawableIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.tw_ic_do_restart_ui_stock, null));
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onPress() {
         if (!getGlobalActions().isActionConfirming()) {

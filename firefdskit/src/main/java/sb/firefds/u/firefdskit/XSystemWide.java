@@ -177,6 +177,7 @@ public class XSystemWide {
         return new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) {
+                prefs.reload();
                 if (param.args[0].equals(SUPPORT_REAL_TIME_NETWORK_SPEED)) {
                     param.setResult(prefs.getBoolean(PREF_SHOW_NETWORK_SPEED_MENU, false));
                 }

@@ -16,6 +16,8 @@ package sb.firefds.u.firefdskit;
 
 import static sb.firefds.u.firefdskit.utils.Packages.FIREFDSKIT;
 
+import android.util.Log;
+
 import androidx.annotation.Keep;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
@@ -33,15 +35,28 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
     private static XSharedPreferences prefs;
 
+    private static XSharedPreferences getPref() {
+        XSharedPreferences pref = new XSharedPreferences(FIREFDSKIT);
+        return pref.getFile().canRead() ? pref : null;
+    }
+
     @Override
     public void initZygote(StartupParam startupParam) {
 
-        // Do not load if Not a Touchwiz Rom
+        // Do not load if Not a Samsung Device
         if (Utils.isNotSamsungRom()) {
+            Log.e("FFK", "com.samsung.device.jar or com.samsung.device.lite.jar not found!");
             XposedBridge.log("FFK: com.samsung.device.jar or com.samsung.device.lite.jar not found!");
         }
 
-        getModuleSharedPreferences();
+        XSharedPreferences pref = getPref();
+        if (pref != null) {
+            prefs = pref;
+            XposedBridge.log("FFK: Firefds Kit preferences loaded correctly!");
+        } else {
+            Log.e("FFK", "Cannot load pref for zygote properly");
+            XposedBridge.log("FFK: Cannot load pref for zygote properly");
+        }
     }
 
     @Override
@@ -49,22 +64,25 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
 
         // Do not load if Not a Touchwiz Rom
         if (Utils.isNotSamsungRom()) {
+            Log.e("FFK", "com.samsung.device.jar or com.samsung.device.lite.jar not found!");
             XposedBridge.log("FFK: com.samsung.device.jar or com.samsung.device.lite.jar not found!");
             return;
         }
 
+        if (prefs == null) {
+            Log.e("FFK", "Xposed cannot read Firefds Kit preferences!");
+            XposedBridge.log("FFK: Xposed cannot read Firefds Kit preferences!");
+            return;
+        }
+
         if (lpparam.packageName.equals(FIREFDSKIT)) {
-            if (prefs != null) {
-                try {
-                    XposedHelpers.findAndHookMethod(FIREFDSKIT + ".XposedChecker",
-                            lpparam.classLoader,
-                            "isActive",
-                            XC_MethodReplacement.returnConstant(Boolean.TRUE));
-                } catch (Throwable e) {
-                    XposedBridge.log(e);
-                }
-            } else {
-                XposedBridge.log("FFK: Xposed cannot read Firefds Kit preferences!");
+            try {
+                XposedHelpers.findAndHookMethod(FIREFDSKIT + ".XposedChecker",
+                        lpparam.classLoader,
+                        "isActive",
+                        XC_MethodReplacement.returnConstant(Boolean.TRUE));
+            } catch (Throwable e) {
+                XposedBridge.log(e);
             }
         }
 
@@ -168,13 +186,5 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
                 XposedBridge.log(e);
             }
         }
-    }
-
-    private static void getModuleSharedPreferences() {
-        if (prefs == null) {
-            prefs = new XSharedPreferences(FIREFDSKIT);
-        }
-        prefs.makeWorldReadable();
-        prefs.reload();
     }
 }

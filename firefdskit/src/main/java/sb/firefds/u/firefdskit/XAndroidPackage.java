@@ -186,6 +186,7 @@ public class XAndroidPackage {
                         new XC_MethodHook() {
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
+                                prefs.reload();
                                 param.setResult(prefs.getInt(PREF_MAX_SUPPORTED_USERS, 3));
                             }
                         });

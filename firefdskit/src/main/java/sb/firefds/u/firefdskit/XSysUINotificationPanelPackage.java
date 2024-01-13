@@ -95,6 +95,7 @@ public class XSysUINotificationPanelPackage {
                     new XC_MethodHook() {
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) {
+                            prefs.reload();
                             param.args[1] = getCarrierSizeValue(prefs.getString(PREF_CARRIER_SIZE, "Small"));
                         }
                     });

@@ -59,6 +59,7 @@ public class XNfcPackage {
                     new XC_MethodHook() {
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) {
+                            prefs.reload();
                             behavior = prefs.getString(PREF_NFC_BEHAVIOR, "0");
                             if (behavior.equals("0")) {
                                 return;

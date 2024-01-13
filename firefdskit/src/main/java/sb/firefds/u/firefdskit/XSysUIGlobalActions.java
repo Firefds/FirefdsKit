@@ -210,6 +210,7 @@ public class XSysUIGlobalActions {
                         new XC_MethodHook() {
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
+                                prefs.reload();
                                 ActionViewModelFactory actionViewModelFactory = (ActionViewModelFactory) XposedHelpers
                                         .getObjectField(param.thisObject, "mViewModelFactory");
                                 ConditionChecker mSystemCondition = (ConditionChecker) XposedHelpers

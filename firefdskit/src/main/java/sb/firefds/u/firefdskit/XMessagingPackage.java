@@ -46,7 +46,13 @@ public class XMessagingPackage {
         try {
             XposedHelpers.findAndHookMethod(messagingFeatureClass,
                     "getSupportMMSThroughWifi",
-                    XC_MethodReplacement.returnConstant(prefs.getBoolean(PREF_FORCE_MMS_CONNECT, false)));
+                    new XC_MethodReplacement() {
+                        @Override
+                        protected Object replaceHookedMethod(MethodHookParam param) {
+                            prefs.reload();
+                            return (prefs.getBoolean(PREF_FORCE_MMS_CONNECT, false));
+                        }
+                    });
         } catch (Throwable e) {
             XposedBridge.log(e);
         }

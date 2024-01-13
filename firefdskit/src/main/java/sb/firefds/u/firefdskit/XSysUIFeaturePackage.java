@@ -191,6 +191,7 @@ public class XSysUIFeaturePackage {
                                 Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
                                 boolean is24 = DateFormat.is24HourFormat(mClock.getContext());
 
+                                prefs.reload();
                                 int textSize = XSysUINotificationPanelPackage
                                         .getClockSizeValue(prefs.getString(PREF_CLOCK_SIZE, "Small"));
                                 mClock.setTextSize(textSize);
@@ -261,6 +262,7 @@ public class XSysUIFeaturePackage {
                         new XC_MethodHook() {
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
+                                prefs.reload();
                                 param.setResult(prefs.getInt(PREF_MAX_SUPPORTED_USERS, 3));
                             }
                         });
@@ -342,6 +344,7 @@ public class XSysUIFeaturePackage {
                         @SuppressLint("MissingPermission")
                         @Override
                         protected void beforeHookedMethod(MethodHookParam param) {
+                            prefs.reload();
                             if (prefs.getBoolean(PREF_DISABLE_SYNC_DIALOG, false)) {
                                 ContentResolver.setMasterSyncAutomatically((Boolean) param.args[0]);
                                 param.setResult(null);
