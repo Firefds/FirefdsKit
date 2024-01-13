@@ -18,6 +18,7 @@ import static sb.firefds.u.firefdskit.utils.Constants.CONFIG_RECORDING;
 import static sb.firefds.u.firefdskit.utils.Constants.CONFIG_SVC_PROVIDER_FOR_UNKNOWN_NUMBER;
 import static sb.firefds.u.firefdskit.utils.Constants.SAMSUNG_BLUR;
 import static sb.firefds.u.firefdskit.utils.Constants.SUPPORT_REAL_TIME_NETWORK_SPEED;
+import static sb.firefds.u.firefdskit.utils.Constants.SUPPORT_Z_PROJECT_FUNCTION_IN_GLOBAL;
 import static sb.firefds.u.firefdskit.utils.Preferences.PREF_DEFAULT_REBOOT_BEHAVIOR;
 import static sb.firefds.u.firefdskit.utils.Preferences.PREF_DISABLE_SECURE_FLAG;
 import static sb.firefds.u.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS;
@@ -177,6 +178,9 @@ public class XSystemWide {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) {
                 if (param.args[0].equals(SUPPORT_REAL_TIME_NETWORK_SPEED)) {
+                    param.setResult(prefs.getBoolean(PREF_SHOW_NETWORK_SPEED_MENU, false));
+                }
+                if (param.args[0].equals(SUPPORT_Z_PROJECT_FUNCTION_IN_GLOBAL)) {
                     param.setResult(prefs.getBoolean(PREF_SHOW_NETWORK_SPEED_MENU, false));
                 }
                 if (param.args[0].equals(SAMSUNG_BLUR)) {
