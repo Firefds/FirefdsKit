@@ -20,6 +20,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import sb.firefds.u.firefdskit.R;
 import sb.firefds.u.firefdskit.utils.Utils;
 
@@ -43,7 +45,7 @@ public class FirefdsKitSettingsFragment extends FirefdsPreferenceFragment {
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @NonNull String key) {
         if (key.equals(PREF_FORCE_ENGLISH))
             Toast.makeText(getActivity(), getResources().getText(R.string.language_toast), Toast.LENGTH_SHORT).show();
         super.onSharedPreferenceChanged(sharedPreferences, key);

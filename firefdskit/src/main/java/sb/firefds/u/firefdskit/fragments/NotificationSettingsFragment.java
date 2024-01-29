@@ -14,6 +14,10 @@
  */
 package sb.firefds.u.firefdskit.fragments;
 
+import static sb.firefds.u.firefdskit.utils.Preferences.PREF_CLOCK_DATE_ON_RIGHT;
+import static sb.firefds.u.firefdskit.utils.Preferences.PREF_CLOCK_DATE_PREFERENCE;
+import static sb.firefds.u.firefdskit.utils.Preferences.PREF_SHOW_AM_PM;
+
 import android.os.Bundle;
 import android.text.format.DateFormat;
 
@@ -24,10 +28,6 @@ import java.util.Optional;
 
 import sb.firefds.u.firefdskit.R;
 import sb.firefds.u.firefdskit.utils.Utils;
-
-import static sb.firefds.u.firefdskit.utils.Preferences.PREF_CLOCK_DATE_ON_RIGHT;
-import static sb.firefds.u.firefdskit.utils.Preferences.PREF_CLOCK_DATE_PREFERENCE;
-import static sb.firefds.u.firefdskit.utils.Preferences.PREF_SHOW_AM_PM;
 
 public class NotificationSettingsFragment extends FirefdsPreferenceFragment {
     @Override
@@ -53,8 +53,7 @@ public class NotificationSettingsFragment extends FirefdsPreferenceFragment {
         super.onCreate(savedInstanceState);
 
         Optional<ListPreference> clockDatePreference = Optional.ofNullable(findPreference(PREF_CLOCK_DATE_PREFERENCE));
-        Optional<SwitchPreferenceCompat> clockDateOnRight =
-                Optional.ofNullable(findPreference(PREF_CLOCK_DATE_ON_RIGHT));
+        Optional<SwitchPreferenceCompat> clockDateOnRight = Optional.ofNullable(findPreference(PREF_CLOCK_DATE_ON_RIGHT));
         if (clockDatePreference.isPresent() && clockDateOnRight.isPresent()) {
             clockDateOnRight.get().setEnabled(!clockDatePreference.get().getValue().equals("disabled"));
         }

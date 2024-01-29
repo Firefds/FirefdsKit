@@ -14,6 +14,14 @@
  */
 package sb.firefds.u.firefdskit;
 
+import static de.robv.android.xposed.XposedBridge.hookAllConstructors;
+import static de.robv.android.xposed.XposedBridge.log;
+import static de.robv.android.xposed.XposedHelpers.callMethod;
+import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.findClass;
+import static de.robv.android.xposed.XposedHelpers.getObjectField;
+import static sb.firefds.u.firefdskit.Xposed.reloadAndGetBooleanPref;
+import static sb.firefds.u.firefdskit.Xposed.reloadAndGetStringPref;
 import static sb.firefds.u.firefdskit.actionViewModels.FirefdsKitActionViewModelsFactory.getActionViewModel;
 import static sb.firefds.u.firefdskit.utils.Constants.DATA_MODE_ACTION;
 import static sb.firefds.u.firefdskit.utils.Constants.DOWNLOAD_ACTION;
@@ -53,6 +61,8 @@ import android.content.res.Resources;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+
 import com.samsung.android.globalactions.presentation.SamsungGlobalActions;
 import com.samsung.android.globalactions.presentation.SamsungGlobalActionsPresenter;
 import com.samsung.android.globalactions.presentation.features.FeatureFactory;
@@ -71,8 +81,6 @@ import java.util.Optional;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.u.firefdskit.actionViewModels.ActionViewModelDefaults;
 import sb.firefds.u.firefdskit.utils.Utils;
 
@@ -80,245 +88,219 @@ public class XSysUIGlobalActions {
 
     private static final String GLOBAL_ACTIONS_PACKAGE = "com.samsung.android.globalactions.presentation";
     private static final String SAMSUNG_GLOBAL_ACTIONS_PRESENTER = GLOBAL_ACTIONS_PACKAGE +
-            ".SamsungGlobalActionsPresenter";
-    private static final String DEFAULT_ACTION_VIEW_MODEL_FACTORY = GLOBAL_ACTIONS_PACKAGE + ".viewmodel" +
-            ".DefaultActionViewModelFactory";
-    private static final String SAMSUNG_GLOBAL_ACTIONS_DIALOG_BASE = GLOBAL_ACTIONS_PACKAGE + ".view" +
-            ".SamsungGlobalActionsDialogBase";
-    private static final String GLOBAL_ACTION_CONTENT_ITEM_VIEW = GLOBAL_ACTIONS_PACKAGE + ".view" +
-            ".GlobalActionsContentItemView";
-    private static final String FLASHLIGHT_CONTROLLER_IMPL_CLASS = SYSTEM_UI + ".statusbar.policy" +
-            ".FlashlightControllerImpl";
-    private static final String RESTART_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel" +
-            ".RestartActionViewModel";
-    private static final String SAFE_MODE_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel" +
-            ".SafeModeActionViewModel";
+                                                                   ".SamsungGlobalActionsPresenter";
+    private static final String DEFAULT_ACTION_VIEW_MODEL_FACTORY = GLOBAL_ACTIONS_PACKAGE +
+                                                                    ".viewmodel" +
+                                                                    ".DefaultActionViewModelFactory";
+    private static final String SAMSUNG_GLOBAL_ACTIONS_DIALOG_BASE = GLOBAL_ACTIONS_PACKAGE +
+                                                                     ".view" +
+                                                                     ".SamsungGlobalActionsDialogBase";
+    private static final String GLOBAL_ACTION_CONTENT_ITEM_VIEW = GLOBAL_ACTIONS_PACKAGE +
+                                                                  ".view" +
+                                                                  ".GlobalActionsContentItemView";
+    private static final String FLASHLIGHT_CONTROLLER_IMPL_CLASS = SYSTEM_UI +
+                                                                   ".statusbar.policy" +
+                                                                   ".FlashlightControllerImpl";
+    private static final String RESTART_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE +
+                                                            ".viewmodel" +
+                                                            ".RestartActionViewModel";
+    private static final String SAFE_MODE_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE +
+                                                              ".viewmodel" +
+                                                              ".SafeModeActionViewModel";
     private static final String POWER_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel.PowerActionViewModel";
-    private static final String EMERGENCY_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel" +
-            ".EmergencyActionViewModel";
-    private static final String DATA_MODE_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE + ".viewmodel" +
-            ".DataModeActionViewModel";
+    private static final String EMERGENCY_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE +
+                                                              ".viewmodel" +
+                                                              ".EmergencyActionViewModel";
+    private static final String DATA_MODE_ACTION_VIEW_MODEL = GLOBAL_ACTIONS_PACKAGE +
+                                                              ".viewmodel" +
+                                                              ".DataModeActionViewModel";
 
     private static SamsungGlobalActionsPresenter mSamsungGlobalActionsPresenter;
     private static ActionViewModelDefaults actionViewModelDefaults;
     private static Object mFlashlightObject;
-    private static boolean prefUnlockKeyguardBeforeActionExecute;
-    private static boolean prefReplaceRecoveryIcon;
-    private static String prefCustomRecovery;
-    private static String prefCustomRecoveryConfirmation;
     private static Resources resources;
 
-    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(@NonNull XSharedPreferences prefs, ClassLoader classLoader) {
 
-        prefUnlockKeyguardBeforeActionExecute = prefs.getBoolean(PREF_UNLOCK_KEYGUARD_BEFORE_ACTION_EXECUTE, false);
-        prefReplaceRecoveryIcon = prefs.getBoolean(PREF_REPLACE_RECOVERY_ICON, false);
-        prefCustomRecovery = prefs.getString(PREF_CUSTOM_RECOVERY, null);
-        prefCustomRecoveryConfirmation = prefs.getString(PREF_CUSTOM_RECOVERY_CONFIRMATION, null);
+        final Class<?> flashlightControllerImplClass = findClass(FLASHLIGHT_CONTROLLER_IMPL_CLASS, classLoader);
 
-        final Class<?> flashlightControllerImplClass = XposedHelpers.findClass(FLASHLIGHT_CONTROLLER_IMPL_CLASS,
-                classLoader);
+        hookAllConstructors(flashlightControllerImplClass, new XC_MethodHook() {
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) {
+                mFlashlightObject = param.thisObject;
+            }
+        });
 
-        XposedBridge.hookAllConstructors(flashlightControllerImplClass,
-                new XC_MethodHook() {
-                    @Override
-                    protected void afterHookedMethod(MethodHookParam param) {
-                        mFlashlightObject = param.thisObject;
-                    }
-                });
+        final Class<?> samsungGlobalActionsDialogBaseClass = findClass(SAMSUNG_GLOBAL_ACTIONS_DIALOG_BASE, classLoader);
 
-        final Class<?> samsungGlobalActionsDialogBaseClass = XposedHelpers.findClass(SAMSUNG_GLOBAL_ACTIONS_DIALOG_BASE,
-                classLoader);
-
-        if (prefUnlockKeyguardBeforeActionExecute) {
-            XC_MethodHook isNeedSecureConfirmHook = new XC_MethodHook() {
-                @Override
-                protected void beforeHookedMethod(MethodHookParam param) {
-                    ConditionChecker mConditionChecker =
-                            (ConditionChecker) XposedHelpers.getObjectField(param.thisObject, "mConditionChecker");
+        XC_MethodHook isNeedSecureConfirmHook = new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) {
+                if (reloadAndGetBooleanPref(PREF_UNLOCK_KEYGUARD_BEFORE_ACTION_EXECUTE, false)) {
+                    ConditionChecker mConditionChecker = (ConditionChecker) getObjectField(param.thisObject,
+                                                                                           "mConditionChecker");
                     if (mConditionChecker.isEnabled(SystemConditions.IS_SECURE_KEYGUARD)) {
                         param.setResult(Boolean.TRUE);
                     }
                 }
-            };
+            }
+        };
 
-            XposedHelpers.findAndHookMethod(RESTART_ACTION_VIEW_MODEL,
-                    classLoader,
-                    "isNeedSecureConfirm",
-                    isNeedSecureConfirmHook);
+        findAndHookMethod(RESTART_ACTION_VIEW_MODEL, classLoader, "isNeedSecureConfirm", isNeedSecureConfirmHook);
 
-            XposedHelpers.findAndHookMethod(SAFE_MODE_ACTION_VIEW_MODEL,
-                    classLoader,
-                    "isNeedSecureConfirm",
-                    isNeedSecureConfirmHook);
+        findAndHookMethod(SAFE_MODE_ACTION_VIEW_MODEL, classLoader, "isNeedSecureConfirm", isNeedSecureConfirmHook);
 
-            XposedHelpers.findAndHookMethod(POWER_ACTION_VIEW_MODEL,
-                    classLoader,
-                    "isNeedSecureConfirm",
-                    isNeedSecureConfirmHook);
+        findAndHookMethod(POWER_ACTION_VIEW_MODEL, classLoader, "isNeedSecureConfirm", isNeedSecureConfirmHook);
 
-            XposedHelpers.findAndHookMethod(EMERGENCY_ACTION_VIEW_MODEL,
-                    classLoader,
-                    "isNeedSecureConfirm",
-                    isNeedSecureConfirmHook);
+        findAndHookMethod(EMERGENCY_ACTION_VIEW_MODEL, classLoader, "isNeedSecureConfirm", isNeedSecureConfirmHook);
 
-            XposedHelpers.findAndHookMethod(DATA_MODE_ACTION_VIEW_MODEL,
-                    classLoader,
-                    "isNeedSecureConfirm",
-                    isNeedSecureConfirmHook);
-        }
+        findAndHookMethod(DATA_MODE_ACTION_VIEW_MODEL, classLoader, "isNeedSecureConfirm", isNeedSecureConfirmHook);
 
-        if (prefs.getBoolean(PREF_DISABLE_POWER_MENU_SECURE_LOCKSCREEN, false)) {
-            XposedHelpers.findAndHookMethod(samsungGlobalActionsDialogBaseClass,
-                    "showDialog",
-                    new XC_MethodHook() {
-                        @Override
-                        protected void beforeHookedMethod(MethodHookParam param) {
-                            Context context = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
-                            KeyguardManager mKeyguardManager =
-                                    (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-                            if (mKeyguardManager.isKeyguardLocked()) {
-                                param.setResult(null);
-                            }
-                        }
+        findAndHookMethod(samsungGlobalActionsDialogBaseClass, "showDialog", new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) {
+                if (reloadAndGetBooleanPref(PREF_DISABLE_POWER_MENU_SECURE_LOCKSCREEN, false)) {
+                    Context context = (Context) getObjectField(param.thisObject, "mContext");
+                    KeyguardManager mKeyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+                    if (mKeyguardManager.isKeyguardLocked()) {
+                        param.setResult(null);
                     }
-            );
-        }
+                }
+            }
+        });
 
         if (prefs.getBoolean(PREF_DISABLE_RESTART_CONFIRMATION, false)) {
-            XposedHelpers.findAndHookMethod(SAMSUNG_GLOBAL_ACTIONS_PRESENTER,
-                    classLoader,
-                    "isActionConfirming",
-                    XC_MethodReplacement.returnConstant(Boolean.TRUE));
+            findAndHookMethod(SAMSUNG_GLOBAL_ACTIONS_PRESENTER,
+                              classLoader,
+                              "isActionConfirming",
+                              XC_MethodReplacement.returnConstant(Boolean.TRUE));
         }
 
-        if (prefs.getBoolean(PREF_ENABLE_ADVANCED_POWER_MENU, false)) {
-            try {
-                XposedBridge.hookAllConstructors(samsungGlobalActionsDialogBaseClass,
-                        new XC_MethodHook() {
-                            @Override
-                            protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-                                Context ctx = (Context) param.args[0];
-                                Resources res = ctx.getResources();
-                                Context ffkContext = Utils.getFfkContext(ctx, res.getConfiguration());
-                                resources = ffkContext.getResources();
-                            }
-                        });
+        try {
+            hookAllConstructors(samsungGlobalActionsDialogBaseClass, new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+                    if (reloadAndGetBooleanPref(PREF_ENABLE_ADVANCED_POWER_MENU, false)) {
+                        Context ctx = (Context) param.args[0];
+                        Resources res = ctx.getResources();
+                        Context ffkContext = Utils.getFfkContext(ctx, res.getConfiguration());
+                        resources = ffkContext.getResources();
+                    }
+                }
+            });
 
-                XposedHelpers.findAndHookMethod(SAMSUNG_GLOBAL_ACTIONS_PRESENTER,
-                        classLoader,
-                        "createDefaultActions",
-                        new XC_MethodHook() {
-                            @Override
-                            protected void afterHookedMethod(MethodHookParam param) {
-                                prefs.reload();
-                                ActionViewModelFactory actionViewModelFactory = (ActionViewModelFactory) XposedHelpers
-                                        .getObjectField(param.thisObject, "mViewModelFactory");
-                                ConditionChecker mSystemCondition = (ConditionChecker) XposedHelpers
-                                        .getObjectField(param.thisObject, "mSystemCondition");
-                                mSamsungGlobalActionsPresenter = (SamsungGlobalActionsPresenter) param.thisObject;
-                                if (!prefs.getBoolean(PREF_ENABLE_POWER_OFF, true)) {
-                                    mSamsungGlobalActionsPresenter.clearActions(POWER_ACTION);
-                                }
-                                if (!prefs.getBoolean(PREF_ENABLE_RESTART, true)) {
-                                    mSamsungGlobalActionsPresenter.clearActions(RESTART_ACTION);
-                                }
-                                if (!prefs.getBoolean(PREF_ENABLE_EMERGENCY_MODE, true)) {
-                                    if (mSystemCondition.isEnabled(SystemConditions.IS_SUPPORT_EMERGENCY_CALL)) {
-                                        mSamsungGlobalActionsPresenter.clearActions(EMERGENCY_CALL_ACTION);
-                                    }
+            findAndHookMethod(SAMSUNG_GLOBAL_ACTIONS_PRESENTER,
+                              classLoader,
+                              "createDefaultActions",
+                              new XC_MethodHook() {
+                                  @Override
+                                  protected void afterHookedMethod(MethodHookParam param) {
+                                      if (reloadAndGetBooleanPref(PREF_ENABLE_ADVANCED_POWER_MENU, false)) {
+                                          ActionViewModelFactory actionViewModelFactory = (ActionViewModelFactory) getObjectField(
+                                                  param.thisObject,
+                                                  "mViewModelFactory");
+                                          ConditionChecker mSystemCondition = (ConditionChecker) getObjectField(param.thisObject,
+                                                                                                                "mSystemCondition");
+                                          mSamsungGlobalActionsPresenter = (SamsungGlobalActionsPresenter) param.thisObject;
+                                          if (!reloadAndGetBooleanPref(PREF_ENABLE_POWER_OFF, true)) {
+                                              mSamsungGlobalActionsPresenter.clearActions(POWER_ACTION);
+                                          }
+                                          if (!reloadAndGetBooleanPref(PREF_ENABLE_RESTART, true)) {
+                                              mSamsungGlobalActionsPresenter.clearActions(RESTART_ACTION);
+                                          }
+                                          if (!reloadAndGetBooleanPref(PREF_ENABLE_EMERGENCY_MODE, true)) {
+                                              if (mSystemCondition.isEnabled(SystemConditions.IS_SUPPORT_EMERGENCY_CALL)) {
+                                                  mSamsungGlobalActionsPresenter.clearActions(EMERGENCY_CALL_ACTION);
+                                              }
 
-                                    if (mSystemCondition.isEnabled(SystemConditions.IS_SUPPORT_EMERGENCY_MODE)) {
-                                        mSamsungGlobalActionsPresenter.clearActions(EMERGENCY_ACTION);
-                                    }
-                                }
-                                if (prefs.getBoolean(PREF_ENABLE_RECOVERY, true)) {
-                                    mSamsungGlobalActionsPresenter
-                                            .addAction(actionViewModelFactory.createActionViewModel(
-                                                    (SamsungGlobalActionsPresenter) param.thisObject,
-                                                    RECOVERY_ACTION));
-                                }
-                                if (prefs.getBoolean(PREF_ENABLE_DOWNLOAD, true)) {
-                                    mSamsungGlobalActionsPresenter
-                                            .addAction(actionViewModelFactory.createActionViewModel(
-                                                    (SamsungGlobalActionsPresenter) param.thisObject,
-                                                    DOWNLOAD_ACTION));
-                                }
-                                if (prefs.getBoolean(PREF_ENABLE_DATA_MODE, false)) {
-                                    mSamsungGlobalActionsPresenter
-                                            .addAction(actionViewModelFactory.createActionViewModel(
-                                                    (SamsungGlobalActionsPresenter) param.thisObject,
-                                                    DATA_MODE_ACTION));
-                                }
-                                if (prefs.getBoolean(PREF_ENABLE_SCREENSHOT, false)) {
-                                    mSamsungGlobalActionsPresenter
-                                            .addAction(actionViewModelFactory.createActionViewModel(
-                                                    (SamsungGlobalActionsPresenter) param.thisObject,
-                                                    SCREENSHOT_ACTION));
-                                }
-                                if (prefs.getBoolean(PREF_SUPPORTS_MULTIPLE_USERS, false)) {
-                                    mSamsungGlobalActionsPresenter
-                                            .addAction(actionViewModelFactory.createActionViewModel(
-                                                    (SamsungGlobalActionsPresenter) param.thisObject,
-                                                    MULTIUSER_ACTION));
-                                }
-                                if (prefs.getBoolean(PREF_ENABLE_RESTART_SYSTEMUI, false)) {
-                                    mSamsungGlobalActionsPresenter
-                                            .addAction(actionViewModelFactory.createActionViewModel(
-                                                    (SamsungGlobalActionsPresenter) param.thisObject,
-                                                    RESTART_UI_ACTION));
-                                }
-                                if (prefs.getBoolean(PREF_ENABLE_FLASHLIGHT, false)) {
-                                    mSamsungGlobalActionsPresenter
-                                            .addAction(actionViewModelFactory.createActionViewModel(
-                                                    (SamsungGlobalActionsPresenter) param.thisObject,
-                                                    FLASHLIGHT_ACTION));
-                                }
-                                if (prefs.getBoolean(PREF_ENABLE_SCREEN_RECORD, false)) {
-                                    mSamsungGlobalActionsPresenter
-                                            .addAction(actionViewModelFactory.createActionViewModel(
-                                                    (SamsungGlobalActionsPresenter) param.thisObject,
-                                                    SCREEN_RECORD_ACTION));
-                                }
-                            }
-                        });
+                                              if (mSystemCondition.isEnabled(SystemConditions.IS_SUPPORT_EMERGENCY_MODE)) {
+                                                  mSamsungGlobalActionsPresenter.clearActions(EMERGENCY_ACTION);
+                                              }
+                                          }
+                                          if (reloadAndGetBooleanPref(PREF_ENABLE_RECOVERY, true)) {
+                                              mSamsungGlobalActionsPresenter.addAction(actionViewModelFactory.createActionViewModel(
+                                                      (SamsungGlobalActionsPresenter) param.thisObject,
+                                                      RECOVERY_ACTION));
+                                          }
+                                          if (reloadAndGetBooleanPref(PREF_ENABLE_DOWNLOAD, true)) {
+                                              mSamsungGlobalActionsPresenter.addAction(actionViewModelFactory.createActionViewModel(
+                                                      (SamsungGlobalActionsPresenter) param.thisObject,
+                                                      DOWNLOAD_ACTION));
+                                          }
+                                          if (reloadAndGetBooleanPref(PREF_ENABLE_DATA_MODE, false)) {
+                                              mSamsungGlobalActionsPresenter.addAction(actionViewModelFactory.createActionViewModel(
+                                                      (SamsungGlobalActionsPresenter) param.thisObject,
+                                                      DATA_MODE_ACTION));
+                                          }
+                                          if (reloadAndGetBooleanPref(PREF_ENABLE_SCREENSHOT, false)) {
+                                              mSamsungGlobalActionsPresenter.addAction(actionViewModelFactory.createActionViewModel(
+                                                      (SamsungGlobalActionsPresenter) param.thisObject,
+                                                      SCREENSHOT_ACTION));
+                                          }
+                                          if (reloadAndGetBooleanPref(PREF_SUPPORTS_MULTIPLE_USERS, false)) {
+                                              mSamsungGlobalActionsPresenter.addAction(actionViewModelFactory.createActionViewModel(
+                                                      (SamsungGlobalActionsPresenter) param.thisObject,
+                                                      MULTIUSER_ACTION));
+                                          }
+                                          if (reloadAndGetBooleanPref(PREF_ENABLE_RESTART_SYSTEMUI, false)) {
+                                              mSamsungGlobalActionsPresenter.addAction(actionViewModelFactory.createActionViewModel(
+                                                      (SamsungGlobalActionsPresenter) param.thisObject,
+                                                      RESTART_UI_ACTION));
+                                          }
+                                          if (reloadAndGetBooleanPref(PREF_ENABLE_FLASHLIGHT, false)) {
+                                              mSamsungGlobalActionsPresenter.addAction(actionViewModelFactory.createActionViewModel(
+                                                      (SamsungGlobalActionsPresenter) param.thisObject,
+                                                      FLASHLIGHT_ACTION));
+                                          }
+                                          if (reloadAndGetBooleanPref(PREF_ENABLE_SCREEN_RECORD, false)) {
+                                              mSamsungGlobalActionsPresenter.addAction(actionViewModelFactory.createActionViewModel(
+                                                      (SamsungGlobalActionsPresenter) param.thisObject,
+                                                      SCREEN_RECORD_ACTION));
+                                          }
+                                      }
+                                  }
+                              });
 
-                XposedHelpers.findAndHookMethod(DEFAULT_ACTION_VIEW_MODEL_FACTORY,
-                        classLoader,
-                        "createActionViewModel",
-                        SamsungGlobalActions.class,
-                        String.class,
-                        new XC_MethodHook() {
-                            @Override
-                            protected void beforeHookedMethod(MethodHookParam param) {
-                                setActionViewModelDefaults(param);
-                                getActionViewModel((String) param.args[1]).ifPresent(param::setResult);
-                            }
-                        });
+            findAndHookMethod(DEFAULT_ACTION_VIEW_MODEL_FACTORY,
+                              classLoader,
+                              "createActionViewModel",
+                              SamsungGlobalActions.class,
+                              String.class,
+                              new XC_MethodHook() {
+                                  @Override
+                                  protected void beforeHookedMethod(MethodHookParam param) {
+                                      if (reloadAndGetBooleanPref(PREF_ENABLE_ADVANCED_POWER_MENU, false)) {
+                                          setActionViewModelDefaults(param);
+                                          getActionViewModel((String) param.args[1]).ifPresent(param::setResult);
+                                      }
+                                  }
+                              });
 
-                XposedHelpers.findAndHookMethod(GLOBAL_ACTION_CONTENT_ITEM_VIEW,
-                        classLoader,
-                        "setViewAttrs",
-                        View.class,
-                        boolean.class,
-                        new XC_MethodHook() {
-                            @Override
-                            protected void afterHookedMethod(MethodHookParam param) {
-                                ActionViewModel actionViewModel = (ActionViewModel) XposedHelpers.
-                                        getObjectField(param.thisObject, "mViewModel");
-                                ResourceFactory resourceFactory = (ResourceFactory) XposedHelpers
-                                        .getObjectField(param.thisObject, "mResourceFactory");
-                                ImageView localImageView = ((View) param.args[0])
-                                        .findViewById(resourceFactory.get(ResourceType.ID_ICON));
-                                if (localImageView != null) {
-                                    Optional.ofNullable(actionViewModel.getIcon())
-                                            .ifPresent(localImageView::setImageDrawable);
-                                }
-                            }
-                        });
+            findAndHookMethod(GLOBAL_ACTION_CONTENT_ITEM_VIEW,
+                              classLoader,
+                              "setViewAttrs",
+                              View.class,
+                              boolean.class,
+                              new XC_MethodHook() {
+                                  @Override
+                                  protected void afterHookedMethod(MethodHookParam param) {
+                                      if (reloadAndGetBooleanPref(PREF_ENABLE_ADVANCED_POWER_MENU, false)) {
+                                          ActionViewModel actionViewModel = (ActionViewModel) getObjectField(param.thisObject,
+                                                                                                             "mViewModel");
+                                          ResourceFactory resourceFactory = (ResourceFactory) getObjectField(param.thisObject,
+                                                                                                             "mResourceFactory");
+                                          ImageView localImageView = ((View) param.args[0]).findViewById(resourceFactory.get(
+                                                  ResourceType.ID_ICON));
+                                          if (localImageView != null) {
+                                              Optional.ofNullable(actionViewModel.getIcon())
+                                                      .ifPresent(localImageView::setImageDrawable);
+                                          }
+                                      }
+                                  }
+                              });
 
-            } catch (Throwable e) {
-                XposedBridge.log(e);
-            }
+        } catch (Throwable e) {
+            log(e);
         }
     }
 
@@ -335,33 +317,36 @@ public class XSysUIGlobalActions {
     }
 
     public static boolean isUnlockKeyguardBeforeActionExecute() {
-        return prefUnlockKeyguardBeforeActionExecute;
+        return reloadAndGetBooleanPref(PREF_UNLOCK_KEYGUARD_BEFORE_ACTION_EXECUTE, false);
     }
 
     public static boolean isReplaceRecoveryIcon() {
-        return prefReplaceRecoveryIcon;
+        return reloadAndGetBooleanPref(PREF_REPLACE_RECOVERY_ICON, false);
     }
 
     public static String getCustomRecovery() {
-        return prefCustomRecovery;
+        return reloadAndGetStringPref(PREF_CUSTOM_RECOVERY, null);
     }
 
     public static String getCustomRecoveryConfirmation() {
-        return prefCustomRecoveryConfirmation;
+        return reloadAndGetStringPref(PREF_CUSTOM_RECOVERY_CONFIRMATION, null);
     }
 
-    private static void setActionViewModelDefaults(XC_MethodHook.MethodHookParam param) {
-        UtilFactory mUtilFactory = (UtilFactory) XposedHelpers.getObjectField(param.thisObject, "mUtilFactory");
-        KeyGuardManagerWrapper mKeyGuardManagerWrapper = (KeyGuardManagerWrapper) XposedHelpers.callMethod(mUtilFactory,
-                "get",
-                KeyGuardManagerWrapper.class);
-        WeakReference<Context> contextWeakReference =
-                new WeakReference<>((Context) XposedHelpers.getObjectField(mKeyGuardManagerWrapper, "mContext"));
+    private static void setActionViewModelDefaults(@NonNull XC_MethodHook.MethodHookParam param) {
+        UtilFactory mUtilFactory = (UtilFactory) getObjectField(param.thisObject, "mUtilFactory");
+        KeyGuardManagerWrapper mKeyGuardManagerWrapper = (KeyGuardManagerWrapper) callMethod(mUtilFactory,
+                                                                                             "get",
+                                                                                             KeyGuardManagerWrapper.class);
+        WeakReference<Context> contextWeakReference = new WeakReference<>((Context) getObjectField(
+                mKeyGuardManagerWrapper,
+                "mContext"));
         actionViewModelDefaults = new ActionViewModelDefaults(contextWeakReference,
-                mSamsungGlobalActionsPresenter,
-                (FeatureFactory) XposedHelpers.getObjectField(param.thisObject, "mFeatureFactory"),
-                (ConditionChecker) XposedHelpers.getObjectField(param.thisObject, "mConditionChecker"),
-                mKeyGuardManagerWrapper);
+                                                              mSamsungGlobalActionsPresenter,
+                                                              (FeatureFactory) getObjectField(param.thisObject,
+                                                                                              "mFeatureFactory"),
+                                                              (ConditionChecker) getObjectField(param.thisObject,
+                                                                                                "mConditionChecker"),
+                                                              mKeyGuardManagerWrapper);
     }
 
 }

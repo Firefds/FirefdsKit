@@ -12,12 +12,6 @@
             app:iconSpaceReserved="false" />
         <SwitchPreferenceCompat
             android:defaultValue="false"
-            android:key="enableSamsungBlur"
-            android:summary="@string/enable_native_blur_summary"
-            android:title="@string/enable_native_blur_title"
-            app:iconSpaceReserved="false" />
-        <SwitchPreferenceCompat
-            android:defaultValue="false"
             android:key="hideUsbNotification"
             android:summary="@string/hide_usb_notification_summary"
             android:title="@string/hide_usb_notification_title"
@@ -32,13 +26,6 @@
     <androidx.preference.PreferenceCategory
         android:title="@string/status_icons"
         app:iconSpaceReserved="false">
-        <SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:key="hideNfcIcon"
-            android:summaryOff="@string/hide_nfc_icon_off"
-            android:summaryOn="@string/hide_nfc_icon_on"
-            android:title="@string/hide_nfc_icon"
-            app:iconSpaceReserved="false" />
         <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="hideVolteIcon"

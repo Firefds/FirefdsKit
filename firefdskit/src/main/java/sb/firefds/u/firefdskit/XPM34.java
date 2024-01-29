@@ -14,12 +14,15 @@
  */
 package sb.firefds.u.firefdskit;
 
+import static de.robv.android.xposed.XposedBridge.log;
+import static de.robv.android.xposed.XposedHelpers.callMethod;
+import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.findClass;
+import static de.robv.android.xposed.XposedHelpers.getObjectField;
 import static sb.firefds.u.firefdskit.utils.Packages.FIREFDSKIT;
 import static sb.firefds.u.firefdskit.utils.Packages.SYSTEM_UI;
 
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
 
 public class XPM34 {
     private static final String PERMISSION = "com.android.server.pm.permission";
@@ -33,44 +36,52 @@ public class XPM34 {
     private static final String RECOVERY = "android.permission.RECOVERY";
     private static final String POST_NOTIFICATIONS = "android.permission.POST_NOTIFICATIONS";
     private static final String ACCESS_SCREEN_RECORDER_SVC = "com.samsung.android.app.screenrecorder.permission" +
-            ".ACCESS_SCREEN_RECORDER_SVC";
+                                                             ".ACCESS_SCREEN_RECORDER_SVC";
 
     public static void doHook(ClassLoader classLoader) {
         try {
-            final Class<?> pmServiceClass = XposedHelpers.findClass(PERMISSION_MANAGER_SERVICE, classLoader);
-            final Class<?> pmCallbackClass = XposedHelpers.findClass(PERMISSION_CALLBACK, classLoader);
+            final Class<?> pmServiceClass = findClass(PERMISSION_MANAGER_SERVICE, classLoader);
+            final Class<?> pmCallbackClass = findClass(PERMISSION_CALLBACK, classLoader);
 
-            XposedHelpers.findAndHookMethod(pmServiceClass,
-                    "restorePermissionState",
-                    ANDROID_PACKAGE,
-                    boolean.class,
-                    String.class,
-                    pmCallbackClass,
-                    int.class,
-                    new XC_MethodHook() {
-                        @Override
-                        protected void afterHookedMethod(MethodHookParam param) {
-                            final Object pkg = param.args[0];
-                            final String pkgName = (String) XposedHelpers.callMethod(param.args[0], "getPackageName");
-                            if (pkgName.equals(FIREFDSKIT) || pkgName.equals(SYSTEM_UI)) {
-                                final Object mRegistry = XposedHelpers.getObjectField(param.thisObject, "mRegistry");
-                                switch (pkgName) {
-                                    case FIREFDSKIT:
-                                        grantInstallPermission(mRegistry, STATUSBAR, pkg, param.thisObject);
-                                        grantInstallPermission(mRegistry, WRITE_SETTINGS, pkg, param.thisObject);
-                                        grantInstallPermission(mRegistry, POST_NOTIFICATIONS, pkg, param.thisObject);
-                                    case SYSTEM_UI:
-                                        grantInstallPermission(mRegistry, REBOOT, pkg, param.thisObject);
-                                        grantInstallPermission(mRegistry, RECOVERY, pkg, param.thisObject);
-                                        grantInstallPermission(mRegistry, ACCESS_SCREEN_RECORDER_SVC, pkg,
-                                                param.thisObject);
-                                        break;
-                                }
-                            }
-                        }
-                    });
+            findAndHookMethod(pmServiceClass,
+                              "restorePermissionState",
+                              ANDROID_PACKAGE,
+                              boolean.class,
+                              String.class,
+                              pmCallbackClass,
+                              int.class,
+                              new XC_MethodHook() {
+                                  @Override
+                                  protected void afterHookedMethod(MethodHookParam param) {
+                                      final Object pkg = param.args[0];
+                                      final String pkgName = (String) callMethod(param.args[0], "getPackageName");
+                                      if (pkgName.equals(FIREFDSKIT) || pkgName.equals(SYSTEM_UI)) {
+                                          final Object mRegistry = getObjectField(param.thisObject, "mRegistry");
+                                          switch (pkgName) {
+                                              case FIREFDSKIT:
+                                                  grantInstallPermission(mRegistry, STATUSBAR, pkg, param.thisObject);
+                                                  grantInstallPermission(mRegistry,
+                                                                         WRITE_SETTINGS,
+                                                                         pkg,
+                                                                         param.thisObject);
+                                                  grantInstallPermission(mRegistry,
+                                                                         POST_NOTIFICATIONS,
+                                                                         pkg,
+                                                                         param.thisObject);
+                                              case SYSTEM_UI:
+                                                  grantInstallPermission(mRegistry, REBOOT, pkg, param.thisObject);
+                                                  grantInstallPermission(mRegistry, RECOVERY, pkg, param.thisObject);
+                                                  grantInstallPermission(mRegistry,
+                                                                         ACCESS_SCREEN_RECORDER_SVC,
+                                                                         pkg,
+                                                                         param.thisObject);
+                                                  break;
+                                          }
+                                      }
+                                  }
+                              });
         } catch (Throwable e) {
-            XposedBridge.log(e);
+            log(e);
         }
     }
 
@@ -78,8 +89,8 @@ public class XPM34 {
                                                String permission,
                                                Object pkg,
                                                Object permissionManager) {
-        Object bp = XposedHelpers.callMethod(mRegistry, "getPermission", permission);
-        Object uidState = XposedHelpers.callMethod(permissionManager, "getUidStateLocked", pkg, 0);
-        XposedHelpers.callMethod(uidState, "grantPermission", bp);
+        Object bp = callMethod(mRegistry, "getPermission", permission);
+        Object uidState = callMethod(permissionManager, "getUidStateLocked", pkg, 0);
+        callMethod(uidState, "grantPermission", bp);
     }
 }

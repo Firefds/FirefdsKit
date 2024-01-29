@@ -14,16 +14,22 @@
  */
 package sb.firefds.u.firefdskit;
 
+import static de.robv.android.xposed.XposedBridge.hookAllConstructors;
+import static de.robv.android.xposed.XposedBridge.log;
+import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.findClass;
+import static de.robv.android.xposed.XposedHelpers.setBooleanField;
+import static de.robv.android.xposed.XposedHelpers.setIntField;
+import static sb.firefds.u.firefdskit.Xposed.reloadAndGetBooleanPref;
 import static sb.firefds.u.firefdskit.utils.Preferences.PREF_DISABLE_EXCHANGE_SECURITY;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.u.firefdskit.utils.Packages;
 
 public class XSecEmailPackage {
@@ -35,92 +41,89 @@ public class XSecEmailPackage {
 
     private static ClassLoader classLoader;
 
-    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(ClassLoader classLoader) {
 
         XSecEmailPackage.classLoader = classLoader;
 
-        if (prefs.getBoolean(PREF_DISABLE_EXCHANGE_SECURITY, false)) {
-            try {
-                disableExchangeLockSecurity();
-            } catch (Throwable e) {
-                XposedBridge.log(e);
+        try {
+            disableExchangeLockSecurity();
+        } catch (Throwable e) {
+            log(e);
 
-            }
         }
     }
 
-    private static void setPolicySets(MethodHookParam param) {
+    private static void setPolicySets(@NonNull MethodHookParam param) {
         disableAdmin(param.args[0]);
     }
 
     private static void disableAdmin(Object param) {
-        XposedHelpers.setBooleanField(param, "mAllowBrowser", true);
-        XposedHelpers.setBooleanField(param, "mAllowCamera", true);
-        XposedHelpers.setBooleanField(param, "mAllowDesktopSync", true);
-        XposedHelpers.setBooleanField(param, "mAllowHTMLEmail", true);
-        XposedHelpers.setBooleanField(param, "mAllowInternetSharing", true);
-        XposedHelpers.setBooleanField(param, "mAllowIrDA", true);
-        XposedHelpers.setBooleanField(param, "mAllowPOPIMAPEmail", true);
-        XposedHelpers.setBooleanField(param, "mAllowSMIMESoftCerts", true);
-        XposedHelpers.setBooleanField(param, "mAllowStorageCard", true);
-        XposedHelpers.setBooleanField(param, "mAllowTextMessaging", true);
-        XposedHelpers.setBooleanField(param, "mAllowUnsignedApp", true);
-        XposedHelpers.setBooleanField(param, "mAllowUnsignedInstallationPkg", true);
-        XposedHelpers.setBooleanField(param, "mAllowWifi", true);
-        XposedHelpers.setBooleanField(param, "mAttachmentsEnabled", true);
-        XposedHelpers.setBooleanField(param, "mDeviceEncryptionEnabled", false);
-        XposedHelpers.setBooleanField(param, "mPasswordRecoverable", true);
-        XposedHelpers.setBooleanField(param, "mRequireEncryptedSMIMEMessages", false);
-        XposedHelpers.setBooleanField(param, "mRequireEncryption", false);
-        XposedHelpers.setBooleanField(param, "mRequireManualSyncWhenRoaming", false);
-        XposedHelpers.setBooleanField(param, "mRequireRemoteWipe", false);
-        XposedHelpers.setBooleanField(param, "mRequireSignedSMIMEMessages", false);
-        XposedHelpers.setBooleanField(param, "mSimplePasswordEnabled", false);
-        XposedHelpers.setIntField(param, "mPasswordMode", 0);
-        XposedHelpers.setIntField(param, "mRequireEncryptionSMIMEAlgorithm", 0);
+        setBooleanField(param, "mAllowBrowser", true);
+        setBooleanField(param, "mAllowCamera", true);
+        setBooleanField(param, "mAllowDesktopSync", true);
+        setBooleanField(param, "mAllowHTMLEmail", true);
+        setBooleanField(param, "mAllowInternetSharing", true);
+        setBooleanField(param, "mAllowIrDA", true);
+        setBooleanField(param, "mAllowPOPIMAPEmail", true);
+        setBooleanField(param, "mAllowSMIMESoftCerts", true);
+        setBooleanField(param, "mAllowStorageCard", true);
+        setBooleanField(param, "mAllowTextMessaging", true);
+        setBooleanField(param, "mAllowUnsignedApp", true);
+        setBooleanField(param, "mAllowUnsignedInstallationPkg", true);
+        setBooleanField(param, "mAllowWifi", true);
+        setBooleanField(param, "mAttachmentsEnabled", true);
+        setBooleanField(param, "mDeviceEncryptionEnabled", false);
+        setBooleanField(param, "mPasswordRecoverable", true);
+        setBooleanField(param, "mRequireEncryptedSMIMEMessages", false);
+        setBooleanField(param, "mRequireEncryption", false);
+        setBooleanField(param, "mRequireManualSyncWhenRoaming", false);
+        setBooleanField(param, "mRequireRemoteWipe", false);
+        setBooleanField(param, "mRequireSignedSMIMEMessages", false);
+        setBooleanField(param, "mSimplePasswordEnabled", false);
+        setIntField(param, "mPasswordMode", 0);
+        setIntField(param, "mRequireEncryptionSMIMEAlgorithm", 0);
     }
 
     private static void disableExchangeLockSecurity() {
 
         try {
-            Class<?> policySet = XposedHelpers.findClass(POLICY_SET, classLoader);
-            XposedHelpers.findAndHookMethod(SECURITY_POLICY,
-                    classLoader,
-                    "isActive",
-                    Context.class,
-                    policySet,
-                    XC_MethodReplacement.returnConstant(Boolean.TRUE));
+            Class<?> policySet = findClass(POLICY_SET, classLoader);
+            findAndHookMethod(SECURITY_POLICY,
+                              classLoader,
+                              "isActive",
+                              Context.class,
+                              policySet,
+                              XC_MethodReplacement.returnConstant(reloadAndGetBooleanPref(PREF_DISABLE_EXCHANGE_SECURITY,
+                                                                                          false)));
 
-            XposedHelpers.findAndHookMethod(ACCOUNT,
-                    classLoader,
-                    "setPolicySet",
-                    policySet,
-                    new XC_MethodHook() {
-                        @Override
-                        protected void beforeHookedMethod(MethodHookParam param) {
-                            setPolicySets(param);
-                        }
-                    });
+            findAndHookMethod(ACCOUNT, classLoader, "setPolicySet", policySet, new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) {
+                    if (reloadAndGetBooleanPref(PREF_DISABLE_EXCHANGE_SECURITY, false)) {
+                        setPolicySets(param);
+                    }
+                }
+            });
 
-            XposedHelpers.findAndHookMethod(SETUP_DATA,
-                    classLoader,
-                    "setPolicySet",
-                    policySet,
-                    new XC_MethodHook() {
-                        @Override
-                        protected void beforeHookedMethod(MethodHookParam param) {
-                            setPolicySets(param);
-                        }
-                    });
+            findAndHookMethod(SETUP_DATA, classLoader, "setPolicySet", policySet, new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) {
+                    if (reloadAndGetBooleanPref(PREF_DISABLE_EXCHANGE_SECURITY, false)) {
+                        setPolicySets(param);
+                    }
+                }
+            });
 
-            XposedBridge.hookAllConstructors(policySet, new XC_MethodHook() {
+            hookAllConstructors(policySet, new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) {
-                    disableAdmin(param.thisObject);
+                    if (reloadAndGetBooleanPref(PREF_DISABLE_EXCHANGE_SECURITY, false)) {
+                        disableAdmin(param.thisObject);
+                    }
                 }
             });
         } catch (Throwable e) {
-            XposedBridge.log(e);
+            log(e);
         }
 
     }

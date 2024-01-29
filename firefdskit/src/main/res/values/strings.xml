@@ -67,8 +67,6 @@
     <string name="screen_on">When screen on and locked</string>
     <string name="screen_off">When screen off and locked</string>
     <string name="status_icons">Status icons</string>
-    <string name="hide_nfc_icon_off">NFC icon is shown</string>
-    <string name="hide_nfc_icon_on">NFC icon is hidden</string>
     <string name="hide_nfc_icon">Hide NFC icon</string>
     <string name="disable_volume_control_sound">Disable volume control sound</string>
     <string name="disable_volume_control_sound_while_changing_sounds">Disable volume control sound while changing sounds volume</string>
@@ -109,11 +107,11 @@
     <string name="four_g_data_icon_behavior_title">4G Data Icon Symbol</string>
     <string name="five_g_data_icon_behavior_title">5G Data Icon Symbol</string>
     <string name="lte_4g">LTE instead of 4G</string>
-    <string name="four_g_plus_4g">4G Plus instead of 4G</string>
-    <string name="four_g_4g_plus">4G instead of 4G Plus</string>
-    <string name="four_half_g_4g_plus">4.5G instead of 4G Plus</string>
+    <string name="four_g_plus_4g">4G+ instead of 4G</string>
+    <string name="four_half_g_4g_plus">4.5G instead of 4G+</string>
+    <string name="five_g">5G Icon</string>
     <string name="five_g_one">5G One Shaped Icon</string>
-    <string name="five_g_plus">5G Plus Shaped Icon</string>
+    <string name="five_g_plus">5G+ Shaped Icon</string>
     <string name="enable_data_mode_switch_summary">Enable Data Mode switch in power menu</string>
     <string name="enable_data_mode_switch_title">Data Mode Switch</string>
     <string name="quick_settings_data_usage_view_summary">Show data usage view in quick panel</string>
@@ -132,8 +130,6 @@
     <string name="disable_flag_secure_on">Secure flag enabled</string>
     <string name="disable_flag_secure_off">Secure flag disabled</string>
     <string name="screen_unlock">Screen Unlock</string>
-    <string name="enable_biometrics_unlock_summary">Enable fingerprint and biometrics unlock on reboot. Requires Multidisabler by Ianmacd for encrypted devices such as Galaxy S10</string>
-    <string name="enable_biometrics_unlock_title">Enable Fingerprint and Biometrics Unlock on Reboot</string>
     <string name="reboot_confirm_recovery">Reboot to Recovery mode</string>
     <string name="reboot_confirm_download">Reboot to Download mode</string>
     <string name="clock">Clock</string>
@@ -185,8 +181,6 @@
     <string name="enable_screen_record_title">Screen Recorder</string>
     <string name="disbale_restart_confirmation_summary">Disable restart confirmation</string>
     <string name="disbale_restart_confirmation_title">Disable Restart Confirmation</string>
-    <string name="enable_native_blur_summary">Enable native blur on notification panel pull down</string>
-    <string name="enable_native_blur_title">Native Blur</string>
     <string name="enable_blocked_phrases_summary">Enable block phrases in messages settings</string>
     <string name="enable_blocked_phrases_title">Enable Block Phrases</string>
     <string name="hide_volte_icon_off">VoLTE icon is shown</string>

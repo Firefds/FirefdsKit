@@ -34,26 +34,19 @@ public class FirefdsKitActionViewModelsFactory {
 
     private static final Map<String, Supplier<ActionViewModel>> ACTION_VIEW_MODEL_MAP = new HashMap<>();
 
-    private static final Supplier<ActionViewModel>
-            FLASH_LIGHT_ACTION_VIEW_MODEL = FlashLightActionViewModel::new;
+    private static final Supplier<ActionViewModel> FLASH_LIGHT_ACTION_VIEW_MODEL = FlashLightActionViewModel::new;
 
-    private static final Supplier<ActionViewModel>
-            SCREEN_RECORD_ACTION_VIEW_MODEL = ScreenRecordActionViewModel::new;
+    private static final Supplier<ActionViewModel> SCREEN_RECORD_ACTION_VIEW_MODEL = ScreenRecordActionViewModel::new;
 
-    private static final Supplier<ActionViewModel>
-            RESTART_SYSTEM_UI_ACTION_VIEW_MODEL = RestartSystemUiActionViewModel::new;
+    private static final Supplier<ActionViewModel> RESTART_SYSTEM_UI_ACTION_VIEW_MODEL = RestartSystemUiActionViewModel::new;
 
-    private static final Supplier<ActionViewModel>
-            MULTIUSER_ACTION_VIEW_MODEL = UserSwitchActionViewModel::new;
+    private static final Supplier<ActionViewModel> MULTIUSER_ACTION_VIEW_MODEL = UserSwitchActionViewModel::new;
 
-    private static final Supplier<ActionViewModel>
-            SCREENSHOT_ACTION_VIEW_MODEL = ScreenShotActionViewModel::new;
+    private static final Supplier<ActionViewModel> SCREENSHOT_ACTION_VIEW_MODEL = ScreenShotActionViewModel::new;
 
-    private static final Supplier<ActionViewModel>
-            RESTART_DOWNLOAD_ACTION_VIEW_MODEL = RestartDownloadActionViewModel::new;
+    private static final Supplier<ActionViewModel> RESTART_DOWNLOAD_ACTION_VIEW_MODEL = RestartDownloadActionViewModel::new;
 
-    private static final Supplier<ActionViewModel>
-            RESTART_RECOVERY_ACTION_VIEW_MODEL = RestartRecoveryActionViewModel::new;
+    private static final Supplier<ActionViewModel> RESTART_RECOVERY_ACTION_VIEW_MODEL = RestartRecoveryActionViewModel::new;
 
     static {
         ACTION_VIEW_MODEL_MAP.put(FLASHLIGHT_ACTION, FLASH_LIGHT_ACTION_VIEW_MODEL);
@@ -66,7 +59,6 @@ public class FirefdsKitActionViewModelsFactory {
     }
 
     public static Optional<ActionViewModel> getActionViewModel(String action) {
-        return Optional.ofNullable(ACTION_VIEW_MODEL_MAP.get(action))
-                .map(Supplier::get);
+        return Optional.ofNullable(ACTION_VIEW_MODEL_MAP.get(action)).map(Supplier::get);
     }
 }

@@ -59,6 +59,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -95,9 +96,7 @@ import sb.firefds.u.firefdskit.fragments.PreferenceFragmentFactory;
 import sb.firefds.u.firefdskit.notifications.RebootNotification;
 import sb.firefds.u.firefdskit.utils.Utils;
 
-public class FirefdsKitActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        RestoreDialog.RestoreDialogListener, PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+public class FirefdsKitActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, RestoreDialog.RestoreDialogListener, PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
     private final Runnable SHOW_CREDIT_DIALOG = this::showCreditsDialog;
     private final Runnable SHOW_RECOMMENDED_SETTINGS_DIALOG = this::showRecommendedSettingsDialog;
@@ -147,8 +146,8 @@ public class FirefdsKitActivity extends AppCompatActivity
             alertDialogBuilder.setTitle(getString(R.string.samsung_rom_warning));
 
             alertDialogBuilder.setMessage(getString(R.string.samsung_rom_warning_msg))
-                    .setCancelable(false)
-                    .setPositiveButton(getString(R.string.ok_btn), null);
+                              .setCancelable(false)
+                              .setPositiveButton(getString(R.string.ok_btn), null);
 
             alertDialogBuilder.create().show();
         }
@@ -164,27 +163,25 @@ public class FirefdsKitActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.firefds_main);
         toggle = new ActionBarDrawerToggle(activity,
-                drawer,
-                toolbar,
-                R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close);
+                                           drawer,
+                                           toolbar,
+                                           R.string.navigation_drawer_open,
+                                           R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         menuToggle = toggle;
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        navigationView.getHeaderView(0)
-                .findViewById(R.id.firefds_logo)
-                .setOnClickListener(v -> showHomePage());
+        navigationView.getHeaderView(0).findViewById(R.id.firefds_logo).setOnClickListener(v -> showHomePage());
 
         setDefaultPreferences(false);
 
         Editor editor = sharedPreferences.edit();
 
         if (sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_HOURS, 0) == 0 &&
-                sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_MINUTES, 0) == 0 &&
-                sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_SECONDS, 0) == 0) {
+            sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_MINUTES, 0) == 0 &&
+            sharedPreferences.getInt(PREF_SCREEN_TIMEOUT_SECONDS, 0) == 0) {
 
             int screenTimeout = 0;
             try {
@@ -201,67 +198,60 @@ public class FirefdsKitActivity extends AppCompatActivity
         }
 
         if (!XposedChecker.isActive()) {
-            setCardStatus(R.drawable.ic_error,
-                    R.string.firefds_kit_is_not_active,
-                    R.color.error);
+            setCardStatus(R.drawable.ic_error, R.string.firefds_kit_is_not_active, R.color.error);
         } else {
             if (permissionDeniedList.size() > 0) {
-                setCardStatus(R.drawable.ic_error,
-                        R.string.no_permissions,
-                        R.color.no_permissions);
+                setCardStatus(R.drawable.ic_error, R.string.no_permissions, R.color.no_permissions);
             } else {
-                setCardStatus(R.drawable.ic_check_circle,
-                        R.string.xposed_status,
-                        R.color.active);
+                setCardStatus(R.drawable.ic_check_circle, R.string.xposed_status, R.color.active);
             }
 
             if (!sharedPreferences.getBoolean(PREF_FIRST_LAUNCH, false)) {
-                new AlertDialog.Builder(activity)
-                        .setCancelable(true)
-                        .setIcon(R.drawable.ic_warning)
-                        .setTitle(R.string.app_name)
-                        .setMessage(R.string.firefds_xposed_disclaimer)
-                        .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
-                        .create()
-                        .show();
+                new AlertDialog.Builder(activity).setCancelable(true)
+                                                 .setIcon(R.drawable.ic_warning)
+                                                 .setTitle(R.string.app_name)
+                                                 .setMessage(R.string.firefds_xposed_disclaimer)
+                                                 .setPositiveButton(android.R.string.ok,
+                                                                    (dialog, which) -> dialog.dismiss())
+                                                 .create()
+                                                 .show();
                 sharedPreferences.edit().putBoolean(PREF_FIRST_LAUNCH, true).apply();
             }
         }
 
         Menu menuNav = navigationView.getMenu();
-        Optional.of(getIntent())
-                .map(Intent::getAction)
-                .ifPresent(action -> openMenuItem(action, menuNav));
+        Optional.of(getIntent()).map(Intent::getAction).ifPresent(action -> openMenuItem(action, menuNav));
     }
 
+    @NonNull
     private List<String> checkPermissions() {
         List<String> permissionDeniedList = new ArrayList<>();
         if (ContextCompat.checkSelfPermission(appContext, Manifest.permission.REBOOT) !=
-                PackageManager.PERMISSION_GRANTED) {
+            PackageManager.PERMISSION_GRANTED) {
             permissionDeniedList.add(Manifest.permission.REBOOT);
             Log.d("FFK", Manifest.permission.REBOOT + " was not granted");
         }
         if (ContextCompat.checkSelfPermission(appContext, Manifest.permission.WRITE_SETTINGS) !=
-                PackageManager.PERMISSION_GRANTED) {
+            PackageManager.PERMISSION_GRANTED) {
             permissionDeniedList.add(Manifest.permission.WRITE_SETTINGS);
             Log.d("FFK", Manifest.permission.WRITE_SETTINGS + " was not granted");
         }
         if (ContextCompat.checkSelfPermission(appContext, Manifest.permission.POST_NOTIFICATIONS) !=
-                PackageManager.PERMISSION_GRANTED) {
+            PackageManager.PERMISSION_GRANTED) {
             permissionDeniedList.add(Manifest.permission.POST_NOTIFICATIONS);
             Log.d("FFK", Manifest.permission.POST_NOTIFICATIONS + " was not granted");
         }
         if (ContextCompat.checkSelfPermission(appContext, "android.permission.RECOVERY") !=
-                PackageManager.PERMISSION_GRANTED) {
+            PackageManager.PERMISSION_GRANTED) {
             permissionDeniedList.add("android.permission.RECOVERY");
             Log.d("FFK", "Manifest.permission.REBOOT was not granted");
         }
         if (ContextCompat.checkSelfPermission(appContext,
-                "com.samsung.android.app.screenrecorder.permission.ACCESS_SCREEN_RECORDER_SVC") !=
-                PackageManager.PERMISSION_GRANTED) {
+                                              "com.samsung.android.app.screenrecorder.permission.ACCESS_SCREEN_RECORDER_SVC") !=
+            PackageManager.PERMISSION_GRANTED) {
             permissionDeniedList.add("com.samsung.android.app.screenrecorder.permission.ACCESS_SCREEN_RECORDER_SVC");
-            Log.d("FFK", "com.samsung.android.app.screenrecorder.permission.ACCESS_SCREEN_RECORDER_SVC was not " +
-                    "granted");
+            Log.d("FFK",
+                  "com.samsung.android.app.screenrecorder.permission.ACCESS_SCREEN_RECORDER_SVC was not " + "granted");
         }
         return permissionDeniedList;
     }
@@ -271,14 +261,12 @@ public class FirefdsKitActivity extends AppCompatActivity
     public void onBackPressed() {
         getVisibleFragment().ifPresent(fragment -> {
             if (((FirefdsPreferenceFragment) fragment).isSubFragment()) {
-                Optional.of(this)
-                        .map(AppCompatActivity::getSupportActionBar)
-                        .ifPresent(actionBar -> {
-                            actionBar.setTitle(R.string.system);
-                            toggle = menuToggle;
-                            actionBar.setDisplayHomeAsUpEnabled(false);
-                            toggle.setDrawerIndicatorEnabled(true);
-                        });
+                Optional.of(this).map(AppCompatActivity::getSupportActionBar).ifPresent(actionBar -> {
+                    actionBar.setTitle(R.string.system);
+                    toggle = menuToggle;
+                    actionBar.setDisplayHomeAsUpEnabled(false);
+                    toggle.setDrawerIndicatorEnabled(true);
+                });
 
                 super.onBackPressed();
             } else {
@@ -309,25 +297,22 @@ public class FirefdsKitActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onPreferenceStartFragment(@NonNull PreferenceFragmentCompat caller,
-                                             @NonNull Preference pref) {
+    public boolean onPreferenceStartFragment(@NonNull PreferenceFragmentCompat caller, @NonNull Preference pref) {
         final Bundle args = pref.getExtras();
-        final Fragment fragment = getSupportFragmentManager().getFragmentFactory().instantiate(
-                getClassLoader(),
-                Objects.requireNonNull(pref.getFragment()));
+        final Fragment fragment = getSupportFragmentManager().getFragmentFactory()
+                                                             .instantiate(getClassLoader(),
+                                                                          Objects.requireNonNull(pref.getFragment()));
         fragment.setArguments(args);
-        Optional.of(this)
-                .map(AppCompatActivity::getSupportActionBar)
-                .ifPresent(actionBar -> {
-                    toggle.setDrawerIndicatorEnabled(false);
-                    toggle.setToolbarNavigationClickListener(v -> onBackPressed());
-                    actionBar.setDisplayHomeAsUpEnabled(true);
-                    actionBar.setTitle(pref.getTitle());
-                });
+        Optional.of(this).map(AppCompatActivity::getSupportActionBar).ifPresent(actionBar -> {
+            toggle.setDrawerIndicatorEnabled(false);
+            toggle.setToolbarNavigationClickListener(v -> onBackPressed());
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(pref.getTitle());
+        });
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content_main, fragment)
-                .addToBackStack(null)
-                .commit();
+                                   .replace(R.id.content_main, fragment)
+                                   .addToBackStack(null)
+                                   .commit();
         return true;
     }
 
@@ -338,7 +323,7 @@ public class FirefdsKitActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         runMenuItemOption(item.getItemId());
         return super.onOptionsItemSelected(item);
     }
@@ -351,9 +336,11 @@ public class FirefdsKitActivity extends AppCompatActivity
         selectedMenuItem = item;
 
         PreferenceFragmentFactory.getMenuFragment(item.getItemId())
-                .ifPresent(firefdsPreferenceFragment -> getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_main, firefdsPreferenceFragment)
-                        .addToBackStack(firefdsPreferenceFragment.getFragmentName()).commit());
+                                 .ifPresent(firefdsPreferenceFragment -> getSupportFragmentManager()
+                                         .beginTransaction()
+                                         .replace(R.id.content_main, firefdsPreferenceFragment)
+                                         .addToBackStack(firefdsPreferenceFragment.getFragmentName())
+                                         .commit());
         Optional.of(this)
                 .map(AppCompatActivity::getSupportActionBar)
                 .ifPresent(actionBar -> actionBar.setTitle(item.getTitle()));
@@ -372,9 +359,7 @@ public class FirefdsKitActivity extends AppCompatActivity
     }
 
     private void runMenuItemOption(int menuItemId) {
-        Optional.of(OPTIONS_ITEMS)
-                .map(functionMap -> functionMap.get(menuItemId))
-                .ifPresent(Runnable::run);
+        Optional.of(OPTIONS_ITEMS).map(functionMap -> functionMap.get(menuItemId)).ifPresent(Runnable::run);
     }
 
     private void openMenuItem(String shortcutAction, Menu menuNav) {
@@ -389,18 +374,17 @@ public class FirefdsKitActivity extends AppCompatActivity
                 .map(AppCompatActivity::getSupportActionBar)
                 .ifPresent(actionBar -> actionBar.setTitle(R.string.app_name));
         drawer.closeDrawer(GravityCompat.START);
-        getSupportFragmentManager().getFragments().forEach(fragment ->
-                getSupportFragmentManager().beginTransaction().remove(fragment).commit());
+        getSupportFragmentManager().getFragments()
+                                   .forEach(fragment -> getSupportFragmentManager().beginTransaction()
+                                                                                   .remove(fragment)
+                                                                                   .commit());
         CardView cardXposedView = findViewById(R.id.card_xposed_view);
         cardXposedView.setVisibility(View.VISIBLE);
-        Optional.ofNullable(selectedMenuItem)
-                .ifPresent(menuItem -> menuItem.setChecked(false));
+        Optional.ofNullable(selectedMenuItem).ifPresent(menuItem -> menuItem.setChecked(false));
     }
 
     private Optional<Fragment> getVisibleFragment() {
-        return getSupportFragmentManager().getFragments().stream()
-                .filter(Fragment::isVisible)
-                .findFirst();
+        return getSupportFragmentManager().getFragments().stream().filter(Fragment::isVisible).findFirst();
     }
 
     private void showCreditsDialog() {
@@ -412,12 +396,12 @@ public class FirefdsKitActivity extends AppCompatActivity
     private void showRecommendedSettingsDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setCancelable(true)
-                .setTitle(R.string.app_name)
-                .setMessage(R.string.set_recommended_settings)
-                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel())
-                .setPositiveButton(R.string.apply, (dialog, which) -> restoreRecommendedSettings())
-                .create()
-                .show();
+               .setTitle(R.string.app_name)
+               .setMessage(R.string.set_recommended_settings)
+               .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel())
+               .setPositiveButton(R.string.apply, (dialog, which) -> restoreRecommendedSettings())
+               .create()
+               .show();
     }
 
     private void showSaveDialog() {
@@ -444,9 +428,7 @@ public class FirefdsKitActivity extends AppCompatActivity
         return sharedPreferences;
     }
 
-    private static void setCardStatus(int statusIconId,
-                                      int statusTextId,
-                                      int statusColorId) {
+    private static void setCardStatus(int statusIconId, int statusTextId, int statusColorId) {
 
         FrameLayout statusContainerLayout = activity.findViewById(R.id.xposed_status_container);
         ImageView statusIcon = activity.findViewById(R.id.xposed_status_icon);
@@ -481,14 +463,12 @@ public class FirefdsKitActivity extends AppCompatActivity
             Editor editor = sharedPreferences.edit();
 
             editor.putBoolean(PREF_DISABLE_NUMBER_FORMATTING,
-                    SemCscFeature.getInstance()
-                            .getBoolean(DISABLE_PHONE_NUMBER_FORMATTING)).apply();
+                              SemCscFeature.getInstance().getBoolean(DISABLE_PHONE_NUMBER_FORMATTING)).apply();
             editor.putBoolean(PREF_DISABLE_SMS_TO_MMS,
-                    SemCscFeature.getInstance()
-                            .getBoolean(DISABLE_SMS_TO_MMS_CONVERSION_BY_TEXT_INPUT)).apply();
-            editor.putBoolean(PREF_FORCE_MMS_CONNECT,
-                    SemCscFeature.getInstance()
-                            .getBoolean(FORCE_CONNECT_MMS)).apply();
+                              SemCscFeature.getInstance().getBoolean(DISABLE_SMS_TO_MMS_CONVERSION_BY_TEXT_INPUT))
+                  .apply();
+            editor.putBoolean(PREF_FORCE_MMS_CONNECT, SemCscFeature.getInstance().getBoolean(FORCE_CONNECT_MMS))
+                  .apply();
         }
     }
 
@@ -528,6 +508,7 @@ public class FirefdsKitActivity extends AppCompatActivity
             super.onPreExecute();
         }
 
+        @Nullable
         @Override
         protected Void doInBackground(Void... params) {
             HashMap<?, ?> entries;
@@ -544,16 +525,11 @@ public class FirefdsKitActivity extends AppCompatActivity
             Editor prefEdit = sharedPreferences.edit();
             prefEdit.clear();
             entries.forEach((key, value) -> {
-                if (value instanceof Boolean)
-                    prefEdit.putBoolean((String) key, (Boolean) value);
-                else if (value instanceof Float)
-                    prefEdit.putFloat((String) key, (Float) value);
-                else if (value instanceof Integer)
-                    prefEdit.putInt((String) key, (Integer) value);
-                else if (value instanceof Long)
-                    prefEdit.putLong((String) key, (Long) value);
-                else if (value instanceof String)
-                    prefEdit.putString((String) key, ((String) value));
+                if (value instanceof Boolean) prefEdit.putBoolean((String) key, (Boolean) value);
+                else if (value instanceof Float) prefEdit.putFloat((String) key, (Float) value);
+                else if (value instanceof Integer) prefEdit.putInt((String) key, (Integer) value);
+                else if (value instanceof Long) prefEdit.putLong((String) key, (Long) value);
+                else if (value instanceof String) prefEdit.putString((String) key, ((String) value));
             });
             prefEdit.apply();
 
@@ -564,9 +540,8 @@ public class FirefdsKitActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            Utils.createSnackbar(activity.findViewById(android.R.id.content),
-                    R.string.backup_restored,
-                    activity).show();
+            Utils.createSnackbar(activity.findViewById(android.R.id.content), R.string.backup_restored, activity)
+                 .show();
             RebootNotification.notify(activity, 999, false);
         }
     }

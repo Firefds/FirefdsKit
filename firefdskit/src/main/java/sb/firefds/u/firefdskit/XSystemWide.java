@@ -14,9 +14,11 @@
  */
 package sb.firefds.u.firefdskit;
 
+import static de.robv.android.xposed.XposedBridge.log;
+import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static sb.firefds.u.firefdskit.Xposed.reloadAndGetBooleanPref;
 import static sb.firefds.u.firefdskit.utils.Constants.CONFIG_RECORDING;
 import static sb.firefds.u.firefdskit.utils.Constants.CONFIG_SVC_PROVIDER_FOR_UNKNOWN_NUMBER;
-import static sb.firefds.u.firefdskit.utils.Constants.SAMSUNG_BLUR;
 import static sb.firefds.u.firefdskit.utils.Constants.SUPPORT_REAL_TIME_NETWORK_SPEED;
 import static sb.firefds.u.firefdskit.utils.Constants.SUPPORT_Z_PROJECT_FUNCTION_IN_GLOBAL;
 import static sb.firefds.u.firefdskit.utils.Preferences.PREF_DEFAULT_REBOOT_BEHAVIOR;
@@ -24,7 +26,6 @@ import static sb.firefds.u.firefdskit.utils.Preferences.PREF_DISABLE_SECURE_FLAG
 import static sb.firefds.u.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS;
 import static sb.firefds.u.firefdskit.utils.Preferences.PREF_ENABLE_CALL_ADD;
 import static sb.firefds.u.firefdskit.utils.Preferences.PREF_ENABLE_CALL_RECORDING;
-import static sb.firefds.u.firefdskit.utils.Preferences.PREF_ENABLE_SAMSUNG_BLUR;
 import static sb.firefds.u.firefdskit.utils.Preferences.PREF_ENABLE_SPAM_PROTECTION;
 import static sb.firefds.u.firefdskit.utils.Preferences.PREF_SHOW_NETWORK_SPEED_MENU;
 
@@ -33,126 +34,103 @@ import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+
 import com.samsung.android.feature.SemCscFeature;
 import com.samsung.android.feature.SemFloatingFeature;
 import com.samsung.android.wifi.SemWifiManager;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
 
 public class XSystemWide {
 
-    public static void doHook(XSharedPreferences prefs) {
+    public static void doHook() {
 
         try {
-            if (prefs.getBoolean(PREF_DISABLE_SECURE_FLAG, false)) {
-                XposedHelpers.findAndHookMethod(Window.class,
-                        "setFlags",
-                        int.class,
-                        int.class,
-                        new XC_MethodHook() {
-                            @Override
-                            protected void beforeHookedMethod(MethodHookParam param) {
-                                Integer flags = (Integer) param.args[0];
-                                flags &= ~WindowManager.LayoutParams.FLAG_SECURE;
-                                param.args[0] = flags;
-                            }
-                        });
+            findAndHookMethod(Window.class, "setFlags", int.class, int.class, new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) {
+                    if (reloadAndGetBooleanPref(PREF_DISABLE_SECURE_FLAG, false)) {
+                        Integer flags = (Integer) param.args[0];
+                        flags &= ~WindowManager.LayoutParams.FLAG_SECURE;
+                        param.args[0] = flags;
+                    }
+                }
+            });
 
-                XposedHelpers.findAndHookMethod(SurfaceView.class,
-                        "setSecure",
-                        boolean.class,
-                        new XC_MethodHook() {
-                            @Override
-                            protected void beforeHookedMethod(MethodHookParam param) {
-                                param.args[0] = false;
-                            }
-                        });
-            }
+            findAndHookMethod(SurfaceView.class, "setSecure", boolean.class, new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) {
+                    if (reloadAndGetBooleanPref(PREF_DISABLE_SECURE_FLAG, false)) {
+                        param.args[0] = false;
+                    }
+                }
+            });
 
-            if (prefs.getBoolean(PREF_DEFAULT_REBOOT_BEHAVIOR, false)) {
-                XposedHelpers.findAndHookMethod(PowerManager.class,
-                        "reboot",
-                        String.class,
-                        new XC_MethodHook() {
-                            @Override
-                            protected void beforeHookedMethod(MethodHookParam param) {
-                                if (param.args[0] == null) {
-                                    param.args[0] = "recovery";
-                                }
-                            }
-                        });
-            }
+            findAndHookMethod(PowerManager.class, "reboot", String.class, new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) {
+                    if (reloadAndGetBooleanPref(PREF_DEFAULT_REBOOT_BEHAVIOR, false)) {
+                        if (param.args[0] == null) {
+                            param.args[0] = "recovery";
+                        }
+                    }
+                }
+            });
 
-            if (prefs.getBoolean(PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS, false)) {
-                XposedHelpers.findAndHookMethod(SemWifiManager.class,
-                        "supportWifiAp5GBasedOnCountry",
-                        XC_MethodReplacement.returnConstant(Boolean.TRUE));
+            findAndHookMethod(SemWifiManager.class,
+                              "supportWifiAp5GBasedOnCountry",
+                              XC_MethodReplacement.returnConstant(reloadAndGetBooleanPref(
+                                      PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS,
+                                      false)));
 
-                XposedHelpers.findAndHookMethod(SemWifiManager.class,
-                        "supportWifiAp6GBasedOnCountry",
-                        XC_MethodReplacement.returnConstant(Boolean.TRUE));
-            }
+            findAndHookMethod(SemWifiManager.class,
+                              "supportWifiAp6GBasedOnCountry",
+                              XC_MethodReplacement.returnConstant(reloadAndGetBooleanPref(
+                                      PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS,
+                                      false)));
 
-            XposedHelpers.findAndHookMethod(SemFloatingFeature.class,
-                    "getString",
-                    String.class,
-                    cscFeatureGetStringHook(prefs));
+            findAndHookMethod(SemFloatingFeature.class, "getString", String.class, cscFeatureGetStringHook());
 
-            XposedHelpers.findAndHookMethod(SemFloatingFeature.class,
-                    "getString",
-                    String.class,
-                    String.class,
-                    cscFeatureGetStringHook(prefs));
+            findAndHookMethod(SemFloatingFeature.class,
+                              "getString",
+                              String.class,
+                              String.class,
+                              cscFeatureGetStringHook());
 
-            XposedHelpers.findAndHookMethod(SemCscFeature.class,
-                    "getString",
-                    String.class,
-                    cscFeatureGetStringHook(prefs));
+            findAndHookMethod(SemCscFeature.class, "getString", String.class, cscFeatureGetStringHook());
 
-            XposedHelpers.findAndHookMethod(SemCscFeature.class,
-                    "getString",
-                    String.class,
-                    String.class,
-                    cscFeatureGetStringHook(prefs));
+            findAndHookMethod(SemCscFeature.class, "getString", String.class, String.class, cscFeatureGetStringHook());
 
-            XposedHelpers.findAndHookMethod(SemFloatingFeature.class,
-                    "getBoolean",
-                    String.class,
-                    cscFeatureGetBooleanHook(prefs));
+            findAndHookMethod(SemFloatingFeature.class, "getBoolean", String.class, cscFeatureGetBooleanHook());
 
-            XposedHelpers.findAndHookMethod(SemFloatingFeature.class,
-                    "getBoolean",
-                    String.class,
-                    boolean.class,
-                    cscFeatureGetBooleanHook(prefs));
+            findAndHookMethod(SemFloatingFeature.class,
+                              "getBoolean",
+                              String.class,
+                              boolean.class,
+                              cscFeatureGetBooleanHook());
 
-            XposedHelpers.findAndHookMethod(SemCscFeature.class,
-                    "getBoolean",
-                    String.class,
-                    cscFeatureGetBooleanHook(prefs));
+            findAndHookMethod(SemCscFeature.class, "getBoolean", String.class, cscFeatureGetBooleanHook());
 
-            XposedHelpers.findAndHookMethod(SemCscFeature.class,
-                    "getBoolean",
-                    String.class,
-                    boolean.class,
-                    cscFeatureGetBooleanHook(prefs));
+            findAndHookMethod(SemCscFeature.class,
+                              "getBoolean",
+                              String.class,
+                              boolean.class,
+                              cscFeatureGetBooleanHook());
         } catch (Throwable e) {
-            XposedBridge.log(e);
+            log(e);
         }
     }
 
-    private static XC_MethodHook cscFeatureGetStringHook(XSharedPreferences prefs) {
+    @NonNull
+    private static XC_MethodHook cscFeatureGetStringHook() {
         return new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) {
                 if (param.args[0].equals(CONFIG_RECORDING)) {
-                    prefs.reload();
-                    if (prefs.getBoolean(PREF_ENABLE_CALL_RECORDING, false)) {
-                        if (prefs.getBoolean(PREF_ENABLE_CALL_ADD, false)) {
+                    if (reloadAndGetBooleanPref(PREF_ENABLE_CALL_RECORDING, false)) {
+                        if (reloadAndGetBooleanPref(PREF_ENABLE_CALL_ADD, false)) {
                             param.setResult("RecordingAllowedByMenu");
                         } else {
                             param.setResult("RecordingAllowed");
@@ -162,8 +140,7 @@ public class XSystemWide {
                     }
                 }
                 if (param.args[0].equals(CONFIG_SVC_PROVIDER_FOR_UNKNOWN_NUMBER)) {
-                    prefs.reload();
-                    if (prefs.getBoolean(PREF_ENABLE_SPAM_PROTECTION, true)) {
+                    if (reloadAndGetBooleanPref(PREF_ENABLE_SPAM_PROTECTION, true)) {
                         param.setResult("whitepages,whitepages,whitepages");
                     } else {
                         param.setResult("");
@@ -173,19 +150,16 @@ public class XSystemWide {
         };
     }
 
-    private static XC_MethodHook cscFeatureGetBooleanHook(XSharedPreferences prefs) {
+    @NonNull
+    private static XC_MethodHook cscFeatureGetBooleanHook() {
         return new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) {
-                prefs.reload();
                 if (param.args[0].equals(SUPPORT_REAL_TIME_NETWORK_SPEED)) {
-                    param.setResult(prefs.getBoolean(PREF_SHOW_NETWORK_SPEED_MENU, false));
+                    param.setResult(reloadAndGetBooleanPref(PREF_SHOW_NETWORK_SPEED_MENU, false));
                 }
                 if (param.args[0].equals(SUPPORT_Z_PROJECT_FUNCTION_IN_GLOBAL)) {
-                    param.setResult(prefs.getBoolean(PREF_SHOW_NETWORK_SPEED_MENU, false));
-                }
-                if (param.args[0].equals(SAMSUNG_BLUR)) {
-                    param.setResult(prefs.getBoolean(PREF_ENABLE_SAMSUNG_BLUR, false));
+                    param.setResult(reloadAndGetBooleanPref(PREF_SHOW_NETWORK_SPEED_MENU, false));
                 }
             }
         };

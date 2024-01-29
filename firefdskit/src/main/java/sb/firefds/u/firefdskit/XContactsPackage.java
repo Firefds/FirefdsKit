@@ -14,26 +14,26 @@
  */
 package sb.firefds.u.firefdskit;
 
+import static de.robv.android.xposed.XposedBridge.log;
+import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static sb.firefds.u.firefdskit.Xposed.reloadAndGetBooleanPref;
 import static sb.firefds.u.firefdskit.utils.Preferences.PREF_DISABLE_NUMBER_FORMATTING;
 
 import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
 
 public class XContactsPackage {
     private static final String CSC_FEATURE_UTIL = "com.samsung.android.dialtacts.util.CscFeatureUtil";
 
-    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(ClassLoader classLoader) {
 
         try {
-            XposedHelpers.findAndHookMethod(CSC_FEATURE_UTIL,
-                    classLoader,
-                    "getDisablePhoneNumberFormatting",
-                    XC_MethodReplacement.returnConstant(prefs
-                            .getBoolean(PREF_DISABLE_NUMBER_FORMATTING, false)));
+            findAndHookMethod(CSC_FEATURE_UTIL,
+                              classLoader,
+                              "getDisablePhoneNumberFormatting",
+                              XC_MethodReplacement.returnConstant(reloadAndGetBooleanPref(PREF_DISABLE_NUMBER_FORMATTING,
+                                                                                          false)));
         } catch (Throwable e) {
-            XposedBridge.log(e);
+            log(e);
         }
     }
 }

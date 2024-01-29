@@ -23,14 +23,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import sb.firefds.u.firefdskit.R;
 import sb.firefds.u.firefdskit.notifications.RebootNotification;
 import sb.firefds.u.firefdskit.utils.Utils;
 
-public abstract class FirefdsPreferenceFragment extends PreferenceFragmentCompat
-        implements SharedPreferences.OnSharedPreferenceChangeListener {
+public abstract class FirefdsPreferenceFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private AppCompatActivity fragmentActivity;
     private static List<String> changesMade;
@@ -49,12 +49,12 @@ public abstract class FirefdsPreferenceFragment extends PreferenceFragmentCompat
 
         try {
             // No reboot notification required
-            String[] litePrefs = fragmentActivity.getResources().getStringArray(R.array.lite_preferences);
+            String[] rebootRequiredPrefs = fragmentActivity.getResources()
+                                                           .getStringArray(R.array.reboot_required_preferences);
 
-            for (String string : litePrefs) {
-                if (key != null && key.equalsIgnoreCase(string)) {
-                    return;
-                }
+            boolean doesPrefRequireReboot = Arrays.asList(rebootRequiredPrefs).contains(key);
+            if (!doesPrefRequireReboot) {
+                return;
             }
 
             // Add preference key to changed keys list

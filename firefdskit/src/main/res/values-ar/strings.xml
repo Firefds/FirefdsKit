@@ -67,8 +67,6 @@
     <string name="screen_on">عندما تكون الشاشة مشتعلة ومقفلة</string>
     <string name="screen_off">عندما تكون الشاشة منطفئة ومقفلة</string>
     <string name="status_icons">أيقون الحالة</string>
-    <string name="hide_nfc_icon_off">" أيقون NFC مرئي"</string>
-    <string name="hide_nfc_icon_on">أيقون NFC مخفي</string>
     <string name="hide_nfc_icon">NFC إخفاء أيقون</string>
     <string name="disable_volume_control_sound">تعطيل رنّة التحكم في الصوت</string>
     <string name="disable_volume_control_sound_while_changing_sounds">تعطيل رنّة التحكم في حجم الصوت عند تعديل حجم الصوت</string>
@@ -107,7 +105,6 @@
     <string name="four_g_data_icon_behavior_title">رمز أيقون البيانات 4G</string>
     <string name="lte_4g">عرض LTE بدلا من 4G</string>
     <string name="four_g_plus_4g">عرض 4G Plus بدلا من 4G</string>
-    <string name="four_g_4g_plus">عرض 4G بدلا من 4G Plus</string>
     <string name="four_half_g_4g_plus">عرض 4.5G بدلا من 4G Plus</string>
     <string name="enable_data_mode_switch_summary">تفعيل مبدّل وضع البيانات في قائمة الطاقة</string>
     <string name="enable_data_mode_switch_title">مبدّل وضع البيانات</string>
@@ -127,8 +124,6 @@
     <string name="disable_flag_secure_on">عَلَم الأمن مفعّل</string>
     <string name="disable_flag_secure_off">عَلَم الأمن معطّل</string>
     <string name="screen_unlock">فتح قفل الشاشة</string>
-    <string name="enable_biometrics_unlock_summary">تفعيل فتح القفل بالبصمة والقياسات الحيوية عند إعادة التشغيل. يحتاج إلى Multidisabler من طرف Ianmacd في الأجهزة المشفّرة مثل الجالاكسي S10</string>
-    <string name="enable_biometrics_unlock_title">تفعيل فتح القفل بالبصمة والقياسات الحيوية عند إعادة التشغيل</string>
     <string name="reboot_confirm_recovery">إعادة التشغيل بدخول وضع الاسترداد</string>
     <string name="reboot_confirm_download">إعادة التشغيل بدخول وضع التنزيل</string>
     <string name="clock">الساعة</string>
@@ -180,8 +175,6 @@
     <string name="enable_screen_record_title">مسجّل الشاشة</string>
     <string name="disbale_restart_confirmation_summary">تعطيل تأكيد إعادة التشغيل</string>
     <string name="disbale_restart_confirmation_title">تعطيل تأكيد إعادة التشغيل</string>
-    <string name="enable_native_blur_summary">تفعيل الطمس الأصلي عند سحب لوحة الإشعارات للأسفل</string>
-    <string name="enable_native_blur_title">الطمس الأصلي</string>
     <string name="enable_blocked_phrases_summary">تفعيل حظر العبارات في إعدادات الرسائل</string>
     <string name="enable_blocked_phrases_title">تفعيل حظر العبارات</string>
     <string name="hide_volte_icon_off">أيقون VoLTE مرئي</string>

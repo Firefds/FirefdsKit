@@ -21,6 +21,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Keep;
+import androidx.annotation.NonNull;
 import androidx.preference.EditTextPreference;
 
 import java.util.Optional;
@@ -50,28 +51,27 @@ public class PowerMenuSettingsFragment extends FirefdsPreferenceFragment {
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @NonNull String key) {
         if (key.equals(PREF_CUSTOM_RECOVERY)) {
             if (sharedPreferences.getString(key, "").equals("")) {
                 sharedPreferences.edit()
-                        .putString(key, getFragmentActivity().getString(R.string.reboot_recovery))
-                        .apply();
-                Optional<EditTextPreference> custom_recovery =
-                        Optional.ofNullable(findPreference(PREF_CUSTOM_RECOVERY));
-                custom_recovery.ifPresent(editTextPreference ->
-                        editTextPreference.setText(getFragmentActivity().getString(R.string.reboot_recovery)));
+                                 .putString(key, getFragmentActivity().getString(R.string.reboot_recovery))
+                                 .apply();
+                Optional<EditTextPreference> custom_recovery = Optional.ofNullable(findPreference(PREF_CUSTOM_RECOVERY));
+                custom_recovery.ifPresent(editTextPreference -> editTextPreference.setText(getFragmentActivity().getString(
+                        R.string.reboot_recovery)));
             }
         }
 
         if (key.equals(PREF_CUSTOM_RECOVERY_CONFIRMATION)) {
             if (sharedPreferences.getString(key, "").equals("")) {
                 sharedPreferences.edit()
-                        .putString(key, getFragmentActivity().getString(R.string.reboot_confirm_recovery))
-                        .apply();
-                Optional<EditTextPreference> custom_recovery_confirmation =
-                        Optional.ofNullable(findPreference(PREF_CUSTOM_RECOVERY_CONFIRMATION));
-                custom_recovery_confirmation.ifPresent(editTextPreference ->
-                        editTextPreference.setText(getFragmentActivity().getString(R.string.reboot_confirm_recovery)));
+                                 .putString(key, getFragmentActivity().getString(R.string.reboot_confirm_recovery))
+                                 .apply();
+                Optional<EditTextPreference> custom_recovery_confirmation = Optional.ofNullable(findPreference(
+                        PREF_CUSTOM_RECOVERY_CONFIRMATION));
+                custom_recovery_confirmation.ifPresent(editTextPreference -> editTextPreference.setText(
+                        getFragmentActivity().getString(R.string.reboot_confirm_recovery)));
             }
         }
         super.onSharedPreferenceChanged(sharedPreferences, key);

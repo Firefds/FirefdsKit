@@ -11,9 +11,10 @@ assignees: Firefds
 A clear and concise description of what the bug is.
 
 **Device:**
- - Device: [e.g. Galaxy S8]
- - Chipset: [Exynos/Snapdragon]
- - Model: [e.g. SM-G950F]
+
+- Device: [e.g. Galaxy S8]
+- Chipset: [Exynos/Snapdragon]
+- Model: [e.g. SM-G950F]
 
 **Xposed or Logcat logs**
 Refer here to how to get logs - https://github.com/rovo89/XposedBridge/wiki/Bugs#how-can-i-get-logs

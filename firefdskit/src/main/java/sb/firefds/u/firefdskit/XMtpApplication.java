@@ -14,36 +14,35 @@
  */
 package sb.firefds.u.firefdskit;
 
+import static de.robv.android.xposed.XposedBridge.log;
+import static de.robv.android.xposed.XposedHelpers.callMethod;
+import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.getObjectField;
+import static sb.firefds.u.firefdskit.Xposed.reloadAndGetBooleanPref;
 import static sb.firefds.u.firefdskit.utils.Packages.MTP_APPLICATION;
 import static sb.firefds.u.firefdskit.utils.Preferences.PREF_HIDE_MTP_NOTIFICATION;
 
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
 
 public class XMtpApplication {
 
     private static final String USB_CONNECTION = MTP_APPLICATION + ".USBConnection";
 
-    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(ClassLoader classLoader) {
 
-        if (prefs.getBoolean(PREF_HIDE_MTP_NOTIFICATION, false)) {
-            try {
-                XposedHelpers.findAndHookMethod(USB_CONNECTION,
-                        classLoader,
-                        "showDiaglog",
-                        new XC_MethodHook() {
-                            @Override
-                            protected void afterHookedMethod(MethodHookParam param) {
-                                Object mReceiver = XposedHelpers.getObjectField(param.thisObject, "mReceiver");
-                                XposedHelpers.callMethod(mReceiver, "changeMtpMode");
-                                XposedHelpers.callMethod(param.thisObject, "finish");
-                            }
-                        });
-            } catch (Throwable e) {
-                XposedBridge.log(e);
-            }
+        try {
+            findAndHookMethod(USB_CONNECTION, classLoader, "showDiaglog", new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) {
+                    if (reloadAndGetBooleanPref(PREF_HIDE_MTP_NOTIFICATION, false)) {
+                        Object mReceiver = getObjectField(param.thisObject, "mReceiver");
+                        callMethod(mReceiver, "changeMtpMode");
+                        callMethod(param.thisObject, "finish");
+                    }
+                }
+            });
+        } catch (Throwable e) {
+            log(e);
         }
     }
 }

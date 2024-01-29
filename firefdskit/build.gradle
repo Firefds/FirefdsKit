@@ -15,8 +15,8 @@ android {
         applicationId 'sb.firefds.u.firefdskit'
         minSdkVersion 34
         targetSdkVersion 34
-        versionCode 14002
-        versionName "14.0.0.2-ALPHA-2"
+        versionCode 14003
+        versionName "14.0.0.3-ALPHA-3"
     }
     applicationVariants.configureEach { variant ->
         variant.outputs.configureEach { output ->
@@ -45,7 +45,7 @@ android {
 }
 
 dependencies {
-    def lifecycle_version = "2.6.2"
+    def lifecycle_version = "2.7.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'

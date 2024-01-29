@@ -14,74 +14,81 @@
  */
 package sb.firefds.u.firefdskit;
 
+import static de.robv.android.xposed.XposedBridge.log;
+import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.findClass;
+import static sb.firefds.u.firefdskit.Xposed.reloadAndGetBooleanPref;
 import static sb.firefds.u.firefdskit.utils.Preferences.PREF_ENABLE_SCREEN_RECORDER_IN_CALL;
 
 import android.content.Context;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
 
 public class XSmartCapturePackage {
 
     private static final String RECORDING_STOP_REASON = "com.samsung.android.app.screenrecorder" +
-            ".ScreenRecorderController.RecordingStopReason";
+                                                        ".ScreenRecorderController.RecordingStopReason";
     private static final String SCREEN_RECORDER_CONTROLLER = "com.samsung.android.app.screenrecorder" +
-            ".ScreenRecorderController";
+                                                             ".ScreenRecorderController";
     private static final String SCREEN_RECORDER_CONTROLLER$1 = "com.samsung.android.app.screenrecorder" +
-            ".ScreenRecorderController$1";
+                                                               ".ScreenRecorderController$1";
     private static final String SCREEN_RECORDER_UTILS = "com.samsung.android.app.screenrecorder.util" +
-            ".ScreenRecorderUtils";
+                                                        ".ScreenRecorderUtils";
 
-    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(ClassLoader classLoader) {
 
-        if (prefs.getBoolean(PREF_ENABLE_SCREEN_RECORDER_IN_CALL, false)) {
-            try {
-                XposedHelpers.findAndHookMethod(SCREEN_RECORDER_CONTROLLER$1,
-                        classLoader,
-                        "onCallStateChanged",
-                        int.class,
-                        new XC_MethodHook() {
-                            @Override
-                            protected void beforeHookedMethod(MethodHookParam param) {
-                                param.setResult(null);
-                            }
-                        });
+        try {
+            findAndHookMethod(SCREEN_RECORDER_CONTROLLER$1,
+                              classLoader,
+                              "onCallStateChanged",
+                              int.class,
+                              new XC_MethodHook() {
+                                  @Override
+                                  protected void beforeHookedMethod(MethodHookParam param) {
+                                      if (reloadAndGetBooleanPref(PREF_ENABLE_SCREEN_RECORDER_IN_CALL, false)) {
+                                          param.setResult(null);
+                                      }
+                                  }
+                              });
 
-                Class<?> recordingStopReason = XposedHelpers.findClass(RECORDING_STOP_REASON, classLoader);
-                XposedHelpers.findAndHookMethod(SCREEN_RECORDER_CONTROLLER,
-                        classLoader,
-                        "stopRecordingAccordingToAction",
-                        recordingStopReason,
-                        new XC_MethodHook() {
-                            @Override
-                            protected void beforeHookedMethod(MethodHookParam param) {
-                                if (((Enum<?>) param.args[0]).name().equalsIgnoreCase("INCOMING_CALL")) {
-                                    param.setResult(null);
-                                }
-                            }
-                        });
-            } catch (Exception e) {
-                XposedBridge.log(e);
-            }
+            Class<?> recordingStopReason = findClass(RECORDING_STOP_REASON, classLoader);
+            findAndHookMethod(SCREEN_RECORDER_CONTROLLER,
+                              classLoader,
+                              "stopRecordingAccordingToAction",
+                              recordingStopReason,
+                              new XC_MethodHook() {
+                                  @Override
+                                  protected void beforeHookedMethod(MethodHookParam param) {
+                                      if (reloadAndGetBooleanPref(PREF_ENABLE_SCREEN_RECORDER_IN_CALL, false)) {
+                                          if (((Enum<?>) param.args[0]).name().equalsIgnoreCase("INCOMING_CALL")) {
+                                              param.setResult(null);
+                                          }
+                                      }
+                                  }
+                              });
+        } catch (Exception e) {
+            log(e);
+        }
 
-            try {
-                XposedHelpers.findAndHookMethod(SCREEN_RECORDER_UTILS,
-                        classLoader,
-                        "isDuringCsCallState",
-                        Context.class,
-                        XC_MethodReplacement.returnConstant(Boolean.FALSE));
+        try {
+            findAndHookMethod(SCREEN_RECORDER_UTILS,
+                              classLoader,
+                              "isDuringCsCallState",
+                              Context.class,
+                              XC_MethodReplacement.returnConstant(!reloadAndGetBooleanPref(
+                                      PREF_ENABLE_SCREEN_RECORDER_IN_CALL,
+                                      false)));
 
-                XposedHelpers.findAndHookMethod(SCREEN_RECORDER_UTILS,
-                        classLoader,
-                        "isDuringPsCallState",
-                        Context.class,
-                        XC_MethodReplacement.returnConstant(Boolean.FALSE));
-            } catch (Exception e) {
-                XposedBridge.log(e);
-            }
+            findAndHookMethod(SCREEN_RECORDER_UTILS,
+                              classLoader,
+                              "isDuringPsCallState",
+                              Context.class,
+                              XC_MethodReplacement.returnConstant(!reloadAndGetBooleanPref(
+                                      PREF_ENABLE_SCREEN_RECORDER_IN_CALL,
+                                      false)));
+        } catch (Exception e) {
+            log(e);
         }
     }
 }

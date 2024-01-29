@@ -47,9 +47,8 @@ public class UserSwitchActionViewModel extends FirefdsKitActionViewModel {
     }
 
     private void showUserSwitchScreen() {
-        Intent rebootIntent = new Intent("android.settings.USER_SETTINGS")
-                .setPackage(SETTINGS)
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent rebootIntent = new Intent("android.settings.USER_SETTINGS").setPackage(SETTINGS)
+                                                                          .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getContext().startActivity(rebootIntent);
     }
 }

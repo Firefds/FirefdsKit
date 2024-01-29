@@ -14,6 +14,14 @@
  */
 package sb.firefds.u.firefdskit;
 
+import static de.robv.android.xposed.XposedBridge.log;
+import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.findClass;
+import static de.robv.android.xposed.XposedHelpers.setStaticBooleanField;
+import static de.robv.android.xposed.XposedHelpers.setStaticIntField;
+import static de.robv.android.xposed.XposedHelpers.setStaticObjectField;
+import static sb.firefds.u.firefdskit.Xposed.reloadAndGetBooleanPref;
+import static sb.firefds.u.firefdskit.Xposed.reloadAndGetIntPref;
 import static sb.firefds.u.firefdskit.utils.Packages.SAMSUNG_SETTINGS;
 import static sb.firefds.u.firefdskit.utils.Preferences.PREF_DISABLE_BLUETOOTH_DIALOG;
 import static sb.firefds.u.firefdskit.utils.Preferences.PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS;
@@ -27,9 +35,6 @@ import android.os.UserManager;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
 
 public class XSecSettingsPackage {
 
@@ -40,108 +45,90 @@ public class XSecSettingsPackage {
 
     private static ClassLoader classLoader;
 
-    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(ClassLoader classLoader) {
 
         XSecSettingsPackage.classLoader = classLoader;
 
-        if (prefs.getBoolean(PREF_MAKE_OFFICIAL, true)) {
-            makeOfficial();
+        makeOfficial();
+
+        try {
+            findAndHookMethod(BLUETOOTH_SCAN_DIALOG, classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) {
+                    if (reloadAndGetBooleanPref(PREF_DISABLE_BLUETOOTH_DIALOG, false))
+                        ((android.app.Activity) param.thisObject).finish();
+                }
+            });
+
+        } catch (Throwable e) {
+            log(e);
         }
 
         try {
-            XposedHelpers.findAndHookMethod(
-                    BLUETOOTH_SCAN_DIALOG,
-                    classLoader,
-                    "onCreate",
-                    Bundle.class,
-                    new XC_MethodHook() {
-                        @Override
-                        protected void afterHookedMethod(MethodHookParam param) {
-                            prefs.reload();
-                            if (prefs.getBoolean(PREF_DISABLE_BLUETOOTH_DIALOG, false))
-                                ((android.app.Activity) param.thisObject).finish();
-                        }
-                    });
+            findAndHookMethod(UserManager.class, "supportsMultipleUsers", new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) {
+                    if (reloadAndGetBooleanPref(PREF_SUPPORTS_MULTIPLE_USERS, false)) {
+                        param.setResult(true);
+                    }
+                }
+            });
+
+            findAndHookMethod(UserManager.class, "getMaxSupportedUsers", new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) {
+                    if (reloadAndGetBooleanPref(PREF_SUPPORTS_MULTIPLE_USERS, false)) {
+                        param.setResult(reloadAndGetIntPref(PREF_MAX_SUPPORTED_USERS, 3));
+                    }
+                }
+            });
+
+            findAndHookMethod(SETTINGS_UTILS, classLoader, "initMHSFeature", Context.class, new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) {
+                    if (reloadAndGetBooleanPref(PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS, false)) {
+                        Class<?> settingsUtils = findClass(SETTINGS_UTILS, classLoader);
+                        setStaticIntField(settingsUtils, "MAX_CLIENT_4_MOBILEAP", 10);
+                        setStaticBooleanField(settingsUtils, "SUPPORT_MOBILEAP_5G_BASED_ON_COUNTRY", true);
+                        setStaticBooleanField(settingsUtils, "SUPPORT_MOBILEAP_6G_BASED_ON_COUNTRY", true);
+                        setStaticBooleanField(settingsUtils, "SUPPORT_MOBILEAP_WIFISHARING", true);
+                        setStaticBooleanField(settingsUtils, "SUPPORT_MOBILEAP_WIFISHARINGLITE", true);
+                        setStaticObjectField(settingsUtils, "SUPPORT_MOBILEAP_REGION", "NA");
+                    }
+                }
+            });
 
         } catch (Throwable e) {
-            XposedBridge.log(e);
-        }
-
-        try {
-            if (prefs.getBoolean(PREF_SUPPORTS_MULTIPLE_USERS, false)) {
-                XposedHelpers.findAndHookMethod(UserManager.class, "supportsMultipleUsers",
-                        new XC_MethodHook() {
-                            @Override
-                            protected void afterHookedMethod(MethodHookParam param) {
-                                param.setResult(true);
-                            }
-                        });
-
-                XposedHelpers.findAndHookMethod(UserManager.class, "getMaxSupportedUsers",
-                        new XC_MethodHook() {
-                            @Override
-                            protected void afterHookedMethod(MethodHookParam param) {
-                                prefs.reload();
-                                param.setResult(prefs.getInt(PREF_MAX_SUPPORTED_USERS, 3));
-                            }
-                        });
-            }
-
-            if (prefs.getBoolean(PREF_ENABLE_ADVANCED_HOTSPOT_OPTIONS, false)) {
-                XposedHelpers.findAndHookMethod(SETTINGS_UTILS,
-                        classLoader,
-                        "initMHSFeature",
-                        Context.class,
-                        new XC_MethodHook() {
-                            @Override
-                            protected void afterHookedMethod(MethodHookParam param) {
-                                Class<?> settingsUtils = XposedHelpers.findClass(SETTINGS_UTILS,
-                                        classLoader);
-                                XposedHelpers.setStaticBooleanField(settingsUtils,
-                                        "SUPPORT_MOBILEAP_MAXCLIENT_MENU",
-                                        true);
-                                XposedHelpers.setStaticBooleanField(settingsUtils,
-                                        "SUPPORT_MOBILEAP_5G", true);
-                                XposedHelpers.setStaticBooleanField(settingsUtils,
-                                        "SUPPORT_MOBILEAP_5G_BASED_ON_COUNTRY",
-                                        true);
-                                XposedHelpers.setStaticObjectField(settingsUtils,
-                                        "SUPPORT_MOBILEAP_REGION", "NA");
-                            }
-                        });
-            }
-
-        } catch (Throwable e) {
-            XposedBridge.log(e);
+            log(e);
         }
     }
 
     private static void makeOfficial() {
         try {
-            XposedHelpers.findAndHookMethod(SEC_DEVICE_INFO_UTILS,
-                    classLoader,
-                    "checkRootingCondition",
-                    XC_MethodReplacement.returnConstant(Boolean.FALSE));
+            findAndHookMethod(SEC_DEVICE_INFO_UTILS,
+                              classLoader,
+                              "checkRootingCondition",
+                              XC_MethodReplacement.returnConstant(!reloadAndGetBooleanPref(PREF_MAKE_OFFICIAL, true)));
         } catch (Throwable e) {
-            XposedBridge.log(e);
+            log(e);
         }
 
         try {
-            XposedHelpers.findAndHookMethod(SEC_DEVICE_INFO_UTILS,
-                    classLoader,
-                    "isAlterModel",
-                    XC_MethodReplacement.returnConstant(Boolean.FALSE));
+            findAndHookMethod(SEC_DEVICE_INFO_UTILS,
+                              classLoader,
+                              "isAlterModel",
+                              XC_MethodReplacement.returnConstant(!reloadAndGetBooleanPref(PREF_MAKE_OFFICIAL, true)));
         } catch (Throwable e) {
-            XposedBridge.log(e);
+            log(e);
         }
 
         try {
-            XposedHelpers.findAndHookMethod(SEC_DEVICE_INFO_UTILS,
-                    classLoader,
-                    "isPhoneStatusUnlocked",
-                    XC_MethodReplacement.returnConstant(Boolean.FALSE));
+            findAndHookMethod(SEC_DEVICE_INFO_UTILS,
+                              classLoader,
+                              "isPhoneStatusUnlocked",
+                              XC_MethodReplacement.returnConstant(!reloadAndGetBooleanPref(PREF_MAKE_OFFICIAL, true)));
         } catch (Throwable e) {
-            XposedBridge.log(e);
+            log(e);
         }
     }
 }

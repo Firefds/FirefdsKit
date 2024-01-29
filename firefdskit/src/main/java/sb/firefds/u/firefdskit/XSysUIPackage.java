@@ -14,29 +14,30 @@
  */
 package sb.firefds.u.firefdskit;
 
+import static de.robv.android.xposed.XposedBridge.log;
+
 import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
 
 public class XSysUIPackage {
 
     public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
 
-		try {
-			XSysUIFeaturePackage.doHook(prefs, classLoader);
-		} catch (Throwable e) {
-			XposedBridge.log(e);
-		}
+        try {
+            XSysUIFeaturePackage.doHook(classLoader);
+        } catch (Throwable e) {
+            log(e);
+        }
 
         try {
-            XSysUINotificationPanelPackage.doHook(prefs, classLoader);
+            XSysUINotificationPanelPackage.doHook(classLoader);
         } catch (Throwable e) {
-            XposedBridge.log(e);
+            log(e);
         }
 
         try {
             XSysUIGlobalActions.doHook(prefs, classLoader);
         } catch (Throwable e) {
-            XposedBridge.log(e);
+            log(e);
         }
     }
 }

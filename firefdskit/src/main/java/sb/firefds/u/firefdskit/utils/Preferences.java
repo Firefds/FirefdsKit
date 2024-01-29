@@ -19,10 +19,8 @@ public class Preferences {
     public static final String PREF_FIRST_LAUNCH = "isFirefdsKitFirstLaunch";
 
     public static final String PREF_STATUSBAR_DOUBLE_TAP = "isStatusBarDoubleTapEnabled";
-    public static final String PREF_ENABLE_SAMSUNG_BLUR = "enableSamsungBlur";
     public static final String PREF_HIDE_USB_NOTIFICATION = "hideUsbNotification";
     public static final String PREF_HIDE_CHARGING_NOTIFICATION = "hideChargingNotification";
-    public static final String PREF_HIDE_NFC_ICON = "hideNfcIcon";
     public static final String PREF_HIDE_VOLTE_ICON = "hideVolteIcon";
     public static final String PREF_SHOW_NETWORK_SPEED_MENU = "showNetworkSpeedMenu";
     public static final String PREF_4G_DATA_ICON_BEHAVIOR = "4gDataIconBehavior";
@@ -38,7 +36,6 @@ public class Preferences {
     public static final String PREF_HIDE_CARRIER_LABEL = "hideCarrierLabel";
     public static final String PREF_CARRIER_SIZE = "carrierSize";
 
-    public static final String PREF_ENABLE_BIOMETRICS_UNLOCK = "enableBiometricsUnlock";
     public static final String PREF_ENABLE_QUICK_REPLY_ON_SECURE_LOCKSCREEN = "enableQuickReplyOnSecureLockscreen";
 
     public static final String PREF_DISABLE_VOLUME_WARNING = "disableLoudVolumeWarning";

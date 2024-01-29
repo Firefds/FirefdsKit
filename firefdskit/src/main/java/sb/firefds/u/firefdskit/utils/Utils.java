@@ -14,7 +14,8 @@
  */
 package sb.firefds.u.firefdskit.utils;
 
-import static sb.firefds.u.firefdskit.utils.Constants.PREFS;
+import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
+import static de.robv.android.xposed.XposedHelpers.findClass;
 import static sb.firefds.u.firefdskit.utils.Constants.TAG;
 import static sb.firefds.u.firefdskit.utils.Packages.FIREFDSKIT;
 import static sb.firefds.u.firefdskit.utils.Preferences.PREF_FORCE_ENGLISH;
@@ -30,6 +31,7 @@ import android.os.SystemProperties;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -39,7 +41,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Locale;
 
-import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.u.firefdskit.R;
 
 public class Utils {
@@ -74,8 +75,7 @@ public class Utils {
 
     public static synchronized Context getFfkContext(Context context, Configuration config) throws Throwable {
         if (mFfkContext == null) {
-            mFfkContext = context.createPackageContext(FIREFDSKIT,
-                    Context.CONTEXT_IGNORE_SECURITY);
+            mFfkContext = context.createPackageContext(FIREFDSKIT, Context.CONTEXT_IGNORE_SECURITY);
             mFfkContext = mFfkContext.createDeviceProtectedStorageContext();
         }
         return (config == null ? mFfkContext : mFfkContext.createConfigurationContext(config));
@@ -83,7 +83,7 @@ public class Utils {
 
     public static boolean isNotSamsungRom() {
         return !(new File("/system/framework/com.samsung.device.jar").isFile() ||
-                new File("/system/framework/com.samsung.device.lite.jar").isFile());
+                 new File("/system/framework/com.samsung.device.lite.jar").isFile());
     }
 
     public static boolean isDeviceEncrypted() {
@@ -99,15 +99,15 @@ public class Utils {
         }
     }
 
+    @NonNull
     public static Snackbar createSnackbar(View view, int stringId, Context context) {
-        Snackbar snackbar = Snackbar
-                .make(view, stringId, Snackbar.LENGTH_LONG)
-                .setActionTextColor(ContextCompat.getColor(context, android.R.color.white));
+        Snackbar snackbar = Snackbar.make(view, stringId, Snackbar.LENGTH_LONG)
+                                    .setActionTextColor(ContextCompat.getColor(context, android.R.color.white));
         snackbar.getView().setBackgroundColor(ContextCompat.getColor(context, R.color.primaryColor));
         return snackbar;
     }
 
-    public static void log(Throwable e) {
+    public static void log(@NonNull Throwable e) {
         StringWriter errors = new StringWriter();
         e.printStackTrace(new PrintWriter(errors));
         Log.e(TAG, errors.toString());
@@ -117,7 +117,8 @@ public class Utils {
         Log.d(TAG, message);
     }
 
-    public static ContextWrapper checkForceEnglish(Context context, SharedPreferences prefs) {
+    @NonNull
+    public static ContextWrapper checkForceEnglish(@NonNull Context context, @NonNull SharedPreferences prefs) {
 
         LocaleList localeList;
         Configuration config = context.getResources().getConfiguration();
@@ -137,8 +138,8 @@ public class Utils {
     // Set the value for the given key
     public static void set(String key, String val) {
         try {
-            Class<?> classSystemProperties = XposedHelpers.findClass("android.os.SystemProperties", null);
-            XposedHelpers.callStaticMethod(classSystemProperties, "set", key, val);
+            Class<?> classSystemProperties = findClass("android.os.SystemProperties", null);
+            callStaticMethod(classSystemProperties, "set", key, val);
         } catch (Throwable ignored) {
         }
     }

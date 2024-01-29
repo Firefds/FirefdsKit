@@ -21,6 +21,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
 import java.io.File;
@@ -60,26 +61,24 @@ public class SaveDialog {
             public void afterTextChanged(Editable s) {
             }
         });
-        dialog = builder.setCancelable(true).setTitle(R.string.save).setView(editText)
-                .setPositiveButton(R.string.save, (dialog, which) -> {
-                    if (savePreferencesToSdCard(context, editText.getText().toString())) {
-                        Utils.createSnackbar(contentView,
-                                R.string.save_successful,
-                                context).show();
-                    } else {
-                        Utils.createSnackbar(contentView,
-                                R.string.save_unsuccessful,
-                                context).show();
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
-                .create();
+        dialog = builder.setCancelable(true)
+                        .setTitle(R.string.save)
+                        .setView(editText)
+                        .setPositiveButton(R.string.save, (dialog, which) -> {
+                            if (savePreferencesToSdCard(context, editText.getText().toString())) {
+                                Utils.createSnackbar(contentView, R.string.save_successful, context).show();
+                            } else {
+                                Utils.createSnackbar(contentView, R.string.save_unsuccessful, context).show();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
+                        .create();
         dialog.show();
         dialog.getButton(Dialog.BUTTON_POSITIVE).setEnabled(false);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private boolean savePreferencesToSdCard(Context context, String string) {
+    private boolean savePreferencesToSdCard(@NonNull Context context, String string) {
         File dir = context.getExternalFilesDir(Constants.BACKUP_DIR);
         Objects.requireNonNull(dir).mkdirs();
 

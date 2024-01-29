@@ -14,6 +14,7 @@
  */
 package sb.firefds.u.firefdskit.actionViewModels;
 
+import static de.robv.android.xposed.XposedBridge.log;
 import static sb.firefds.u.firefdskit.XSysUIGlobalActions.getResources;
 import static sb.firefds.u.firefdskit.utils.Constants.SCREEN_RECORD_ACTION;
 import static sb.firefds.u.firefdskit.utils.Packages.SMART_CAPTURE;
@@ -23,13 +24,12 @@ import android.content.Intent;
 
 import androidx.core.content.res.ResourcesCompat;
 
-import de.robv.android.xposed.XposedBridge;
 import sb.firefds.u.firefdskit.R;
 
 public class ScreenRecordActionViewModel extends FirefdsKitActionViewModel {
 
     private static final String SCREEN_RECORDER_SERVICE = "com.samsung.android.app.screenrecorder" +
-            ".ScreenRecorderService";
+                                                          ".ScreenRecorderService";
 
     ScreenRecordActionViewModel() {
 
@@ -52,11 +52,10 @@ public class ScreenRecordActionViewModel extends FirefdsKitActionViewModel {
     }
 
     private void startScreenRecord() {
-        Intent intent = new Intent()
-                .setComponent(new ComponentName(SMART_CAPTURE, SCREEN_RECORDER_SERVICE))
-                .setAction("com.samsung.android.app.screenrecorder.ACTION_START");
+        Intent intent = new Intent().setComponent(new ComponentName(SMART_CAPTURE, SCREEN_RECORDER_SERVICE))
+                                    .setAction("com.samsung.android.app.screenrecorder.ACTION_START");
         if (getContext().startService(intent) == null) {
-            XposedBridge.log("FFK: Service not found - ScreenRecorderService");
+            log("FFK: Service not found - ScreenRecorderService");
         }
     }
 }

@@ -15,36 +15,32 @@
 package sb.firefds.u.firefdskit;
 
 
+import static de.robv.android.xposed.XposedBridge.log;
+import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static sb.firefds.u.firefdskit.Xposed.reloadAndGetBooleanPref;
 import static sb.firefds.u.firefdskit.utils.Preferences.PREF_MAKE_OFFICIAL;
 
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
 
 public class XFotaAgentPackage {
 
     private static final String DEVICE_UTILS = "com.idm.fotaagent.enabler.utils.DeviceUtils";
 
-    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(ClassLoader classLoader) {
 
 
-        if (prefs.getBoolean(PREF_MAKE_OFFICIAL, true)) {
-            try {
-                XposedHelpers.findAndHookMethod(DEVICE_UTILS,
-                        classLoader,
-                        "isRootingDevice",
-                        boolean.class,
-                        new XC_MethodHook() {
-                            @Override
-                            protected void afterHookedMethod(MethodHookParam param) {
-                                param.setResult(false);
-                            }
-                        });
+        try {
+            findAndHookMethod(DEVICE_UTILS, classLoader, "isRootingDevice", boolean.class, new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) {
+                    if (reloadAndGetBooleanPref(PREF_MAKE_OFFICIAL, true)) {
+                        param.setResult(false);
+                    }
+                }
+            });
 
-            } catch (Throwable e1) {
-                XposedBridge.log(e1);
-            }
+        } catch (Throwable e1) {
+            log(e1);
         }
     }
 }

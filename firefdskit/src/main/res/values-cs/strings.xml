@@ -67,8 +67,6 @@
     <string name="screen_on">Je-li zamčeno a obrazovka zapnuta</string>
     <string name="screen_off">Je-li zamčeno a obrazovka vypnuta</string>
     <string name="status_icons">Stavové ikony</string>
-    <string name="hide_nfc_icon_off">Ikona NFC se zobrazuje</string>
-    <string name="hide_nfc_icon_on">Ikona NFC je skryta</string>
     <string name="hide_nfc_icon">Skrýt ikonu NFC</string>
     <string name="disable_volume_control_sound">Zakázat zvuk při změne hlasitosti</string>
     <string name="disable_volume_control_sound_while_changing_sounds">Zakázat zvuk při změne hlasitosti při měnění urovně hlasitosti</string>
@@ -109,7 +107,6 @@
     <string name="four_g_data_icon_behavior_title">4G Ikona dat</string>
     <string name="lte_4g">LTE místo 4G</string>
     <string name="four_g_plus_4g">4G Plus místo 4G</string>
-    <string name="four_g_4g_plus">4G místo 4G Plus</string>
     <string name="four_half_g_4g_plus">4.5G místo 4G Plus</string>
     <string name="enable_data_mode_switch_summary">Povolit přepínač režimu dat v nabídce napájení</string>
     <string name="enable_data_mode_switch_title">Přepínač režimu dat</string>
@@ -129,8 +126,6 @@
     <string name="disable_flag_secure_on">Příznak zabezpečení povolen</string>
     <string name="disable_flag_secure_off">Příznak zabezpečení zakázat</string>
     <string name="screen_unlock">Odblokování obrazovky</string>
-    <string name="enable_biometrics_unlock_summary">Povolit odblokování otiskem prstu nebo biometricky po restartu. Pro šifrovaná zařízení jako Galaxy S10 se vyžaduje instalace Multidisabler od Ianmacd</string>
-    <string name="enable_biometrics_unlock_title">Povolit odblokování otiskem prstu nebo biometricky po restartu</string>
     <string name="reboot_confirm_recovery">Restartovat do režimu Recovery</string>
     <string name="reboot_confirm_download">Restartovat do režimu Download</string>
     <string name="clock">Hodiny</string>
@@ -182,8 +177,6 @@
     <string name="enable_screen_record_title">Nahrávání obrazovky</string>
     <string name="disbale_restart_confirmation_summary">Nežádat potvrzení restartu</string>
     <string name="disbale_restart_confirmation_title">Nežádat potvrzení restartu</string>
-    <string name="enable_native_blur_summary">Povolte nativní rozmazání při stažení panelu upozornění</string>
-    <string name="enable_native_blur_title">Nativní rozmazání</string>
     <string name="enable_blocked_phrases_summary">Povolit blokování fráz v nastaveních zpráv</string>
     <string name="enable_blocked_phrases_title">Povolit blokování fráz</string>
     <string name="hide_volte_icon_off">Ikona VoLTE se zobrazuje</string>

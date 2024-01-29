@@ -14,6 +14,8 @@
  */
 package sb.firefds.u.firefdskit.actionViewModels;
 
+import static de.robv.android.xposed.XposedHelpers.callMethod;
+import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
 import static sb.firefds.u.firefdskit.XSysUIGlobalActions.getResources;
 import static sb.firefds.u.firefdskit.utils.Constants.SCREENSHOT_ACTION;
 
@@ -23,7 +25,6 @@ import android.view.KeyEvent;
 
 import androidx.core.content.res.ResourcesCompat;
 
-import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.u.firefdskit.R;
 
 public class ScreenShotActionViewModel extends FirefdsKitActionViewModel {
@@ -53,11 +54,8 @@ public class ScreenShotActionViewModel extends FirefdsKitActionViewModel {
         arrayOfInt[1] = 1;
         for (int k : arrayOfInt) {
             long l = SystemClock.uptimeMillis();
-            final InputManager inputManager = (InputManager) XposedHelpers.callStaticMethod(InputManager.class,
-                    "getInstance");
-            XposedHelpers.callMethod(inputManager,
-                    "injectInputEvent",
-                    new KeyEvent(l, l, k, 120, 0, 0, -1, 0, 268435464, 257), 0);
+            final InputManager inputManager = (InputManager) callStaticMethod(InputManager.class, "getInstance");
+            callMethod(inputManager, "injectInputEvent", new KeyEvent(l, l, k, 120, 0, 0, -1, 0, 268435464, 257), 0);
         }
     }
 }

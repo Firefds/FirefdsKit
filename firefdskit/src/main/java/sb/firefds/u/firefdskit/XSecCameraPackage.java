@@ -14,59 +14,52 @@
  */
 package sb.firefds.u.firefdskit;
 
+import static de.robv.android.xposed.XposedBridge.log;
+import static de.robv.android.xposed.XposedHelpers.callMethod;
+import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static sb.firefds.u.firefdskit.Xposed.reloadAndGetBooleanPref;
 import static sb.firefds.u.firefdskit.utils.Preferences.PREF_DISABLE_TEMPERATURE_CHECKS;
 import static sb.firefds.u.firefdskit.utils.Preferences.PREF_ENABLE_CAMERA_SHUTTER_MENU;
 
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
 
 public class XSecCameraPackage {
 
     private static final String FEATURE = "d4.c";
     private static final String BOOLEAN_TAG = "d4.b";
 
-    public static void doHook(XSharedPreferences prefs, ClassLoader classLoader) {
+    public static void doHook(ClassLoader classLoader) {
 
-        if (prefs.getBoolean(PREF_DISABLE_TEMPERATURE_CHECKS, false)) {
-            try {
-                XposedHelpers.findAndHookMethod(FEATURE,
-                        classLoader,
-                        "e",
-                        BOOLEAN_TAG,
-                        new XC_MethodHook() {
-                            @Override
-                            protected void beforeHookedMethod(MethodHookParam param) {
-                                String booleanTagName = (String) XposedHelpers.callMethod(param.args[0], "name");
-                                if (booleanTagName.equals("SUPPORT_THERMISTOR_TEMPERATURE")) {
-                                    param.setResult(false);
-                                }
-                            }
-                        });
-            } catch (Throwable e) {
-                XposedBridge.log(e);
-            }
+        try {
+            findAndHookMethod(FEATURE, classLoader, "e", BOOLEAN_TAG, new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) {
+                    if (reloadAndGetBooleanPref(PREF_DISABLE_TEMPERATURE_CHECKS, false)) {
+                        String booleanTagName = (String) callMethod(param.args[0], "name");
+                        if (booleanTagName.equals("SUPPORT_THERMISTOR_TEMPERATURE")) {
+                            param.setResult(false);
+                        }
+                    }
+                }
+            });
+        } catch (Throwable e) {
+            log(e);
         }
 
-        if (prefs.getBoolean(PREF_ENABLE_CAMERA_SHUTTER_MENU, false)) {
-            try {
-                XposedHelpers.findAndHookMethod(FEATURE,
-                        classLoader,
-                        "e",
-                        BOOLEAN_TAG,
-                        new XC_MethodHook() {
-                            @Override
-                            protected void beforeHookedMethod(MethodHookParam param) {
-                                String booleanTagName = (String) XposedHelpers.callMethod(param.args[0], "name");
-                                if (booleanTagName.equals("SUPPORT_SHUTTER_SOUND_MENU")) {
-                                    param.setResult(true);
-                                }
-                            }
-                        });
-            } catch (Throwable e) {
-                XposedBridge.log(e);
-            }
+        try {
+            findAndHookMethod(FEATURE, classLoader, "e", BOOLEAN_TAG, new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) {
+                    if (reloadAndGetBooleanPref(PREF_ENABLE_CAMERA_SHUTTER_MENU, false)) {
+                        String booleanTagName = (String) callMethod(param.args[0], "name");
+                        if (booleanTagName.equals("SUPPORT_SHUTTER_SOUND_MENU")) {
+                            param.setResult(true);
+                        }
+                    }
+                }
+            });
+        } catch (Throwable e) {
+            log(e);
         }
     }
 }

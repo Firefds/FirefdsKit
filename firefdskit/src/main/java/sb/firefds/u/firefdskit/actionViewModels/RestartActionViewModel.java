@@ -57,9 +57,8 @@ public abstract class RestartActionViewModel extends FirefdsKitActionViewModel {
         } else {
             if (isUnlockKeyguardBeforeActionExecute()) {
                 if (mConditionChecker.isEnabled(SystemConditions.IS_SECURE_KEYGUARD)) {
-                    for (SecureConfirmStrategy strategy3 :
-                            mFeatureFactory.createSecureConfirmStrategy(getGlobalActions(),
-                                    getActionInfo().getName())) {
+                    for (SecureConfirmStrategy strategy3 : mFeatureFactory.createSecureConfirmStrategy(getGlobalActions(),
+                                                                                                       getActionInfo().getName())) {
                         strategy3.doActionBeforeSecureConfirm(this, getGlobalActions());
                     }
                     getGlobalActions().registerSecureConfirmAction(this);

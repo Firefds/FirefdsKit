@@ -64,8 +64,6 @@
     <string name="screen_on">כאשר המסך דלוק ונעול</string>
     <string name="screen_off">כאשר המסך כבוי ונעול</string>
     <string name="status_icons">אייקוני סטטוס</string>
-    <string name="hide_nfc_icon_off">אייקון NFC מוצג</string>
-    <string name="hide_nfc_icon_on">אייקון NFC מוסתר</string>
     <string name="hide_nfc_icon">הסתרת אייקון NFC</string>
     <string name="disable_volume_control_sound">ביטול צליל שליטה בעוצמת שמע</string>
     <string name="disable_volume_control_sound_while_changing_sounds">ביטול צליל שינוי עוצמת השמע בעת שינוי העוצמה</string>
@@ -106,10 +104,13 @@
     <string name="enable_camera_shutter_menu">הפעלת תפריט צליל צמצם</string>
     <string name="enable_camera_shutter_menu_summary">הפעלת תפריט צליל צמצם באפליקציית המצלמה</string>
     <string name="four_g_data_icon_behavior_title">סמל חיבור נתונים ניידים 4G</string>
+    <string name="five_g_data_icon_behavior_title">סמל חיבור נתונים ניידים 5G</string>
     <string name="lte_4g">הצגת LTE במקום 4G</string>
     <string name="four_g_plus_4g">הצגת 4G במקום 4G Plus</string>
-    <string name="four_g_4g_plus">הצגת 4G Plus במקום 4G</string>
     <string name="four_half_g_4g_plus">הצגת 4.5G במקום 4G Plus</string>
+    <string name="five_g">5G הצגת</string>
+    <string name="five_g_one">הצגת 5G עגול</string>
+    <string name="five_g_plus">הצגת 5G Plus</string>
     <string name="enable_data_mode_switch_summary">הפעלת מתג נתונים ניידים בתפריט הפעלה</string>
     <string name="enable_data_mode_switch_title">מתג נתונים ניידים</string>
     <string name="quick_settings_data_usage_view_summary">הצגת שימוש בנתונים בשורת ההגדרות המהירות</string>
@@ -129,8 +130,6 @@
     <string name="disable_flag_secure_off">דגל אבטחה מבוטל</string>
     <string name="lockscreen">מסך נעילה</string>
     <string name="screen_unlock">פתיחת נעילת מסך</string>
-    <string name="enable_biometrics_unlock_summary">הפעלת שימוש בטביעת אצבע וביומטרי בפתיחת מסך הנעילה אחרי הפעלה מחדש. יש צורך בהתקנת multidisabler של Ianmacd במכשירים מוצפנים כמו הגלקסי S10</string>
-    <string name="enable_biometrics_unlock_title">אצבע וביומטרי אחרי הפעלה מחדש</string>
     <string name="reboot_confirm_recovery">הפעלה מחדש למצב Recovery</string>
     <string name="reboot_confirm_download">הפעלה מחדש למצב Download</string>
     <string name="clock">שעון</string>
@@ -182,8 +181,6 @@
     <string name="enable_screen_record_summary">הוספת הקלטת מסך לתפריט הכיבוי (מצריך את אפליקציית Smart Capture של סמסונג)</string>
     <string name="disbale_restart_confirmation_summary">ביטול אישור הפעלה מחדש</string>
     <string name="disbale_restart_confirmation_title">ביטול אישור הפעלה מחדש</string>
-    <string name="enable_native_blur_summary">הפעלת טשטוש מקורי בהורדת שורת המצב</string>
-    <string name="enable_native_blur_title">טשטוש מקורי</string>
     <string name="enable_blocked_phrases_summary">הפעלת חסימת ביטויים בהגדרות הודעות</string>
     <string name="enable_blocked_phrases_title">הפעלת חסימת ביטויים</string>
     <string name="hide_volte_icon">הסתרת אייקון VoLTE</string>

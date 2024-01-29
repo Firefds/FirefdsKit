@@ -14,14 +14,14 @@
  */
 package sb.firefds.u.firefdskit.actionViewModels;
 
+import static de.robv.android.xposed.XposedBridge.log;
+import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static sb.firefds.u.firefdskit.XSysUIGlobalActions.getFlashlightObject;
 import static sb.firefds.u.firefdskit.XSysUIGlobalActions.getResources;
 import static sb.firefds.u.firefdskit.utils.Constants.FLASHLIGHT_ACTION;
 
 import androidx.core.content.res.ResourcesCompat;
 
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
 import sb.firefds.u.firefdskit.R;
 
 public class FlashLightActionViewModel extends FirefdsKitActionViewModel {
@@ -51,15 +51,16 @@ public class FlashLightActionViewModel extends FirefdsKitActionViewModel {
     private void switchFlashLight() {
         mTorch = !mTorch;
         try {
-            XposedHelpers.callMethod(getFlashlightObject(), "setFlashlight", mTorch);
+            callMethod(getFlashlightObject(), "setFlashlight", mTorch);
         } catch (Throwable e) {
-            XposedBridge.log(e);
+            log(e);
         }
         this.getGlobalActions().dismissDialog(false);
     }
 
     private void setStateLabel() {
-        getActionInfo().setStateLabel(mTorch ? getResources().getString(R.string.flashlight_on) :
-                getResources().getString(R.string.flashlight_off));
+        getActionInfo().setStateLabel(mTorch
+                                      ? getResources().getString(R.string.flashlight_on)
+                                      : getResources().getString(R.string.flashlight_off));
     }
 }

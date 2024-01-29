@@ -30,6 +30,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Icon;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.TaskStackBuilder;
 
 import java.util.Objects;
@@ -43,7 +44,7 @@ public class RebootNotification {
     private static final String NOTIFICATION_TAG = "RebootNotification";
 
     @SuppressLint("NewApi")
-    public static void notify(final Context context, final int n, boolean showQuickReboot) {
+    public static void notify(@NonNull final Context context, final int n, boolean showQuickReboot) {
 
         final Resources res = context.getResources();
 
@@ -54,8 +55,8 @@ public class RebootNotification {
         final String text = res.getString(R.string.reboot_required_message);
 
         NotificationChannel mChannel = new NotificationChannel("Reboot_ID",
-                "Reboot Name",
-                NotificationManager.IMPORTANCE_DEFAULT);
+                                                               "Reboot Name",
+                                                               NotificationManager.IMPORTANCE_DEFAULT);
         NotificationManager mNotificationManager = getSystemService(context, NotificationManager.class);
         Objects.requireNonNull(mNotificationManager).createNotificationChannel(mChannel);
 
@@ -67,34 +68,39 @@ public class RebootNotification {
                 .setTicker(ticker)
                 .setNumber(n)
                 .setWhen(0)
-                .setContentIntent(PendingIntent.getActivity(context,
+                .setContentIntent(PendingIntent.getActivity(
+                        context,
                         0,
                         new Intent(context, FirefdsKitActivity.class),
                         PendingIntent.FLAG_IMMUTABLE))
-                .setStyle(new Notification.BigTextStyle()
-                        .bigText(text)
-                        .setBigContentTitle(title)
-                        .setSummaryText(context.getString(R.string.pending_changes)))
+                .setStyle(new Notification.BigTextStyle().bigText(text)
+                                                         .setBigContentTitle(title)
+                                                         .setSummaryText(context.getString(
+                                                                 R.string.pending_changes)))
                 .setAutoCancel(true);
 
-        Intent rebootIntent = new Intent(context, FirefdsRebootActivity.class)
-                .setAction(showQuickReboot ? QUICK_REBOOT_DEVICE_ACTION : REBOOT_DEVICE_ACTION);
+        Intent rebootIntent = new Intent(context, FirefdsRebootActivity.class).setAction(showQuickReboot
+                                                                                         ? QUICK_REBOOT_DEVICE_ACTION
+                                                                                         : REBOOT_DEVICE_ACTION);
 
         PendingIntent rebootPendingIntent = TaskStackBuilder.create(context)
-                .addNextIntentWithParentStack(rebootIntent)
-                .getPendingIntent(1337, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                                                            .addNextIntentWithParentStack(rebootIntent)
+                                                            .getPendingIntent(1337,
+                                                                              PendingIntent.FLAG_UPDATE_CURRENT |
+                                                                              PendingIntent.FLAG_IMMUTABLE);
 
-        builder.addAction(new Notification.Action.Builder(
-                Icon.createWithResource(context, R.drawable.ic_restart_notification),
-                showQuickReboot ? res.getString(R.string.quick_reboot) : res.getString(R.string.reboot),
-                rebootPendingIntent)
-                .build());
+        builder.addAction(new Notification.Action.Builder(Icon.createWithResource(context,
+                                                                                  R.drawable.ic_restart_notification),
+                                                          showQuickReboot
+                                                          ? res.getString(R.string.quick_reboot)
+                                                          : res.getString(R.string.reboot),
+                                                          rebootPendingIntent).build());
 
         notify(context, builder.build());
     }
 
     @SuppressLint("NotificationPermission")
-    private static void notify(final Context context, final Notification notification) {
+    private static void notify(@NonNull final Context context, final Notification notification) {
         final NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(NOTIFICATION_TAG, 0, notification);
     }

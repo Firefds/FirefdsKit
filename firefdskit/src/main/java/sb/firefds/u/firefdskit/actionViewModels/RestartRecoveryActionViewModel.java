@@ -30,14 +30,17 @@ class RestartRecoveryActionViewModel extends RestartActionViewModel {
 
         super();
         getActionInfo().setName(RECOVERY_ACTION);
-        getActionInfo().setLabel(getCustomRecovery() == null ? getResources().getString(R.string.reboot_recovery)
-                : getCustomRecovery());
-        getActionInfo().setDescription(getCustomRecoveryConfirmation() == null ?
-                getResources().getString(R.string.reboot_confirm_recovery)
-                : getCustomRecoveryConfirmation());
-        setDrawableIcon(isReplaceRecoveryIcon() ? ResourcesCompat.getDrawable(getResources(),
-                R.drawable.tw_ic_do_restart, null)
-                : ResourcesCompat.getDrawable(getResources(), R.drawable.tw_ic_do_recovery_stock, null));
+        getActionInfo().setLabel(getCustomRecovery() == null
+                                 ? getResources().getString(R.string.reboot_recovery)
+                                 : getCustomRecovery());
+        getActionInfo().setDescription(getCustomRecoveryConfirmation() == null
+                                       ? getResources().getString(R.string.reboot_confirm_recovery)
+                                       : getCustomRecoveryConfirmation());
+        setDrawableIcon(isReplaceRecoveryIcon()
+                        ? ResourcesCompat.getDrawable(getResources(),
+                                                      R.drawable.tw_ic_do_restart,
+                                                      null)
+                        : ResourcesCompat.getDrawable(getResources(), R.drawable.tw_ic_do_recovery_stock, null));
         setRebootOption(RECOVERY_ACTION);
     }
 }

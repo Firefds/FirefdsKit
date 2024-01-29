@@ -53,7 +53,8 @@ public class RestoreDialog {
         linearLayout.addView(listView);
         TextView emptyView = new TextView(context, null, android.R.layout.simple_list_item_1);
         emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                (int) (Resources.getSystem().getDisplayMetrics().density * 48)));
+                                                             (int) (Resources.getSystem().getDisplayMetrics().density *
+                                                                    48)));
         emptyView.setGravity(Gravity.CENTER);
         linearLayout.addView(emptyView);
         emptyView.setText(R.string.no_backups);
@@ -82,10 +83,12 @@ public class RestoreDialog {
             menu.show();
             return true;
         });
-        dialog = builder.setCancelable(true).setTitle(R.string.restore).setView(linearLayout)
-                .setPositiveButton(R.string.defaults, (dialog, which) -> listener.onRestoreDefaults())
-                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
-                .create();
+        dialog = builder.setCancelable(true)
+                        .setTitle(R.string.restore)
+                        .setView(linearLayout)
+                        .setPositiveButton(R.string.defaults, (dialog, which) -> listener.onRestoreDefaults())
+                        .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
+                        .create();
         dialog.show();
     }
 

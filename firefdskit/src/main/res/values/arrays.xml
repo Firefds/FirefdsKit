@@ -28,37 +28,13 @@
         <item name="larger">Larger</item>
         <item name="largest">Largest</item>
     </string-array>
-    <string-array name="lite_preferences">
-        <item>isFirefdsKitFirstLaunch</item>
-        <item>screenTimeoutSeconds</item>
-        <item>screenTimeoutMinutes</item>
-        <item>screenTimeoutHours</item>
+    <string-array name="reboot_required_preferences">
+        <item>disbaleRestartConfirmation</item>
+        <item>4gDataIconBehavior</item>
+        <item>5gDataIconBehavior</item>
+        <item>5gDataIconBehavior</item>
         <item>hideCarrierLabel</item>
         <item>carrierSize</item>
-        <item>enableCallAdd</item>
-        <item>disableBluetoothScanDialog</item>
-        <item>enableCameraShutterMenu</item>
-        <item>forceMMSConnect</item>
-        <item>nfcBehavior</item>
-        <item>maxSupportedUsers</item>
-        <item>showNetworkSpeedMenu</item>
-        <item>enableSamsungBlur</item>
-        <item>clockSize</item>
-        <item>showClockSeconds</item>
-        <item>showAmPm</item>
-        <item>clock_date_preference</item>
-        <item>clockDateOnRight</item>
-        <item>enablePowerOff</item>
-        <item>enableRestart</item>
-        <item>enableEmergencyMode</item>
-        <item>enableRecovery</item>
-        <item>enableDownload</item>
-        <item>enableDataMode</item>
-        <item>enableScreenshot</item>
-        <item>enableRestartSystemUI</item>
-        <item>enableFlashlight</item>
-        <item>enableScreenRecord</item>
-        <item>forceEnglish</item>
     </string-array>
     <string-array name="four_g_data_icon_entries">
         <item name="Default">@string/default_text</item>
@@ -74,13 +50,15 @@
     </string-array>
     <string-array name="five_g_data_icon_entries">
         <item name="Default">@string/default_text</item>
+        <item name="5G">@string/five_g_one</item>
         <item name="5GOneShaped">@string/five_g_one</item>
         <item name="5GPlusIcon">@string/five_g_plus</item>
     </string-array>
     <string-array name="five_g_data_icon_values">
         <item name="Default">0</item>
-        <item name="5GOneShaped">1</item>
-        <item name="5GPlusIcon">2</item>
+        <item name="5G">1</item>
+        <item name="5GOneShaped">2</item>
+        <item name="5GPlusIcon">3</item>
     </string-array>
     <string-array name="clock_date_entries">
         <item>@string/clock_date_disabled</item>

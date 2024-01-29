@@ -21,6 +21,7 @@ import android.content.pm.PackageManager;
 import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
 import sb.firefds.u.firefdskit.R;
@@ -31,7 +32,7 @@ public class CreditDialog {
     public CreditDialog() {
     }
 
-    public AlertDialog.Builder getDialog(Context context) {
+    public AlertDialog.Builder getDialog(@NonNull Context context) {
         PackageInfo pInfo;
         String pkgVersion = "";
         try {
@@ -44,9 +45,8 @@ public class CreditDialog {
         tv.setMovementMethod(LinkMovementMethod.getInstance());
         tv.setText(R.string.credit_details);
         tv.setPadding(16, 16, 16, 16);
-        return new AlertDialog.Builder(context)
-                .setTitle(context.getString(R.string.app_name) + " " + pkgVersion)
-                .setView(tv)
-                .setNeutralButton(R.string.ok_btn, (dialog, id) -> dialog.dismiss());
+        return new AlertDialog.Builder(context).setTitle(context.getString(R.string.app_name) + " " + pkgVersion)
+                                               .setView(tv)
+                                               .setNeutralButton(R.string.ok_btn, (dialog, id) -> dialog.dismiss());
     }
 }

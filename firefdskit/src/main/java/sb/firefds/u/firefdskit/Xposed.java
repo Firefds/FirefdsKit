@@ -14,6 +14,8 @@
  */
 package sb.firefds.u.firefdskit;
 
+import static de.robv.android.xposed.XposedBridge.log;
+import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static sb.firefds.u.firefdskit.utils.Packages.FIREFDSKIT;
 
 import android.util.Log;
@@ -24,8 +26,6 @@ import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 import sb.firefds.u.firefdskit.utils.Packages;
 import sb.firefds.u.firefdskit.utils.Utils;
@@ -46,16 +46,16 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         // Do not load if Not a Samsung Device
         if (Utils.isNotSamsungRom()) {
             Log.e("FFK", "com.samsung.device.jar or com.samsung.device.lite.jar not found!");
-            XposedBridge.log("FFK: com.samsung.device.jar or com.samsung.device.lite.jar not found!");
+            log("FFK: com.samsung.device.jar or com.samsung.device.lite.jar not found!");
         }
 
         XSharedPreferences pref = getPref();
         if (pref != null) {
             prefs = pref;
-            XposedBridge.log("FFK: Firefds Kit preferences loaded correctly!");
+            log("FFK: Firefds Kit preferences loaded correctly!");
         } else {
             Log.e("FFK", "Cannot load pref for zygote properly");
-            XposedBridge.log("FFK: Cannot load pref for zygote properly");
+            log("FFK: Cannot load pref for zygote properly");
         }
     }
 
@@ -65,31 +65,31 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
         // Do not load if Not a Touchwiz Rom
         if (Utils.isNotSamsungRom()) {
             Log.e("FFK", "com.samsung.device.jar or com.samsung.device.lite.jar not found!");
-            XposedBridge.log("FFK: com.samsung.device.jar or com.samsung.device.lite.jar not found!");
+            log("FFK: com.samsung.device.jar or com.samsung.device.lite.jar not found!");
             return;
         }
 
         if (prefs == null) {
             Log.e("FFK", "Xposed cannot read Firefds Kit preferences!");
-            XposedBridge.log("FFK: Xposed cannot read Firefds Kit preferences!");
+            log("FFK: Xposed cannot read Firefds Kit preferences!");
             return;
         }
 
         if (lpparam.packageName.equals(FIREFDSKIT)) {
             try {
-                XposedHelpers.findAndHookMethod(FIREFDSKIT + ".XposedChecker",
-                        lpparam.classLoader,
-                        "isActive",
-                        XC_MethodReplacement.returnConstant(Boolean.TRUE));
+                findAndHookMethod(FIREFDSKIT + ".XposedChecker",
+                                  lpparam.classLoader,
+                                  "isActive",
+                                  XC_MethodReplacement.returnConstant(Boolean.TRUE));
             } catch (Throwable e) {
-                XposedBridge.log(e);
+                log(e);
             }
         }
 
         try {
-            XSystemWide.doHook(prefs);
+            XSystemWide.doHook();
         } catch (Throwable e) {
-            XposedBridge.log(e);
+            log(e);
         }
 
         if (lpparam.packageName.equals(Packages.ANDROID)) {
@@ -97,21 +97,21 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             try {
                 XPM34.doHook(lpparam.classLoader);
             } catch (Throwable e) {
-                XposedBridge.log(e);
+                log(e);
             }
 
             try {
-                XAndroidPackage.doHook(prefs, lpparam.classLoader);
+                XAndroidPackage.doHook(lpparam.classLoader);
             } catch (Throwable e) {
-                XposedBridge.log(e);
+                log(e);
             }
         }
 
         if (lpparam.packageName.equals(Packages.NFC)) {
             try {
-                XNfcPackage.doHook(prefs, lpparam.classLoader);
+                XNfcPackage.doHook(lpparam.classLoader);
             } catch (Throwable e) {
-                XposedBridge.log(e);
+                log(e);
             }
         }
 
@@ -119,72 +119,87 @@ public class Xposed implements IXposedHookZygoteInit, IXposedHookLoadPackage {
             try {
                 XSysUIPackage.doHook(prefs, lpparam.classLoader);
             } catch (Throwable e) {
-                XposedBridge.log(e);
+                log(e);
             }
         }
 
         if (lpparam.packageName.equals(Packages.SETTINGS)) {
             try {
-                XSecSettingsPackage.doHook(prefs, lpparam.classLoader);
+                XSecSettingsPackage.doHook(lpparam.classLoader);
             } catch (Throwable e) {
-                XposedBridge.log(e);
+                log(e);
             }
         }
 
         if (lpparam.packageName.equals(Packages.EMAIL)) {
             try {
-                XSecEmailPackage.doHook(prefs, lpparam.classLoader);
+                XSecEmailPackage.doHook(lpparam.classLoader);
             } catch (Throwable e) {
-                XposedBridge.log(e);
+                log(e);
             }
         }
 
         if (lpparam.packageName.equals(Packages.CAMERA)) {
             try {
-                XSecCameraPackage.doHook(prefs, lpparam.classLoader);
+                XSecCameraPackage.doHook(lpparam.classLoader);
             } catch (Throwable e) {
-                XposedBridge.log(e);
+                log(e);
             }
         }
 
         if (lpparam.packageName.equals(Packages.MTP_APPLICATION)) {
             try {
-                XMtpApplication.doHook(prefs, lpparam.classLoader);
+                XMtpApplication.doHook(lpparam.classLoader);
             } catch (Throwable e) {
-                XposedBridge.log(e);
+                log(e);
             }
         }
 
         if (lpparam.packageName.equals(Packages.FOTA_AGENT)) {
             try {
-                XFotaAgentPackage.doHook(prefs, lpparam.classLoader);
+                XFotaAgentPackage.doHook(lpparam.classLoader);
             } catch (Throwable e) {
-                XposedBridge.log(e);
+                log(e);
             }
         }
 
         if (lpparam.packageName.equals(Packages.SAMSUNG_MESSAGING)) {
             try {
-                XMessagingPackage.doHook(prefs, lpparam.classLoader);
+                XMessagingPackage.doHook(lpparam.classLoader);
             } catch (Throwable e) {
-                XposedBridge.log(e);
+                log(e);
             }
         }
 
         if (lpparam.packageName.equals(Packages.SAMSUNG_CONTACTS)) {
             try {
-                XContactsPackage.doHook(prefs, lpparam.classLoader);
+                XContactsPackage.doHook(lpparam.classLoader);
             } catch (Throwable e) {
-                XposedBridge.log(e);
+                log(e);
             }
         }
 
         if (lpparam.packageName.equals(Packages.SMART_CAPTURE)) {
             try {
-                XSmartCapturePackage.doHook(prefs, lpparam.classLoader);
+                XSmartCapturePackage.doHook(lpparam.classLoader);
             } catch (Exception e) {
-                XposedBridge.log(e);
+                log(e);
             }
         }
+    }
+
+    public static Boolean reloadAndGetBooleanPref(String prefName, boolean defValue) {
+        prefs.reload();
+        return prefs.getBoolean(prefName, defValue) ? Boolean.TRUE : Boolean.FALSE;
+    }
+
+    public static int reloadAndGetIntPref(String prefName, int defValue) {
+        prefs.reload();
+        return prefs.getInt(prefName, defValue);
+    }
+
+    public static String reloadAndGetStringPref(String prefName, String defValue) {
+        prefs.reload();
+        return prefs.getString(prefName, defValue);
     }
 }
