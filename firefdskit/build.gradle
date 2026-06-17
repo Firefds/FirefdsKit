@@ -1,26 +1,28 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdk 34
+    compileSdk 35
 
     signingConfigs {
         release {
-            storeFile file(STORE_FILE)
-            storePassword STORE_PASSWORD
-            keyAlias KEY_ALIAS
-            keyPassword KEY_PASSWORD
+            if (project.hasProperty('STORE_FILE')) {
+                storeFile file(STORE_FILE)
+                storePassword STORE_PASSWORD
+                keyAlias KEY_ALIAS
+                keyPassword KEY_PASSWORD
+            }
         }
     }
     defaultConfig {
-        applicationId 'sb.firefds.u.firefdskit'
-        minSdkVersion 34
-        targetSdkVersion 34
-        versionCode 14003
-        versionName "14.0.0.3-ALPHA-3"
+        applicationId 'sb.firefds.v.firefdskit'
+        minSdkVersion 35
+        targetSdkVersion 35
+        versionCode 15000
+        versionName "15.0.0.0-ALPHA-1"
     }
     applicationVariants.configureEach { variant ->
         variant.outputs.configureEach { output ->
-            outputFileName = "FirefdsKit_U_${defaultConfig.versionName}.apk"
+            outputFileName = "FirefdsKit_V_${defaultConfig.versionName}.apk"
         }
     }
     buildTypes {
@@ -35,10 +37,10 @@ android {
     productFlavors {
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
-    namespace 'sb.firefds.u.firefdskit'
+    namespace 'sb.firefds.v.firefdskit'
     buildFeatures {
         buildConfig true
     }

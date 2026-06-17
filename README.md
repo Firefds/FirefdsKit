@@ -1,6 +1,6 @@
-# Firefds Kit [UDC]
+# Firefds Kit [VIC]
 
-Xposed module for Samsung U (Android 14) devices.
+Xposed module for Samsung V (Android 15) devices.
 
 ## Features
 
